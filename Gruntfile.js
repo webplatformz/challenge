@@ -3,9 +3,13 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+
+
         jshint: {
-            jshintrc: ".jshintrc",
-            all: ['Gruntfile.js', 'lib/**/*.js', 'test/**/*.js']
+            options: {
+                jshintrc: '.jshintrc'
+            },
+            all: ['lib/**/*.js', 'test/**/*.js']
         },
         simplemocha: {
             options: {
@@ -18,11 +22,11 @@ module.exports = function (grunt) {
         watch: {
             lib: {
                 files: 'lib/**/*.js',
-                tasks: ['simplemocha']
+                tasks: ['simplemocha', 'jshint']
             },
             test: {
                 files: 'test/**/*.js',
-                tasks: ['simplemocha']
+                tasks: ['simplemocha', 'jshint']
             }
         }
     });
@@ -30,5 +34,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-simple-mocha');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.registerTask('default', ['simplemocha']);
+    grunt.registerTask('default', ['simplemocha', 'jshint']);
 };
