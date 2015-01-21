@@ -31,6 +31,9 @@ Install frontend dependencies:
 $ bower install
 ```
 
+## Development
+While developing use grunt watch. It will automatically execute all unit tests on change.
+
 ## Architecture
 To be filled out.
 ## TechStack
