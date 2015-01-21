@@ -17,7 +17,7 @@ module.exports = function (grunt) {
                 timeout: 3000,
                 ignoreLeaks: false
             },
-            all: {src: ['test/**/*.js']}
+            all: {src: ['test/game/**/*.js']}
         },
         watch: {
             lib: {
