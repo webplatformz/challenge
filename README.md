@@ -22,3 +22,4 @@ Build Server: https://travis-ci.org/webplatformz/challenge
 - Karma
 - Mocha
 - Express
+- Socket.io
