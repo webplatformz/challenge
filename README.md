@@ -1,5 +1,6 @@
-# challenge
-JavaScript Challenge Server 
+# Jass Challenge
+- JavaScript Challenge Server 
+- Frontend displaying scores
 
 
 Styleguide: https://github.com/RisingStack/node-style-guide
