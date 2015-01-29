@@ -10,11 +10,27 @@ https://github.com/RisingStack/node-style-guide
 https://travis-ci.org/webplatformz/challenge
 
 ## Installation
-You only need to have node installed. 
-Then simply type: 
+You only need to have node.js and bower installed. 
+
+Installing node.js: 
+
+See http://nodejs.org/download/
+
+
+Install bower: 
+```sh
+$ npm install -g bower
+```
+Install node modules:
 ```sh
 $ npm install
 ```
+
+Install frontend dependencies: 
+```sh
+$ bower install
+```
+
 ## Architecture
 To be filled out.
 ## TechStack
