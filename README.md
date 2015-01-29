@@ -3,15 +3,24 @@
 - Frontend displaying scores
 
 
-Styleguide: https://github.com/RisingStack/node-style-guide
+###Styleguide: 
+https://github.com/RisingStack/node-style-guide
 
-Build Status: ![Build STatus](https://travis-ci.org/webplatformz/challenge.svg?branch=master)
+###Build Status: 
+![Build STatus](https://travis-ci.org/webplatformz/challenge.svg?branch=master)
 
-Build Server: https://travis-ci.org/webplatformz/challenge
+### Build Server
+https://travis-ci.org/webplatformz/challenge
 
-# Architecture
-
-# TechStack
+## Installation
+You only need to have node installed. 
+Then simply type: 
+```sh
+$ npm install
+```
+## Architecture
+To be filled out.
+## TechStack
 - NodeJs
 - Grunt
 - AngularJs
