@@ -11,5 +11,9 @@
   },
   "scripts": {
     "test": "grunt simplemocha"
+  },
+  "dependencies": {
+    "express": "^4.11.1",
+    "socket.io": "^1.3.2"
   }
 }
