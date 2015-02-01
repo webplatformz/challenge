@@ -1,4 +1,4 @@
-# Jass Challenge ![Build STatus](https://travis-ci.org/webplatformz/challenge.svg?branch=master)
+# Jass Challenge ![Build STatus](https://travis-ci.org/joachimprinzbach/time-track.svg?branch=master)
 - JavaScript Challenge Server 
 - Frontend displaying scores
 
