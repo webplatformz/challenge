@@ -27,5 +27,13 @@ describe('Integration tests', function(){
             });
 
         });
+
+        //it('should send a game started message, because all players have joined', function(done){
+        //    client.on('message', function(data, flags) {
+        //        done();
+        //        assert.equal(data, "{\"type\":\"GAME_STARTED\"}");
+        //    });
+        //
+        //});
     });
 });
