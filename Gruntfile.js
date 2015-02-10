@@ -17,7 +17,9 @@ module.exports = function (grunt) {
                 timeout: 3000,
                 ignoreLeaks: false
             },
-            all: {src: ['test/game/**/*.js']}
+            all: {src: ['test/game/**/*.js']},
+            integration: {src: ['test/server/**/*.js']}
+
         },
         watch: {
             lib: {
