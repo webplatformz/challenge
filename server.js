@@ -24,3 +24,4 @@ io.on('connection', function connection(ws) {
 });
 
 io.listen(3000);
+console.log('server started and listening on port 3000');
