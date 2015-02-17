@@ -30,11 +30,25 @@ module.exports = function (grunt) {
                 files: 'test/**/*.js',
                 tasks: ['simplemocha', 'jshint']
             }
+        },
+        nodemon: {
+            dev: {
+                script: 'server.js'
+            }
+        },
+        concurrent: {
+            dev: ["nodemon", "watch"],
+            options: {
+                logConcurrentOutput: true
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-simple-mocha');
+    grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-nodemon');
     grunt.registerTask('default', ['simplemocha', 'jshint']);
+    grunt.registerTask('start', ['concurrent:dev']);
 };

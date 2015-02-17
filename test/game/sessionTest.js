@@ -37,7 +37,6 @@ describe('Session', function(){
         session.addPlayer("Mickey_P3");
         session.addPlayer("Tick_P4");
         assert(gameMock.init.called);
-        console.log("Calling gameMock.init with: " + JSON.stringify(gameMock.init.getCall(0).args[0]));
     });
     
      afterEach(function(){
