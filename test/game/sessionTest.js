@@ -31,13 +31,17 @@ describe('Session', function(){
         assert(!gameMock.init.called);
     });
     
-    it('should trigger init when 4 players added ', function(){        
+    it('should trigger init when 4 players added with correct args', function(){        
         session.addPlayer("Donald_P1");
         session.addPlayer("Dagobert_P2");
         session.addPlayer("Mickey_P3");
         session.addPlayer("Tick_P4");
         assert(gameMock.init.called);
-        console.log("gameMock.init called with arg: " + JSON.stringify(gameMock.init.getCall(0).args[0]));
+        var firstArg = gameMock.init.getCall(0).args[0];
+        var secondArg = gameMock.init.getCall(0).args[1];
+        assert.equal(firstArg[0][0].id, "Donald_P1");
+        assert.equal(firstArg[1][1].id, "Tick_P4");
+        assert.equal(secondArg, 2500);
     });
     
     afterEach(function(){
