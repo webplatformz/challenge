@@ -37,9 +37,10 @@ describe('Session', function(){
         session.addPlayer("Mickey_P3");
         session.addPlayer("Tick_P4");
         assert(gameMock.init.called);
+        console.log("gameMock.init called with arg: " + JSON.stringify(gameMock.init.getCall(0).args[0]));
     });
     
-     afterEach(function(){
+    afterEach(function(){
         gameMock.init.restore();
         mockery.disable();
     });
