@@ -20,7 +20,7 @@
     "socket.io-client": "~1.3.4"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node_modules/grunt-cli/bin/grunt concurrent",
     "test": "node_modules/grunt-cli/bin/grunt simplemocha",
     "integrationTest": "node_modules/grunt-cli/bin/grunt simplemocha:integration"
   },

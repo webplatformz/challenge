@@ -8,6 +8,7 @@ var JassSession = require('./lib/game/session');
 var ClientApi = require('./lib/communication/clientApi');
 
 var clients = [];
+var port = 3000;
 
 io.on('connection', function connection(ws) {
     clients.push(ws);
@@ -23,5 +24,5 @@ io.on('connection', function connection(ws) {
     }
 });
 
-io.listen(3000);
-console.log('server started and listening on port 3000');
+io.listen(port);
+console.log('server started and listening on port ' + port);

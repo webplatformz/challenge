@@ -49,6 +49,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-nodemon');
-    grunt.registerTask('default', ['simplemocha', 'jshint']);
-    grunt.registerTask('start', ['concurrent:dev']);
+
+    // Test task executes mocka tests and runs jshint
+    grunt.registerTask('test', ['simplemocha', 'jshint']);
+
+    // Default task executes concurrent target. Watching for changes to execute tests and restart server.
+    grunt.registerTask('default', ['concurrent:dev']);
 };
