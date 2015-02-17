@@ -1,7 +1,7 @@
 "use strict";
 
 //var assert = require("assert"); // node.js core module
-var card = require("../lib/game/card.js");
+var card = require("../lib/game/deck/card.js");
 
 
 describe('Game', function(){

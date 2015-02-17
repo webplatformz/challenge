@@ -18,7 +18,7 @@ module.exports = function (grunt) {
                 ignoreLeaks: false
             },
             all: {src: ['test/game/**/*.js']},
-            integration: {src: ['test/server/**/*.js']}
+            integration: {src: ['test/communication/**/*.js']}
 
         },
         watch: {

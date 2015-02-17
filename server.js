@@ -1,7 +1,8 @@
 "use strict";
 
-var message = require("./message.js");
+var message = require("./lib/communication/message");
 
+var jassSession = Object.create(require('./lib/game/session'));
 
 // https://github.com/websockets/ws
 
