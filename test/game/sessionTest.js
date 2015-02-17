@@ -16,19 +16,33 @@ describe('Session', function(){
         warnOnUnregistered: false
     });
     mockery.registerMock('./game', gameMock);
+    
+    var session;
    
-    var session = Object.create(require("../../lib/game/session"));    
+    beforeEach(function(){
+        session = Object.create(require("../../lib/game/session")).init(); 
+        sinon.spy(gameMock, 'init');
+    });    
     
     it('should be able to add 3 player ', function(){
-        
+        session.addPlayer("Donald_P1");
+        session.addPlayer("Dagobert_P2");
+        session.addPlayer("Mickey_P3");
+        assert(!gameMock.init.called);
     });
     
-    it('should be initialized with new game', function(){  
-        sinon.spy(gameMock, 'init');
-        assert(!gameMock.init.called);
-        session.init(); 
+    it('should trigger init when 4 players added ', function(){        
+        session.addPlayer("Donald_P1");
+        session.addPlayer("Dagobert_P2");
+        session.addPlayer("Mickey_P3");
+        session.addPlayer("Tick_P4");
         assert(gameMock.init.called);
         console.log("Calling gameMock.init with: " + JSON.stringify(gameMock.init.getCall(0).args[0]));
+    });
+    
+     afterEach(function(){
+        gameMock.init.restore();
+        mockery.disable();
     });
     
     after(function(){
