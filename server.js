@@ -13,6 +13,8 @@ var wss = new WebSocketServer({ port: 10000 });
 
 var clients = [];
 
+console.log('server up');
+
 wss.on('connection', function connection(ws) {
     clients.push(ws);
 
