@@ -1,12 +1,32 @@
 'use strict';
+
 var assert = require("assert"); // node.js core module
-var Session = require("../../lib/game/session");
+var mockery = require('mockery');
+var sinon = require('sinon');
 
-describe('Session', function(){
-    it('should be initialized', function(){
-        var session = Object.create(Session);
-        //session.init();
+var gameMock = {
+    init : function(){
+    },
+    chooseTrump : function() {
+    }
+};
 
-        console.log("asdf");
+describe('Session', function(){    
+    mockery.enable();
+    mockery.registerMock('./game', gameMock);
+   
+    var session = Object.create(require("../../lib/game/session"));
+    
+    sinon.spy(gameMock, 'init');
+    
+    it('should be initialized with new game', function(){   
+        assert(!gameMock.init.called);
+        session.init(); 
+        assert(gameMock.init.called);
+        console.log("Calling gameMock.init with: " + JSON.stringify(gameMock.init.getCall(0).args[0]));
+    });
+    
+    after(function(){
+        mockery.disable();
     });
 });
