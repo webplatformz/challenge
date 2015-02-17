@@ -12,14 +12,19 @@ var gameMock = {
 };
 
 describe('Session', function(){    
-    mockery.enable();
+    mockery.enable({
+        warnOnUnregistered: false
+    });
     mockery.registerMock('./game', gameMock);
    
-    var session = Object.create(require("../../lib/game/session"));
+    var session = Object.create(require("../../lib/game/session"));    
     
-    sinon.spy(gameMock, 'init');
+    it('should be able to add 3 player ', function(){
+        
+    });
     
-    it('should be initialized with new game', function(){   
+    it('should be initialized with new game', function(){  
+        sinon.spy(gameMock, 'init');
         assert(!gameMock.init.called);
         session.init(); 
         assert(gameMock.init.called);

@@ -15,7 +15,9 @@ var deckMock = {
 };
 
 describe('Game', function() {
-    mockery.enable();
+    mockery.enable({
+        warnOnUnregistered: false
+    });
     mockery.registerMock('./deck/deck', deckMock);
     var game = Object.create(require('../../lib/game/game'));
 
