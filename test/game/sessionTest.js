@@ -1,3 +1,36 @@
-/**
- * Created by dev on 2/17/15.
- */
+'use strict';
+
+var assert = require("assert"); // node.js core module
+var mockery = require('mockery');
+var sinon = require('sinon');
+
+var gameMock = {
+    init : function(){
+    },
+    chooseTrump : function() {
+    }
+};
+
+describe('Session', function(){    
+    mockery.enable({
+        warnOnUnregistered: false
+    });
+    mockery.registerMock('./game', gameMock);
+   
+    var session = Object.create(require("../../lib/game/session"));    
+    
+    it('should be able to add 3 player ', function(){
+        
+    });
+    
+    it('should be initialized with new game', function(){  
+        sinon.spy(gameMock, 'init');
+        assert(!gameMock.init.called);
+        session.init(); 
+        assert(gameMock.init.called);
+    });
+    
+    after(function(){
+        mockery.disable();
+    });
+});
