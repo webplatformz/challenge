@@ -1,11 +1,16 @@
 "use strict";
 
-//var assert = require("assert"); // node.js core module
+var assert = require("assert"); // node.js core module
 var mockery = require('mockery');
+var Card = require('../../lib/game/deck/card');
 
 var deckMock = {
     getShuffledCards : function() {
-        console.log('hello mockery');
+        var deck = [];
+        for (var i = 0; i < 36; i++) {
+            deck.push(new Card.Card(8, Card.CardType.DIAMONDS));
+        }
+        return deck;
     }
 };
 
@@ -17,5 +22,6 @@ describe('Game', function() {
 
     it('should deal the cards properly', function() {
         game.init();
+
     });
 });
