@@ -1,28 +1,26 @@
-"use strict";
+'use strict';
+
+var io = require('socket.io')();
 
 var message = require("./lib/communication/message");
+var JassSession = require('./lib/game/session');
 
-var jassSession = Object.create(require('./lib/game/session'));
-
-// https://github.com/websockets/ws
-
-
-var WebSocketServer = require('ws').Server;
-
-var wss = new WebSocketServer({ port: 10000 });
+var ClientApi = require('./lib/communication/clientApi');
 
 var clients = [];
 
-wss.on('connection', function connection(ws) {
+io.on('connection', function connection(ws) {
     clients.push(ws);
 
-    ws.on('message', function incoming(message) {
-        console.log('received: %s', message);
-    });
+    if (clients.length === 4) {
+        var jassSession = Object.create(JassSession);
+        var clientApi = Object.create(ClientApi);
 
-    ws.send(JSON.stringify(message.RequestName));
+        clientApi.init(clients);
+        jassSession.setClientApi(clientApi);
+
+        clients = [];
+    }
 });
 
-
-// other events are
-// close, error
+io.listen(3000);
