@@ -33,6 +33,18 @@ $ bower install
 
 ## Development
 While developing use grunt watch. It will automatically execute all unit tests on change.
+Grunt watch and livereload is defined as default target. 
+Start it with:
+
+```sh
+$ grunt
+```
+
+or:
+
+```sh
+$ npm start
+```
 
 ## Architecture
 To be filled out.
