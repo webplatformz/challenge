@@ -41,7 +41,7 @@ describe('Session', function(){
         var secondArg = gameMock.init.getCall(0).args[1];
         assert.equal(firstArg[0][0].id, "Donald_P1");
         assert.equal(firstArg[1][1].id, "Tick_P4");
-        assert.equal(secondArg, 2500);
+        assert.equal(secondArg, 2500); 
     });
     
     afterEach(function(){
