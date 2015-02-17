@@ -28,7 +28,6 @@ describe('Session', function(){
         assert(!gameMock.init.called);
         session.init(); 
         assert(gameMock.init.called);
-        console.log("Calling gameMock.init with: " + JSON.stringify(gameMock.init.getCall(0).args[0]));
     });
     
     after(function(){
