@@ -15,9 +15,9 @@ io.on('connection', function connection(ws) {
 
     if (clients.length === 4) {
         var jassSession = Object.create(JassSession).init();
-        var clientApi = Object.create(ClientApi).init(clients);
+        var clientApi = Object.create(ClientApi);
 
-        //clientApi.init(clients);
+        clientApi.setClients(clients);
         jassSession.setClientApi(clientApi);
 
         clients = [];

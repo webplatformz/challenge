@@ -22,7 +22,7 @@ describe('Client API', function() {
 
         io.on('connection', function connection(ws) {
             var clientApi = Object.create(ClientApi);
-            clientApi.init([ws]);
+            clientApi.setClients([ws]);
 
                 clientApi.requestTrump(0, false).then(function(data) {
                     assert.equal(data.color, chooseTrump.color);
