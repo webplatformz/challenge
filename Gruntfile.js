@@ -7,6 +7,7 @@ module.exports = function (grunt) {
 
         jshint: {
             options: {
+                reporter: require('jshint-stylish'),
                 jshintrc: '.jshintrc'
             },
             all: ['lib/**/*.js', 'test/**/*.js']
@@ -44,11 +45,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-simple-mocha');
-    grunt.loadNpmTasks('grunt-concurrent');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-nodemon');
+    require('load-grunt-tasks')(grunt);
 
     // Test task executes mocka tests and runs jshint
     grunt.registerTask('test', ['simplemocha', 'jshint']);
