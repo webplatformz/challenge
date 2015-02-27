@@ -1,39 +1,47 @@
 "use strict";
 
 var assert = require('assert');
-var io = require('socket.io');
-var ioclient = require('socket.io-client');
+var WebSocket = require('ws');
+var WebSocketServer = require('ws').Server;
 var ClientApi = require('../../lib/communication/clientApi');
 
-// more help on async code http://lostechies.com/derickbailey/2012/08/17/asynchronous-unit-tests-with-mocha-promises-and-winjs/
 describe('Client API', function() {
 
+    var wss;
 
     beforeEach(function() {
-        io = io.listen(10001);
+        wss = new WebSocketServer({port: 10001});
     });
 
     afterEach(function() {
-        io.close();
+        wss.close();
     });
 
-    it('should wait for chooseTrump on requestTrump', function(done){
-        var chooseTrump = {color: 'Spades'};
+    it('should wait for chooseTrump on requestTrump', function(done) {
+        var chooseTrump = {
+            name: 'chooseTrump',
+            data: {
+                color: 'Spades'
+            }
+        };
 
-        io.on('connection', function connection(ws) {
+        wss.on('connection', function connection(client) {
             var clientApi = Object.create(ClientApi);
-            clientApi.setClients([ws]);
+            clientApi.setClients([client]);
 
-                clientApi.requestTrump(0, false).then(function(data) {
-                    assert.equal(data.color, chooseTrump.color);
-                    done();
-                }).catch(done);
+            clientApi.requestTrump(0, false).then(function(data) {
+                assert.equal(data.color, chooseTrump.data.color);
+                done();
+            }).catch(done);
         });
 
-        var client = ioclient.connect('ws://localhost:10001');
+        var client = new WebSocket('ws://localhost:10001');
 
-        client.on('requestTrump', function() {
-            client.emit('chooseTrump', chooseTrump);
+        client.on('message', function(message) {
+            message = JSON.parse(message);
+            if (message.name === 'requestTrump') {
+                client.send(JSON.stringify(chooseTrump));
+            }
         });
     });
 });
