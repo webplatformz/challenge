@@ -17,7 +17,7 @@ app.get('/', function (req, res) {
 
 wss.on('connection', function connection(ws) {
     clients.push(ws);
-    
+
     if (clients.length === 4) {
         var jassSession = Object.create(JassSession).init();
         var clientApi = Object.create(ClientApi);
