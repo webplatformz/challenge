@@ -2,11 +2,9 @@
   "name": "challenge",
   "version": "0.0.1",
   "private": true,
-
   "engines": {
     "node": "0.12.x"
   },
-
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-cli": "0.1.13",
@@ -22,15 +20,14 @@
     "mockery": "^1.4.0",
     "sinon": "^1.12.2"
   },
-
   "scripts": {
     "start": "node_modules/grunt-cli/bin/grunt concurrent",
     "test": "node_modules/grunt-cli/bin/grunt simplemocha",
     "integrationTest": "node_modules/grunt-cli/bin/grunt simplemocha:integration"
   },
-
   "dependencies": {
     "express": "^4.11.2",
-    "ws":"^0.7.1"
+    "underscore": "^1.8.2",
+    "ws": "^0.7.1"
   }
 }
