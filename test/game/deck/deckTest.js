@@ -10,7 +10,6 @@ function arraysElementsEqualsButOtherOrder(array1, array2) {
 }
 
 describe('Deck', function() {
-
     var createDeck = function() {
         var deck = Object.create(Deck).init();
         deck.shuffleCards();
