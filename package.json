@@ -23,9 +23,6 @@
   },
 
   "scripts": {
-    "develop": "node_modules/grunt-cli/bin/grunt concurrent",
-    "integrationTest": "node_modules/grunt-cli/bin/grunt simplemocha:integration",
-    "start": "node server.js",
     "test": "node_modules/grunt-cli/bin/grunt simplemocha"
   },
 
