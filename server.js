@@ -1,12 +1,11 @@
 'use strict';
 
-var httpPort = 3000;
-var websocketPort = 3001;
+var port = process.env.PORT || 3000;
 
 var app = require('express')();
 var server = require('http').createServer(app);
 var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({ port: websocketPort});
+var wss = new WebSocketServer({ server : server});
 var JassSession = require('./lib/game/session');
 var ClientApi = require('./lib/communication/clientApi');
 var clients = [];
@@ -29,6 +28,6 @@ wss.on('connection', function connection(ws) {
     }
 });
 
-server.listen(httpPort, function () {
+server.listen(port, function () {
     console.info('Server listening on port:', server.address().port);
 });
