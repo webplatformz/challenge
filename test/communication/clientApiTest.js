@@ -4,6 +4,7 @@ var assert = require('assert');
 var WebSocket = require('ws');
 var WebSocketServer = require('ws').Server;
 var ClientApi = require('../../lib/communication/clientApi');
+var messages = require('../../lib/communication/messages');
 
 describe('Client API', function() {
 
@@ -18,12 +19,7 @@ describe('Client API', function() {
     });
 
     it('should wait for chooseTrump on requestTrump', function(done) {
-        var chooseTrump = {
-            name: 'chooseTrump',
-            data: {
-                color: 'Spades'
-            }
-        };
+        var chooseTrump = messages.createChooseTrump('Spades');
 
         wss.on('connection', function connection(client) {
             var clientApi = Object.create(ClientApi);
@@ -39,7 +35,8 @@ describe('Client API', function() {
 
         client.on('message', function(message) {
             message = JSON.parse(message);
-            if (message.name === 'requestTrump') {
+
+            if (message.type === messages.MessageType.REQUEST_TRUMP) {
                 client.send(JSON.stringify(chooseTrump));
             }
         });
