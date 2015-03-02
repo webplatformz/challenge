@@ -19,7 +19,7 @@ describe('Client API', function() {
     });
 
     it('should wait for chooseTrump on requestTrump', function(done) {
-        var chooseTrump = messages.createChooseTrump('Spades');
+        var chooseTrump = messages.create(messages.MessageType.CHOOSE_TRUMP, 'Spades');
 
         wss.on('connection', function connection(client) {
             var clientApi = Object.create(ClientApi);
