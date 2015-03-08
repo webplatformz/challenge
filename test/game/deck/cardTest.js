@@ -10,4 +10,10 @@ describe('Card', function() {
         assert(card.type === Card.CardType.DIAMONDS, 'Card has given type');
     });
 
+    it('should prevent modifications on CardType', function() {
+        assert.throws(function() {
+            Card.CardType.DIAMONDS = 'test';
+        }, 'Type Error');
+    });
+
 });
