@@ -6,26 +6,20 @@ var CardType = require('../../../lib/game/deck/card').CardType;
 
 describe('Deck', function() {
 
-    it('has shared, ordered initial set of cards', function() {
+    it('has no cards on creation', function() {
         var deck = Object.create(Deck);
-        var deck2 = Object.create(Deck);
 
-        var firstCard = deck.takeCard();
-        assert(firstCard.number === 14);
-        assert(firstCard.type === CardType.SPADES);
-
-        var secondCard = deck2.takeCard();
-        assert(secondCard.number === 14);
-        assert(secondCard.type === CardType.CLUBS);
-
-        assert(deck.cards === deck2.cards, 'Cards arrays of the objects are the same');
+        assert(deck.cards === undefined);
     });
 
     it('gets instance specific shuffled deck on shuffleCards()', function() {
-        var deck = Object.create(Deck);
-        deck.shuffleCards();
+        var deck = Object.create(Deck),
+            deck2 = Object.create(Deck);
 
-        assert(Deck.cards !== deck.cards, 'Cards array is not the same in prototype');
+        deck.shuffleCards();
+        deck2.shuffleCards();
+
+        assert(deck.cards !== deck2.cards, 'Cards array is not the same in prototype');
     });
 
 });
