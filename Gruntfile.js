@@ -3,8 +3,30 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        babel: {
+            options: {
+                sourceMap: true
+            },
+            dist: {
+                files: [
+                    {
+                        "expand": true,
+                        "cwd": "./",
+                        "src": ["server.js"],
+                        "dest": "./dist/",
+                        "ext": ".js"
+                    },
 
-
+                    {
+                        "expand": true,
+                        "cwd": "./lib/",
+                        "src": ["**/*.js"],
+                        "dest": "./dist/lib/",
+                        "ext": ".js"
+                    }
+                ]
+            }
+        },
         jshint: {
             options: {
                 reporter: require('jshint-stylish'),
@@ -34,7 +56,7 @@ module.exports = function (grunt) {
         },
         nodemon: {
             dev: {
-                script: 'server.js'
+                script: 'dist/server.js'
             }
         },
         concurrent: {
