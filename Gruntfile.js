@@ -16,12 +16,18 @@ module.exports = function (grunt) {
                         "dest": "./dist/",
                         "ext": ".js"
                     },
-
                     {
                         "expand": true,
                         "cwd": "./lib/",
                         "src": ["**/*.js"],
                         "dest": "./dist/lib/",
+                        "ext": ".js"
+                    },
+                    {
+                        "expand": true,
+                        "cwd": "./test/",
+                        "src": ["**/*.js"],
+                        "dest": "./dist/test/",
                         "ext": ".js"
                     }
                 ]
@@ -40,17 +46,21 @@ module.exports = function (grunt) {
                 timeout: 3000,
                 ignoreLeaks: false
             },
-            all: {src: ['test/game/**/*.js']},
-            integration: {src: ['test/communication/**/*.js']}
+            all: {src: ['dist/test/game/**/*.js']},
+            integration: {src: ['dist/test/communication/**/*.js']}
 
         },
         watch: {
+            babel: {
+              files: './**/*.js',
+                tasks: ['babel']
+            },
             lib: {
-                files: 'lib/**/*.js',
+                files: 'dist/lib/**/*.js',
                 tasks: ['simplemocha', 'jshint']
             },
             test: {
-                files: 'test/**/*.js',
+                files: 'dist/test/**/*.js',
                 tasks: ['simplemocha', 'jshint']
             }
         },
@@ -70,8 +80,8 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     // Test task executes mocka tests and runs jshint
-    grunt.registerTask('test', ['simplemocha', 'jshint']);
+    grunt.registerTask('test', ['babel', 'simplemocha', 'jshint']);
 
     // Default task executes concurrent target. Watching for changes to execute tests and restart server.
-    grunt.registerTask('default', ['concurrent:dev']);
+    grunt.registerTask('default', ['babel', 'concurrent:dev']);
 };
