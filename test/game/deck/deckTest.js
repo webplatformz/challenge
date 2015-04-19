@@ -1,19 +1,19 @@
 "use strict";
 
-var assert = require('assert'); // node.js core module
-var Deck = require('../../../lib/game/deck/deck');
-var CardType = require('../../../lib/game/deck/card').CardType;
+let assert = require('assert'); // node.js core module
+let Deck = require('../../../lib/game/deck/deck');
+let CardType = require('../../../lib/game/deck/card').CardType;
 
 describe('Deck', function() {
 
     it('has no cards on creation', function() {
-        var deck = Object.create(Deck);
+        let deck = Object.create(Deck);
 
         assert(deck.cards === undefined);
     });
 
     it('gets instance specific shuffled deck on shuffleCards()', function() {
-        var deck = Object.create(Deck),
+        let deck = Object.create(Deck),
             deck2 = Object.create(Deck);
 
         deck.shuffleCards();

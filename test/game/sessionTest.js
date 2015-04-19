@@ -1,10 +1,10 @@
 'use strict';
 
-var assert = require("assert"); // node.js core module
-var mockery = require('mockery');
-var sinon = require('sinon');
+let assert = require("assert"); // node.js core module
+let mockery = require('mockery');
+let sinon = require('sinon');
 
-var gameMock = {
+let gameMock = {
     init : function(){
     },
     chooseTrump : function() {
@@ -17,7 +17,7 @@ describe('Session', function(){
     });
     mockery.registerMock('./game', gameMock);
     
-    var session;
+    let session;
    
     beforeEach(function(){
         session = Object.create(require("../../lib/game/session")).init(); 
@@ -37,8 +37,8 @@ describe('Session', function(){
         session.addPlayer("Mickey_P3");
         session.addPlayer("Tick_P4");
         assert(gameMock.init.called);
-        var firstArg = gameMock.init.getCall(0).args[0];
-        var secondArg = gameMock.init.getCall(0).args[1];
+        let firstArg = gameMock.init.getCall(0).args[0];
+        let secondArg = gameMock.init.getCall(0).args[1];
         assert.equal(firstArg[0][0].id, "Donald_P1");
         assert.equal(firstArg[1][1].id, "Tick_P4");
         assert.equal(secondArg, 2500); 

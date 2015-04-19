@@ -1,39 +1,39 @@
 "use strict";
 
-var assert = require('assert');
-var WebSocket = require('ws');
-var WebSocketServer = require('ws').Server;
-var ClientApi = require('../../lib/communication/clientApi');
-var messages = require('../../lib/communication/messages');
+let assert = require('assert');
+let WebSocket = require('ws');
+let WebSocketServer = require('ws').Server;
+let ClientApi = require('../../lib/communication/clientApi');
+let messages = require('../../lib/communication/messages');
 
-describe('Client API', function() {
+describe('Client API', () => {
 
-    var wss;
+    let wss;
 
-    beforeEach(function() {
+    beforeEach(() => {
         wss = new WebSocketServer({port: 10001});
     });
 
-    afterEach(function() {
+    afterEach(() => {
         wss.close();
     });
 
-    it('should wait for chooseTrump on requestTrump', function(done) {
-        var chooseTrump = messages.create(messages.MessageType.CHOOSE_TRUMP, 'Spades');
+    it('should wait for chooseTrump on requestTrump', (done) => {
+        let chooseTrump = messages.create(messages.MessageType.CHOOSE_TRUMP, 'Spades');
 
-        wss.on('connection', function connection(client) {
-            var clientApi = Object.create(ClientApi);
+        wss.on('connection', (client) => {
+            let clientApi = Object.create(ClientApi);
             clientApi.setClients([client]);
 
-            clientApi.requestTrump(0, false).then(function(data) {
+            clientApi.requestTrump(0, false).then((data) => {
                 assert.equal(data.color, chooseTrump.data.color);
                 done();
             }).catch(done);
         });
 
-        var client = new WebSocket('ws://localhost:10001');
+        let client = new WebSocket('ws://localhost:10001');
 
-        client.on('message', function(message) {
+        client.on('message', (message) => {
             message = JSON.parse(message);
 
             if (message.type === messages.MessageType.REQUEST_TRUMP) {

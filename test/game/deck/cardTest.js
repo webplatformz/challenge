@@ -1,11 +1,11 @@
 "use strict";
 
-var assert = require('assert');
-var Card = require('../../../lib/game/deck/card');
+let assert = require('assert');
+let Card = require('../../../lib/game/deck/card');
 
 describe('Card', function() {
     it('should be possible to create cards', function() {
-        var card = Card.create(6, Card.CardType.DIAMONDS);
+        let card = Card.create(6, Card.CardType.DIAMONDS);
         assert(card.number === 6, 'Card has given number');
         assert(card.type === Card.CardType.DIAMONDS, 'Card has given type');
     });

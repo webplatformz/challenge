@@ -1,14 +1,14 @@
 'use strict';
 
-var port = process.env.PORT || 3000;
+let port = process.env.PORT || 3000;
 
-var app = require('express')();
-var server = require('http').createServer(app);
-var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({ server : server});
-var JassSession = require('./lib/game/session');
-var ClientApi = require('./lib/communication/clientApi');
-var clients = [];
+let app = require('express')();
+let server = require('http').createServer(app);
+let WebSocketServer = require('ws').Server;
+let wss = new WebSocketServer({ server : server});
+let JassSession = require('./lib/game/session');
+let ClientApi = require('./lib/communication/clientApi');
+let clients = [];
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/websocketGUI.html');
@@ -18,8 +18,8 @@ wss.on('connection', function connection(ws) {
     clients.push(ws);
 
     if (clients.length === 4) {
-        var jassSession = Object.create(JassSession).init();
-        var clientApi = Object.create(ClientApi);
+        let jassSession = Object.create(JassSession).init();
+        let clientApi = Object.create(ClientApi);
 
         clientApi.setClients(clients);
         jassSession.setClientApi(clientApi);

@@ -1,15 +1,15 @@
 "use strict";
 
-var assert = require("assert"); // node.js core module
-var mockery = require('mockery');
-var Card = require('../../lib/game/deck/card');
-var sinon = require('sinon');
-var Game = require('../../lib/game/game');
+let assert = require("assert"); // node.js core module
+let mockery = require('mockery');
+let Card = require('../../lib/game/deck/card');
+let sinon = require('sinon');
+let Game = require('../../lib/game/game');
 
-var deckMock = {
+let deckMock = {
     shuffleCards : function() {
-        var deck = [];
-        for (var i = 0; i < 36; i++) {
+        let deck = [];
+        for (let i = 0; i < 36; i++) {
             deck.push(new Card.Card(8, Card.CardType.DIAMONDS));
         }
         return deck;
@@ -21,7 +21,7 @@ describe('Game', function() {
         warnOnUnregistered: false
     });
     mockery.registerMock('./deck/deck', deckMock);
-    var game;
+    let game;
     beforeEach(function(){
         game = Object.create(Game);
         sinon.spy(deckMock, 'shuffleCards');
