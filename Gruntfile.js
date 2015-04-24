@@ -50,7 +50,20 @@ module.exports = function (grunt) {
             integration: {src: ['dist/test/communication/**/*.js']}
 
         },
+        sync: {
+            main: {
+                expand: true,
+                cwd: './',
+                src: '*.html',
+                dest: 'dist/',
+                filter: 'isFile'
+            }
+        },
         watch: {
+            sync: {
+                files: './*.html',
+                tasks: ['sync']
+            },
             babel: {
               files: './**/*.js',
                 tasks: ['babel']
@@ -70,7 +83,7 @@ module.exports = function (grunt) {
             }
         },
         concurrent: {
-            dev: ["nodemon", "watch"],
+            dev: ['nodemon', 'watch'],
             options: {
                 logConcurrentOutput: true
             }
