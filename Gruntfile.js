@@ -52,11 +52,19 @@ module.exports = function (grunt) {
         },
         sync: {
             main: {
-                expand: true,
-                cwd: './',
-                src: '*.html',
-                dest: 'build/',
-                filter: 'isFile'
+                files: [{
+                        expand: true,
+                        cwd: './',
+                        src: '*.html',
+                        dest: 'build/',
+                        filter: 'isFile'
+                    }, {
+                        expand: true,
+                        cwd: './',
+                        src: 'img/**/*',
+                        dest: 'build/'
+                    }
+                ]
             }
         },
         watch: {
