@@ -69,7 +69,7 @@ module.exports = function (grunt) {
         },
         watch: {
             sync: {
-                files: './*.html',
+                files: './*.html,./img/**/*',
                 tasks: ['sync']
             },
             babel: {
@@ -83,7 +83,7 @@ module.exports = function (grunt) {
             }
         },
         concurrent: {
-            dev: ['nodemon', 'babel', 'sync', 'watch'],
+            dev: ['babel', 'sync', 'nodemon', 'watch'],
             options: {
                 logConcurrentOutput: true
             }
