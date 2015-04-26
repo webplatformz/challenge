@@ -10,11 +10,11 @@ let JassSession = require('./lib/game/session');
 let ClientApi = require('./lib/communication/clientApi');
 let clients = [];
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.sendFile(__dirname + '/websocketGUI.html');
 });
 
-wss.on('connection', function connection(ws) {
+wss.on('connection', (ws) => {
     clients.push(ws);
 
     if (clients.length === 4) {
@@ -28,6 +28,6 @@ wss.on('connection', function connection(ws) {
     }
 });
 
-server.listen(port, function () {
+server.listen(port, () => {
     console.info('Server listening on port:', server.address().port);
 });

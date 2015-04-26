@@ -13,21 +13,21 @@ module.exports = function (grunt) {
                         "expand": true,
                         "cwd": "./",
                         "src": ["server.js"],
-                        "dest": "./dist/",
+                        "dest": "./build/",
                         "ext": ".js"
                     },
                     {
                         "expand": true,
                         "cwd": "./lib/",
                         "src": ["**/*.js"],
-                        "dest": "./dist/lib/",
+                        "dest": "./build/lib/",
                         "ext": ".js"
                     },
                     {
                         "expand": true,
                         "cwd": "./test/",
                         "src": ["**/*.js"],
-                        "dest": "./dist/test/",
+                        "dest": "./build/test/",
                         "ext": ".js"
                     }
                 ]
@@ -46,8 +46,8 @@ module.exports = function (grunt) {
                 timeout: 3000,
                 ignoreLeaks: false
             },
-            all: {src: ['dist/test/game/**/*.js']},
-            integration: {src: ['dist/test/communication/**/*.js']}
+            all: {src: ['build/test/game/**/*.js']},
+            integration: {src: ['build/test/communication/**/*.js']}
 
         },
         sync: {
@@ -55,7 +55,7 @@ module.exports = function (grunt) {
                 expand: true,
                 cwd: './',
                 src: '*.html',
-                dest: 'dist/',
+                dest: 'build/',
                 filter: 'isFile'
             }
         },
@@ -65,25 +65,17 @@ module.exports = function (grunt) {
                 tasks: ['sync']
             },
             babel: {
-              files: './**/*.js',
-                tasks: ['babel']
-            },
-            lib: {
-                files: 'dist/lib/**/*.js',
-                tasks: ['simplemocha', 'jshint']
-            },
-            test: {
-                files: 'dist/test/**/*.js',
-                tasks: ['simplemocha', 'jshint']
+                files: './**/*.js',
+                tasks: ['babel', 'simplemocha', 'jshint']
             }
         },
         nodemon: {
             dev: {
-                script: 'dist/server.js'
+                script: 'build/server.js'
             }
         },
         concurrent: {
-            dev: ['nodemon', 'watch'],
+            dev: ['nodemon', 'babel', 'sync', 'watch'],
             options: {
                 logConcurrentOutput: true
             }
