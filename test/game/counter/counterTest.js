@@ -8,7 +8,7 @@ let Card = require('../../../lib/game/deck/card');
 
 
 describe('Counter', function() {
-    it('should count simple array with Trumpf', function() {
+    it('should count simple array without Trumpf', function() {
         let mode = GameMode.TRUMPF;
         let cardType = CardType.SPADES;
 
@@ -21,6 +21,50 @@ describe('Counter', function() {
 
         let value = Counter.count(mode, cardType, cardSet);
         assert.equal(26, value, 'Cardset value matches');
+    });
+
+    it('should count simple array with Trumpf', function() {
+        let mode = GameMode.TRUMPF;
+        let cardType = CardType.SPADES;
+
+        let cardSet = [
+            Card.create(6, CardType.DIAMONDS),
+            Card.create(12, CardType.DIAMONDS),
+            Card.create(14, CardType.DIAMONDS),
+            Card.create(9, CardType.SPADES),
+            Card.create(11, CardType.SPADES)];
+
+        let value = Counter.count(mode, cardType, cardSet);
+        assert.equal(48, value, 'Cardset value matches');
+    });
+
+
+    it('should count simple array with obenaben', function() {
+        let mode = GameMode.OBENABEN;
+
+        let cardSet = [
+            Card.create(8, CardType.DIAMONDS),
+            Card.create(12, CardType.DIAMONDS),
+            Card.create(14, CardType.DIAMONDS),
+            Card.create(9, CardType.SPADES),
+            Card.create(11, CardType.SPADES)];
+
+        let value = Counter.count(mode, null, cardSet);
+        assert.equal(24, value, 'Cardset value matches');
+    });
+
+    it('should count simple array with untenrauf', function() {
+        let mode = GameMode.UNTENRAUF;
+
+        let cardSet = [
+            Card.create(8, CardType.DIAMONDS),
+            Card.create(6, CardType.DIAMONDS),
+            Card.create(14, CardType.DIAMONDS),
+            Card.create(9, CardType.SPADES),
+            Card.create(11, CardType.SPADES)];
+
+        let value = Counter.count(mode, null, cardSet);
+        assert.equal(21, value, 'Cardset value matches');
     });
     
 //    let game;
