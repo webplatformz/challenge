@@ -20,7 +20,7 @@ describe('Counter', function() {
             Card.create(11, CardType.HEARTS)];
 
         let value = Counter.count(mode, cardType, cardSet);
-        assert.equal(26, value, 'Cardset value matches');
+        assert.equal(52, value, 'Cardset value matches');
     });
 
     it('should count simple array with Trumpf', function() {
@@ -35,7 +35,7 @@ describe('Counter', function() {
             Card.create(11, CardType.SPADES)];
 
         let value = Counter.count(mode, cardType, cardSet);
-        assert.equal(48, value, 'Cardset value matches');
+        assert.equal(96, value, 'Cardset value matches');
     });
 
 
@@ -50,7 +50,7 @@ describe('Counter', function() {
             Card.create(11, CardType.SPADES)];
 
         let value = Counter.count(mode, null, cardSet);
-        assert.equal(24, value, 'Cardset value matches');
+        assert.equal(72, value, 'Cardset value matches');
     });
 
     it('should count simple array with untenrauf', function() {
@@ -64,7 +64,7 @@ describe('Counter', function() {
             Card.create(11, CardType.SPADES)];
 
         let value = Counter.count(mode, null, cardSet);
-        assert.equal(21, value, 'Cardset value matches');
+        assert.equal(63, value, 'Cardset value matches');
     });
     
 //    let game;
