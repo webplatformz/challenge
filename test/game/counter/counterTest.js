@@ -23,7 +23,7 @@ describe('Counter', function() {
         assert.equal(52, value, 'Cardset value matches');
     });
 
-    it('should count simple array with Trumpf', function() {
+    it('should count simple array with double multiplicated Trumpf', function() {
         let mode = GameMode.TRUMPF;
         let cardType = CardType.SPADES;
 
@@ -38,6 +38,20 @@ describe('Counter', function() {
         assert.equal(96, value, 'Cardset value matches');
     });
 
+    it('should count simple array with single multiplicated Trumpf', function() {
+        let mode = GameMode.TRUMPF;
+        let cardType = CardType.DIAMONDS;
+
+        let cardSet = [
+            Card.create(6, CardType.DIAMONDS),
+            Card.create(12, CardType.DIAMONDS),
+            Card.create(14, CardType.DIAMONDS),
+            Card.create(9, CardType.DIAMONDS),
+            Card.create(11, CardType.DIAMONDS)];
+
+        let value = Counter.count(mode, cardType, cardSet);
+        assert.equal(48, value, 'Cardset value matches');
+    });
 
     it('should count simple array with obenaben', function() {
         let mode = GameMode.OBENABEN;
@@ -66,28 +80,4 @@ describe('Counter', function() {
         let value = Counter.count(mode, null, cardSet);
         assert.equal(63, value, 'Cardset value matches');
     });
-    
-//    let game;
-//
-//    beforeEach(function(){
-//        game = Object.create(Game);
-//    });
-//
-//    it('should deal the cards properly', function() {
-//        game.init();
-//        //assert(deckMock.shuffleCards.called);
-//    });
-//
-//    it('should send a command to requestTrump', function() {
-//        game.init();
-//        game.chooseTrump();
-//        // assert that request trump command has been send
-//    });
-//
-//    it('should send a command to requestTrump to the next player after the first player pushed', function() {
-//        game.init();
-//        game.chooseTrump();
-//        game.pushTrumpChoice();
-//        // assert that push command has been send
-//    });
 });
