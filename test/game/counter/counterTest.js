@@ -3,12 +3,24 @@
 let assert = require("assert"); // node.js core module
 let GameMode = require('../../../lib/game/game').GameMode;
 let Counter = require('../../../lib/game/counter/counter');
+let CardType = require('../../../lib/game/deck/card').CardType;
+let Card = require('../../../lib/game/deck/card');
+
 
 describe('Counter', function() {
-    console.log(Counter);
     it('should count simple array with Trumpf', function() {
-        let value = Counter.count('Trumpf', 'HEART', undefined);
-        assert(value === 0, 'Cardset value matches');
+        let mode = GameMode.TRUMPF;
+        let cardType = CardType.SPADES;
+
+        let cardSet = [
+            Card.create(6, CardType.DIAMONDS),
+            Card.create(12, CardType.DIAMONDS),
+            Card.create(14, CardType.DIAMONDS),
+            Card.create(10, CardType.DIAMONDS),
+            Card.create(11, CardType.HEARTS)];
+
+        let value = Counter.count(mode, cardType, cardSet);
+        assert.equal(26, value, 'Cardset value matches');
     });
     
 //    let game;
