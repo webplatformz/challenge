@@ -1,14 +1,36 @@
 "use strict";
 
 let assert = require("assert"); // node.js core module
+let mockery = require('mockery');
+let Card = require('../../lib/game/deck/card');
+let sinon = require('sinon');
 let Game = require('../../lib/game/game');
 
-describe('Game', function() {
-    let game;
+let deckMock = {
+    shuffleCards : function() {
+        let deck = [];
+        for (let i = 0; i < 36; i++) {
+            deck.push(new Card.Card(8, Card.CardType.DIAMONDS));
+        }
+        return deck;
+    }
+};
 
+describe('Game', function() {
+    mockery.enable({
+        warnOnUnregistered: false
+    });
+    mockery.registerMock('./deck/deck', deckMock);
+    let game;
     beforeEach(function(){
         game = Object.create(Game);
+        sinon.spy(deckMock, 'shuffleCards');
     });
+
+    afterEach(function() {
+       deckMock.shuffleCards.restore();
+    });
+
 
     it('should deal the cards properly', function() {
         game.init();
