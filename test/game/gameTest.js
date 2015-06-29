@@ -25,7 +25,7 @@ describe('Game', function () {
     });
 
     it('should request the trumpf from the correct player', () => {
-        clientApiMock.expects('requestTrump').once()
+        clientApiMock.expects('requestTrumpf').once()
             .withArgs(0, false);
 
         let dummyPlayer = {
@@ -39,7 +39,7 @@ describe('Game', function () {
     });
 
     it('should save the trumpf when it has been chosen from the player', () => {
-        clientApiMock.expects('requestTrump').once();
+        clientApiMock.expects('requestTrumpf').once();
         game = Game.create([], maxPoints, 'dummyPlayer', clientApi);
         game.start();
         clientApiMock.verify();
