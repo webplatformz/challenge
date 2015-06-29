@@ -1,7 +1,7 @@
 "use strict";
 
 let assert = require("assert"); // node.js core module
-let Game = require('../../lib/game/game');
+let Game = require('../../lib/game/game').Game;
 
 describe('Game', function() {
     let game;
