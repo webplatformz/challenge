@@ -7,24 +7,18 @@ let server = require('http').createServer(app);
 let WebSocketServer = require('ws').Server;
 let wss = new WebSocketServer({ server : server});
 let JassSession = require('./lib/game/session');
-let ClientApi = require('./lib/communication/clientApi');
-let clients = [];
+
+let session = JassSession.create();
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/websocketGUI.html');
 });
 
 wss.on('connection', (ws) => {
-    clients.push(ws);
+    session.addPlayer(ws);
 
-    if (clients.length === 4) {
-        let jassSession = Object.create(JassSession).init();
-        let clientApi = Object.create(ClientApi);
-
-        clientApi.setClients(clients);
-        jassSession.setClientApi(clientApi);
-
-        clients = [];
+    if (session.isComplete()) {
+        session = JassSession.create();
     }
 });
 

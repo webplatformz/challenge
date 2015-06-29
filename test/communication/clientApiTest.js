@@ -22,8 +22,7 @@ describe('Client API', () => {
         let chooseTrump = messages.create(messages.MessageType.CHOOSE_TRUMP, 'Spades');
 
         wss.on('connection', (client) => {
-            let clientApi = Object.create(ClientApi);
-            clientApi.setClients([client]);
+            let clientApi = ClientApi.create([client]);
 
             clientApi.requestTrump(0, false).then((data) => {
                 assert.equal(data.color, chooseTrump.data.color);

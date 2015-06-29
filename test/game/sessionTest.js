@@ -1,55 +1,61 @@
 'use strict';
 
-let assert = require("assert"); // node.js core module
-let mockery = require('mockery');
-let sinon = require('sinon');
+let Session = require('../../lib/game/session');
+let expect = require('chai').expect;
 
-let gameMock = {
-    init : function(){
-    },
-    chooseTrump : function() {
-    }
-};
-
-describe('Session', function(){    
-    mockery.enable({
-        warnOnUnregistered: false
-    });
-    mockery.registerMock('./game', gameMock);
-    
+describe('Session', function() {
     let session;
-   
+
     beforeEach(function(){
-        session = Object.create(require("../../lib/game/session")).init(); 
-        sinon.spy(gameMock, 'init');
-    });    
-    
-    it('should be able to add 3 player ', function(){
-        session.addPlayer("Donald_P1");
-        session.addPlayer("Dagobert_P2");
-        session.addPlayer("Mickey_P3");
-        assert(!gameMock.init.called);
+        session = Session.create();
     });
-    
-    it('should trigger init when 4 players added with correct args', function(){        
-        session.addPlayer("Donald_P1");
-        session.addPlayer("Dagobert_P2");
-        session.addPlayer("Mickey_P3");
-        session.addPlayer("Tick_P4");
-        assert(gameMock.init.called);
-        let firstArg = gameMock.init.getCall(0).args[0];
-        let secondArg = gameMock.init.getCall(0).args[1];
-        assert.equal(firstArg[0][0].id, "Donald_P1");
-        assert.equal(firstArg[1][1].id, "Tick_P4");
-        assert.equal(secondArg, 2500); 
+
+    describe('create', () => {
+        it('should initialize player and team array', () => {
+            expect(session.players).to.have.length(0);
+            expect(session.teams).to.have.length(2);
+        });
     });
-    
-    afterEach(function(){
-        gameMock.init.restore();
-        mockery.disable();
+
+    describe('addPlayer', () => {
+        it('should mark session as complete when four players are added', () => {
+            session.addPlayer('webSocket');
+            expect(session.isComplete()).to.equal(false);
+
+            session.addPlayer('webSocket');
+            expect(session.isComplete()).to.equal(false);
+
+            session.addPlayer('webSocket');
+            expect(session.isComplete()).to.equal(false);
+
+            session.addPlayer('webSocket');
+            expect(session.isComplete()).to.equal(true);
+        });
+
+        it('should add alternating team to player', () => {
+            session.addPlayer('webSocket');
+            session.addPlayer('webSocket');
+            session.addPlayer('webSocket');
+            session.addPlayer('webSocket');
+
+            expect(session.players[0].team).to.equal(session.teams[0]);
+            expect(session.players[1].team).to.equal(session.teams[1]);
+            expect(session.players[2].team).to.equal(session.teams[0]);
+            expect(session.players[3].team).to.equal(session.teams[1]);
+        });
     });
-    
-    after(function(){
-        mockery.disable();
+
+    describe('startGame', () => {
+        it('should create clientApi with webSockets array', () => {
+
+        });
+
+        it('should fail if session is not complete', () => {
+             //expect(session.startGame()).to.throw('Not enough players to start game!');
+        });
+
+
     });
+
+
 });
