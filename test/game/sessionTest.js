@@ -1,7 +1,9 @@
 'use strict';
 
-let Session = require('../../lib/game/session');
 let expect = require('chai').expect;
+let sinon = require('sinon');
+let Session = require('../../lib/game/session');
+let ClientApi = require('../../lib/communication/clientApi');
 
 describe('Session', function() {
     let session;
@@ -47,15 +49,21 @@ describe('Session', function() {
 
     describe('startGame', () => {
         it('should create clientApi with webSockets array', () => {
+            let clientApiMock = sinon.mock(ClientApi),
+                clients = ['ws1','ws2', 'ws3', 'ws4'];
+            clientApiMock.expects("create").withArgs(clients).once();
 
+            session.addPlayer(clients[0]);
+            session.addPlayer(clients[1]);
+            session.addPlayer(clients[2]);
+            session.addPlayer(clients[3]);
+            session.startGame();
+
+            clientApiMock.verify();
         });
 
         it('should fail if session is not complete', () => {
-             //expect(session.startGame()).to.throw('Not enough players to start game!');
+             expect(() => { session.startGame(); }).to.throw('Not enough players to start game!');
         });
-
-
     });
-
-
 });
