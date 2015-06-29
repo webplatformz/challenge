@@ -28,7 +28,12 @@ describe('Game', function () {
     it('should request the trumpf from the correct player', () => {
         clientApiMock.expects('requestTrump').once()
             .withArgs(0, false);
-        game = Game.create([], maxPoints, 'dummyPlayer', clientApi);
+
+        let dummyPlayer = {
+            id : 0
+        };
+
+        game = Game.create([], maxPoints, dummyPlayer, clientApi);
         clientApiMock.verify();
     });
 
