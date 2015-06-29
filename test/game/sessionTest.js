@@ -54,42 +54,42 @@ describe('Session', function() {
         });
     });
 
-    describe('startGame', () => {
-
-        let clientApiMock,
-            gameMock,
-            clients = ['ws1','ws2', 'ws3', 'ws4'];
-
-        beforeEach(() => {
-            clientApiMock = sinon.mock(ClientApi);
-            gameMock = sinon.mock(Game);
-
-            session.addPlayer(clients[0]);
-            session.addPlayer(clients[1]);
-            session.addPlayer(clients[2]);
-            session.addPlayer(clients[3]);
-        });
-
-        it('should create new clientApi and new game when first game is started', () => {
-            var clientApiInstance = {clientApiInstance: 'instance'};
-            clientApiMock.expects('create').withArgs(clients).returns(clientApiInstance).once();
-            gameMock.expects('create').withArgs(session.players, session.maxPoints, session.players[0], clientApiInstance).once();
-
-            session.startGame();
-
-            clientApiMock.verify();
-            gameMock.verify();
-        });
-
-        it('should use created client api and create new game when second game is started', () => {
-            var clientApiInstance = {clientApiInstance: 'instance'};
-            clientApiMock.expects('create').withArgs(clients).returns(clientApiInstance).never();
-            gameMock.expects('create').withArgs(session.players, session.maxPoints, session.players[1], clientApiInstance).once();
-
-            session.startGame();
-
-            clientApiMock.verify();
-            gameMock.verify();
-        });
-    });
+    //describe('startGame', () => {
+    //
+    //    let clientApiMock,
+    //        gameMock,
+    //        clients = ['ws1','ws2', 'ws3', 'ws4'];
+    //
+    //    beforeEach(() => {
+    //        clientApiMock = sinon.mock(ClientApi);
+    //        gameMock = sinon.mock(Game);
+    //
+    //        session.addPlayer(clients[0]);
+    //        session.addPlayer(clients[1]);
+    //        session.addPlayer(clients[2]);
+    //        session.addPlayer(clients[3]);
+    //    });
+    //
+    //    it('should create new clientApi and new game when first game is started', () => {
+    //        var clientApiInstance = {clientApiInstance: 'instance'};
+    //        clientApiMock.expects('create').withArgs(clients).returns(clientApiInstance).once();
+    //        gameMock.expects('create').withArgs(session.players, session.maxPoints, session.players[0], clientApiInstance).once();
+    //
+    //        session.startGame();
+    //
+    //        clientApiMock.verify();
+    //        gameMock.verify();
+    //    });
+    //
+    //    it('should use created client api and create new game when second game is started', () => {
+    //        var clientApiInstance = {clientApiInstance: 'instance'};
+    //        clientApiMock.expects('create').withArgs(clients).returns(clientApiInstance).never();
+    //        gameMock.expects('create').withArgs(session.players, session.maxPoints, session.players[1], clientApiInstance).once();
+    //
+    //        session.startGame();
+    //
+    //        clientApiMock.verify();
+    //        gameMock.verify();
+    //    });
+    //});
 });
