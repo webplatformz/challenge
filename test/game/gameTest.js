@@ -17,6 +17,7 @@ describe('Game', function () {
     it('should have a properly initialized deck', () => {
         clientApiMock.expects('requestTrump').once();
         game = Game.create([], maxPoints, 'dummyPlayer', clientApi);
+        game.start();
         clientApiMock.verify();
 
         assert.notEqual(undefined, game.deck);
@@ -34,6 +35,8 @@ describe('Game', function () {
         };
 
         game = Game.create([], maxPoints, dummyPlayer, clientApi);
+        game.start();
+
         clientApiMock.verify();
     });
 
