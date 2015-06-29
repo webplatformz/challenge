@@ -1,7 +1,6 @@
 'use strict';
 
 let expect = require('chai').expect;
-let sinon = require('sinon');
 let Session = require('../../lib/game/session');
 let ClientApi = require('../../lib/communication/clientApi');
 let Game = require('../../lib/game/game');
@@ -20,7 +19,7 @@ describe('Session', function() {
         });
     });
 
-    describe('addPlayer', () => {
+    describe('isComplete', () => {
         it('should mark session as complete when four players are added', () => {
             session.addPlayer('webSocket');
             expect(session.isComplete()).to.equal(false);
@@ -34,7 +33,19 @@ describe('Session', function() {
             session.addPlayer('webSocket');
             expect(session.isComplete()).to.equal(true);
         });
+    });
 
+    describe('getNextStartingPlayer', () => {
+        it('should increment starting player from 0 to 3 and start over', () => {
+            expect(session.getNextStartingPlayer()).to.equal(0);
+            expect(session.getNextStartingPlayer()).to.equal(1);
+            expect(session.getNextStartingPlayer()).to.equal(2);
+            expect(session.getNextStartingPlayer()).to.equal(3);
+            expect(session.getNextStartingPlayer()).to.equal(0);
+        });
+    });
+
+    describe('addPlayer', () => {
         it('should add alternating team to player', () => {
             session.addPlayer('webSocket');
             session.addPlayer('webSocket');
@@ -53,43 +64,4 @@ describe('Session', function() {
              expect(() => { session.startGame(); }).to.throw('Not enough players to start game!');
         });
     });
-
-    //describe('startGame', () => {
-    //
-    //    let clientApiMock,
-    //        gameMock,
-    //        clients = ['ws1','ws2', 'ws3', 'ws4'];
-    //
-    //    beforeEach(() => {
-    //        clientApiMock = sinon.mock(ClientApi);
-    //        gameMock = sinon.mock(Game);
-    //
-    //        session.addPlayer(clients[0]);
-    //        session.addPlayer(clients[1]);
-    //        session.addPlayer(clients[2]);
-    //        session.addPlayer(clients[3]);
-    //    });
-    //
-    //    it('should create new clientApi and new game when first game is started', () => {
-    //        var clientApiInstance = {clientApiInstance: 'instance'};
-    //        clientApiMock.expects('create').withArgs(clients).returns(clientApiInstance).once();
-    //        gameMock.expects('create').withArgs(session.players, session.maxPoints, session.players[0], clientApiInstance).once();
-    //
-    //        session.startGame();
-    //
-    //        clientApiMock.verify();
-    //        gameMock.verify();
-    //    });
-    //
-    //    it('should use created client api and create new game when second game is started', () => {
-    //        var clientApiInstance = {clientApiInstance: 'instance'};
-    //        clientApiMock.expects('create').withArgs(clients).returns(clientApiInstance).never();
-    //        gameMock.expects('create').withArgs(session.players, session.maxPoints, session.players[1], clientApiInstance).once();
-    //
-    //        session.startGame();
-    //
-    //        clientApiMock.verify();
-    //        gameMock.verify();
-    //    });
-    //});
 });
