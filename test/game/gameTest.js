@@ -1,15 +1,17 @@
 "use strict";
 
-let assert      = require("assert"); // node.js core module
-let Game        = require('../../lib/game/game');
-let Card        = require('../../lib/game/deck/card');
-let clientApi   = require('../../lib/communication/clientApi').create();
-let sinon       = require('sinon');
+let assert = require("assert"); // node.js core module
+let Game = require('../../lib/game/game');
+let Player = require('../../lib/game/player/player');
+let Card = require('../../lib/game/deck/card');
+let clientApi = require('../../lib/communication/clientApi').create();
+let sinon = require('sinon');
 
 describe('Game', function () {
     let maxPoints = 2500;
     let game;
     let clientApiMock;
+    let player = Player.create(undefined, "hans", clientApi);
 
     beforeEach(function () {
         clientApiMock = sinon.mock(clientApi);
@@ -26,13 +28,9 @@ describe('Game', function () {
 
     it('should request the trumpf from the correct player', () => {
         clientApiMock.expects('requestTrumpf').once()
-            .withArgs(0, false);
+            .withArgs(false);
 
-        let dummyPlayer = {
-            id : 0
-        };
-
-        game = Game.create([], maxPoints, dummyPlayer, clientApi);
+        game = Game.create([], maxPoints, player, clientApi);
         game.start();
 
         clientApiMock.verify();
@@ -40,7 +38,7 @@ describe('Game', function () {
 
     it('should save the trumpf when it has been chosen from the player', () => {
         clientApiMock.expects('requestTrumpf').once();
-        game = Game.create([], maxPoints, 'dummyPlayer', clientApi);
+        game = Game.create([], maxPoints, player, clientApi);
         game.start();
         clientApiMock.verify();
 
