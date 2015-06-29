@@ -1,30 +1,47 @@
 "use strict";
 
 let assert = require("assert"); // node.js core module
-let Game = require('../../lib/game/game').Game;
+let Game = require('../../lib/game/game');
+let mockery = require('mockery');
+let sinon = require('sinon');
 
-describe('Game', function() {
+let clientApiMock = {
+    requestTrumpf: function () {
+        return true;
+    }
+};
+
+describe('Game', function () {
+    let maxPoints = 2500;
     let game;
+    initMock();
 
-    beforeEach(function(){
-        game = Object.create(Game);
+    beforeEach(function () {
+        sinon.stub(clientApiMock, 'requestTrumpf');
+        game = Game.create([], maxPoints, 'dummyPlayer', clientApiMock);
     });
 
-    it('should deal the cards properly', function() {
-        game.init();
-        //assert(deckMock.shuffleCards.called);
+    it('should have a properly initialized deck', () => {
+        assert.notEqual(undefined, game.deck);
+        assert.notEqual(undefined, game.players);
+        assert.equal(maxPoints, game.maxPoints);
+        assert.notEqual(undefined, game.startPlayer);
     });
 
-    it('should send a command to requestTrump', function() {
-        game.init();
-        game.chooseTrump();
-        // assert that request trump command has been send
+    it('should request trumpf after initialization', () => {
+        sinon.assert.calledOnce(clientApiMock.requestTrumpf);
     });
 
-    it('should send a command to requestTrump to the next player after the first player pushed', function() {
-        game.init();
-        game.chooseTrump();
-        game.pushTrumpChoice();
-        // assert that push command has been send
+    afterEach(function () {
+        clientApiMock.requestTrumpf.restore();
     });
+
+
+    function initMock() {
+        mockery.enable({
+            warnOnUnregistered: false
+        });
+        mockery.registerMock('./deck/deck', clientApiMock);
+    }
 });
+
