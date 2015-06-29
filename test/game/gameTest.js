@@ -2,6 +2,7 @@
 
 let assert      = require("assert"); // node.js core module
 let Game        = require('../../lib/game/game');
+let Card        = require('../../lib/game/deck/card');
 let clientApi   = require('../../lib/communication/clientApi').create();
 let sinon       = require('sinon');
 
@@ -15,10 +16,7 @@ describe('Game', function () {
     });
 
     it('should have a properly initialized deck', () => {
-        clientApiMock.expects('requestTrump').once();
         game = Game.create([], maxPoints, 'dummyPlayer', clientApi);
-        game.start();
-        clientApiMock.verify();
 
         assert.notEqual(undefined, game.deck);
         assert.notEqual(undefined, game.players);
@@ -38,6 +36,21 @@ describe('Game', function () {
         game.start();
 
         clientApiMock.verify();
+    });
+
+    it('should save the trumpf when it has been chosen from the player', () => {
+        clientApiMock.expects('requestTrump').once();
+        game = Game.create([], maxPoints, 'dummyPlayer', clientApi);
+        game.start();
+        clientApiMock.verify();
+
+        let gameMode = Game.GameMode.TRUMPF;
+        let cardColor = Card.CardType.HEARTS;
+        let gameType = Game.GameType.create(gameMode, cardColor);
+        game.chooseTrumpf(gameType);
+
+        assert.equal(cardColor, game.gameType.trumpfColor);
+        assert.equal(gameMode, game.gameType.mode);
     });
 
     afterEach(function () {
