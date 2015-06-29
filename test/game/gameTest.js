@@ -36,19 +36,23 @@ describe('Game', function () {
         clientApiMock.verify();
     });
 
-    it('should save the trumpf when it has been chosen from the player', () => {
+    it('should save and broadcast the trumpf when it has been chosen from the player', () => {
         clientApiMock.expects('requestTrumpf').once();
         game = Game.create([], maxPoints, player, clientApi);
         game.start();
-        clientApiMock.verify();
 
+        clientApiMock.verify();
         let gameMode = Game.GameMode.TRUMPF;
+
         let cardColor = Card.CardType.HEARTS;
         let gameType = Game.GameType.create(gameMode, cardColor);
+
+        clientApiMock.expects('broadcastTrumpf').once();
         game.chooseTrumpf(gameType);
 
         assert.equal(cardColor, game.gameType.trumpfColor);
         assert.equal(gameMode, game.gameType.mode);
+        clientApiMock.verify();
     });
 
     afterEach(function () {
