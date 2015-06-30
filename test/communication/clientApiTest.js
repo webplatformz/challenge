@@ -5,7 +5,7 @@ let expect = require('chai').expect,
     WebSocketServer = require('ws').Server,
     ClientApi = require('../../lib/communication/clientApi'),
     GameType = require('../../lib/game/game').GameType,
-    GameMode = require('../../lib/game/game').GameMode,
+    GameMode = require('../../lib/game/gameMode'),
     CardType = require('../../lib/game/deck/card').CardType;
 
 let messages = require('../../lib/communication/messages');

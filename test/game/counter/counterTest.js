@@ -1,7 +1,7 @@
 "use strict";
 
 let assert = require("assert"); // node.js core module
-let GameMode = require('../../../lib/game/game').GameMode;
+let GameMode = require('../../../lib/game/gameMode');
 let Counter = require('../../../lib/game/counter/counter');
 let CardType = require('../../../lib/game/deck/card').CardType;
 let Card = require('../../../lib/game/deck/card');
@@ -20,7 +20,7 @@ describe('Counter', function() {
             Card.create(11, CardType.HEARTS)];
 
         let value = Counter.count(mode, cardType, cardSet);
-        assert.equal(52, value, 'Cardset value matches');
+        assert.equal(52, value);
     });
 
     it('should count simple array with double multiplicated Trumpf', function() {
@@ -35,7 +35,7 @@ describe('Counter', function() {
             Card.create(11, CardType.SPADES)];
 
         let value = Counter.count(mode, cardType, cardSet);
-        assert.equal(96, value, 'Cardset value matches');
+        assert.equal(96, value);
     });
 
     it('should count simple array with single multiplicated Trumpf', function() {
