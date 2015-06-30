@@ -21,7 +21,7 @@ describe('Game', function () {
     });
 
     it('should have a properly initialized deck', () => {
-        game = Game.create([], maxPoints, 'dummyPlayer', clientApi);
+        game = Game.create([player, player, player, player], maxPoints, player, clientApi);
 
         assert.notEqual(undefined, game.deck);
         assert.notEqual(undefined, game.players);
@@ -33,7 +33,7 @@ describe('Game', function () {
         clientApiMock.expects('requestTrumpf').once()
             .withArgs(false).returns(Promise.resolve());
 
-        game = Game.create([], maxPoints, player, clientApi);
+        game = Game.create([player, player, player, player], maxPoints, player, clientApi);
         game.start();
 
         clientApiMock.verify();
