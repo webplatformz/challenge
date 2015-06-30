@@ -35,8 +35,8 @@ describe('clientCommunication', () => {
             client1Mock = sinon.mock(client1),
             client2Mock = sinon.mock(client2);
 
-        client1Mock.expects("send").withExactArgs('{"type":"PLAYED_CARDS","data":{"playedCards":["a","b","c"]}}').once();
-        client2Mock.expects("send").withExactArgs('{"type":"PLAYED_CARDS","data":{"playedCards":["a","b","c"]}}').once();
+        client1Mock.expects('send').withExactArgs('{"type":"PLAYED_CARDS","data":{"playedCards":["a","b","c"]}}').once();
+        client2Mock.expects('send').withExactArgs('{"type":"PLAYED_CARDS","data":{"playedCards":["a","b","c"]}}').once();
 
         clientCommunication.broadcast([client1, client2], messages.MessageType.PLAYED_CARDS, ['a', 'b', 'c']);
 
@@ -53,7 +53,7 @@ describe('clientCommunication', () => {
             },
             clientMock = sinon.mock(client);
 
-        clientMock.expects("send").withExactArgs('{"type":"REQUEST_TRUMPF","data":{"pushed":false}}').once();
+        clientMock.expects('send').withExactArgs('{"type":"REQUEST_TRUMPF","data":{"pushed":false}}').once();
 
         clientCommunication.request(client, messages.MessageType.REQUEST_TRUMPF, function onMessage (message, resolve) {
             resolve();
