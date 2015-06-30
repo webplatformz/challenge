@@ -62,14 +62,14 @@ describe('Client API', () => {
     describe('broadcastPlayedCards', () => {
         it('should send played cards to all clients', (done) => {
             let clients,
-                cardsPlayed = ['a', 'b', 'c'],
+                playedCards = ['a', 'b', 'c'],
                 clientPromises = [];
 
             wss.on('connection', (client) => {
                 clientApi.addClient(client);
 
                 if (clientApi.clients.length === clients.length) {
-                    clientApi.broadcastCardPlayed(cardsPlayed);
+                    clientApi.broadcastCardPlayed(playedCards);
                 }
             });
 
@@ -80,8 +80,8 @@ describe('Client API', () => {
                     client.on('message', (message) => {
                         message = JSON.parse(message);
 
-                        expect(message.type).to.equal(messages.MessageType.CARDS_PLAYED);
-                        expect(message.data.cardsPlayed).to.eql(cardsPlayed);
+                        expect(message.type).to.equal(messages.MessageType.PLAYED_CARDS);
+                        expect(message.data.playedCards).to.eql(playedCards);
 
                         resolve();
                     });
