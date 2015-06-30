@@ -58,6 +58,7 @@ describe('Game', function () {
 
         let cycle = {
             iterate: () => {
+                return Promise.resolve();
             }
         };
 
@@ -69,10 +70,7 @@ describe('Game', function () {
         clientApiMock.expects('broadcastTrumpf').once();
 
         game = Game.create(players, maxPoints, players[0], clientApi);
-        game.start();
-
-
-        promise.then(function () {
+        game.start().then(function () {
             assert.equal(cardColor, game.gameType.trumpfColor);
             assert.equal(gameMode, game.gameType.mode);
             clientApiMock.verify();
@@ -80,6 +78,8 @@ describe('Game', function () {
             assert(cycleSpy.calledOnce);
             done();
         }).catch(done);
+
+
     });
 
     afterEach(function () {
