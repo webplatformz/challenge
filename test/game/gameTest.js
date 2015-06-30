@@ -55,30 +55,31 @@ describe('Game', function () {
         let gameType = Game.GameType.create(gameMode, cardColor);
 
         var promise = Promise.resolve(gameType);
-        clientApiMock.expects('requestTrumpf').once()
-            .returns(promise);
-
-        game = Game.create(players, maxPoints, players[0], clientApi);
-        game.start();
-        clientApiMock.verify();
-
-        clientApiMock.expects('broadcastTrumpf').once();
 
         let cycle = {
-            iterate: () => {}
+            iterate: () => {
+            }
         };
 
         let cycleSpy = sinon.spy(cycle, 'iterate');
         cycleFactoryMock.expects('create').once().returns(cycle);
 
-        promise.then(function() {
+        clientApiMock.expects('requestTrumpf').once()
+            .returns(promise);
+        clientApiMock.expects('broadcastTrumpf').once();
+
+        game = Game.create(players, maxPoints, players[0], clientApi);
+        game.start();
+
+
+        promise.then(function () {
             assert.equal(cardColor, game.gameType.trumpfColor);
             assert.equal(gameMode, game.gameType.mode);
             clientApiMock.verify();
             cycleFactoryMock.verify();
             assert(cycleSpy.calledOnce);
             done();
-        });
+        }).catch(done);
     });
 
     afterEach(function () {

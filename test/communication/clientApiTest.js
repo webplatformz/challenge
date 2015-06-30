@@ -34,6 +34,54 @@ describe('Client API', () => {
         });
     });
 
+    describe('requestPlayerName', () => {
+        it('should wait for choosePlayerName', (done) => {
+            let choosePlayerName = messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, 'Hans');
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.requestPlayerName(client).then((data) => {
+                    expect(data.playerName).to.equal(choosePlayerName.data.playerName);
+                    done();
+                }).catch(done);
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            client.on('message', (message) => {
+                message = JSON.parse(message);
+
+                if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
+                    client.send(JSON.stringify(choosePlayerName));
+                }
+            });
+        });
+
+        it('should reject invalid answer messages', (done) => {
+            let clientAnswer = messages.create(messages.MessageType.PLAYED_CARDS, ['a', 'b', 'c']);
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
+                    expect(data).to.equal('Invalid client answer');
+                    done();
+                });
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            client.on('message', (message) => {
+                message = JSON.parse(message);
+
+                if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
+                    client.send(JSON.stringify(clientAnswer));
+                }
+            });
+        });
+    });
+
     describe('dealCards', () => {
         it('should deal cards to given client', (done) => {
             let cards = ['a', 'b', 'c'];
@@ -173,6 +221,105 @@ describe('Client API', () => {
             Promise.all(clientPromises).then(() => {
                 done();
             }).catch(done);
+        });
+    });
+
+    describe('requestCard', () => {
+        it('should wait for chooseCard', (done) => {
+            let chooseCard = messages.create(messages.MessageType.CHOOSE_CARD, 'c'),
+                cardsOnTable = ['a', 'b'];
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.requestCard(client, cardsOnTable).then((data) => {
+                    expect(data.card).to.equal(chooseCard.data.card);
+                    done();
+                }).catch(done);
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            client.on('message', (message) => {
+                message = JSON.parse(message);
+
+                if (message.type === messages.MessageType.REQUEST_CARD) {
+                    client.send(JSON.stringify(chooseCard));
+                }
+            });
+        });
+
+        it('should reject invalid answer messages', (done) => {
+            let clientAnswer = messages.create(messages.MessageType.CHOOSE_TRUMPF, 'asdf');
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.requestCard(client, ['a', 'b', 'c']).then(() => done(new Error('Should not resolve'))).catch((data) => {
+                    expect(data).to.equal('Invalid client answer');
+                    done();
+                });
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            client.on('message', (message) => {
+                message = JSON.parse(message);
+
+                if (message.type === messages.MessageType.REQUEST_CARD) {
+                    client.send(JSON.stringify(clientAnswer));
+                }
+            });
+        });
+    });
+
+    describe('rejectCard', () => {
+        it('should wait for chooseCard', (done) => {
+            let chooseCard = messages.create(messages.MessageType.CHOOSE_CARD, 'a'),
+                cardsOnTable = ['c', 'b'],
+                card = 'e';
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.rejectCard(client, card, cardsOnTable).then((data) => {
+                    expect(data.card).to.equal(chooseCard.data.card);
+                    done();
+                }).catch(done);
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            client.on('message', (message) => {
+                message = JSON.parse(message);
+
+                if (message.type === messages.MessageType.REJECT_CARD) {
+                    client.send(JSON.stringify(chooseCard));
+                }
+            });
+        });
+
+        it('should reject invalid answer messages', (done) => {
+            let clientAnswer = messages.create(messages.MessageType.PLAYED_CARDS, {});
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.rejectCard(client, 'e', ['a', 'b', 'c']).then(() => done(new Error('Should not resolve'))).catch((data) => {
+                    expect(data).to.equal('Invalid client answer');
+                    done();
+                });
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            client.on('message', (message) => {
+                message = JSON.parse(message);
+
+                if (message.type === messages.MessageType.REJECT_CARD) {
+                    client.send(JSON.stringify(clientAnswer));
+                }
+            });
         });
     });
 });
