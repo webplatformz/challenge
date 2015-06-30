@@ -1,9 +1,13 @@
 "use strict";
 
-let expect = require('chai').expect;
-let WebSocket = require('ws');
-let WebSocketServer = require('ws').Server;
-let ClientApi = require('../../lib/communication/clientApi');
+let expect = require('chai').expect,
+    WebSocket = require('ws'),
+    WebSocketServer = require('ws').Server,
+    ClientApi = require('../../lib/communication/clientApi'),
+    GameType = require('../../lib/game/game').GameType,
+    GameMode = require('../../lib/game/game').GameMode,
+    CardType = require('../../lib/game/deck/card').CardType;
+
 let messages = require('../../lib/communication/messages');
 
 describe('Client API', () => {
@@ -87,6 +91,41 @@ describe('Client API', () => {
             Promise.all(clientPromises).then(() => {
                 done();
             }).catch(done);
+        });
+
+        describe('broadcastTrumpf', () => {
+            it('should send chosen Trumpf to all clients', (done) => {
+                let clients,
+                    gameType = GameType.create(GameMode.TRUMPF, CardType.SPADES),
+                    clientPromises = [];
+
+                wss.on('connection', (client) => {
+                    clientApi.addClient(client);
+
+                    if (clientApi.clients.length === clients.length) {
+                        clientApi.broadcastTrumpf(gameType);
+                    }
+                });
+
+                clients = [new WebSocket('ws://localhost:10001'), new WebSocket('ws://localhost:10001')];
+
+                clients.forEach((client) => {
+                    clientPromises.push(new Promise((resolve) => {
+                        client.on('message', (message) => {
+                            message = JSON.parse(message);
+
+                            expect(message.type).to.equal(messages.MessageType.BROADCAST_TRUMPF);
+                            expect(message.data.gameType).to.eql(gameType);
+
+                            resolve();
+                        });
+                    }));
+                });
+
+                Promise.all(clientPromises).then(() => {
+                    done();
+                }).catch(done);
+            });
         });
     });
 });
