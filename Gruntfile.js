@@ -3,6 +3,8 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        clean: ["./build"],
+
         babel: {
             options: {
                 sourceMap: true
@@ -73,8 +75,8 @@ module.exports = function (grunt) {
                 tasks: ['sync']
             },
             babel: {
-                files: './**/*.js',
-                tasks: ['babel', 'simplemocha', 'jshint']
+                files: ['./**/*.js', '!./build/**/*.js'],
+                tasks: ['clean', 'babel', 'simplemocha', 'jshint']
             }
         },
         nodemon: {
@@ -93,8 +95,8 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     // Test task executes mocka tests and runs jshint
-    grunt.registerTask('test', ['babel', 'simplemocha', 'jshint']);
+    grunt.registerTask('test', ['clean', 'babel', 'simplemocha', 'jshint']);
 
     // Default task executes concurrent target. Watching for changes to execute tests and restart server.
-    grunt.registerTask('default', ['babel', 'concurrent:dev']);
+    grunt.registerTask('default', ['clean', 'babel', 'concurrent:dev']);
 };

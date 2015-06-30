@@ -1,55 +1,55 @@
 "use strict";
 
 let assert = require("assert"); // node.js core module
-let GameMode = require('../../../lib/game/game').GameMode;
+let GameMode = require('../../../lib/game/gameMode');
 let Counter = require('../../../lib/game/counter/counter');
-let CardType = require('../../../lib/game/deck/card').CardType;
+let CardColor = require('../../../lib/game/deck/card').CardColor;
 let Card = require('../../../lib/game/deck/card');
 
 
 describe('Counter', function() {
     it('should count simple array without Trumpf', function() {
         let mode = GameMode.TRUMPF;
-        let cardType = CardType.SPADES;
+        let cardColor = CardColor.SPADES;
 
         let cardSet = [
-            Card.create(6, CardType.DIAMONDS),
-            Card.create(12, CardType.DIAMONDS),
-            Card.create(14, CardType.DIAMONDS),
-            Card.create(10, CardType.DIAMONDS),
-            Card.create(11, CardType.HEARTS)];
+            Card.create(6, CardColor.DIAMONDS),
+            Card.create(12, CardColor.DIAMONDS),
+            Card.create(14, CardColor.DIAMONDS),
+            Card.create(10, CardColor.DIAMONDS),
+            Card.create(11, CardColor.HEARTS)];
 
-        let value = Counter.count(mode, cardType, cardSet);
-        assert.equal(52, value, 'Cardset value matches');
+        let value = Counter.count(mode, cardColor, cardSet);
+        assert.equal(52, value);
     });
 
     it('should count simple array with double multiplicated Trumpf', function() {
         let mode = GameMode.TRUMPF;
-        let cardType = CardType.SPADES;
+        let cardColor = CardColor.SPADES;
 
         let cardSet = [
-            Card.create(6, CardType.DIAMONDS),
-            Card.create(12, CardType.DIAMONDS),
-            Card.create(14, CardType.DIAMONDS),
-            Card.create(9, CardType.SPADES),
-            Card.create(11, CardType.SPADES)];
+            Card.create(6, CardColor.DIAMONDS),
+            Card.create(12, CardColor.DIAMONDS),
+            Card.create(14, CardColor.DIAMONDS),
+            Card.create(9, CardColor.SPADES),
+            Card.create(11, CardColor.SPADES)];
 
-        let value = Counter.count(mode, cardType, cardSet);
-        assert.equal(96, value, 'Cardset value matches');
+        let value = Counter.count(mode, cardColor, cardSet);
+        assert.equal(96, value);
     });
 
     it('should count simple array with single multiplicated Trumpf', function() {
         let mode = GameMode.TRUMPF;
-        let cardType = CardType.DIAMONDS;
+        let cardColor = CardColor.DIAMONDS;
 
         let cardSet = [
-            Card.create(6, CardType.DIAMONDS),
-            Card.create(12, CardType.DIAMONDS),
-            Card.create(14, CardType.DIAMONDS),
-            Card.create(9, CardType.DIAMONDS),
-            Card.create(11, CardType.DIAMONDS)];
+            Card.create(6, CardColor.DIAMONDS),
+            Card.create(12, CardColor.DIAMONDS),
+            Card.create(14, CardColor.DIAMONDS),
+            Card.create(9, CardColor.DIAMONDS),
+            Card.create(11, CardColor.DIAMONDS)];
 
-        let value = Counter.count(mode, cardType, cardSet);
+        let value = Counter.count(mode, cardColor, cardSet);
         assert.equal(48, value, 'Cardset value matches');
     });
 
@@ -57,11 +57,11 @@ describe('Counter', function() {
         let mode = GameMode.OBENABEN;
 
         let cardSet = [
-            Card.create(8, CardType.DIAMONDS),
-            Card.create(12, CardType.DIAMONDS),
-            Card.create(14, CardType.DIAMONDS),
-            Card.create(9, CardType.SPADES),
-            Card.create(11, CardType.SPADES)];
+            Card.create(8, CardColor.DIAMONDS),
+            Card.create(12, CardColor.DIAMONDS),
+            Card.create(14, CardColor.DIAMONDS),
+            Card.create(9, CardColor.SPADES),
+            Card.create(11, CardColor.SPADES)];
 
         let value = Counter.count(mode, null, cardSet);
         assert.equal(72, value, 'Cardset value matches');
@@ -71,11 +71,11 @@ describe('Counter', function() {
         let mode = GameMode.UNTENRAUF;
 
         let cardSet = [
-            Card.create(8, CardType.DIAMONDS),
-            Card.create(6, CardType.DIAMONDS),
-            Card.create(14, CardType.DIAMONDS),
-            Card.create(9, CardType.SPADES),
-            Card.create(11, CardType.SPADES)];
+            Card.create(8, CardColor.DIAMONDS),
+            Card.create(6, CardColor.DIAMONDS),
+            Card.create(14, CardColor.DIAMONDS),
+            Card.create(9, CardColor.SPADES),
+            Card.create(11, CardColor.SPADES)];
 
         let value = Counter.count(mode, null, cardSet);
         assert.equal(63, value, 'Cardset value matches');
