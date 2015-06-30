@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 let expect = require('chai').expect,
     WebSocket = require('ws'),

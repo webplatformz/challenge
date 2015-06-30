@@ -73,7 +73,7 @@ module.exports = function (grunt) {
                 tasks: ['sync']
             },
             babel: {
-                files: './**/*.js',
+                files: ['./**/*.js', '!./build/**/*.js'],
                 tasks: ['babel', 'simplemocha', 'jshint']
             }
         },
