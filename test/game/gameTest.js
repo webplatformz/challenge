@@ -40,7 +40,7 @@ describe('Game', function () {
 
     it('should save and broadcast the trumpf when it has been chosen from the player', (done) => {
         let gameMode = GameMode.TRUMPF;
-        let cardColor = Card.CardType.HEARTS;
+        let cardColor = Card.CardColor.HEARTS;
         let gameType = Game.GameType.create(gameMode, cardColor);
 
         clientApiMock.expects('requestTrumpf').once()

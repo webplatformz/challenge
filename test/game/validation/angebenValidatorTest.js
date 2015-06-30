@@ -11,11 +11,11 @@ describe('Angeben Validator', function () {
 
     it('should allow any card, if no cards have been played', () => {
         let parameters = {
-            color: Card.CardType.CLUBS,
+            color: Card.CardColor.CLUBS,
             mode: GameMode.TRUMPF,
             tableCards: [],
-            handCards: [Card.create(6, Card.CardType.HEARTS), Card.create(10, Card.CardType.DIAMONDS)],
-            cardToPlay: Card.create(6, Card.CardType.HEARTS)
+            handCards: [Card.create(6, Card.CardColor.HEARTS), Card.create(10, Card.CardColor.DIAMONDS)],
+            cardToPlay: Card.create(6, Card.CardColor.HEARTS)
         };
 
         let validationResult = AngebenValidator.validate(parameters);
@@ -25,11 +25,11 @@ describe('Angeben Validator', function () {
 
     it('should allow any Trumpf', () => {
         let parameters = {
-            color: Card.CardType.HEARTS,
+            color: Card.CardColor.HEARTS,
             mode: GameMode.TRUMPF,
-            tableCards: [Card.create(6, Card.CardType.DIAMONDS)],
-            handCards: [Card.create(10, Card.CardType.HEARTS), Card.create(10, Card.CardType.DIAMONDS)],
-            cardToPlay: Card.create(10, Card.CardType.HEARTS)
+            tableCards: [Card.create(6, Card.CardColor.DIAMONDS)],
+            handCards: [Card.create(10, Card.CardColor.HEARTS), Card.create(10, Card.CardColor.DIAMONDS)],
+            cardToPlay: Card.create(10, Card.CardColor.HEARTS)
         };
 
         let validationResult = AngebenValidator.validate(parameters);
@@ -39,11 +39,11 @@ describe('Angeben Validator', function () {
 
     it('should NOT allow any color, if a player still has a card of the correct color', () => {
         let parameters = {
-            color: Card.CardType.SPADES,
+            color: Card.CardColor.SPADES,
             mode: GameMode.TRUMPF,
-            tableCards: [Card.create(6, Card.CardType.DIAMONDS)],
-            handCards: [Card.create(10, Card.CardType.HEARTS), Card.create(10, Card.CardType.DIAMONDS)],
-            cardToPlay: Card.create(10, Card.CardType.HEARTS)
+            tableCards: [Card.create(6, Card.CardColor.DIAMONDS)],
+            handCards: [Card.create(10, Card.CardColor.HEARTS), Card.create(10, Card.CardColor.DIAMONDS)],
+            cardToPlay: Card.create(10, Card.CardColor.HEARTS)
         };
 
         let validationResult = AngebenValidator.validate(parameters);
@@ -53,11 +53,11 @@ describe('Angeben Validator', function () {
 
     it('should allow the same color', () => {
         let parameters = {
-            color: Card.CardType.SPADES,
+            color: Card.CardColor.SPADES,
             mode: GameMode.TRUMPF,
-            tableCards: [Card.create(6, Card.CardType.DIAMONDS)],
-            handCards: [Card.create(10, Card.CardType.HEARTS), Card.create(10, Card.CardType.DIAMONDS)],
-            cardToPlay: Card.create(10, Card.CardType.DIAMONDS)
+            tableCards: [Card.create(6, Card.CardColor.DIAMONDS)],
+            handCards: [Card.create(10, Card.CardColor.HEARTS), Card.create(10, Card.CardColor.DIAMONDS)],
+            cardToPlay: Card.create(10, Card.CardColor.DIAMONDS)
         };
 
         let validationResult = AngebenValidator.validate(parameters);

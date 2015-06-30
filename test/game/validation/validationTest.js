@@ -16,12 +16,12 @@ describe('Validation', function () {
     });
 
     it('should validate "angeben" without Trumpf', () => {
-        let cardOne = Card.create(10, Card.CardType.SPADES);
-        let handCardOne = Card.create(11, Card.CardType.SPADES);
-        let handCardTwo = Card.create(11, Card.CardType.HEARTS);
+        let cardOne = Card.create(10, Card.CardColor.SPADES);
+        let handCardOne = Card.create(11, Card.CardColor.SPADES);
+        let handCardTwo = Card.create(11, Card.CardColor.HEARTS);
         let tableCards = [cardOne];
         let handCards = [handCardOne, handCardTwo];
-        let validation = Validation.create(GameMode.TRUMPF, Card.CardType.CLUBS);
+        let validation = Validation.create(GameMode.TRUMPF, Card.CardColor.CLUBS);
         assert(validation.validate(tableCards, handCards, handCardOne));
     });
 });
