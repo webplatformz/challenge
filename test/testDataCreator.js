@@ -9,6 +9,9 @@ let createDummyPlayer = function (team, name, clientApiMock) {
     player.requestCard = function() {
       return player.cards[0];
     };
+    player.dealCards = function(cards) {
+        player.cards = cards;
+    };
     return player;
 };
 
