@@ -64,5 +64,33 @@ describe('Angeben Validator', function () {
 
         assert(validationResult.permitted);
     });
+
+    it('should allow to hold the trumpf buur', () => {
+        let parameters = {
+            color: Card.CardColor.SPADES,
+            mode: GameMode.TRUMPF,
+            tableCards: [Card.create(6, Card.CardColor.SPADES)],
+            handCards: [Card.create(11, Card.CardColor.SPADES), Card.create(10, Card.CardColor.DIAMONDS)],
+            cardToPlay: Card.create(10, Card.CardColor.DIAMONDS)
+        };
+
+        let validationResult = AngebenValidator.validate(parameters);
+
+        assert(validationResult.permitted);
+    });
+
+    it('should not allow to "nicht angeben" trumpf when more than buur', () => {
+        let parameters = {
+            color: Card.CardColor.SPADES,
+            mode: GameMode.TRUMPF,
+            tableCards: [Card.create(6, Card.CardColor.SPADES)],
+            handCards: [Card.create(11, Card.CardColor.SPADES), Card.create(10, Card.CardColor.DIAMONDS), Card.create(10, Card.CardColor.SPADES)],
+            cardToPlay: Card.create(10, Card.CardColor.DIAMONDS)
+        };
+
+        let validationResult = AngebenValidator.validate(parameters);
+
+        assert(!validationResult.permitted);
+    });
 });
 
