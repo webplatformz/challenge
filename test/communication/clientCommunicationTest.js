@@ -24,6 +24,22 @@ describe('clientCommunication', () => {
         expect(actual.data).to.eql({geschoben: false});
     });
 
+    it('should send message to given client', () => {
+        let WebSocketStub = {
+            send: function () {
+            }
+        };
+
+        let client = Object.create(WebSocketStub),
+            clientMock = sinon.mock(client);
+
+        clientMock.expects('send').withExactArgs('{"type":"DEAL_CARDS","data":{"cards":["a","b","c"]}}').once();
+
+        clientCommunication.send(client, messages.MessageType.DEAL_CARDS, ['a', 'b', 'c']);
+
+        clientMock.verify();
+    });
+
     it('should broadcast message to all given clients', () => {
         let WebSocketStub = {
             send: function () {

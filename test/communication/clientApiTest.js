@@ -34,6 +34,30 @@ describe('Client API', () => {
         });
     });
 
+    describe('dealCards', () => {
+        it('should deal cards to given client', (done) => {
+            let cards = ['a', 'b', 'c'];
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+                clientApi.dealCards(client, cards);
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            new Promise((resolve) => {
+                client.on('message', (message) => {
+                    message = JSON.parse(message);
+
+                    expect(message.type).to.equal(messages.MessageType.DEAL_CARDS);
+                    expect(message.data.cards).to.eql(cards);
+
+                    resolve();
+                });
+            }).then(() => done()).catch(done);
+        });
+    });
+
     describe('requestTrumpf', () => {
         it('should wait for chooseTrumpf', (done) => {
             let chooseTrump = messages.create(messages.MessageType.CHOOSE_TRUMPF, 'Spades');
@@ -115,40 +139,40 @@ describe('Client API', () => {
                 done();
             }).catch(done);
         });
+    });
 
-        describe('broadcastTrumpf', () => {
-            it('should send chosen Trumpf to all clients', (done) => {
-                let clients,
-                    gameType = GameType.create(GameMode.TRUMPF, CardColor.SPADES),
-                    clientPromises = [];
+    describe('broadcastTrumpf', () => {
+        it('should send chosen Trumpf to all clients', (done) => {
+            let clients,
+                gameType = GameType.create(GameMode.TRUMPF, CardColor.SPADES),
+                clientPromises = [];
 
-                wss.on('connection', (client) => {
-                    clientApi.addClient(client);
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
 
-                    if (clientApi.clients.length === clients.length) {
-                        clientApi.broadcastTrumpf(gameType);
-                    }
-                });
-
-                clients = [new WebSocket('ws://localhost:10001'), new WebSocket('ws://localhost:10001')];
-
-                clients.forEach((client) => {
-                    clientPromises.push(new Promise((resolve) => {
-                        client.on('message', (message) => {
-                            message = JSON.parse(message);
-
-                            expect(message.type).to.equal(messages.MessageType.BROADCAST_TRUMPF);
-                            expect(message.data.gameType).to.eql(gameType);
-
-                            resolve();
-                        });
-                    }));
-                });
-
-                Promise.all(clientPromises).then(() => {
-                    done();
-                }).catch(done);
+                if (clientApi.clients.length === clients.length) {
+                    clientApi.broadcastTrumpf(gameType);
+                }
             });
+
+            clients = [new WebSocket('ws://localhost:10001'), new WebSocket('ws://localhost:10001')];
+
+            clients.forEach((client) => {
+                clientPromises.push(new Promise((resolve) => {
+                    client.on('message', (message) => {
+                        message = JSON.parse(message);
+
+                        expect(message.type).to.equal(messages.MessageType.BROADCAST_TRUMPF);
+                        expect(message.data.gameType).to.eql(gameType);
+
+                        resolve();
+                    });
+                }));
+            });
+
+            Promise.all(clientPromises).then(() => {
+                done();
+            }).catch(done);
         });
     });
 });
