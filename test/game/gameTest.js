@@ -14,18 +14,28 @@ describe('Game', function () {
     let game;
     let clientApiMock;
     let player = Player.create(undefined, "hans", clientApi);
+    let player2 = Player.create(undefined, "peter", clientApi);
+    let player3 = Player.create(undefined, "luke", clientApi);
+    let player4 = Player.create(undefined, "homer", clientApi);
+    let players = [player, player2, player3, player4];
 
     beforeEach(function () {
         clientApiMock = sinon.mock(clientApi);
     });
 
-    it('should have a properly initialized deck', () => {
-        game = Game.create([player, player, player, player], maxPoints, player, clientApi);
+    it('should properly deal cards to each player', () => {
+        game = Game.create(players, maxPoints, player, clientApi);
 
         assert.notEqual(undefined, game.deck);
         assert.notEqual(undefined, game.players);
         assert.equal(maxPoints, game.maxPoints);
         assert.notEqual(undefined, game.startPlayer);
+        players.forEach(player => {
+            assert.equal(9, player.cards.length);
+            player.cards.forEach(card => {
+                assert.notEqual(undefined, card);
+            });
+        });
     });
 
     it('should request the trumpf from the correct player', () => {
@@ -66,7 +76,6 @@ describe('Game', function () {
             done();
         }, 10);
     });
-
 
     afterEach(function () {
         clientApiMock.restore();
