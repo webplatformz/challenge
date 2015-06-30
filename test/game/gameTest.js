@@ -7,25 +7,22 @@ let Player = require('../../lib/game/player/player');
 let Card = require('../../lib/game/deck/card');
 let clientApi = require('../../lib/communication/clientApi').create();
 let sinon = require('sinon');
+let TestDataCreator = require('../testDataCreator');
 
 describe('Game', function () {
     let maxPoints = 2500;
     let game;
     let clientApiMock;
 
-    let player = Player.create(undefined, "hans", clientApi);
-    let player2 = Player.create(undefined, "peter", clientApi);
-    let player3 = Player.create(undefined, "luke", clientApi);
-    let player4 = Player.create(undefined, "homer", clientApi);
-    let players = [player, player2, player3, player4];
+    let players;
 
     beforeEach(function () {
         clientApiMock = sinon.mock(clientApi);
-
+        players = TestDataCreator.createPlayers(clientApi);
     });
 
     it('should properly deal cards to each player', () => {
-        game = Game.create(players, maxPoints, player, clientApi);
+        game = Game.create(players, maxPoints, players[0], clientApi);
 
         assert.notEqual(undefined, game.deck);
         assert.notEqual(undefined, game.players);
@@ -43,7 +40,7 @@ describe('Game', function () {
         clientApiMock.expects('requestTrumpf').once()
             .withArgs(false).returns(Promise.resolve());
 
-        game = Game.create([player, player, player, player], maxPoints, player, clientApi);
+        game = Game.create(players, maxPoints, players[0], clientApi);
         game.start();
 
         clientApiMock.verify();
@@ -57,7 +54,7 @@ describe('Game', function () {
         clientApiMock.expects('requestTrumpf').once()
             .returns(Promise.resolve(gameType));
 
-        game = Game.create([player, player, player, player], maxPoints, player, clientApi);
+        game = Game.create(players, maxPoints, players[0], clientApi);
         game.start();
         clientApiMock.verify();
 
