@@ -3,7 +3,7 @@
 let assert      = require("assert"); // node.js core module
 let Card        = require('../../../lib/game/deck/card');
 let UnderTrumpfValidator = require('../../../lib/game/validation/underTrumpfValidator');
-let GameMode = require('../../../lib/game/game').GameMode;
+let GameMode = require('../../../lib/game/gameMode');
 
 
 describe('UnderTrumpf Validator', function () {
@@ -37,7 +37,7 @@ describe('UnderTrumpf Validator', function () {
         assert(validationResult.permitted);
     });
 
-    it('should deny lower Trumpf when having other cards mathing', () => {
+    it('should deny lower Trumpf when having other cards matching', () => {
         let parameters = {
             color: Card.CardType.HEARTS,
             mode: GameMode.TRUMPF,
@@ -69,7 +69,7 @@ describe('UnderTrumpf Validator', function () {
             color: Card.CardType.HEARTS,
             mode: GameMode.TRUMPF,
             tableCards: [Card.create(6, Card.CardType.DIAMONDS), Card.create(12, Card.CardType.HEARTS)],
-            handCards: [Card.create(6, Card.CardType.HEARTS), Card.create(11, Card.CardType.HEARTS)],
+            handCards: [Card.create(6, Card.CardType.HEARTS), Card.create(14, Card.CardType.HEARTS)],
             cardToPlay: Card.create(6, Card.CardType.HEARTS)
         };
 
