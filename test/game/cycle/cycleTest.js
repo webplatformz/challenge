@@ -4,19 +4,20 @@ let assert      = require("assert"); // node.js core module
 let Card        = require('../../../lib/game/deck/card');
 let Cycle       = require('../../../lib/game/cycle/cycle');
 let clientApi   = require('../../../lib/communication/clientApi').create();
-let player      = require('../../../lib/game/player/player').create();
+let Player      = require('../../../lib/game/player/player');
+let TestDataCreator = require('../../testDataCreator');
 
 let sinon       = require('sinon');
 
 describe('Cycle', function () {
-    let maxPoints = 2500;
-    let game;
     let clientApiMock;
     let playerMock;
+    let players;
 
     beforeEach(function () {
         clientApiMock = sinon.mock(clientApi);
-        playerMock = sinon.mock(player);
+        players = TestDataCreator.createPlayers(clientApiMock);
+        playerMock = sinon.mock(players[0]);
     });
 
     it('should call the callback after each round', () => {
@@ -28,12 +29,14 @@ describe('Cycle', function () {
         };
         sinon.spy(callbackSpy, 'callback');
 
-        let cycle = Cycle.create(player, [player, player, player, player], clientApi, callbackSpy.callback);
+
+        let cycle = Cycle.create(players[0], players, clientApi, callbackSpy.callback);
         cycle.validator = {
             validate: function() {
                 return true;
             }
         };
+
         cycle.iterate();
 
         assert(cycle.turnIndex === 4);
@@ -42,10 +45,10 @@ describe('Cycle', function () {
     });
 
     it('should call the clientapi correctly', () => {
-        playerMock.expects('requestCard').exactly(4);
+        playerMock.expects('requestCard').exactly(1);
         clientApiMock.expects('broadcastCardPlayed').exactly(4);
 
-        let cycle = Cycle.create(player, [player, player, player, player], clientApi, function() {});
+        let cycle = Cycle.create(players[0], players, clientApi, function() {});
         cycle.validator = {
             validate: function() {
                 return true;
