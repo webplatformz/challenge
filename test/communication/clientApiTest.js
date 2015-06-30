@@ -6,7 +6,7 @@ let expect = require('chai').expect,
     ClientApi = require('../../lib/communication/clientApi'),
     GameType = require('../../lib/game/game').GameType,
     GameMode = require('../../lib/game/gameMode'),
-    CardType = require('../../lib/game/deck/card').CardType;
+    CardColor = require('../../lib/game/deck/card').CardColor;
 
 let messages = require('../../lib/communication/messages');
 
@@ -96,7 +96,7 @@ describe('Client API', () => {
         describe('broadcastTrumpf', () => {
             it('should send chosen Trumpf to all clients', (done) => {
                 let clients,
-                    gameType = GameType.create(GameMode.TRUMPF, CardType.SPADES),
+                    gameType = GameType.create(GameMode.TRUMPF, CardColor.SPADES),
                     clientPromises = [];
 
                 wss.on('connection', (client) => {

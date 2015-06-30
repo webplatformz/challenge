@@ -40,13 +40,13 @@ describe('Game', function () {
 
     it('should save and broadcast the trumpf when it has been chosen from the player', (done) => {
         let gameMode = GameMode.TRUMPF;
-        let cardColor = Card.CardType.HEARTS;
+        let cardColor = Card.CardColor.HEARTS;
         let gameType = Game.GameType.create(gameMode, cardColor);
 
         clientApiMock.expects('requestTrumpf').once()
             .returns(Promise.resolve(gameType));
 
-        game = Game.create([], maxPoints, player, clientApi);
+        game = Game.create([player, player, player, player], maxPoints, player, clientApi);
         game.start();
         clientApiMock.verify();
 
@@ -55,16 +55,18 @@ describe('Game', function () {
             assert.equal(cardColor, game.gameType.trumpfColor);
             assert.equal(gameMode, game.gameType.mode);
             clientApiMock.verify();
+
+            //clientApiMock.expects('broadcastCardPlayed').exactly(4);
+            // TODO This is not unit testing!! When doing that, mock cycle plz!
+
+            game.nextCycle();
+
+            //clientApiMock.verify();
+
             done();
         }, 10);
     });
 
-    it('should start the first cycle after trumpf has been chosen', () => {
-        game = Game.create([], maxPoints, player, clientApi);
-        game.gameType = Game.GameType.create(GameMode.TRUMPF, Card.CardType.HEARTS);
-
-        //game.nextCycle();
-    });
 
     afterEach(function () {
         clientApiMock.restore();

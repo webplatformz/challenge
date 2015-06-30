@@ -2,7 +2,7 @@
 
 let assert = require('assert'); // node.js core module
 let Deck = require('../../../lib/game/deck/deck');
-let CardType = require('../../../lib/game/deck/card').CardType;
+let CardColor = require('../../../lib/game/deck/card').CardColor;
 
 describe('Deck', function() {
 
@@ -16,7 +16,7 @@ describe('Deck', function() {
             let card = deck.cards[i],
                 card2 = deck2.cards[i];
 
-            if (card.number !== card2.number || card.type !== card2.type) {
+            if (card.number !== card2.number || card.color !== card2.color) {
                 foundNotIdenticalCard = true;
             }
         }
