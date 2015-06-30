@@ -1,6 +1,5 @@
 "use strict";
 
-//let assert = require("assert"); // node.js core module
 let card = require("../lib/game/deck/card.js");
 
 
