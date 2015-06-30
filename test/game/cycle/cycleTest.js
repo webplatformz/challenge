@@ -20,33 +20,39 @@ describe('Cycle', function () {
         playerMock = sinon.mock(players[0]);
     });
 
-    it('should call the callback after each round', () => {
-        let cardsPlayedCount = 0;
-        let callbackSpy = {
-          callback : function callback(cardsPlayed) {
-              cardsPlayedCount = cardsPlayed.length;
-          }
-        };
-        sinon.spy(callbackSpy, 'callback');
+    it.only('should return the played cards after each round', (done) => {
+        var promise = Promise.resolve({});
+        //playerMock.expects('requestCard').returns(Promise.resolve({}));
 
+        sinon.stub(players[0], 'requestCard').returns(Promise.resolve({}));
+        sinon.stub(players[1], 'requestCard').returns(Promise.resolve({}));
+        sinon.stub(players[2], 'requestCard').returns(Promise.resolve({}));
+        sinon.stub(players[3], 'requestCard').returns(Promise.resolve({}));
 
-        let cycle = Cycle.create(players[0], players, clientApi, callbackSpy.callback);
+        let cycle = Cycle.create(players[0], players, clientApi);
         cycle.validator = {
             validate: function() {
                 return true;
             }
         };
 
-        cycle.iterate();
+        cycle.iterate()
+            .then(function(playedCards) {
+                assert(cycle.turnIndex === 4);
+                console.log('turnindex ' + cycle.turnIndex);
+                assert(playedCards.length === 4);
+                done();
+            }).catch(done);
 
-        assert(cycle.turnIndex === 4);
-        assert(cardsPlayedCount === 4);
-        assert(callbackSpy.callback.calledOnce);
     });
 
     it('should call the clientapi correctly', () => {
-        playerMock.expects('requestCard').exactly(1);
+        var promise = Promise.resolve();
+        playerMock.expects('requestCard').exactly(1)
+            .returns(promise);
         clientApiMock.expects('broadcastCardPlayed').exactly(4);
+
+
 
         let cycle = Cycle.create(players[0], players, clientApi, function() {});
         cycle.validator = {
@@ -56,8 +62,10 @@ describe('Cycle', function () {
         };
         cycle.iterate();
 
-        clientApiMock.verify();
-        playerMock.verify();
+        promise.then(function() {
+            clientApiMock.verify();
+            playerMock.verify();
+        });
     });
 
 
