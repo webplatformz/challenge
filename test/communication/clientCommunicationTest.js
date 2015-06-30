@@ -12,16 +12,16 @@ describe('clientCommunication', () => {
 
         let actual = clientCommunication.toJSON(message);
 
-        expect(actual).to.equal('{"type":"REQUEST_TRUMPF","data":{"pushed":false}}');
+        expect(actual).to.equal('{"type":"REQUEST_TRUMPF","data":{"geschoben":false}}');
     });
 
     it('should convert JSON string to message', () => {
-        let message = '{"type":"REQUEST_TRUMPF","data":{"pushed":false}}';
+        let message = '{"type":"REQUEST_TRUMPF","data":{"geschoben":false}}';
 
         let actual = clientCommunication.fromJSON(message);
 
         expect(actual.type).to.equal(messages.MessageType.REQUEST_TRUMPF);
-        expect(actual.data).to.eql({pushed: false});
+        expect(actual.data).to.eql({geschoben: false});
     });
 
     it('should broadcast message to all given clients', () => {
@@ -53,7 +53,7 @@ describe('clientCommunication', () => {
             },
             clientMock = sinon.mock(client);
 
-        clientMock.expects('send').withExactArgs('{"type":"REQUEST_TRUMPF","data":{"pushed":false}}').once();
+        clientMock.expects('send').withExactArgs('{"type":"REQUEST_TRUMPF","data":{"geschoben":false}}').once();
 
         clientCommunication.request(client, messages.MessageType.REQUEST_TRUMPF, function onMessage (message, resolve) {
             resolve();

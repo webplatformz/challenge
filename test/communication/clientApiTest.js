@@ -57,6 +57,29 @@ describe('Client API', () => {
                 }
             });
         });
+
+        it('should reject invalid answer messages', (done) => {
+            let clientAnswer = messages.create(messages.MessageType.PLAYED_CARDS, ['a', 'b', 'c']);
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.requestTrumpf(client, false).then(() => done(new Error('Should not resolve'))).catch((data) => {
+                    expect(data).to.equal('Invalid client answer');
+                    done();
+                });
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            client.on('message', (message) => {
+                message = JSON.parse(message);
+
+                if (message.type === messages.MessageType.REQUEST_TRUMPF) {
+                    client.send(JSON.stringify(clientAnswer));
+                }
+            });
+        });
     });
 
     describe('broadcastPlayedCards', () => {
