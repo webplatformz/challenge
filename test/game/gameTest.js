@@ -2,6 +2,7 @@
 
 let assert = require("assert"); // node.js core module
 let Game = require('../../lib/game/game');
+let GameMode = require('../../lib/game/gameMode');
 let Player = require('../../lib/game/player/player');
 let Card = require('../../lib/game/deck/card');
 let Cycle = require('../../lib/game/cycle/cycle');
@@ -38,7 +39,7 @@ describe('Game', function () {
     });
 
     it('should save and broadcast the trumpf when it has been chosen from the player', (done) => {
-        let gameMode = Game.GameMode.TRUMPF;
+        let gameMode = GameMode.TRUMPF;
         let cardColor = Card.CardType.HEARTS;
         let gameType = Game.GameType.create(gameMode, cardColor);
 
@@ -60,9 +61,9 @@ describe('Game', function () {
 
     it('should start the first cycle after trumpf has been chosen', () => {
         game = Game.create([], maxPoints, player, clientApi);
-        game.gameType = Game.GameType.create(Game.GameMode.TRUMPF, Card.CardType.HEARTS);
+        game.gameType = Game.GameType.create(GameMode.TRUMPF, Card.CardType.HEARTS);
 
-        game.nextCycle();
+        //game.nextCycle();
     });
 
     afterEach(function () {

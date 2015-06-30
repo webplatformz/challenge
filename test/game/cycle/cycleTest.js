@@ -28,7 +28,7 @@ describe('Cycle', function () {
         };
         sinon.spy(callbackSpy, 'callback');
 
-        let cycle = Cycle.create(0, [player, player, player, player], 0, clientApi, callbackSpy.callback);
+        let cycle = Cycle.create(player, [player, player, player, player], 0, clientApi, callbackSpy.callback);
         cycle.iterate();
 
         assert(cycle.turnIndex === 4);
@@ -40,7 +40,7 @@ describe('Cycle', function () {
         playerMock.expects('requestCard').exactly(4);
         clientApiMock.expects('broadcastCardPlayed').exactly(4);
 
-        let cycle = Cycle.create(0, [player, player, player, player], 0, clientApi, function() {});
+        let cycle = Cycle.create(player, [player, player, player, player], 0, clientApi, function() {});
         cycle.iterate();
 
         clientApiMock.verify();

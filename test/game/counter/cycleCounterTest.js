@@ -1,7 +1,7 @@
 "use strict";
 
 let assert = require("assert");
-let GameMode = require('../../../lib/game/game').GameMode;
+let GameMode = require('../../../lib/game/gameMode');
 let CycleCounter = require('../../../lib/game/cycle/cycleCounter');
 let CardType = require('../../../lib/game/deck/card').CardType;
 let Card = require('../../../lib/game/deck/card');
