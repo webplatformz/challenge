@@ -21,7 +21,7 @@ let TestDataCreator = {
         let player4 = createDummyPlayer("team2", "luke", clientApiMock);
         let players = [player1, player2, player3, player4];
         players.forEach(player => {
-            player.cards = deck.deal(9);
+            deck.deal(player, 9);
         });
         return players;
     }
