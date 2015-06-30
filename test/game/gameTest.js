@@ -6,12 +6,14 @@ let GameMode = require('../../lib/game/gameMode');
 let Player = require('../../lib/game/player/player');
 let Card = require('../../lib/game/deck/card');
 let clientApi = require('../../lib/communication/clientApi').create();
+let Cycle = require('../../lib/game/cycle/cycle');
 let sinon = require('sinon');
 
 describe('Game', function () {
     let maxPoints = 2500;
     let game;
     let clientApiMock;
+    let cycleFactoryMock;
 
     let player = Player.create(undefined, "hans", clientApi);
     let player2 = Player.create(undefined, "peter", clientApi);
@@ -21,7 +23,7 @@ describe('Game', function () {
 
     beforeEach(function () {
         clientApiMock = sinon.mock(clientApi);
-
+        cycleFactoryMock = sinon.mock(Cycle);
     });
 
     it('should properly deal cards to each player', () => {
@@ -54,8 +56,9 @@ describe('Game', function () {
         let cardColor = Card.CardColor.HEARTS;
         let gameType = Game.GameType.create(gameMode, cardColor);
 
+        var promise = Promise.resolve(gameType);
         clientApiMock.expects('requestTrumpf').once()
-            .returns(Promise.resolve(gameType));
+            .returns(promise);
 
         game = Game.create([player, player, player, player], maxPoints, player, clientApi);
         game.start();
@@ -63,16 +66,26 @@ describe('Game', function () {
 
         clientApiMock.expects('broadcastTrumpf').once();
 
-        setTimeout(() => {
+        let cycle = {
+            iterate: () => {}
+        };
+
+        let cycleSpy = sinon.spy(cycle, 'iterate');
+        cycleFactoryMock.expects('create').once().returns(cycle);
+
+        promise.then(function() {
             assert.equal(cardColor, game.gameType.trumpfColor);
             assert.equal(gameMode, game.gameType.mode);
             clientApiMock.verify();
+            cycleFactoryMock.verify();
+            assert(cycleSpy.calledOnce);
             done();
-        }, 10);
+        });
     });
 
     afterEach(function () {
         clientApiMock.restore();
+        cycleFactoryMock.restore();
     });
 
 });
