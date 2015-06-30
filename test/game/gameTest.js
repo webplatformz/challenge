@@ -6,26 +6,26 @@ let GameMode = require('../../lib/game/gameMode');
 let Player = require('../../lib/game/player/player');
 let Card = require('../../lib/game/deck/card');
 let clientApi = require('../../lib/communication/clientApi').create();
+let Cycle = require('../../lib/game/cycle/cycle');
 let sinon = require('sinon');
+let TestDataCreator = require('../testDataCreator');
 
 describe('Game', function () {
     let maxPoints = 2500;
     let game;
     let clientApiMock;
+    let cycleFactoryMock;
 
-    let player = Player.create(undefined, "hans", clientApi);
-    let player2 = Player.create(undefined, "peter", clientApi);
-    let player3 = Player.create(undefined, "luke", clientApi);
-    let player4 = Player.create(undefined, "homer", clientApi);
-    let players = [player, player2, player3, player4];
+    let players;
 
     beforeEach(function () {
         clientApiMock = sinon.mock(clientApi);
-
+        players = TestDataCreator.createPlayers(clientApi);
+        cycleFactoryMock = sinon.mock(Cycle);
     });
 
     it('should properly deal cards to each player', () => {
-        game = Game.create(players, maxPoints, player, clientApi);
+        game = Game.create(players, maxPoints, players[0], clientApi);
 
         assert.notEqual(undefined, game.deck);
         assert.notEqual(undefined, game.players);
@@ -43,7 +43,7 @@ describe('Game', function () {
         clientApiMock.expects('requestTrumpf').once()
             .withArgs(false).returns(Promise.resolve());
 
-        game = Game.create([player, player, player, player], maxPoints, player, clientApi);
+        game = Game.create(players, maxPoints, players[0], clientApi);
         game.start();
 
         clientApiMock.verify();
@@ -54,25 +54,36 @@ describe('Game', function () {
         let cardColor = Card.CardColor.HEARTS;
         let gameType = Game.GameType.create(gameMode, cardColor);
 
+        var promise = Promise.resolve(gameType);
         clientApiMock.expects('requestTrumpf').once()
-            .returns(Promise.resolve(gameType));
+            .returns(promise);
 
-        game = Game.create([player, player, player, player], maxPoints, player, clientApi);
+        game = Game.create(players, maxPoints, players[0], clientApi);
         game.start();
         clientApiMock.verify();
 
         clientApiMock.expects('broadcastTrumpf').once();
 
-        setTimeout(() => {
+        let cycle = {
+            iterate: () => {}
+        };
+
+        let cycleSpy = sinon.spy(cycle, 'iterate');
+        cycleFactoryMock.expects('create').once().returns(cycle);
+
+        promise.then(function() {
             assert.equal(cardColor, game.gameType.trumpfColor);
             assert.equal(gameMode, game.gameType.mode);
             clientApiMock.verify();
+            cycleFactoryMock.verify();
+            assert(cycleSpy.calledOnce);
             done();
-        }, 10);
+        });
     });
 
     afterEach(function () {
         clientApiMock.restore();
+        cycleFactoryMock.restore();
     });
 
 });
