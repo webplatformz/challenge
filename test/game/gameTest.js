@@ -32,7 +32,7 @@ describe('Game', function () {
         clientApiMock.expects('requestTrumpf').once()
             .withArgs(false).returns(Promise.resolve());
 
-        game = Game.create([], maxPoints, player, clientApi);
+        game = Game.create([player, player, player, player], maxPoints, player, clientApi);
         game.start();
 
         clientApiMock.verify();
