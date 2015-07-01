@@ -83,7 +83,7 @@ module.exports = function (grunt) {
         },
         nodemon: {
             dev: {
-                script: 'build/server.js'
+                script: './build/server.js'
             }
         },
         concurrent: {
@@ -103,5 +103,5 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['clean', 'babel', 'concurrent:dev']);
 
     // start server
-    grunt.registerTask('start', ['clean', 'babel']);
+    grunt.registerTask('build', ['clean', 'babel', 'sync']);
 };

@@ -27,7 +27,7 @@
   "scripts": {
     "test": "node_modules/grunt-cli/bin/grunt simplemocha",
     "start": "node ./build/server.js",
-    "postinstall": "node_modules/grunt-cli/bin/grunt start"
+    "postinstall": "node_modules/grunt-cli/bin/grunt build"
   },
   "dependencies": {
     "express": "4.12.1",
