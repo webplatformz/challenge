@@ -61,7 +61,7 @@ describe('Session', function() {
 
     describe('startGame', () => {
         it('should fail if session is not complete', () => {
-             expect(() => { session.startGame(); }).to.throw('Not enough players to start game!');
+             expect(() => { session.start(); }).to.throw('Not enough players to start game!');
         });
     });
 });
