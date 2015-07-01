@@ -69,6 +69,60 @@ describe('StichGranter', function () {
         assert.equal(expectedWinner, actualWinner);
     });
 
+    it('should determine the correct winner when the mode is Trumpf and Buur is played', function () {
+        let mode = GameMode.TRUMPF;
+        let trumpfColor = CardColor.SPADES;
+
+        let winnerCard = Card.create(11, CardColor.SPADES);
+        let expectedWinner = players[3];
+
+        let cardSet = [
+            Card.create(12, CardColor.SPADES),
+            Card.create(12, CardColor.DIAMONDS),
+            Card.create(10, CardColor.DIAMONDS),
+            winnerCard
+        ];
+
+        let actualWinner = StichGranter.determineWinner(mode, trumpfColor, cardSet, players);
+        assert.equal(expectedWinner, actualWinner);
+    });
+
+    it('should determine the correct winner when the mode is Trumpf and Nell is played', function () {
+        let mode = GameMode.TRUMPF;
+        let trumpfColor = CardColor.SPADES;
+
+        let winnerCard = Card.create(9, CardColor.SPADES);
+        let expectedWinner = players[3];
+
+        let cardSet = [
+            Card.create(12, CardColor.SPADES),
+            Card.create(12, CardColor.DIAMONDS),
+            Card.create(10, CardColor.DIAMONDS),
+            winnerCard
+        ];
+
+        let actualWinner = StichGranter.determineWinner(mode, trumpfColor, cardSet, players);
+        assert.equal(expectedWinner, actualWinner);
+    });
+
+    it('should determine the correct winner when the mode is Trumpf and Buur and Nell are played', function () {
+        let mode = GameMode.TRUMPF;
+        let trumpfColor = CardColor.SPADES;
+
+        let winnerCard = Card.create(11, CardColor.SPADES);
+        let expectedWinner = players[0];
+
+        let cardSet = [
+            winnerCard,
+            Card.create(12, CardColor.DIAMONDS),
+            Card.create(10, CardColor.DIAMONDS),
+            Card.create(9, CardColor.SPADES)
+        ];
+
+        let actualWinner = StichGranter.determineWinner(mode, trumpfColor, cardSet, players);
+        assert.equal(expectedWinner, actualWinner);
+    });
+
     it('should determine the correct winner when the mode is Untenrauf and all cards have the same color', function () {
         let mode = GameMode.UNTENRAUF;
 
