@@ -4,9 +4,11 @@ let expect = require('chai').expect;
 let Session = require('../../lib/game/session');
 let ClientApi = require('../../lib/communication/clientApi');
 let Game = require('../../lib/game/game');
+let TestDataCreator = require('../testDataCreator');
 let sinon = require('sinon');
 
-describe('Session', function () {
+
+describe('Session', function() {
     let session;
 
     beforeEach(() => {
@@ -93,11 +95,67 @@ describe('Session', function () {
         });
     });
 
-    describe('startGame', () => {
+    describe('start', () => {
+        let gameFactoryMock;
+        let clientApiMock;
+
+        beforeEach(function () {
+            gameFactoryMock = sinon.mock(Game);
+            clientApiMock = sinon.mock(ClientApi);
+        });
+
         it('should fail if session is not complete', () => {
             expect(() => {
                 session.start();
             }).to.throw('Not enough players to start game!');
         });
+
+        it('should finish a game after max points have been reached', (done) => {
+            let fourPlayers = TestDataCreator.createPlayers(clientApiMock);
+
+            let game = {
+                start: function() {
+                    session.teams[0].points += 1000;
+                    return Promise.resolve();
+                }
+            };
+
+            gameFactoryMock.expects('create').exactly(3).returns(game);
+
+            session.players = fourPlayers;
+
+            session.start().then((winningTeam) => {
+                expect(winningTeam).to.eql(session.teams[0]);
+                done();
+            }).catch(done);
+        });
+
+        it('should finish a game and check better team wins', (done) => {
+            let fourPlayers = TestDataCreator.createPlayers(clientApiMock);
+
+            let game = {
+                start: function() {
+                    session.teams[0].points += 1000;
+                    session.teams[1].points += 1001;
+                    return Promise.resolve();
+                }
+            };
+
+            gameFactoryMock.expects('create').exactly(3).returns(game);
+
+            session.players = fourPlayers;
+
+            session.start().then((winningTeam) => {
+                expect(winningTeam).to.eql(session.teams[1]);
+                done();
+            }).catch(done);
+        });
+
+        afterEach(function () {
+            gameFactoryMock.restore();
+            clientApiMock.restore();
+        });
     });
+
+
 });
