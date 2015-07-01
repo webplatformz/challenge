@@ -83,7 +83,7 @@ module.exports = function (grunt) {
         },
         nodemon: {
             dev: {
-                script: 'build/server.js'
+                script: './build/server.js'
             }
         },
         concurrent: {
@@ -101,4 +101,7 @@ module.exports = function (grunt) {
 
     // Default task executes concurrent target. Watching for changes to execute tests and restart server.
     grunt.registerTask('default', ['clean', 'babel', 'concurrent:dev']);
+
+    // start server
+    grunt.registerTask('build', ['clean', 'babel', 'sync']);
 };

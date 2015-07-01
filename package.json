@@ -1,6 +1,6 @@
 {
   "name": "challenge",
-  "version": "0.0.2",
+  "version": "0.5.0",
   "private": true,
   "engines": {
     "node": "0.12.x"
@@ -25,7 +25,9 @@
     "sinon": "1.12.2"
   },
   "scripts": {
-    "test": "node_modules/grunt-cli/bin/grunt simplemocha"
+    "test": "./node_modules/grunt-cli/bin/grunt simplemocha",
+    "start": "node ./build/server.js",
+    "postinstall": "./node_modules/grunt-cli/bin/grunt build"
   },
   "dependencies": {
     "express": "4.12.1",
