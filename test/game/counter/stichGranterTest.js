@@ -2,12 +2,12 @@
 
 let assert = require("assert");
 let GameMode = require('../../../lib/game/gameMode');
-let CycleCounter = require('../../../lib/game/cycle/cycleCounter');
+let StichGranter = require('../../../lib/game/cycle/stichGranter');
 let CardColor = require('../../../lib/game/deck/card').CardColor;
 let Card = require('../../../lib/game/deck/card');
 
 
-describe('CycleCounter', function() {
+describe('StichGranter', function() {
     it('should count simple array without Trumpf', function() {
         let mode = GameMode.TRUMPF;
         let cardColor = CardColor.SPADES;
@@ -20,7 +20,7 @@ describe('CycleCounter', function() {
             winnerCard,
             Card.create(10, CardColor.DIAMONDS)];
 
-        let result = CycleCounter.count(mode, cardColor, cardSet);
+        let result = StichGranter.count(mode, cardColor, cardSet);
         assert.equal(winnerCard, result);
     });
 });
