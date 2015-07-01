@@ -25,7 +25,8 @@
     "sinon": "1.12.2"
   },
   "scripts": {
-    "test": "node_modules/grunt-cli/bin/grunt simplemocha"
+    "test": "node_modules/grunt-cli/bin/grunt simplemocha",
+    "start": "node_modules/grunt-cli/bin/grunt start; node ./build/server.js"
   },
   "dependencies": {
     "express": "4.12.1",

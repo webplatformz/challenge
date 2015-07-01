@@ -116,7 +116,7 @@ describe('Session', function() {
             let game = {
                 start: function() {
                     session.teams[0].points += 1000;
-                    return Promise.resolve('someTeam');
+                    return Promise.resolve();
                 }
             };
 
@@ -124,8 +124,29 @@ describe('Session', function() {
 
             session.players = fourPlayers;
 
-            session.start().then(() => {
+            session.start().then((winningTeam) => {
+                expect(winningTeam).to.eql(session.teams[0]);
+                done();
+            }).catch(done);
+        });
 
+        it('should finish a game and check better team wins', (done) => {
+            let fourPlayers = TestDataCreator.createPlayers(clientApiMock);
+
+            let game = {
+                start: function() {
+                    session.teams[0].points += 1000;
+                    session.teams[1].points += 1001;
+                    return Promise.resolve();
+                }
+            };
+
+            gameFactoryMock.expects('create').exactly(3).returns(game);
+
+            session.players = fourPlayers;
+
+            session.start().then((winningTeam) => {
+                expect(winningTeam).to.eql(session.teams[1]);
                 done();
             }).catch(done);
         });
