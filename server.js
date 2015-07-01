@@ -18,6 +18,9 @@ wss.on('connection', (ws) => {
     session.addPlayer(ws);
 
     if (session.isComplete()) {
+        session.start().then((team) => {
+            console.log("Team " + team.name + " won ");
+        });
         session = JassSession.create();
     }
 });
