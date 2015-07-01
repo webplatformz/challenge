@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (grunt) {
 
     grunt.initConfig({
@@ -40,7 +42,7 @@ module.exports = function (grunt) {
                 reporter: require('jshint-stylish'),
                 jshintrc: '.jshintrc'
             },
-            all: ['lib/**/*.js', 'test/**/*.js']
+            all: ['lib/**/*.js', 'test/**/*.js', '*.js']
         },
         simplemocha: {
             options: {
