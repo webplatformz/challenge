@@ -101,4 +101,7 @@ module.exports = function (grunt) {
 
     // Default task executes concurrent target. Watching for changes to execute tests and restart server.
     grunt.registerTask('default', ['clean', 'babel', 'concurrent:dev']);
+
+    // start server
+    grunt.registerTask('start', ['clean', 'babel']);
 };
