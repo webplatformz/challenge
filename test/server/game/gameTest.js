@@ -43,13 +43,18 @@ describe('Game', function () {
         clientApiMock.expects('requestTrumpf').once()
             .withArgs(false).returns(Promise.resolve());
 
+        let playerWhoSchiebs = players[0];
+        assert(playerWhoSchiebs.name === 'hans');
+        let hansSpy = sinon.spy(playerWhoSchiebs, 'requestTrumpf');
+
         game = Game.create(players, maxPoints, players[0], clientApi);
         game.start();
 
         clientApiMock.verify();
+        assert(hansSpy.calledOnce);
     });
 
-    it('should request the trumpf from the correct player when the player schiebs', () => {
+    it.skip('should request the trumpf from the correct player when the player schiebs', () => {
         let ex1 = clientApiMock.expects('requestTrumpf').once()
             .withArgs(false).returns(Promise.resolve({
                 gameType : 'isEgal',
@@ -62,8 +67,23 @@ describe('Game', function () {
                 schieben : false
             }));
 
+        let playerWhoSchiebs = players[0];
+        let playerWhoGetsGeschoben = players[2];
+        assert(playerWhoSchiebs.name === 'hans');
+        assert(playerWhoGetsGeschoben.name === 'homer');
+
+        let hansSpy = sinon.spy(playerWhoSchiebs, 'requestTrumpf');
+        let homerSpy = sinon.spy(playerWhoGetsGeschoben, 'requestTrumpf');
+
         game = Game.create(players, maxPoints, players[0], clientApi);
         game.start();
+
+        assert(hansSpy.calledOnce);
+        assert(hansSpy.calledWith(false));
+
+        console.log('================================ COUNT : ' + homerSpy.callCount);
+        assert(homerSpy.calledOnce);
+        assert(homerSpy.calledWith(true));
 
         ex1.verify();
         //ex2.verify();
