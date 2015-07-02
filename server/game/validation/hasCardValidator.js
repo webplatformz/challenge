@@ -12,11 +12,9 @@ let HasCardValidator = {
                 permitted: true
             };
         } else {
-            console.log('handc{ards: ' + JSON.stringify(validationParameter.handCards) + ' cardtoplay: ' + JSON.stringify(validationParameter.cardToPlay));
-
             return {
                 permitted: false,
-                message: 'HasCardValidator: Card is not in your hand, bitch, read the fucking göpfeck rules!!'
+                message: 'HasCardValidator: Card is not in your hand!'
             };
         }
 

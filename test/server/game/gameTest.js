@@ -1,6 +1,7 @@
 "use strict";
 
-let assert = require("assert"); // node.js core module
+let assert = require("assert");
+let expect = require('chai').expect;
 let Game = require('../../../server/game/game');
 let GameMode = require('../../../server/game/gameMode');
 let Player = require('../../../server/game/player/player');
@@ -54,39 +55,29 @@ describe('Game', function () {
         assert(hansSpy.calledOnce);
     });
 
-    it.skip('should request the trumpf from the correct player when the player schiebs', () => {
-        let ex1 = clientApiMock.expects('requestTrumpf').once()
-            .withArgs(false).returns(Promise.resolve({
-                gameType : 'isEgal',
-                schieben : true
-            }));
-
-        let ex2 = clientApiMock.expects('requestTrumpf').once()
-            .withArgs(true).returns(Promise.resolve({
-                gameType : 'isEgal',
-                schieben : false
-            }));
-
-        let playerWhoSchiebs = players[0];
-        let playerWhoGetsGeschoben = players[2];
-        assert(playerWhoSchiebs.name === 'hans');
-        assert(playerWhoGetsGeschoben.name === 'homer');
-
-        let hansSpy = sinon.spy(playerWhoSchiebs, 'requestTrumpf');
-        let homerSpy = sinon.spy(playerWhoGetsGeschoben, 'requestTrumpf');
+    it('should request the trumpf from the correct player when the player schiebs', (done) => {
+        let player0Mock = sinon.mock(players[0]).expects('requestTrumpf').withArgs(false).once().returns(Promise.resolve({
+            mode: GameMode.SCHIEBEN
+        }));
+        let player2Mock = sinon.mock(players[2]).expects('requestTrumpf').withArgs(true).once().returns(Promise.resolve({
+            mode: 'mode',
+            trumpfColor: 'trumpfColor'
+        }));
 
         game = Game.create(players, maxPoints, players[0], clientApi);
-        game.start();
+        let gameMock = sinon.mock(game).expects('nextCycle').once().returns(Promise.resolve());
 
-        assert(hansSpy.calledOnce);
-        assert(hansSpy.calledWith(false));
+        game.start().then(() => {
+            player0Mock.verify();
+            player2Mock.verify();
+            gameMock.verify();
+            done();
+        }).catch((error) => {
+            player0Mock.restore();
+            player2Mock.restore();
+            done(error);
+        });
 
-        console.log('================================ COUNT : ' + homerSpy.callCount);
-        assert(homerSpy.calledOnce);
-        assert(homerSpy.calledWith(true));
-
-        ex1.verify();
-        //ex2.verify();
     });
 
     it('should save and broadcast the trumpf when it has been chosen from the player', (done) => {
@@ -95,7 +86,8 @@ describe('Game', function () {
         let gameType = Game.GameType.create(gameMode, cardColor);
 
         let cycle = {
-            iterate: () => {}
+            iterate: () => {
+            }
         };
 
         let cycleMock = sinon.mock(cycle).expects('iterate').exactly(9).returns(Promise.resolve());
@@ -106,6 +98,7 @@ describe('Game', function () {
         clientApiMock.expects('broadcastTrumpf').once();
 
         game = Game.create(players, maxPoints, players[0], clientApi);
+
         game.start().then(function () {
             assert.equal(cardColor, game.gameType.trumpfColor);
             assert.equal(gameMode, game.gameType.mode);

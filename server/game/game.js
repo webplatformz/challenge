@@ -8,26 +8,29 @@ let GameMode = require('./gameMode');
 let Game = {
     currentRound: 0,
 
-    nextCycle: function () {
+    nextCycle: function (startPlayer) {
         if (this.currentRound < 9) {
+            this.startPlayer = startPlayer || this.startPlayer;
             let cycle = Cycle.create(this.startPlayer, this.players, this.clientApi, this.gameType);
             this.currentRound++;
-            return cycle.iterate().then(() => {
-                return this.nextCycle();
+            return cycle.iterate().then((winner) => {
+                return this.nextCycle(winner);
             });
         }
     },
 
     schieben: function () {
-        let playerWhoHasGeschobenIndex = this.players.indexOf(this.startPlayer);
-        let partnerPlayerIndex = (2 + playerWhoHasGeschobenIndex) % 4;
-        let partnerPlayer = this.players[partnerPlayerIndex];
-        return partnerPlayer.requestTrumpf(true)
-            .then((gameType) => {
-                this.gameType = gameType;
-                this.clientApi.broadcastTrumpf(gameType);
-                return this.nextCycle();
-            });
+        for(let i = 0; i < this.players.length; i++) {
+            let actPlayer = this.players[i];
+            if (actPlayer !== this.startPlayer && actPlayer.team.name === this.startPlayer.team.name) {
+                return actPlayer.requestTrumpf(true)
+                    .then((gameType) => {
+                        this.gameType = gameType;
+                        this.clientApi.broadcastTrumpf(gameType);
+                        return this.nextCycle();
+                    });
+            }
+        }
     },
 
     start: function () {
