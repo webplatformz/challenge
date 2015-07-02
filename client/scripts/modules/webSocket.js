@@ -32,6 +32,7 @@ function handlePageLoad() {
     for (let i = 0; i < cardTypeRadios.length; i++) {
         cardTypeRadios[i].onclick = function () {
             gameState.setCardType(cardType[this.value]);
+            drawPlayedCards();
             drawCardsInHand();
         };
     }
@@ -178,15 +179,21 @@ function handleDealCards(cards) {
 }
 
 function handlePlayedCards(playedCards) {
-    let playedCardsBlock = document.getElementById('cardsPlayed');
-
+    gameState.playedCards = playedCards;
     gameState.removeLastCardPlayed();
     drawCardsInHand();
+    drawPlayedCards();
+}
 
-    removeAllChildren(playedCardsBlock);
-    playedCards.forEach((playedCard) => {
-        addCardToDom(playedCardsBlock, playedCard);
-    });
+function drawPlayedCards() {
+    if (gameState.playedCards) {
+        let playedCardsBlock = document.getElementById('cardsPlayed');
+
+        removeAllChildren(playedCardsBlock);
+        gameState.playedCards.forEach((playedCard) => {
+            addCardToDom(playedCardsBlock, playedCard);
+        });
+    }
 }
 
 function drawCardsInHand() {
