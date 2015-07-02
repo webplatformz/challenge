@@ -154,7 +154,7 @@ describe('Client API', () => {
     });
 
     describe('broadcastStich', () => {
-        it.only('should send the winner of the stich to all clients', (done) => {
+        it('should send the stich message to all clients', (done) => {
             let clients,
                 clientPromises = [],
                 stichMessage = { name : 'hans' };

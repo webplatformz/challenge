@@ -25,9 +25,7 @@ let Cycle = {
         function broadcastAndReturnWinner(playedCards) {
             let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
             winner.team.points += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
-
             that.clientApi.broadcastStich(createStichMessage(winner));
-
             return winner;
         }
 
