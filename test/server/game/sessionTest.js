@@ -35,10 +35,10 @@ describe('Session', function () {
     describe('addPlayer', () => {
         let clientApiMock,
             requestPlayerNamePromises = [
-                Promise.resolve({playerName: 'Peter'}),
-                Promise.resolve({playerName: 'Hans'}),
-                Promise.resolve({playerName: 'Homer'}),
-                Promise.resolve({playerName: 'Luke'})
+                Promise.resolve('Peter'),
+                Promise.resolve('Hans'),
+                Promise.resolve('Homer'),
+                Promise.resolve('Luke')
             ];
 
         beforeEach(() => {
@@ -96,12 +96,14 @@ describe('Session', function () {
     });
 
     describe('start', () => {
-        let gameFactoryMock;
-        let clientApiMock;
+        let gameFactoryMock,
+            clientApiMock,
+            fourPlayers;
 
         beforeEach(function () {
             gameFactoryMock = sinon.mock(Game);
             clientApiMock = sinon.mock(ClientApi);
+            fourPlayers = TestDataCreator.createPlayers(clientApiMock);
         });
 
         it('should fail if session is not complete', () => {
@@ -111,7 +113,6 @@ describe('Session', function () {
         });
 
         it('should wait for pending playername requests', (done) => {
-            let fourPlayers = TestDataCreator.createPlayers(clientApiMock);
             session.players = fourPlayers;
             session.playerNameRequests = [Promise.reject()];
 
@@ -119,8 +120,6 @@ describe('Session', function () {
         });
 
         it('should finish a game after max points have been reached', (done) => {
-            let fourPlayers = TestDataCreator.createPlayers(clientApiMock);
-
             let game = {
                 start: function () {
                     session.teams[0].points += 1000;
@@ -139,8 +138,6 @@ describe('Session', function () {
         });
 
         it('should finish a game and check better team wins', (done) => {
-            let fourPlayers = TestDataCreator.createPlayers(clientApiMock);
-
             let game = {
                 start: function () {
                     session.teams[0].points += 1000;
