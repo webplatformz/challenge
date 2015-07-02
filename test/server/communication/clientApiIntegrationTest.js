@@ -52,6 +52,7 @@ describe('Integration test', () => {
             if(cardToPlay === undefined) {
                 console.log("########## EPIC FAIL: PLAYER CANNOT PLAY CARD. This should never happen! ###########");
             }
+
             return cardToPlay;
         };
 
@@ -92,6 +93,7 @@ describe('Integration test', () => {
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
                     let handCard = giveValidCardFromHand(mapCardsFromJson(message.data), handCards1);
+                    handCards1.splice(handCards1.indexOf(handCard), 1);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client1.send(JSON.stringify(chooseCardResonse));
                 }
@@ -117,6 +119,7 @@ describe('Integration test', () => {
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
                     let handCard = giveValidCardFromHand(mapCardsFromJson(message.data), handCards2);
+                    handCards2.splice(handCards2.indexOf(handCard), 1);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client2.send(JSON.stringify(chooseCardResonse));
                 }
@@ -136,6 +139,7 @@ describe('Integration test', () => {
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
                     let handCard = giveValidCardFromHand(mapCardsFromJson(message.data), handCards3);
+                    handCards3.splice(handCards3.indexOf(handCard), 1);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client3.send(JSON.stringify(chooseCardResonse));
                 }
@@ -144,6 +148,7 @@ describe('Integration test', () => {
 
 
             let client4 = createClient();
+            let counter = 0;
             client4.on('message', (message) => {
                 message = JSON.parse(message);
 
@@ -157,9 +162,12 @@ describe('Integration test', () => {
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
                     let handCard = giveValidCardFromHand(mapCardsFromJson(message.data), handCards4);
+                    handCards4.splice(handCards4.indexOf(handCard), 1);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client4.send(JSON.stringify(chooseCardResonse));
-                    done();
+                    if(++counter >= 9) {
+                        done();
+                    }
                 }
             });
 
