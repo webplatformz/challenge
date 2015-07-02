@@ -45,7 +45,7 @@ let Session = {
         });
     },
 
-    gameCycle: function gameCycle(nextStartingPlayer = this.getNextStartingPlayer) {
+    gameCycle: function gameCycle(nextStartingPlayer = this.getNextStartingPlayer()) {
         let game = Game.create(this.players, this.maxPoints, this.players[nextStartingPlayer], this.clientApi);
 
         return game.start().then(() => {
