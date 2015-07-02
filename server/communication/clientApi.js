@@ -45,6 +45,10 @@ let ClientApi = {
         clientCommunication.broadcast(this.clients, messages.MessageType.BROADCAST_STICH, winner);
     },
 
+    broadcastWinnerTeam: function broadcastWinnerTeam(team) {
+        clientCommunication.broadcast(this.clients, messages.MessageType.BROADCAST_WINNER_TEAM, team);
+    },
+
     requestCard: function requestCard(client, cardsOnTable) {
         return clientCommunication.request(client, messages.MessageType.REQUEST_CARD,
             resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_CARD),
