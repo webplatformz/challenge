@@ -6,7 +6,8 @@ let expect = require('chai').expect,
     ClientApi = require('../../../server/communication/clientApi'),
     GameType = require('../../../server/game/game').GameType,
     GameMode = require('../../../server/game/gameMode'),
-    CardColor = require('../../../shared/deck/card').CardColor;
+    CardColor = require('../../../shared/deck/card').CardColor,
+    TestDataCreator = require('../../testDataCreator');
 
 let messages = require('../../../shared/messages/messages');
 
@@ -149,6 +150,42 @@ describe('Client API', () => {
                     client.send(JSON.stringify(chooseTrumpf));
                 }
             });
+        });
+    });
+
+    describe('broadcastStich', () => {
+        it.only('should send the winner of the stich to all clients', (done) => {
+            let clients,
+                clientPromises = [],
+                stichMessage = { name : 'hans' };
+
+            //console.log(JSON.stringify(winner));
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                if (clientApi.clients.length === clients.length) {
+                    clientApi.broadcastStich(stichMessage);
+                }
+            });
+
+            clients = [new WebSocket('ws://localhost:10001'), new WebSocket('ws://localhost:10001')];
+
+            clients.forEach((client) => {
+                clientPromises.push(new Promise((resolve) => {
+                    client.on('message', (message) => {
+                        message = JSON.parse(message);
+
+                        expect(message.type).to.equal(messages.MessageType.BROADCAST_STICH);
+                        expect(message.data).to.eql(stichMessage);
+
+                        resolve();
+                    });
+                }));
+            });
+
+            Promise.all(clientPromises).then(() => {
+                done();
+            }).catch(done);
         });
     });
 
