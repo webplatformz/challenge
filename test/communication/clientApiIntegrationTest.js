@@ -11,7 +11,7 @@ let JassSession = require('../../lib/game/session');
 
 let messages = require('../../lib/communication/messages');
 
-describe.skip('Integration test', () => {
+describe('Integration test', () => {
 
     let wss,
         clientApi;
@@ -37,9 +37,7 @@ describe.skip('Integration test', () => {
 
             wss.on('connection', (ws) => {
                 session.addPlayer(ws);
-                console.log("player connected");
                 if (session.isComplete()) {
-                    console.log("session complete");
                     session.start().then((team) => {
                         console.log("Team " + team.name + " won ");
                     });
@@ -51,7 +49,7 @@ describe.skip('Integration test', () => {
             let client1 = new WebSocket('ws://localhost:10001');
             let handCards1;
             client1.on('message', (message) => {
-                console.log("client1 " + message);
+                //console.log("client1 " + message);
                 message = JSON.parse(message);
 
                 if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
@@ -60,14 +58,11 @@ describe.skip('Integration test', () => {
 
                 if (message.type === messages.MessageType.DEAL_CARDS) {
                     handCards1 = message.data.cards;
-                    console.log(handCards1);
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    console.log(message);
-                    console.log(handCards1);
-
-                    let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCards1[0]);
+                    let handCard = handCards1[0];
+                    let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client1.send(JSON.stringify(chooseCardResonse));
                 }
 
@@ -88,7 +83,6 @@ describe.skip('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    console.log(message);
                     //let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCards[0]);
                     //client2.send(JSON.stringify(chooseCardResonse));
                     done();
