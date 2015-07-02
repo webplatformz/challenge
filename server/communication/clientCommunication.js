@@ -28,7 +28,8 @@ function request(client, messageType, onMessage, ...data) {
     client.send(toJSON(messages.create(messageType, ...data)));
 
     return new Promise((resolve, reject) => {
-        client.on('message', (message) => {
+        client.on('message', function handleMessage(message) {
+            client.removeListener('message', handleMessage);
             onMessage(message, resolve, reject);
         });
     });

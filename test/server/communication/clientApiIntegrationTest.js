@@ -27,7 +27,7 @@ describe('Integration test', () => {
         wss.close();
     });
 
-    describe('addClient', () => {
+    describe.skip('addClient', () => {
         let trumpf = CardColor.SPADES;
         let choosePlayerName = (name) => {
             return messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, name);
@@ -80,6 +80,7 @@ describe('Integration test', () => {
                 handCards4;
 
             let client1 = createClient();
+            let trumpfCounter = 0;
             client1.on('message', (messageJson) => {
                 let message = JSON.parse(messageJson);
 
@@ -102,6 +103,9 @@ describe('Integration test', () => {
                     let gameType = GameType.create(GameMode.TRUMPF, trumpf);
                     let chooseTrumpfResponse = messages.create(messages.MessageType.CHOOSE_TRUMPF, gameType);
                     client1.send(JSON.stringify(chooseTrumpfResponse));
+                    if(++trumpfCounter >= 4) {
+                        done(); 
+                    }
                 }
             });
 
@@ -148,7 +152,6 @@ describe('Integration test', () => {
 
 
             let client4 = createClient();
-            let counter = 0;
             client4.on('message', (message) => {
                 message = JSON.parse(message);
 
@@ -165,9 +168,6 @@ describe('Integration test', () => {
                     handCards4.splice(handCards4.indexOf(handCard), 1);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client4.send(JSON.stringify(chooseCardResonse));
-                    if(++counter >= 9) {
-                        done();
-                    }
                 }
             });
 

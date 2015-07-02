@@ -62,20 +62,24 @@ describe('clientCommunication', () => {
 
     it('should send request message to given client and call given function on answer', (done) => {
         let client = {
-                send: function () {},
+                send: function () {
+                },
                 on: function (message, onMessage) {
                     onMessage(message);
+                },
+                removeListener: function() {
                 }
             },
             clientMock = sinon.mock(client);
 
         clientMock.expects('send').withExactArgs('{"type":"REQUEST_TRUMPF","data":false}').once();
+        clientMock.expects('removeListener').withArgs('message', sinon.match.func).once();
 
-        clientCommunication.request(client, messages.MessageType.REQUEST_TRUMPF, function onMessage (message, resolve) {
+        clientCommunication.request(client, messages.MessageType.REQUEST_TRUMPF, function onMessage(message, resolve) {
             resolve();
+            clientMock.verify();
             done();
         }, false);
 
-        clientMock.verify();
     });
 });

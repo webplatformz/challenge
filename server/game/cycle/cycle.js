@@ -16,16 +16,40 @@ let Cycle = {
                 that.currentPlayer.removeCard(card);
                 that.clientApi.broadcastCardPlayed(that.playedCards);
             } else {
-                return that.currentPlayer.rejectCard(card, that.playedCards).then(handleChosenCard);
+                return that.currentPlayer.rejectCard(card, that.playedCards).then(handleChosenCard.bind(null, player));
             }
 
             return that.playedCards;
         }
 
-        function returnWinner(playedCards) {
+        function broadcastAndReturnWinner(playedCards) {
             let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
             winner.team.points += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
+
+            that.clientApi.broadcastStich(createStichMessage(winner));
+
             return winner;
+        }
+
+        function createStichMessage(winner) {
+            return {
+                name : winner.name,
+                playedCards : that.playedCards,
+                teams : [
+                    winner.team,
+                    getOtherTeam(winner.team)
+                ]
+            };
+        }
+
+        function getOtherTeam(team) {
+            let otherTeam;
+            that.players.forEach((player) => {
+                if (team.name !== player.team.name) {
+                    otherTeam = player.team;
+                }
+            });
+            return otherTeam;
         }
 
         return that.players.reduce((previousPlayer, currentPlayer, index) => {
@@ -40,7 +64,7 @@ let Cycle = {
             return previousPromise.then((cardsOnTable) => {
                 return currentPlayer.requestCard(cardsOnTable).then(handleChosenCard.bind(null, currentPlayer));
             });
-        }).then(returnWinner);
+        }).then(broadcastAndReturnWinner);
     }
 };
 
