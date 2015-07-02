@@ -49,10 +49,6 @@ describe('Integration test', () => {
                 }
             });
 
-            if(cardToPlay === undefined) {
-                console.log("########## EPIC FAIL: PLAYER CANNOT PLAY CARD. This should never happen! ###########");
-            }
-
             return cardToPlay;
         };
 
@@ -80,7 +76,6 @@ describe('Integration test', () => {
                 handCards4;
 
             let client1 = createClient();
-            let trumpfCounter = 0;
             client1.on('message', (messageJson) => {
                 let message = JSON.parse(messageJson);
 
@@ -93,7 +88,6 @@ describe('Integration test', () => {
                 }
                 
                 if (message.type === messages.MessageType.BROADCAST_WINNER_TEAM) {
-                    console.log("We have a winner!!!!");
                     done();
                 }
 

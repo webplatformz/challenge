@@ -17,7 +17,6 @@ let Validation = {
         for (let i = 0; i < this.validators.length; i++) {
             let validity = this.validators[i].validate(this.validationParameters);
             if (!validity.permitted) {
-                //console.log("Invalid: " + validity.message);
                 return false;
             }
         }
