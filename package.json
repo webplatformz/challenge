@@ -5,7 +5,12 @@
   "engines": {
     "node": "0.12.x"
   },
-  "devDependencies": {
+  "scripts": {
+    "test": "./node_modules/grunt-cli/bin/grunt simplemocha",
+    "start": "node ./build/server.js",
+    "postinstall": "./node_modules/grunt-cli/bin/grunt build"
+  },
+  "dependencies": {
     "chai": "^3.0.0",
     "grunt-concurrent": "1.0.0",
     "grunt-contrib-clean": "0.6.0",
@@ -19,13 +24,6 @@
     "mocha-sinon": "1.1.4",
     "mockery": "1.4.0",
     "sinon": "1.12.2"
-  },
-  "scripts": {
-    "test": "./node_modules/grunt-cli/bin/grunt simplemocha",
-    "start": "node ./build/server.js",
-    "postinstall": "./node_modules/grunt-cli/bin/grunt build"
-  },
-  "dependencies": {
     "express": "4.12.1",
     "underscore": "1.8.2",
     "ws": "0.7.1",
