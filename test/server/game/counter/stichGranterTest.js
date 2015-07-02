@@ -1,12 +1,12 @@
 "use strict";
 
 let assert = require("assert");
-let GameMode = require('../../../server/game/gameMode');
-let StichGranter = require('../../../server/game/cycle/stichGranter');
-let CardColor = require('../../../server/game/deck/card').CardColor;
-let Card = require('../../../server/game/deck/card');
-let TestDataCreator = require('../../testDataCreator');
-let clientApi = require('../../../server/communication/clientApi').create();
+let GameMode = require('../../../../server/game/gameMode');
+let StichGranter = require('../../../../server/game/cycle/stichGranter');
+let CardColor = require('../../../../server/game/deck/card').CardColor;
+let Card = require('../../../../server/game/deck/card');
+let TestDataCreator = require('../../../testDataCreator');
+let clientApi = require('../../../../server/communication/clientApi').create();
 
 
 describe('StichGranter', function () {

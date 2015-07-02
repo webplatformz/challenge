@@ -1,14 +1,14 @@
 "use strict";
 
 let assert = require("assert"); // node.js core module
-let Game = require('../../server/game/game');
-let GameMode = require('../../server/game/gameMode');
-let Player = require('../../server/game/player/player');
-let Card = require('../../server/game/deck/card');
-let clientApi = require('../../server/communication/clientApi').create();
-let Cycle = require('../../server/game/cycle/cycle');
+let Game = require('../../../server/game/game');
+let GameMode = require('../../../server/game/gameMode');
+let Player = require('../../../server/game/player/player');
+let Card = require('../../../server/game/deck/card');
+let clientApi = require('../../../server/communication/clientApi').create();
+let Cycle = require('../../../server/game/cycle/cycle');
 let sinon = require('sinon');
-let TestDataCreator = require('../testDataCreator');
+let TestDataCreator = require('../../testDataCreator');
 
 describe('Game', function () {
     let maxPoints = 2500;

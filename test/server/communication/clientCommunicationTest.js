@@ -1,8 +1,8 @@
 'use strict';
 
-let clientCommunication = require('../../server/communication/clientCommunication'),
+let clientCommunication = require('../../../server/communication/clientCommunication'),
     WebSocket = require('ws'),
-    messages = require('../../server/communication/messages'),
+    messages = require('../../../server/communication/messages'),
     expect = require('chai').expect,
     sinon = require('sinon');
 

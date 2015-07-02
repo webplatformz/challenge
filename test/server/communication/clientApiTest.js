@@ -3,12 +3,12 @@
 let expect = require('chai').expect,
     WebSocket = require('ws'),
     WebSocketServer = require('ws').Server,
-    ClientApi = require('../../server/communication/clientApi'),
-    GameType = require('../../server/game/game').GameType,
-    GameMode = require('../../server/game/gameMode'),
-    CardColor = require('../../server/game/deck/card').CardColor;
+    ClientApi = require('../../../server/communication/clientApi'),
+    GameType = require('../../../server/game/game').GameType,
+    GameMode = require('../../../server/game/gameMode'),
+    CardColor = require('../../../server/game/deck/card').CardColor;
 
-let messages = require('../../server/communication/messages');
+let messages = require('../../../server/communication/messages');
 
 describe('Client API', () => {
 

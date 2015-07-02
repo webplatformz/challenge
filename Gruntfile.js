@@ -50,9 +50,7 @@ module.exports = function (grunt) {
                 timeout: 3000,
                 ignoreLeaks: false
             },
-            all: {src: ['build/test/game/**/*.js']},
-            integration: {src: ['build/test/communication/**/*.js']}
-
+            all: {src: ['build/test/**/*.js']}
         },
         sync: {
             main: {
