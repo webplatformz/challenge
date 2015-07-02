@@ -18,16 +18,30 @@ let Game = {
     },
 
     schieben: function () {
-        // request trump with the other player in team, isPushed =false
-    },
-
-
-    start: function () {
-        return this.startPlayer.requestTrumpf(false)
+        let playerWhoHasGeschobenIndex = this.players.indexOf(this.startPlayer);
+        let partnerPlayerIndex = (2 + playerWhoHasGeschobenIndex) % 4;
+        let partnerPlayer = this.players[partnerPlayerIndex];
+        return partnerPlayer.requestTrumpf(true)
             .then((gameType) => {
                 this.gameType = gameType;
                 this.clientApi.broadcastTrumpf(gameType);
                 return this.nextCycle();
+            });
+    },
+
+    start: function () {
+        return this.startPlayer.requestTrumpf(false)
+            .then((response) => {
+                let gameType = response.gameType;
+                let schieben = response.schieben;
+                console.log('******** isGeschoben: ' + schieben);
+                if (schieben) {
+                    return this.schieben();
+                } else {
+                    this.gameType = gameType;
+                    this.clientApi.broadcastTrumpf(gameType);
+                    return this.nextCycle();
+                }
             });
     }
 };

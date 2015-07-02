@@ -49,6 +49,26 @@ describe('Game', function () {
         clientApiMock.verify();
     });
 
+    it.skip('should request the trumpf from the correct player when the player schiebs', () => {
+        let ex1 = clientApiMock.expects('requestTrumpf').once()
+            .withArgs(false).returns(Promise.resolve({
+                gameType : 'isEgal',
+                schieben : true
+            }));
+
+        let ex2 = clientApiMock.expects('requestTrumpf').once()
+            .withArgs(true).returns(Promise.resolve({
+                gameType : 'isEgal',
+                schieben : false
+            }));
+
+        game = Game.create(players, maxPoints, players[0], clientApi);
+        game.start();
+
+        ex1.verify();
+        ex2.verify();
+    });
+
     it('should save and broadcast the trumpf when it has been chosen from the player', (done) => {
         let gameMode = GameMode.TRUMPF;
         let cardColor = Card.CardColor.HEARTS;
@@ -61,7 +81,11 @@ describe('Game', function () {
         let cycleMock = sinon.mock(cycle).expects('iterate').exactly(9).returns(Promise.resolve());
         cycleFactoryMock.expects('create').exactly(9).returns(cycle);
 
-        clientApiMock.expects('requestTrumpf').once().returns(Promise.resolve(gameType));
+        clientApiMock.expects('requestTrumpf').once().returns(Promise.resolve({
+            gameType : gameType,
+            schieben : false
+        }));
+
         clientApiMock.expects('broadcastTrumpf').once();
 
         game = Game.create(players, maxPoints, players[0], clientApi);
