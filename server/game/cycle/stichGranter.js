@@ -32,14 +32,22 @@ let StichGranter = {
             return index === 0;
         }
 
+        function isBuur(card) {
+            return card.number === 11 && card.color === trumpfColor;
+        }
+
+        function isNell(card) {
+            return card.number === 9 && card.color === trumpfColor;
+        }
+
         function isHighestTrumpfSoFar(card) {
             if (!isTrumpf(card)) {
                 return false;
             }
-            if (card.isBuur()) {
+            if (isBuur(card)) {
                 return true;
             }
-            if(!winnerCard.isBuur() && card.isNell()) {
+            if(!isBuur(winnerCard) && isNell(card)) {
                 return true;
             }
             if (trumpfAlreadyPlayed()) {
