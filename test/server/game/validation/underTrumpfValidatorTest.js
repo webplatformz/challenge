@@ -64,6 +64,7 @@ describe('UnderTrumpf Validator', function () {
 
         assert(!validationResult.permitted);
     });
+
     it('should allow lower Trumpf when having Trumpf only', () => {
         let parameters = {
             color: Card.CardColor.HEARTS,
@@ -71,6 +72,20 @@ describe('UnderTrumpf Validator', function () {
             tableCards: [Card.create(6, Card.CardColor.DIAMONDS), Card.create(12, Card.CardColor.HEARTS)],
             handCards: [Card.create(6, Card.CardColor.HEARTS), Card.create(14, Card.CardColor.HEARTS)],
             cardToPlay: Card.create(6, Card.CardColor.HEARTS)
+        };
+
+        let validationResult = UnderTrumpfValidator.validate(parameters);
+
+        assert(validationResult.permitted);
+    });
+
+    it('should allow to play trumpf, if trumpf is the color', () => {
+        let parameters = {
+            color: Card.CardColor.HEARTS,
+            mode: GameMode.TRUMPF,
+            tableCards: [Card.create(11, Card.CardColor.HEARTS)],
+            handCards: [Card.create(2, Card.CardColor.HEARTS), Card.create(14, Card.CardColor.SPADES)],
+            cardToPlay: Card.create(2, Card.CardColor.HEARTS)
         };
 
         let validationResult = UnderTrumpfValidator.validate(parameters);
