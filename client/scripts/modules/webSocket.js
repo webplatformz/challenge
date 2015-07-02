@@ -36,8 +36,11 @@ function handlePageLoad() {
 
     consoleLog = document.getElementById("consoleLog");
 
-    clearLogBut = document.getElementById("clearLogBut");
-    clearLogBut.onclick = clearLog;
+    document.getElementById("clearLogBut").addEventListener('click', () => {
+        while (consoleLog.childNodes.length > 0) {
+            consoleLog.removeChild(consoleLog.lastChild);
+        }
+    });
 
     setGuiConnected(false);
 
@@ -139,12 +142,6 @@ function setGuiConnected(isConnected) {
     }
     secureCbLabel.style.color = labelColor;
 
-}
-
-function clearLog() {
-    while (consoleLog.childNodes.length > 0) {
-        consoleLog.removeChild(consoleLog.lastChild);
-    }
 }
 
 window.addEventListener("load", handlePageLoad, false);

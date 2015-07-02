@@ -90,11 +90,15 @@ module.exports = function (grunt) {
         watch: {
             sync: {
                 files: ['./*.html', './img/**/*'],
-                tasks: ['sync']
+                tasks: ['clean', 'sync']
             },
             babel: {
                 files: ['./server/**/*.js', './shared/**/*.js'],
-                tasks: ['clean', 'babel', 'simplemocha', 'jshint']
+                tasks: ['babel', 'simplemocha', 'jshint']
+            },
+            browserify: {
+                files: ['./client/**/*.js', './shared/**/*.js'],
+                tasks: ['browserify']
             }
         },
         nodemon: {
