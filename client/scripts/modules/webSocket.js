@@ -35,11 +35,11 @@ function handlePageLoad() {
     });
 
     document.getElementById("chooseTrumpf").addEventListener('click', () => {
-        let gameMode = document.getElementById('gameMode').value,
-            cardColor  = document.getElementById('cardColor').value,
+        let mode = document.getElementById('mode').value,
+            trumpfColor  = document.getElementById('trumpfColor').value,
             message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_TRUMPF, {
-                gameMode,
-                cardColor
+                mode,
+                trumpfColor
             }));
         websocket.send(message);
 

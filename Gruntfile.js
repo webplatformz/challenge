@@ -93,7 +93,7 @@ module.exports = function (grunt) {
                 tasks: ['clean', 'sync']
             },
             babel: {
-                files: ['./server/**/*.js', './shared/**/*.js'],
+                files: ['./server/**/*.js', './shared/**/*.js', './test/**/*.js'],
                 tasks: ['babel', 'simplemocha', 'jshint']
             },
             browserify: {

@@ -3,6 +3,7 @@
 let Deck = require('./deck/deck');
 let Cycle = require('./cycle/cycle');
 let Counter = require('./counter/counter');
+let GameMode = require('./gameMode');
 
 let Game = {
     currentRound: 0,
@@ -31,10 +32,8 @@ let Game = {
 
     start: function () {
         return this.startPlayer.requestTrumpf(false)
-            .then((response) => {
-                let gameType = response.gameType;
-                let schieben = response.schieben;
-                if (schieben) {
+            .then((gameType) => {
+                if (gameType.mode === GameMode.SCHIEBEN) {
                     return this.schieben();
                 } else {
                     this.gameType = gameType;

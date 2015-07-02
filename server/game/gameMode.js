@@ -1,7 +1,8 @@
 let GameMode = {
     TRUMPF: "Trumpf",
     OBENABEN: "Obenaben",
-    UNTENRAUF: "Untenrauf"
+    UNTENRAUF: "Untenrauf",
+    SCHIEBEN: "Schieben"
 };
 
 Object.freeze(GameMode);

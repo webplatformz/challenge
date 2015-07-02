@@ -101,10 +101,7 @@ describe('Game', function () {
         let cycleMock = sinon.mock(cycle).expects('iterate').exactly(9).returns(Promise.resolve());
         cycleFactoryMock.expects('create').exactly(9).returns(cycle);
 
-        clientApiMock.expects('requestTrumpf').once().returns(Promise.resolve({
-            gameType : gameType,
-            schieben : false
-        }));
+        clientApiMock.expects('requestTrumpf').once().returns(Promise.resolve(gameType));
 
         clientApiMock.expects('broadcastTrumpf').once();
 
