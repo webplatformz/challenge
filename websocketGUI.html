@@ -53,7 +53,7 @@
     function toggleTls() {
         var wsPort = (window.location.port.toString() === "" ? "" : ":" + window.location.port)
         if (wsUri.value === "") {
-            wsUri.value = "ws://" + window.location.hostname.replace("www", "echo") + wsPort;
+            wsUri.value = "ws://" + window.location.host;
         }
 
         if (secureCb.checked) {
@@ -106,7 +106,7 @@
     function logToConsole(message) {
         var pre = document.createElement("p");
         pre.style.wordWrap = "break-word";
-        pre.innerHTML = getSecureTag() + message;
+        pre.innerHTML = message;
         consoleLog.appendChild(pre);
 
         while (consoleLog.childNodes.length > 50) {
@@ -155,14 +155,6 @@
         }
     }
 
-    function getSecureTag() {
-        if (secureCb.checked) {
-            return '<img src="img/tls-lock.png" width="6px" height="9px"> ';
-        } else {
-            return '';
-        }
-    }
-
     window.addEventListener("load", echoHandlePageLoad, false);
 </script>
 
@@ -170,7 +162,7 @@
     <div style="float: left;" id="echo-config">
         <strong>Location:</strong>
         <br>
-        <input size="35" id="wsUri" value="ws://localhost:3000">
+        <input size="35" id="wsUri" value="ws://localhost:3001">
         <br>
         <input type="checkbox" onclick="toggleTls();" id="secureCb">
         <span style="font-size: smaller; color: black;" id="secureCbLabel">Use secure WebSocket (TLS)</span>
