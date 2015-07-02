@@ -22,81 +22,63 @@ function createRequestPlayerName () {
 function createChoosePlayerName (playerName) {
     return {
         type: MessageType.CHOOSE_PLAYER_NAME,
-        data: {
-            playerName
-        }
+        data: playerName
     };
 }
 
 function createDealCards (cards) {
     return {
         type: MessageType.DEAL_CARDS,
-        data: {
-            cards
-        }
+        data: cards
     };
 }
 
 function createRequestTrumpf (geschoben) {
     return {
         type: MessageType.REQUEST_TRUMPF,
-        data: {
-            geschoben
-        }
+        data: geschoben
     };
 }
 
 function createChooseTrumpf (gameType) {
     return {
         type: MessageType.CHOOSE_TRUMPF,
-        data: {
-            gameType
-        }
+        data: gameType
     };
 }
 
 function createBroadcastTrumpf (gameType) {
     return {
         type: MessageType.BROADCAST_TRUMPF,
-        data: {
-            gameType
-        }
+        data: gameType
     };
 }
 
 function createPlayedCards (playedCards) {
     return {
         type: MessageType.PLAYED_CARDS,
-        data: {
-            playedCards
-        }
+        data: playedCards
     };
 }
 
 function createRequestCard (cards) {
     return {
         type: MessageType.REQUEST_CARD,
-        data: {
-            cards
-        }
+        data: cards
     };
 }
 
 function createChooseCard (card) {
     return {
         type: MessageType.CHOOSE_CARD,
-        data: {
-            card
-        }
+        data: card
     };
 }
 
 function createRejectCard (card) {
     return {
         type: MessageType.REJECT_CARD,
-        data: {
-            card
-        }
+        data: card
     };
 }
 
