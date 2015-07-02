@@ -12,7 +12,7 @@ let expect = require('chai').expect,
 
 let messages = require('../../../shared/messages/messages');
 
-describe.skip('Integration test', () => {
+describe.only('Integration test', () => {
 
     let wss,
         clientApi;
@@ -43,10 +43,8 @@ describe.skip('Integration test', () => {
             });
 
             if(cardToPlay === undefined) {
-                console.log("#########################333 epic fail #################################");
+                console.log("########## EPIC FAIL: PLAYER CANNOT PLAY CARD. This should never happen! ###########");
             }
-
-            console.log("client " + JSON.stringify(tableCards) + " hand " + JSON.stringify(handCards) + " card to play " + JSON.stringify(cardToPlay));
             return cardToPlay;
         };
 
@@ -70,7 +68,6 @@ describe.skip('Integration test', () => {
                 handCards3,
                 handCards4;
             client1.on('message', (messageJson) => {
-                //console.log("client1 " + message);
                 let message = JSON.parse(messageJson);
 
                 if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
@@ -96,7 +93,6 @@ describe.skip('Integration test', () => {
 
             let client2 = new WebSocket('ws://localhost:10001');
             client2.on('message', (message) => {
-                //console.log("client2 " + message);
                 message = JSON.parse(message);
 
                 if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
@@ -108,7 +104,6 @@ describe.skip('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    console.log("choosing card 2");
                     let handCard = giveValidCardFromHand(message.data, handCards2);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client2.send(JSON.stringify(chooseCardResonse));
@@ -117,7 +112,6 @@ describe.skip('Integration test', () => {
 
             let client3 = new WebSocket('ws://localhost:10001');
             client3.on('message', (message) => {
-                //console.log("client3 " + message);
                 message = JSON.parse(message);
 
                 if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
@@ -129,8 +123,6 @@ describe.skip('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    done();
-                    console.log("hand cards 3: " + handCards3);
                     let handCard = giveValidCardFromHand(message.data, handCards3);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client3.send(JSON.stringify(chooseCardResonse));
@@ -139,7 +131,6 @@ describe.skip('Integration test', () => {
 
             let client4 = new WebSocket('ws://localhost:10001');
             client4.on('message', (message) => {
-                //console.log("client4 " + message);
                 message = JSON.parse(message);
 
                 if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
@@ -151,10 +142,11 @@ describe.skip('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    //let handCard = giveValidCardFromHand(message.data, handCards4);
-                    //let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
-                    //client3.send(JSON.stringify(chooseCardResonse));
-                    console.log("finish");
+                    let handCard = giveValidCardFromHand(message.data, handCards4);
+                    let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
+                    client4.send(JSON.stringify(chooseCardResonse));
+                    done();
+                    
                 }
             });
 
