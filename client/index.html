@@ -13,7 +13,7 @@
         <br>
         <input size="35" id="wsUri" value="">
         <br>
-        <input type="checkbox" onclick="toggleTls();" id="secureCb">
+        <input type="checkbox" id="secureCb">
         <span style="font-size: smaller; color: black;" id="secureCbLabel">Use secure WebSocket (TLS)</span>
         <br>
         <button id="connect">Connect</button>
@@ -22,13 +22,14 @@
         <br>
         <strong>Message:</strong>
         <br>
-        <input value="Rock it with HTML5 WebSocket" size="35" id="sendMessage" disabled="">
-        <br>
-        <button class="wsButton" id="send" disabled="">Send</button>
+        <form>
+            <input value="PlayerName" size="35" id="playerName">
+            <button type="button" id="choosePlayerName">Send</button>
+        </form>
     </div>
     <div style="float: left; margin-left: 20px; padding-left: 20px; width: 350px; border-left: solid 1px #cccccc;" id="echo-log"> <strong>Log:</strong>
         <div id="consoleLog"></div>
         <button style="position: relative; top: 3px;" id="clearLogBut">Clear log</button>
     </div>
-    <div class="clearfix"></div>
+    <div style="clear: both;"></div>
 </div>
