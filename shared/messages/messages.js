@@ -7,6 +7,7 @@ let MessageType = {
     REQUEST_TRUMPF: 'REQUEST_TRUMPF',
     CHOOSE_TRUMPF: 'CHOOSE_TRUMPF',
     BROADCAST_TRUMPF: 'BROADCAST_TRUMPF',
+    BROADCAST_STICH: 'BROADCAST_STICH',
     PLAYED_CARDS: 'PLAYED_CARDS',
     REQUEST_CARD: 'REQUEST_CARD',
     CHOOSE_CARD: 'CHOOSE_CARD',
@@ -54,6 +55,13 @@ function createBroadcastTrumpf (gameType) {
     };
 }
 
+function createBroadcastStich (winner) {
+    return {
+        type: MessageType.BROADCAST_STICH,
+        data: winner
+    };
+}
+
 function createPlayedCards (playedCards) {
     return {
         type: MessageType.PLAYED_CARDS,
@@ -96,6 +104,8 @@ function create(messageType, ...data) {
             return createChooseTrumpf(...data);
         case MessageType.BROADCAST_TRUMPF:
             return createBroadcastTrumpf(...data);
+        case MessageType.BROADCAST_STICH:
+            return createBroadcastStich(...data);
         case MessageType.PLAYED_CARDS:
             return createPlayedCards(...data);
         case MessageType.REQUEST_CARD:

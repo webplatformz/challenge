@@ -75,6 +75,7 @@ describe('Cycle', function () {
     it('should call the clientapi correctly', (done) => {
         playerMock.expects('requestCard').exactly(1).returns(Promise.resolve(cards[0]));
         clientApiMock.expects('broadcastCardPlayed').exactly(4);
+        clientApiMock.expects('broadcastStich').exactly(1);
 
         let cycle = Cycle.create(players[0], players, clientApi, gameType);
         cycle.validator = {
