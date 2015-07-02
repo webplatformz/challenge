@@ -157,9 +157,8 @@ describe('Client API', () => {
         it('should send the winner of the stich to all clients', (done) => {
             let clients,
                 clientPromises = [],
-                stichMessage = { name : 'hans' };
+                stichMessage = {name: 'hans'};
 
-            //console.log(JSON.stringify(winner));
             wss.on('connection', (client) => {
                 clientApi.addClient(client);
 
@@ -286,29 +285,26 @@ describe('Client API', () => {
     });
 
     describe('rejectCard', () => {
-        it('should wait for chooseCard', (done) => {
-            let chooseCard = messages.create(messages.MessageType.CHOOSE_CARD, 'a'),
-                cardsOnTable = ['c', 'b'],
+        it('should reject card to given client', (done) => {
+            let cardsOnTable = ['c', 'b'],
                 card = 'e';
 
             wss.on('connection', (client) => {
                 clientApi.addClient(client);
 
-                clientApi.rejectCard(client, card, cardsOnTable).then((data) => {
-                    expect(data.card).to.equal(chooseCard.data.card);
-                    done();
-                }).catch(done);
+                clientApi.rejectCard(client, card, cardsOnTable);
             });
 
             let client = new WebSocket('ws://localhost:10001');
 
-            client.on('message', (message) => {
-                message = JSON.parse(message);
+            new Promise((resolve) => {
+                client.on('message', (message) => {
+                    message = JSON.parse(message);
 
-                if (message.type === messages.MessageType.REJECT_CARD) {
-                    client.send(JSON.stringify(chooseCard));
-                }
-            });
+                    expect(message.type).to.equal(messages.MessageType.REJECT_CARD);
+                    resolve();
+                });
+            }).then(done, done);
         });
     });
 });
