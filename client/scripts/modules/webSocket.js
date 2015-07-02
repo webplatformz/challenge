@@ -7,7 +7,8 @@ let secureCb,
     connectBut,
     disconnectBut,
     clearLogBut,
-    websocket;
+    websocket,
+    messages = require('../../../shared/messages/messages');
 
 function handlePageLoad() {
     secureCb = document.getElementById("secureCb");
@@ -27,10 +28,7 @@ function handlePageLoad() {
 
     document.getElementById("choosePlayerName").addEventListener('click', () => {
         let playerName = document.getElementById('playerName').value,
-            message = JSON.stringify({
-                type: "CHOOSE_PLAYER_NAME",
-                data: playerName
-            });
+            message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, playerName));
         websocket.send(message);
 
         logToConsole("SENT: " + message);
