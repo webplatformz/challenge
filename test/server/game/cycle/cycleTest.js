@@ -72,12 +72,9 @@ describe('Cycle', function () {
             }).catch(done);
     });
 
-    it('should call the clientapi correctly', () => {
-        var promise = Promise.resolve();
-        playerMock.expects('requestCard').exactly(1)
-            .returns(promise);
+    it('should call the clientapi correctly', (done) => {
+        playerMock.expects('requestCard').exactly(1).returns(Promise.resolve(cards[0]));
         clientApiMock.expects('broadcastCardPlayed').exactly(4);
-
 
         let cycle = Cycle.create(players[0], players, clientApi, gameType);
         cycle.validator = {
@@ -85,12 +82,14 @@ describe('Cycle', function () {
                 return true;
             }
         };
-        cycle.iterate();
+
+        let promise = cycle.iterate();
 
         promise.then(function () {
             clientApiMock.verify();
             playerMock.verify();
-        });
+            done();
+        }).catch(done);
     });
 
 

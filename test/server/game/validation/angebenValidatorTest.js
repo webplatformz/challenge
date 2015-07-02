@@ -92,5 +92,19 @@ describe('Angeben Validator', function () {
 
         assert(!validationResult.permitted);
     });
+
+    it('should allow another color, if no cards of the given color have been left', () => {
+        let parameters = {
+            color: Card.CardColor.SPADES,
+            mode: GameMode.TRUMPF,
+            tableCards: [Card.create(6, Card.CardColor.DIAMONDS)],
+            handCards: [Card.create(11, Card.CardColor.HEARTS), Card.create(10, Card.CardColor.HEARTS), Card.create(10, Card.CardColor.HEARTS)],
+            cardToPlay: Card.create(10, Card.CardColor.HEARTS)
+        };
+
+        let validationResult = AngebenValidator.validate(parameters);
+
+        assert(validationResult.permitted);
+    });
 });
 
