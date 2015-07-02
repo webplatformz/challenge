@@ -23,7 +23,7 @@
     "mocha": "2.1.0",
     "mocha-sinon": "1.1.4",
     "mockery": "1.4.0",
-    "sinon": "1.12.2"
+    "sinon": "1.12.2",
     "express": "4.12.1",
     "underscore": "1.8.2",
     "ws": "0.7.1",
