@@ -32,7 +32,7 @@ function handlePageLoad() {
     for (let i = 0; i < cardTypeRadios.length; i++) {
         cardTypeRadios[i].onclick = function () {
             gameState.setCardType(cardType[this.value]);
-            drawCards();
+            drawCardsInHand();
         };
     }
 
@@ -162,6 +162,10 @@ function onMessage(evt) {
         switch (message.type) {
             case messages.MessageType.DEAL_CARDS:
                 handleDealCards(message.data);
+                break;
+            case messages.MessageType.PLAYED_CARDS:
+                handlePlayedCards(message.data);
+                break;
         }
     }
 
@@ -170,19 +174,48 @@ function onMessage(evt) {
 
 function handleDealCards(cards) {
     gameState.setCardsInHand(cards);
-    drawCards();
+    drawCardsInHand();
 }
 
-function drawCards() {
-    let cardsInHandBlock = document.getElementById('cardsInHand');
+function handlePlayedCards(playedCards) {
+    let playedCardsBlock = document.getElementById('cardsPlayed');
 
+    gameState.removeLastCardPlayed();
+    drawCardsInHand();
+
+    removeAllChildren(playedCardsBlock);
+    playedCards.forEach((playedCard) => {
+        addCardToDom(playedCardsBlock, playedCard);
+    });
+}
+
+function drawCardsInHand() {
+    let cardsInHandBlock = document.getElementById('cardsInHand');
     removeAllChildren(cardsInHandBlock);
 
     gameState.cardsInHand.forEach((card) => {
-        let cardImage = document.createElement('img');
-        cardImage.src = 'images/cards/' + gameState.cardType + '/' + card.color + "_" + card.number + ".gif";
-        cardsInHandBlock.appendChild(cardImage);
+        addCardToDom(cardsInHandBlock, card, playCard.bind(undefined, card));
     });
+}
+
+function addCardToDom(node, card, onClick) {
+    let cardImage = document.createElement('img');
+    cardImage.src = 'images/cards/' + gameState.cardType + '/' + card.color + "_" + card.number + ".gif";
+
+    if (onClick) {
+        cardImage.onclick = onClick;
+    }
+
+    node.appendChild(cardImage);
+}
+
+function playCard(card) {
+    gameState.lastCardPlayed = card;
+
+    let message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_CARD, card));
+    websocket.send(message);
+
+    logToConsole("SENT: " + message);
 }
 
 function removeAllChildren(node) {

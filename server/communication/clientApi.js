@@ -3,11 +3,10 @@
 let messages = require('../../shared/messages/messages'),
     clientCommunication = require('./clientCommunication');
 
-function resolveCorrectMessageOrReject(client, expectedMessageType, resolve, reject, message) {
+function resolveCorrectMessageOrReject(expectedMessageType, message, resolve, reject) {
     let messageObject = clientCommunication.fromJSON(message);
 
     if (messageObject && messageObject.type === expectedMessageType) {
-        client.removeListener('message', resolveCorrectMessageOrReject);
         resolve(messageObject.data);
     } else {
         reject('Invalid client answer: ' + message);
@@ -21,7 +20,7 @@ let ClientApi = {
 
     requestPlayerName: function requestPlayerName(client) {
         return clientCommunication.request(client, messages.MessageType.REQUEST_PLAYER_NAME,
-            resolveCorrectMessageOrReject.bind(null, client, messages.MessageType.CHOOSE_PLAYER_NAME));
+            resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_PLAYER_NAME));
     },
 
     dealCards: function dealCards(client, cards) {
@@ -30,7 +29,7 @@ let ClientApi = {
 
     requestTrumpf: function requestTrumpf(client, pushed) {
         return clientCommunication.request(client, messages.MessageType.REQUEST_TRUMPF,
-            resolveCorrectMessageOrReject.bind(null, client, messages.MessageType.CHOOSE_TRUMPF),
+            resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_TRUMPF),
             pushed);
     },
 
@@ -48,15 +47,12 @@ let ClientApi = {
 
     requestCard: function requestCard(client, cardsOnTable) {
         return clientCommunication.request(client, messages.MessageType.REQUEST_CARD,
-            resolveCorrectMessageOrReject.bind(null, client, messages.MessageType.CHOOSE_CARD),
+            resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_CARD),
             cardsOnTable);
     },
 
     rejectCard: function rejectCard(client, card, cardsOnTable) {
-        return clientCommunication.request(client, messages.MessageType.REJECT_CARD,
-            resolveCorrectMessageOrReject.bind(null, client, messages.MessageType.CHOOSE_CARD),
-            card,
-            cardsOnTable);
+        clientCommunication.send(client, messages.MessageType.REJECT_CARD, card, cardsOnTable);
     }
 };
 

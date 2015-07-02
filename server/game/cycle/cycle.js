@@ -16,7 +16,9 @@ let Cycle = {
                 that.currentPlayer.removeCard(card);
                 that.clientApi.broadcastCardPlayed(that.playedCards);
             } else {
-                return that.currentPlayer.rejectCard(card, that.playedCards).then(handleChosenCard.bind(null, player));
+                return that.currentPlayer.rejectCard(card, that.playedCards)
+                    .then(that.currentPlayer.requestCard(that.playedCards))
+                    .then(handleChosenCard.bind(null, player));
             }
 
             return that.playedCards;
@@ -41,13 +43,11 @@ let Cycle = {
         }
 
         function getOtherTeam(team) {
-            let otherTeam;
-            that.players.forEach((player) => {
-                if (team.name !== player.team.name) {
-                    otherTeam = player.team;
+            for (var i = 0; i < that.players.length; i++) {
+                if (that.players[i].team.name !== team.name) {
+                    return that.players[i].team;
                 }
-            });
-            return otherTeam;
+            }
         }
 
         return that.players.reduce((previousPlayer, currentPlayer, index) => {
