@@ -27,7 +27,7 @@ describe('Cycle', function () {
         cards = Deck.create().cards;
     });
 
-    it('should return the played cards after each round', (done) => {
+    it('should return the player who won after each cycle', (done) => {
         sinon.stub(players[0], 'requestCard').returns(Promise.resolve(cards[0]));
         sinon.stub(players[1], 'requestCard').returns(Promise.resolve(cards[1]));
         sinon.stub(players[2], 'requestCard').returns(Promise.resolve(cards[2]));
@@ -41,8 +41,8 @@ describe('Cycle', function () {
         };
 
         cycle.iterate()
-            .then(function (playedCards) {
-                expect(playedCards).to.eql([cards[0], cards[1], cards[2], cards[3]]);
+            .then(function (winner) {
+                expect(players).to.include(winner);
                 done();
             }).catch(done);
     });
@@ -60,9 +60,14 @@ describe('Cycle', function () {
             }
         };
 
+        clientApiMock.expects('broadcastCardPlayed').withArgs([cards[2]]).once();
+        clientApiMock.expects('broadcastCardPlayed').withArgs([cards[2], cards[3]]).once();
+        clientApiMock.expects('broadcastCardPlayed').withArgs([cards[2], cards[3], cards[0]]).once();
+        clientApiMock.expects('broadcastCardPlayed').withArgs([cards[2], cards[3], cards[0], cards[1]]).once();
+
         cycle.iterate()
-            .then(function (playedCards) {
-                expect(playedCards).to.eql([cards[2], cards[3], cards[0], cards[1]]);
+            .then(function () {
+                clientApiMock.verify();
                 done();
             }).catch(done);
     });

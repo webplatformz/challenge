@@ -16,12 +16,6 @@ let Cycle = {
                 let cardIndex = that.currentPlayer.cards.indexOf(card);
                 that.currentPlayer.cards.splice(cardIndex, 1);
                 that.clientApi.broadcastCardPlayed(that.playedCards);
-
-                if (that.playedCards.length === 4) {
-                    let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, that.playedCards, that.players);
-                    let points = counter.count(that.gameType.mode, that.gameType.trumpfColor, that.playedCards);
-                    winner.team.points += points;
-                }
             } else {
                 return that.currentPlayer.rejectCard(card, that.playedCards).then(handleChosenCard);
             }
@@ -41,6 +35,11 @@ let Cycle = {
             return previousPromise.then((cardsOnTable) => {
                 return currentPlayer.requestCard(cardsOnTable).then(handleChosenCard.bind(null, currentPlayer));
             });
+        }).then((playedCards) => {
+            let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
+            winner.team.points += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
+            console.log(winner);
+            return winner;
         });
     }
 };
