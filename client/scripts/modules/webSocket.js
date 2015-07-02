@@ -34,6 +34,30 @@ function handlePageLoad() {
         logToConsole("SENT: " + message);
     });
 
+    document.getElementById("chooseTrumpf").addEventListener('click', () => {
+        let gameMode = document.getElementById('gameMode').value,
+            cardColor  = document.getElementById('cardColor').value,
+            message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_TRUMPF, {
+                gameMode,
+                cardColor
+            }));
+        websocket.send(message);
+
+        logToConsole("SENT: " + message);
+    });
+
+    document.getElementById("chooseCard").addEventListener('click', () => {
+        let number = document.getElementById('number').value,
+            color  = document.getElementById('color').value,
+            message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_CARD, {
+                number,
+                color
+            }));
+        websocket.send(message);
+
+        logToConsole("SENT: " + message);
+    });
+
     consoleLog = document.getElementById("consoleLog");
 
     document.getElementById("clearLogBut").addEventListener('click', () => {
