@@ -52,10 +52,7 @@ let ClientApi = {
     },
 
     rejectCard: function rejectCard(client, card, cardsOnTable) {
-        return clientCommunication.request(client, messages.MessageType.REJECT_CARD,
-            resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_CARD),
-            card,
-            cardsOnTable);
+        clientCommunication.send(client, messages.MessageType.REJECT_CARD, card, cardsOnTable);
     }
 };
 

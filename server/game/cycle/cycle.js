@@ -16,7 +16,9 @@ let Cycle = {
                 that.currentPlayer.removeCard(card);
                 that.clientApi.broadcastCardPlayed(that.playedCards);
             } else {
-                return that.currentPlayer.rejectCard(card, that.playedCards).then(handleChosenCard.bind(null, player));
+                return that.currentPlayer.rejectCard(card, that.playedCards)
+                    .then(that.currentPlayer.requestCard(that.playedCards))
+                    .then(handleChosenCard.bind(null, player));
             }
 
             return that.playedCards;
