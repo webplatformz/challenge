@@ -1,7 +1,7 @@
 "use strict";
 
 let assert = require('assert');
-let Card = require('../../../../server/game/deck/card');
+let Card = require('../../../../shared/deck/card');
 
 describe('Card', function() {
     it('should be possible to create cards', function() {

@@ -2,7 +2,7 @@
 
 let assert = require("assert"); // node.js core module
 let expect = require('chai').expect;
-let Card = require('../../../../server/game/deck/card');
+let Card = require('../../../../shared/deck/card');
 let Cycle = require('../../../../server/game/cycle/cycle');
 let clientApi = require('../../../../server/communication/clientApi').create();
 let Player = require('../../../../server/game/player/player');

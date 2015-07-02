@@ -1,7 +1,7 @@
 'use strict';
 
 let GameMode = require('../gameMode');
-let CardColor = require('../deck/card').CardColor;
+let CardColor = require('../../../shared/deck/card').CardColor;
 
 
 let nonTrumpCardValues = {

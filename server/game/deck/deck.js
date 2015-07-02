@@ -1,7 +1,7 @@
 'use strict';
 
 let _ = require('underscore');
-let Card = require('./card');
+let Card = require('./../../../shared/deck/card');
 
 let cards = _.map(_.range(36), function(element, index) {
     let cardStep = Math.floor(index / 4) + 6;
