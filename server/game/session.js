@@ -22,8 +22,8 @@ let Session = {
         this.players.push(player);
         this.clientApi.addClient(webSocket);
 
-        this.playerNameRequests.push(this.clientApi.requestPlayerName(webSocket).then((data) => {
-            player.name = data.playerName;
+        this.playerNameRequests.push(this.clientApi.requestPlayerName(webSocket).then((playerName) => {
+            player.name = playerName;
         }));
     },
 

@@ -47,7 +47,7 @@ function handlePageLoad() {
     });
 
     document.getElementById("chooseCard").addEventListener('click', () => {
-        let number = document.getElementById('number').value,
+        let number = Number(document.getElementById('number').value),
             color  = document.getElementById('color').value,
             message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_CARD, {
                 number,

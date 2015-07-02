@@ -1,22 +1,13 @@
 'use strict';
 let _ = require('underscore');
 
-
 let HasCardValidator = {
     validate: function (validationParameter) {
-        let contains = function(handCards, cardToPlay) {
-            let cardFound = false;
-            let cardToPlayAsString = JSON.stringify(cardToPlay);
-            handCards.forEach((card) => {
-                if(JSON.stringify(card) === cardToPlayAsString) {
-                    cardFound = true;
-                }
-            });
-
-            return cardFound;
+        let cardToPlay = function(cardToPlay, handCard) {
+            return cardToPlay.number === handCard.number && cardToPlay.color === handCard.color;
         };
 
-        if (contains(validationParameter.handCards, validationParameter.cardToPlay)) {
+        if (validationParameter.handCards.some(cardToPlay.bind(null, validationParameter.cardToPlay))) {
             return {
                 permitted: true
             };
