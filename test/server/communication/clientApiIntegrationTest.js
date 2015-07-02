@@ -33,15 +33,15 @@ describe.skip('Integration test', () => {
         };
 
         let giveValidCardFromHand = function(tableCards, handCards) {
-            let cardToPlay = handCards[0];
-            let validation = Validation.create(GameMode.TRUMPF, trumpf);
+            console.log("table cards " + tableCards);
+            let cardToPlay;
 
-            console.log("handCards length " + handCards.length);
-            //handCards.forEach((handCard) => {
-            //    if(validation.validate(tableCards, handCards, handCard)) {
-            //        cardToPlay = handCard;
-            //    }
-            //});
+            let validation = Validation.create(GameMode.TRUMPF, trumpf);
+            handCards.forEach((handCard) => {
+                if(validation.validate(tableCards, handCards, handCard)) {
+                    cardToPlay = handCard;
+                }
+            });
             return cardToPlay;
         };
 
@@ -61,9 +61,9 @@ describe.skip('Integration test', () => {
 
             let client1 = new WebSocket('ws://localhost:10001');
             let handCards1;
-            client1.on('message', (message) => {
+            client1.on('message', (messageJson) => {
                 //console.log("client1 " + message);
-                message = JSON.parse(message);
+                let message = JSON.parse(messageJson);
 
                 if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
                     client1.send(JSON.stringify(choosePlayerName("client 1")));
@@ -74,7 +74,7 @@ describe.skip('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    let handCard = giveValidCardFromHand(message.tableCards, handCards1);
+                    let handCard = giveValidCardFromHand(message.data, handCards1);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client1.send(JSON.stringify(chooseCardResonse));
                 }
