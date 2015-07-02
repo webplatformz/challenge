@@ -4,7 +4,7 @@ let _ = require('underscore');
 let HasCardValidator = {
     validate: function (validationParameter) {
         let cardToPlay = function(cardToPlay, handCard) {
-            return cardToPlay.number === handCard.number && cardToPlay.color === handCard.color;
+            return handCard.equals(cardToPlay);
         };
 
         if (validationParameter.handCards.some(cardToPlay.bind(null, validationParameter.cardToPlay))) {

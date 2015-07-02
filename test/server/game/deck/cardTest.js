@@ -1,7 +1,9 @@
 "use strict";
 
 let assert = require('assert');
-let Card = require('../../../../server/game/deck/card');
+let Card = require('../../../../shared/deck/card');
+let CardColor = require('../../../../shared/deck/card').CardColor;
+let GameMode = require('../../../../server/game/gameMode');
 
 describe('Card', function() {
     it('should be possible to create cards', function() {
@@ -10,7 +12,7 @@ describe('Card', function() {
         assert(card.color === Card.CardColor.DIAMONDS, 'Card has given color');
     });
 
-    it('should prevent modifications on CardColor', function() {
+    it('should prevent modifications on CardColor', () => {
         assert.throws(function() {
             Card.CardColor.DIAMONDS = 'test';
         }, 'Color Error');

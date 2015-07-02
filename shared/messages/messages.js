@@ -1,5 +1,7 @@
 'use strict';
 
+let Card = require('../deck/card');
+
 let MessageType = {
     REQUEST_PLAYER_NAME: 'REQUEST_PLAYER_NAME',
     CHOOSE_PLAYER_NAME: 'CHOOSE_PLAYER_NAME',
@@ -71,7 +73,7 @@ function createRequestCard (cards) {
 function createChooseCard (card) {
     return {
         type: MessageType.CHOOSE_CARD,
-        data: card
+        data: Card.create(card.number, card.color)
     };
 }
 
