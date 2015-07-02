@@ -73,7 +73,7 @@ module.exports = function (grunt) {
         },
         watch: {
             sync: {
-                files: './*.html,./img/**/*',
+                files: ['./*.html', './img/**/*'],
                 tasks: ['sync']
             },
             babel: {
