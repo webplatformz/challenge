@@ -17,6 +17,11 @@ let UnderTrumpfValidator = {
         if (validationParameter.cardToPlay.color !== trumpfColor) {
             return validationSuccess;
         }
+
+        var firstCardColor = validationParameter.tableCards[0].color;
+        if(firstCardColor === trumpfColor) {
+            return validationSuccess;
+        }
         
         let hasOtherThanTrumpf = false;        
         validationParameter.handCards.forEach(card => {
