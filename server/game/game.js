@@ -34,7 +34,6 @@ let Game = {
             .then((response) => {
                 let gameType = response.gameType;
                 let schieben = response.schieben;
-                console.log('******** isGeschoben: ' + schieben);
                 if (schieben) {
                     return this.schieben();
                 } else {
