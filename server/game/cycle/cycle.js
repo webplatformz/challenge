@@ -23,6 +23,13 @@ let Cycle = {
             return that.playedCards;
         }
 
+        function returnWinner(playedCards) {
+            let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
+            winner.team.points += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
+            console.log(winner);
+            return winner;
+        }
+
         return that.players.reduce((previousPlayer, currentPlayer, index) => {
             let previousPromise;
 
@@ -35,12 +42,7 @@ let Cycle = {
             return previousPromise.then((cardsOnTable) => {
                 return currentPlayer.requestCard(cardsOnTable).then(handleChosenCard.bind(null, currentPlayer));
             });
-        }).then((playedCards) => {
-            let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
-            winner.team.points += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
-            console.log(winner);
-            return winner;
-        });
+        }).then(returnWinner);
     }
 };
 
