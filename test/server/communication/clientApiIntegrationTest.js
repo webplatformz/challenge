@@ -6,7 +6,7 @@ let expect = require('chai').expect,
     ClientApi = require('../../../server/communication/clientApi'),
     GameType = require('../../../server/game/game').GameType,
     GameMode = require('../../../server/game/gameMode'),
-    CardColor = require('../../../server/game/deck/card').CardColor,
+    CardColor = require('../../../shared/deck/card').CardColor,
     Validation = require('../../../server/game/validation/validation'),
     JassSession = require('../../../server/game/session');
 

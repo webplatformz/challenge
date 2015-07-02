@@ -3,7 +3,7 @@
 let assert = require('assert'); // node.js core module
 let expect = require('chai').expect;
 let Player = require('../../../../server/game/player/player');
-let Card = require('../../../../server/game/deck/card');
+let Card = require('../../../../shared/deck/card');
 
 describe('Player', function() {
 

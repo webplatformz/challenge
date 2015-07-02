@@ -1,6 +1,6 @@
 'use strict';
 
-let Card = require('../server/game/deck/card');
+let Card = require('../shared/deck/card');
 let Deck = require('../server/game/deck/deck');
 let Player = require('../server/game/player/player');
 let Team = require('../server/game/player/team');
