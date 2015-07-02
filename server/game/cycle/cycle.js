@@ -13,8 +13,7 @@ let Cycle = {
 
             if (that.validator.validate(that.playedCards, that.currentPlayer.cards, card)) {
                 that.playedCards.push(card);
-                let cardIndex = that.currentPlayer.cards.indexOf(card);
-                that.currentPlayer.cards.splice(cardIndex, 1);
+                that.currentPlayer.removeCard(card);
                 that.clientApi.broadcastCardPlayed(that.playedCards);
             } else {
                 return that.currentPlayer.rejectCard(card, that.playedCards).then(handleChosenCard);

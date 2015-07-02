@@ -5,6 +5,7 @@ let create = function create(team, name, clientApi) {
         team,
         name,
         clientApi,
+        cards : [],
 
         dealCards: function dealCards(cards) {
             this.cards = cards;
@@ -21,6 +22,12 @@ let create = function create(team, name, clientApi) {
 
         requestTrumpf: function (isGeschoben) {
             return this.clientApi.requestTrumpf(isGeschoben);
+        },
+
+        removeCard: function removeCard(cardToRemove) {
+            this.cards = this.cards.filter((card) => {
+                return !card.equals(cardToRemove);
+            });
         }
     };
 };
