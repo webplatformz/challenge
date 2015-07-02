@@ -19,14 +19,26 @@ let GameState = {
 
     removeCard: function (card) {
         this.cardsInHand.splice(this.cardsInHand.indexOf(card), 1);
+    },
+
+    setCardType: function (cardType) {
+        this.cardType = cardType;
     }
 };
 
 let create = function create() {
-    return Object.create(GameState);
-}
+    let gameState = Object.create(GameState);
+    gameState.cardType = CardType.FRENCH;
 
+    return gameState;
+};
+
+let CardType = {
+    FRENCH: 'french',
+    GERMAN: 'german'
+};
 
 module.exports = {
-    create
+    create,
+    CardType
 };

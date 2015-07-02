@@ -66,7 +66,6 @@ let GameType = {
         return {
             mode: gameMode,
             trumpfColor: cardColor
-
         };
     }
 };

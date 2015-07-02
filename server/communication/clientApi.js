@@ -3,7 +3,7 @@
 let messages = require('../../shared/messages/messages'),
     clientCommunication = require('./clientCommunication');
 
-function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {
+function resolveCorrectMessageOrReject(client, expectedMessageType, resolve, reject, message) {
     let messageObject = clientCommunication.fromJSON(message);
 
     if (messageObject && messageObject.type === expectedMessageType) {

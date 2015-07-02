@@ -9,7 +9,8 @@ let secureCb,
     clearLogBut,
     websocket,
     messages = require('../../../shared/messages/messages'),
-    gameState = require('./gameState').create();
+    gameState = require('./gameState').create(),
+    cardType = require('./gameState').CardType;
 
 function handlePageLoad() {
     secureCb = document.getElementById("secureCb");
@@ -27,6 +28,14 @@ function handlePageLoad() {
     disconnectBut = document.getElementById("disconnect");
     disconnectBut.onclick = doDisconnect;
 
+    let cardTypeRadios = document.getElementsByName('cardType');
+    for (let i = 0; i < cardTypeRadios.length; i++) {
+        cardTypeRadios[i].onclick = function () {
+            gameState.setCardType(cardType[this.value]);
+            drawCards();
+        };
+    }
+
     document.getElementById("choosePlayerName").addEventListener('click', () => {
         let playerName = document.getElementById('playerName').value,
             message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, playerName));
@@ -37,7 +46,7 @@ function handlePageLoad() {
 
     document.getElementById("chooseTrumpf").addEventListener('click', () => {
         let mode = document.getElementById('mode').value,
-            trumpfColor  = document.getElementById('trumpfColor').value,
+            trumpfColor = document.getElementById('trumpfColor').value,
             message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_TRUMPF, {
                 mode,
                 trumpfColor
@@ -49,7 +58,7 @@ function handlePageLoad() {
 
     document.getElementById("chooseCard").addEventListener('click', () => {
         let number = Number(document.getElementById('number').value),
-            color  = document.getElementById('color').value,
+            color = document.getElementById('color').value,
             message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_CARD, {
                 number,
                 color
@@ -62,9 +71,7 @@ function handlePageLoad() {
     consoleLog = document.getElementById("consoleLog");
 
     document.getElementById("clearLogBut").addEventListener('click', () => {
-        while (consoleLog.childNodes.length > 0) {
-            consoleLog.removeChild(consoleLog.lastChild);
-        }
+        removeAllChildren(consoleLog);
     });
 
     setGuiConnected(false);
@@ -169,11 +176,19 @@ function handleDealCards(cards) {
 function drawCards() {
     let cardsInHandBlock = document.getElementById('cardsInHand');
 
+    removeAllChildren(cardsInHandBlock);
+
     gameState.cardsInHand.forEach((card) => {
         let cardImage = document.createElement('img');
-        cardImage.src = 'images/cards/' + card.color + "_" + card.number + ".gif";
+        cardImage.src = 'images/cards/' + gameState.cardType + '/' + card.color + "_" + card.number + ".gif";
         cardsInHandBlock.appendChild(cardImage);
     });
+}
+
+function removeAllChildren(node) {
+    while (node.hasChildNodes()) {
+        node.removeChild(node.lastChild);
+    }
 }
 
 function onError(evt) {
