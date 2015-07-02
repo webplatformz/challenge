@@ -2,6 +2,8 @@
 
 module.exports = function (grunt) {
 
+    var babelify = require('babelify');
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -37,6 +39,16 @@ module.exports = function (grunt) {
                 ]
             }
         },
+        browserify: {
+            options: {
+                transform: [babelify]
+            },
+            all: {
+                files: {
+                    'build/client/scripts/app.js': ['client/scripts/app.js']
+                }
+            }
+        },
         jshint: {
             options: {
                 reporter: require('jshint-stylish'),
@@ -57,13 +69,12 @@ module.exports = function (grunt) {
                 files: [{
                         expand: true,
                         cwd: './',
-                        src: '*.html',
+                        src: 'client/index.html',
                         dest: 'build/',
-                        filter: 'isFile'
                     }, {
                         expand: true,
                         cwd: './',
-                        src: 'img/**/*',
+                        src: 'client/images/**/*',
                         dest: 'build/'
                     }
                 ]
@@ -95,11 +106,11 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     // Test task executes mocka tests and runs jshint
-    grunt.registerTask('test', ['clean', 'babel', 'simplemocha', 'jshint']);
+    grunt.registerTask('test', ['clean', 'babel', 'browserify', 'simplemocha', 'jshint']);
 
     // Default task executes concurrent target. Watching for changes to execute tests and restart server.
-    grunt.registerTask('default', ['clean', 'babel', 'sync', 'concurrent:dev']);
+    grunt.registerTask('default', ['clean', 'babel', 'browserify', 'sync', 'concurrent:dev']);
 
     // start server
-    grunt.registerTask('build', ['clean', 'babel', 'sync']);
+    grunt.registerTask('build', ['clean', 'babel', 'browserify', 'sync']);
 };
