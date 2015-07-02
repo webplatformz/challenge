@@ -41,7 +41,7 @@ let ClientApi = {
         clientCommunication.broadcast(this.clients, messages.MessageType.PLAYED_CARDS, playedCards);
     },
 
-    broadcastStich: function broadCastStich(winner) {
+    broadcastStich: function broadcastStich(winner) {
         clientCommunication.broadcast(this.clients, messages.MessageType.BROADCAST_STICH, winner);
     },
 
