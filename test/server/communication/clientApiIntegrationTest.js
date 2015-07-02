@@ -12,7 +12,7 @@ let expect = require('chai').expect,
 
 let messages = require('../../../shared/messages/messages');
 
-describe.only('Integration test', () => {
+describe('Integration test', () => {
 
     let wss,
         clientApi;
