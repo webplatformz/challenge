@@ -31,7 +31,7 @@ function handlePageLoad() {
     let cardTypeRadios = document.getElementsByName('cardType');
     for (let i = 0; i < cardTypeRadios.length; i++) {
         cardTypeRadios[i].onclick = function () {
-            gameState.setCardType(cardType[this.value]);
+            gameState.cardType = cardType[this.value];
             drawPlayedCards();
             drawCardsInHand();
         };
