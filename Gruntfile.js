@@ -100,7 +100,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test', ['clean', 'babel', 'simplemocha', 'jshint']);
 
     // Default task executes concurrent target. Watching for changes to execute tests and restart server.
-    grunt.registerTask('default', ['clean', 'babel', 'concurrent:dev']);
+    grunt.registerTask('default', ['clean', 'babel', 'sync', 'concurrent:dev']);
 
     // start server
     grunt.registerTask('build', ['clean', 'babel', 'sync']);
