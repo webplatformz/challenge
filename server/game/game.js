@@ -9,11 +9,11 @@ let Game = {
 
     nextCycle: function () {
         if (this.currentRound < 9) {
-            let cycle = Cycle.create(this.startPlayer, this.players, this.clientApi, this.gameType, () => {});
-            cycle.iterate().then(() => {
-                this.nextCycle();
-            });
+            let cycle = Cycle.create(this.startPlayer, this.players, this.clientApi, this.gameType);
             this.currentRound++;
+            return cycle.iterate().then(() => {
+                return this.nextCycle();
+            });
         }
     },
 
@@ -27,7 +27,7 @@ let Game = {
             .then((gameType) => {
                 this.gameType = gameType;
                 this.clientApi.broadcastTrumpf(gameType);
-                this.nextCycle();
+                return this.nextCycle();
             });
     }
 };
