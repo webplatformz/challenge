@@ -6,7 +6,8 @@ let expect = require('chai').expect,
     ClientApi = require('../../../server/communication/clientApi'),
     GameType = require('../../../server/game/game').GameType,
     GameMode = require('../../../server/game/gameMode'),
-    CardColor = require('../../../shared/deck/card').CardColor,
+    Card = require('../../../shared/deck/card'),
+    CardColor = Card.CardColor,
     Validation = require('../../../server/game/validation/validation'),
     JassSession = require('../../../server/game/session');
 
@@ -30,6 +31,12 @@ describe('Integration test', () => {
         let trumpf = CardColor.SPADES;
         let choosePlayerName = (name) => {
             return messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, name);
+        };
+
+        let mapCardsFromJson = function(cards) {
+            return cards.map((element) => {
+                return Card.create(element.number, element.color);
+            });
         };
 
         let giveValidCardFromHand = function(tableCards, handCards) {
@@ -80,11 +87,11 @@ describe('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.DEAL_CARDS) {
-                    handCards1 = message.data;
+                    handCards1 = mapCardsFromJson(message.data);
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    let handCard = giveValidCardFromHand(message.data, handCards1);
+                    let handCard = giveValidCardFromHand(mapCardsFromJson(message.data), handCards1);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client1.send(JSON.stringify(chooseCardResonse));
                 }
@@ -105,11 +112,11 @@ describe('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.DEAL_CARDS) {
-                    handCards2 = message.data;
+                    handCards2 = mapCardsFromJson(message.data);
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    let handCard = giveValidCardFromHand(message.data, handCards2);
+                    let handCard = giveValidCardFromHand(mapCardsFromJson(message.data), handCards2);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client2.send(JSON.stringify(chooseCardResonse));
                 }
@@ -124,11 +131,11 @@ describe('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.DEAL_CARDS) {
-                    handCards3 = message.data;
+                    handCards3 = mapCardsFromJson(message.data);
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    let handCard = giveValidCardFromHand(message.data, handCards3);
+                    let handCard = giveValidCardFromHand(mapCardsFromJson(message.data), handCards3);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client3.send(JSON.stringify(chooseCardResonse));
                 }
@@ -145,11 +152,11 @@ describe('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.DEAL_CARDS) {
-                    handCards4 = message.data;
+                    handCards4 = mapCardsFromJson(message.data);
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    let handCard = giveValidCardFromHand(message.data, handCards4);
+                    let handCard = giveValidCardFromHand(mapCardsFromJson(message.data), handCards4);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client4.send(JSON.stringify(chooseCardResonse));
                     done();
