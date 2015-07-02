@@ -5,7 +5,7 @@ let Card        = require('../../../../server/game/deck/card');
 let Validation  = require('../../../../server/game/validation/validation');
 let GameMode = require('../../../../server/game/gameMode');
 
-//let player      = require('../../../lib/game/player/player').create();
+//let player      = require('../../../server/game/player/player').create();
 //let sinon       = require('sinon');
 
 describe('Validation', function () {
