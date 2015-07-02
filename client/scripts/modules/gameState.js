@@ -22,10 +22,6 @@ let GameState = {
             this.cardsInHand.splice(this.cardsInHand.indexOf(this.lastCardPlayed), 1);
             this.lastCardPlayed = undefined;
         }
-    },
-
-    setCardType: function (cardType) {
-        this.cardType = cardType;
     }
 };
 

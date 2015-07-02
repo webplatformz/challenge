@@ -52,9 +52,11 @@ let Session = {
             let pointsTeamB = this.teams[1].points;
 
             if (pointsTeamA > pointsTeamB && pointsTeamA >= this.maxPoints) {
+                this.clientApi.broadcastWinnerTeam(this.teams[0]);
                 return this.teams[0];
             }
             if (pointsTeamB > pointsTeamA && pointsTeamB >= this.maxPoints) {
+                this.clientApi.broadcastWinnerTeam(this.teams[1]);
                 return this.teams[1];
             }
             return this.gameCycle();
