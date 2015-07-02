@@ -12,16 +12,16 @@ describe('clientCommunication', () => {
 
         let actual = clientCommunication.toJSON(message);
 
-        expect(actual).to.equal('{"type":"REQUEST_TRUMPF","data":{"geschoben":false}}');
+        expect(actual).to.equal('{"type":"REQUEST_TRUMPF","data":false}');
     });
 
     it('should convert JSON string to message', () => {
-        let message = '{"type":"REQUEST_TRUMPF","data":{"geschoben":false}}';
+        let message = '{"type":"REQUEST_TRUMPF","data":false}';
 
         let actual = clientCommunication.fromJSON(message);
 
         expect(actual.type).to.equal(messages.MessageType.REQUEST_TRUMPF);
-        expect(actual.data).to.eql({geschoben: false});
+        expect(actual.data).to.eql(false);
     });
 
     it('should send message to given client', () => {
@@ -33,7 +33,7 @@ describe('clientCommunication', () => {
         let client = Object.create(WebSocketStub),
             clientMock = sinon.mock(client);
 
-        clientMock.expects('send').withExactArgs('{"type":"DEAL_CARDS","data":{"cards":["a","b","c"]}}').once();
+        clientMock.expects('send').withExactArgs('{"type":"DEAL_CARDS","data":["a","b","c"]}').once();
 
         clientCommunication.send(client, messages.MessageType.DEAL_CARDS, ['a', 'b', 'c']);
 
@@ -51,8 +51,8 @@ describe('clientCommunication', () => {
             client1Mock = sinon.mock(client1),
             client2Mock = sinon.mock(client2);
 
-        client1Mock.expects('send').withExactArgs('{"type":"PLAYED_CARDS","data":{"playedCards":["a","b","c"]}}').once();
-        client2Mock.expects('send').withExactArgs('{"type":"PLAYED_CARDS","data":{"playedCards":["a","b","c"]}}').once();
+        client1Mock.expects('send').withExactArgs('{"type":"PLAYED_CARDS","data":["a","b","c"]}').once();
+        client2Mock.expects('send').withExactArgs('{"type":"PLAYED_CARDS","data":["a","b","c"]}').once();
 
         clientCommunication.broadcast([client1, client2], messages.MessageType.PLAYED_CARDS, ['a', 'b', 'c']);
 
@@ -69,7 +69,7 @@ describe('clientCommunication', () => {
             },
             clientMock = sinon.mock(client);
 
-        clientMock.expects('send').withExactArgs('{"type":"REQUEST_TRUMPF","data":{"geschoben":false}}').once();
+        clientMock.expects('send').withExactArgs('{"type":"REQUEST_TRUMPF","data":false}').once();
 
         clientCommunication.request(client, messages.MessageType.REQUEST_TRUMPF, function onMessage (message, resolve) {
             resolve();

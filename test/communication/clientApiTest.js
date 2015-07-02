@@ -119,7 +119,7 @@ describe('Client API', () => {
                     message = JSON.parse(message);
 
                     expect(message.type).to.equal(messages.MessageType.DEAL_CARDS);
-                    expect(message.data.cards).to.eql(cards);
+                    expect(message.data).to.eql(cards);
 
                     resolve();
                 });
@@ -135,7 +135,7 @@ describe('Client API', () => {
                 clientApi.addClient(client);
 
                 clientApi.requestTrumpf(client, false).then((data) => {
-                    expect(data.color).to.equal(chooseTrumpf.data.color);
+                    expect(data).to.equal(chooseTrumpf.data);
                     done();
                 }).catch(done);
             });
@@ -174,7 +174,7 @@ describe('Client API', () => {
                         message = JSON.parse(message);
 
                         expect(message.type).to.equal(messages.MessageType.PLAYED_CARDS);
-                        expect(message.data.playedCards).to.eql(playedCards);
+                        expect(message.data).to.eql(playedCards);
 
                         resolve();
                     });
@@ -209,7 +209,7 @@ describe('Client API', () => {
                         message = JSON.parse(message);
 
                         expect(message.type).to.equal(messages.MessageType.BROADCAST_TRUMPF);
-                        expect(message.data.gameType).to.eql(gameType);
+                        expect(message.data).to.eql(gameType);
 
                         resolve();
                     });

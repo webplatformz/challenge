@@ -57,7 +57,7 @@ describe('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.DEAL_CARDS) {
-                    handCards1 = message.data.cards;
+                    handCards1 = message.data;
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
