@@ -17,8 +17,11 @@ let GameState = {
         this.cardsInHand = cardsInHand.sort(compareCards);
     },
 
-    removeCard: function (card) {
-        this.cardsInHand.splice(this.cardsInHand.indexOf(card), 1);
+    removeLastCardPlayed: function () {
+        if (this.lastCardPlayed) {
+            this.cardsInHand.splice(this.cardsInHand.indexOf(this.lastCardPlayed), 1);
+            this.lastCardPlayed = undefined;
+        }
     },
 
     setCardType: function (cardType) {

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<meta charset="utf-8" />
+<meta charset="utf-8"/>
 
 <title>Web Platform - Jass Challenge</title>
 
@@ -32,6 +32,7 @@
         <button id="disconnect" disabled="">Disconnect</button>
         <br>
         <br>
+
         <form name="choosePlayerName">
             <h3>Choose Playername</h3>
             <input value="PlayerName" size="35" id="playerName">
@@ -50,18 +51,22 @@
             <button type="button" id="chooseCard">Send</button>
         </form>
     </div>
-    <div style="float: left; margin-left: 20px; padding-left: 20px; width: 350px; border-left: solid 1px #cccccc;" id="echo-log"> <strong>Log:</strong>
+    <div style="float: left; margin-left: 20px; padding-left: 20px; width: 350px; border-left: solid 1px #cccccc;"
+         id="echo-log"><strong>Log:</strong>
+
         <div id="consoleLog"></div>
         <button style="position: relative; top: 3px;" id="clearLogBut">Clear log</button>
     </div>
 
     <div style="clear: both;"></div>
 
-    <div style="width: 100%" id="cardsPlayed">
-
+    <div style="margin-top: 30px">
+        <h1>Cards played</h1>
+        <div id="cardsPlayed"></div>
     </div>
 
-    <div style="width: 100%" id="cardsInHand">
-
+    <div style="margin-top: 30px">
+        <h1>Your cards</h1>
+        <div style="width: 100%" id="cardsInHand"></div>
     </div>
 </div>
