@@ -115,6 +115,33 @@ describe('Game', function () {
         }).catch(done);
     });
 
+    it('should start with player who won last cycle', (done) => {
+        let gameType = {
+            mode: GameMode.TRUMPF,
+            trumpfColor: Card.CardColor.CLUBS
+        };
+
+        let cycle = {
+            iterate: () => {
+            }
+        };
+
+        let cycleMock = sinon.mock(cycle).expects('iterate').exactly(9).returns(Promise.resolve(players[2]));
+        cycleFactoryMock.expects('create').once().withArgs(players[0], players, clientApi, gameType).returns(cycle);
+        cycleFactoryMock.expects('create').exactly(8).withArgs(players[2], players, clientApi, gameType).returns(cycle);
+
+        clientApiMock.expects('requestTrumpf').once().returns(Promise.resolve(gameType));
+
+        game = Game.create(players, maxPoints, players[0], clientApi);
+
+        game.start().then(function () {
+            clientApiMock.verify();
+            cycleFactoryMock.verify();
+            cycleMock.verify();
+            done();
+        }).catch(done);
+    });
+
     afterEach(function () {
         clientApiMock.restore();
         cycleFactoryMock.restore();
