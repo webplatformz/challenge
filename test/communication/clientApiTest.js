@@ -80,6 +80,27 @@ describe('Client API', () => {
                 }
             });
         });
+
+        it('should reject empty answer messages', (done) => {
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
+                    expect(data).to.equal('Invalid client answer: ');
+                    done();
+                }).catch(done);
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            client.on('message', (message) => {
+                message = JSON.parse(message);
+
+                if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
+                    client.send(undefined);
+                }
+            });
+        });
     });
 
     describe('dealCards', () => {

@@ -8,25 +8,32 @@ let clientApi = require('../../../lib/communication/clientApi').create();
 let Player = require('../../../lib/game/player/player');
 let TestDataCreator = require('../../testDataCreator');
 let sinon = require('sinon');
+let GameType = require('../../../lib/game/game').GameType;
+let GameMode = require('../../../lib/game/gameMode');
+let Deck = require('../../../lib/game/deck/deck');
 
 describe('Cycle', function () {
     let clientApiMock;
     let playerMock;
     let players;
+    let gameType;
+    let cards;
 
     beforeEach(function () {
         clientApiMock = sinon.mock(clientApi);
         players = TestDataCreator.createPlayers(clientApiMock);
         playerMock = sinon.mock(players[0]);
+        gameType = GameType.create(GameMode.TRUMPF, Card.CardColor.DIAMONDS);
+        cards = Deck.create().cards;
     });
 
     it('should return the played cards after each round', (done) => {
-        sinon.stub(players[0], 'requestCard').returns(Promise.resolve('a'));
-        sinon.stub(players[1], 'requestCard').returns(Promise.resolve('b'));
-        sinon.stub(players[2], 'requestCard').returns(Promise.resolve('c'));
-        sinon.stub(players[3], 'requestCard').returns(Promise.resolve('d'));
+        sinon.stub(players[0], 'requestCard').returns(Promise.resolve(cards[0]));
+        sinon.stub(players[1], 'requestCard').returns(Promise.resolve(cards[1]));
+        sinon.stub(players[2], 'requestCard').returns(Promise.resolve(cards[2]));
+        sinon.stub(players[3], 'requestCard').returns(Promise.resolve(cards[3]));
 
-        let cycle = Cycle.create(players[0], players, clientApi);
+        let cycle = Cycle.create(players[0], players, clientApi, gameType);
         cycle.validator = {
             validate: function () {
                 return true;
@@ -35,18 +42,18 @@ describe('Cycle', function () {
 
         cycle.iterate()
             .then(function (playedCards) {
-                expect(playedCards).to.eql(['a', 'b', 'c', 'd']);
+                expect(playedCards).to.eql([cards[0], cards[1], cards[2], cards[3]]);
                 done();
             }).catch(done);
     });
 
     it('should start with currentPlayer', (done) => {
-        sinon.stub(players[0], 'requestCard').returns(Promise.resolve('a'));
-        sinon.stub(players[1], 'requestCard').returns(Promise.resolve('b'));
-        sinon.stub(players[2], 'requestCard').returns(Promise.resolve('c'));
-        sinon.stub(players[3], 'requestCard').returns(Promise.resolve('d'));
+        sinon.stub(players[0], 'requestCard').returns(Promise.resolve(cards[1]));
+        sinon.stub(players[1], 'requestCard').returns(Promise.resolve(cards[2]));
+        sinon.stub(players[2], 'requestCard').returns(Promise.resolve(cards[3]));
+        sinon.stub(players[3], 'requestCard').returns(Promise.resolve(cards[0]));
 
-        let cycle = Cycle.create(players[1], players, clientApi);
+        let cycle = Cycle.create(players[1], players, clientApi, gameType);
         cycle.validator = {
             validate: function () {
                 return true;
@@ -55,7 +62,7 @@ describe('Cycle', function () {
 
         cycle.iterate()
             .then(function (playedCards) {
-                expect(playedCards).to.eql(['b', 'c', 'd', 'a']);
+                expect(playedCards).to.eql([cards[2], cards[3], cards[0], cards[1]]);
                 done();
             }).catch(done);
     });
@@ -67,8 +74,7 @@ describe('Cycle', function () {
         clientApiMock.expects('broadcastCardPlayed').exactly(4);
 
 
-        let cycle = Cycle.create(players[0], players, clientApi, function () {
-        });
+        let cycle = Cycle.create(players[0], players, clientApi, gameType);
         cycle.validator = {
             validate: function () {
                 return true;

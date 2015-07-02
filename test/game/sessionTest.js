@@ -8,7 +8,7 @@ let TestDataCreator = require('../testDataCreator');
 let sinon = require('sinon');
 
 
-describe('Session', function() {
+describe('Session', function () {
     let session;
 
     beforeEach(() => {
@@ -110,11 +110,19 @@ describe('Session', function() {
             }).to.throw('Not enough players to start game!');
         });
 
+        it('should wait for pending playername requests', (done) => {
+            let fourPlayers = TestDataCreator.createPlayers(clientApiMock);
+            session.players = fourPlayers;
+            session.playerNameRequests = [Promise.reject()];
+
+            session.start().catch(done);
+        });
+
         it('should finish a game after max points have been reached', (done) => {
             let fourPlayers = TestDataCreator.createPlayers(clientApiMock);
 
             let game = {
-                start: function() {
+                start: function () {
                     session.teams[0].points += 1000;
                     return Promise.resolve();
                 }
@@ -134,7 +142,7 @@ describe('Session', function() {
             let fourPlayers = TestDataCreator.createPlayers(clientApiMock);
 
             let game = {
-                start: function() {
+                start: function () {
                     session.teams[0].points += 1000;
                     session.teams[1].points += 1001;
                     return Promise.resolve();

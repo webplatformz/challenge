@@ -3,8 +3,10 @@
 let Card = require('../lib/game/deck/card');
 let Deck = require('../lib/game/deck/deck');
 let Player = require('../lib/game/player/player');
+let Team = require('../lib/game/player/team');
 
-let createDummyPlayer = function (team, name, clientApiMock) {
+let createDummyPlayer = function (teamName, name, clientApiMock) {
+    let team =  Team.create(teamName);
     let player = Player.create(team, name, clientApiMock);
     player.requestCard = function() {
       return player.cards[0];
@@ -12,6 +14,7 @@ let createDummyPlayer = function (team, name, clientApiMock) {
     player.dealCards = function(cards) {
         player.cards = cards;
     };
+
     return player;
 };
 

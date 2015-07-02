@@ -191,11 +191,4 @@ describe('StichGranter', function () {
         assert.equal(expectedWinner, actualWinner);
     });
 
-    //if (that.playedCards.length === 4) {
-    //    let winner = stichGranter.determineWinner(mode, color, that.playedCards, that.players);
-    //    let points = counter.count(mode, color, that.playedCards);
-    //    winner.team.points += points;
-    //}
-
-
 });
