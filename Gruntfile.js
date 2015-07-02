@@ -74,31 +74,35 @@ module.exports = function (grunt) {
         sync: {
             main: {
                 files: [{
-                        expand: true,
-                        cwd: './',
-                        src: 'client/index.html',
-                        dest: 'build/'
-                    }, {
-                        expand: true,
-                        cwd: './',
-                        src: 'client/images/**/*',
-                        dest: 'build/'
-                    }
+                    expand: true,
+                    cwd: './',
+                    src: 'client/index.html',
+                    dest: 'build/'
+                }, {
+                    expand: true,
+                    cwd: './',
+                    src: 'client/images/**/*',
+                    dest: 'build/'
+                }
                 ]
             }
         },
         watch: {
             sync: {
                 files: ['./client/*.html', './client/images/**/*'],
-                tasks: ['clean', 'sync']
+                tasks: ['sync']
             },
             babel: {
                 files: ['./server/**/*.js', './shared/**/*.js', './test/**/*.js'],
-                tasks: ['babel', 'simplemocha', 'jshint']
+                tasks: ['jshint', 'babel']
             },
             browserify: {
                 files: ['./client/**/*.js', './shared/**/*.js'],
-                tasks: ['browserify']
+                tasks: ['jshint', 'browserify']
+            },
+            test: {
+                files: ['./build/**/*.js'],
+                tasks: ['simplemocha']
             }
         },
         nodemon: {
