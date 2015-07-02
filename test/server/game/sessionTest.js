@@ -102,7 +102,7 @@ describe('Session', function () {
 
         beforeEach(function () {
             gameFactoryMock = sinon.mock(Game);
-            clientApiMock = sinon.mock(ClientApi);
+            clientApiMock = sinon.mock(session.clientApi);
             fourPlayers = TestDataCreator.createPlayers(clientApiMock);
         });
 
@@ -147,11 +147,13 @@ describe('Session', function () {
             };
 
             gameFactoryMock.expects('create').exactly(3).returns(game);
+            clientApiMock.expects('broadcastWinnerTeam').once();
 
             session.players = fourPlayers;
 
             session.start().then((winningTeam) => {
                 expect(winningTeam).to.eql(session.teams[1]);
+                clientApiMock.verify();
                 done();
             }).catch(done);
         });
