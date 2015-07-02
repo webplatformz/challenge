@@ -8,16 +8,20 @@ let clientApi = require('../../../lib/communication/clientApi').create();
 let Player = require('../../../lib/game/player/player');
 let TestDataCreator = require('../../testDataCreator');
 let sinon = require('sinon');
+let GameType = require('../../../lib/game/game').GameType;
+let GameMode = require('../../../lib/game/gameMode');
 
 describe('Cycle', function () {
     let clientApiMock;
     let playerMock;
     let players;
+    let gameType;
 
     beforeEach(function () {
         clientApiMock = sinon.mock(clientApi);
         players = TestDataCreator.createPlayers(clientApiMock);
         playerMock = sinon.mock(players[0]);
+        gameType = GameType.create(GameMode.TRUMPF, Card.CardColor.DIAMONDS);
     });
 
     it('should return the played cards after each round', (done) => {
@@ -26,7 +30,7 @@ describe('Cycle', function () {
         sinon.stub(players[2], 'requestCard').returns(Promise.resolve('c'));
         sinon.stub(players[3], 'requestCard').returns(Promise.resolve('d'));
 
-        let cycle = Cycle.create(players[0], players, clientApi);
+        let cycle = Cycle.create(players[0], players, clientApi, gameType);
         cycle.validator = {
             validate: function () {
                 return true;
@@ -46,7 +50,7 @@ describe('Cycle', function () {
         sinon.stub(players[2], 'requestCard').returns(Promise.resolve('c'));
         sinon.stub(players[3], 'requestCard').returns(Promise.resolve('d'));
 
-        let cycle = Cycle.create(players[1], players, clientApi);
+        let cycle = Cycle.create(players[1], players, clientApi, gameType);
         cycle.validator = {
             validate: function () {
                 return true;
@@ -67,8 +71,7 @@ describe('Cycle', function () {
         clientApiMock.expects('broadcastCardPlayed').exactly(4);
 
 
-        let cycle = Cycle.create(players[0], players, clientApi, function () {
-        });
+        let cycle = Cycle.create(players[0], players, clientApi, gameType);
         cycle.validator = {
             validate: function () {
                 return true;
