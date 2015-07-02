@@ -11,7 +11,7 @@ let JassSession = require('../../lib/game/session');
 
 let messages = require('../../lib/communication/messages');
 
-describe('Integration test', () => {
+describe.skip('Integration test', () => {
 
     let wss,
         clientApi;
@@ -30,6 +30,8 @@ describe('Integration test', () => {
             return messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, name);
         };
 
+
+
         it('should start the game after 4 players have been connected', (done) => {
             let session = JassSession.create();
 
@@ -47,19 +49,32 @@ describe('Integration test', () => {
 
 
             let client1 = new WebSocket('ws://localhost:10001');
+            let handCards1;
             client1.on('message', (message) => {
-                //console.log("client1 " + message);
+                console.log("client1 " + message);
                 message = JSON.parse(message);
 
                 if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
                     client1.send(JSON.stringify(choosePlayerName("client 1")));
                 }
 
+                if (message.type === messages.MessageType.DEAL_CARDS) {
+                    handCards1 = message.data.cards;
+                    console.log(handCards1);
+                }
+
+                if (message.type === messages.MessageType.REQUEST_CARD) {
+                    console.log(message);
+                    console.log(handCards1);
+
+                    let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCards1[0]);
+                    client1.send(JSON.stringify(chooseCardResonse));
+                }
+
                 if (message.type === messages.MessageType.REQUEST_TRUMPF) {
                     let gameType = GameType.create(GameMode.TRUMPF, CardColor.SPADES);
-                    let requestTrumpfResponse = messages.create(messages.MessageType.REQUEST_TRUMPF, gameType);
-                    client1.send(JSON.stringify(requestTrumpfResponse));
-                    done();
+                    let chooseTrumpfResponse = messages.create(messages.MessageType.CHOOSE_TRUMPF, gameType);
+                    client1.send(JSON.stringify(chooseTrumpfResponse));
                 }
             });
 
@@ -70,6 +85,13 @@ describe('Integration test', () => {
 
                 if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
                     client2.send(JSON.stringify(choosePlayerName("client 2")));
+                }
+
+                if (message.type === messages.MessageType.REQUEST_CARD) {
+                    console.log(message);
+                    //let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCards[0]);
+                    //client2.send(JSON.stringify(chooseCardResonse));
+                    done();
                 }
             });
 
