@@ -26,7 +26,6 @@ let Cycle = {
         function returnWinner(playedCards) {
             let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
             winner.team.points += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
-            console.log(winner);
             return winner;
         }
 
