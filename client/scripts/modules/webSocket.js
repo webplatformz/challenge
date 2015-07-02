@@ -6,12 +6,10 @@ let secureCb,
     consoleLog,
     connectBut,
     disconnectBut,
-    sendMessage,
-    sendBut,
     clearLogBut,
     websocket;
 
-function echoHandlePageLoad() {
+function handlePageLoad() {
     secureCb = document.getElementById("secureCb");
     secureCb.checked = false;
     secureCb.onclick = toggleTls;
@@ -27,10 +25,16 @@ function echoHandlePageLoad() {
     disconnectBut = document.getElementById("disconnect");
     disconnectBut.onclick = doDisconnect;
 
-    sendMessage = document.getElementById("sendMessage");
+    document.getElementById("choosePlayerName").addEventListener('click', () => {
+        let playerName = document.getElementById('playerName').value,
+            message = JSON.stringify({
+                type: "CHOOSE_PLAYER_NAME",
+                data: playerName
+            });
+        websocket.send(message);
 
-    sendBut = document.getElementById("send");
-    sendBut.onclick = doSend;
+        logToConsole("SENT: " + message);
+    });
 
     consoleLog = document.getElementById("consoleLog");
 
@@ -40,7 +44,6 @@ function echoHandlePageLoad() {
     setGuiConnected(false);
 
     document.getElementById("disconnect").onclick = doDisconnect;
-    document.getElementById("send").onclick = doSend;
 
 }
 
@@ -131,8 +134,6 @@ function setGuiConnected(isConnected) {
     wsUri.disabled = isConnected;
     connectBut.disabled = isConnected;
     disconnectBut.disabled = !isConnected;
-    sendMessage.disabled = !isConnected;
-    sendBut.disabled = !isConnected;
     secureCb.disabled = isConnected;
     let labelColor = "black";
     if (isConnected) {
@@ -148,4 +149,4 @@ function clearLog() {
     }
 }
 
-window.addEventListener("load", echoHandlePageLoad, false);
+window.addEventListener("load", handlePageLoad, false);
