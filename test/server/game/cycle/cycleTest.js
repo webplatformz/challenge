@@ -73,10 +73,7 @@ describe('Cycle', function () {
     });
 
     it('should call the clientapi correctly', (done) => {
-        playerMock.expects('requestCard').exactly(1).returns(Promise.resolve({
-            number: 9,
-            color: Card.CardColor.HEARTS
-        }));
+        playerMock.expects('requestCard').exactly(1).returns(Promise.resolve(cards[0]));
         clientApiMock.expects('broadcastCardPlayed').exactly(4);
 
         let cycle = Cycle.create(players[0], players, clientApi, gameType);
@@ -85,6 +82,7 @@ describe('Cycle', function () {
                 return true;
             }
         };
+
         let promise = cycle.iterate();
 
         promise.then(function () {
