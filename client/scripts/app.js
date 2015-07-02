@@ -1,21 +1,22 @@
 'use strict';
 
-let secureCb;
-let secureCbLabel;
-let wsUri;
-let consoleLog;
-let connectBut;
-let disconnectBut;
-let sendMessage;
-let sendBut;
-let clearLogBut;
+let secureCb,
+    secureCbLabel,
+    wsUri,
+    consoleLog,
+    connectBut,
+    disconnectBut,
+    sendMessage,
+    sendBut,
+    clearLogBut,
+    websocket;
 
 function echoHandlePageLoad() {
     secureCb = document.getElementById("secureCb");
     secureCb.checked = false;
     secureCb.onclick = toggleTls;
 
-    secureCbLabel = document.getElementById("secureCbLabel")
+    secureCbLabel = document.getElementById("secureCbLabel");
 
     wsUri = document.getElementById("wsUri");
     toggleTls();
@@ -71,7 +72,7 @@ function doConnect() {
     } else {
         uri += "&encoding=text";
     }
-    let websocket = new WebSocket(uri);
+    websocket = new WebSocket(uri);
     websocket.onopen = function (evt) {
         onOpen(evt)
     };
@@ -108,12 +109,12 @@ function logToConsole(message) {
     consoleLog.scrollTop = consoleLog.scrollHeight;
 }
 
-function onOpen(evt) {
+function onOpen() {
     logToConsole("CONNECTED");
     setGuiConnected(true);
 }
 
-function onClose(evt) {
+function onClose() {
     logToConsole("DISCONNECTED");
     setGuiConnected(false);
 }
