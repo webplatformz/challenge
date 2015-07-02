@@ -8,7 +8,8 @@ let secureCb,
     disconnectBut,
     clearLogBut,
     websocket,
-    messages = require('../../../shared/messages/messages');
+    messages = require('../../../shared/messages/messages'),
+    gameState = require('./gameState').create();
 
 function handlePageLoad() {
     secureCb = document.getElementById("secureCb");
@@ -148,7 +149,31 @@ function onClose() {
 }
 
 function onMessage(evt) {
+    let message = JSON.parse(evt.data);
+
+    if (message.type) {
+        switch (message.type) {
+            case messages.MessageType.DEAL_CARDS:
+                handleDealCards(message.data);
+        }
+    }
+
     logToConsole('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
+}
+
+function handleDealCards(cards) {
+    gameState.setCardsInHand(cards);
+    drawCards();
+}
+
+function drawCards() {
+    let cardsInHandBlock = document.getElementById('cardsInHand');
+
+    gameState.cardsInHand.forEach((card) => {
+        let cardImage = document.createElement('img');
+        cardImage.src = 'images/cards/' + card.color + "_" + card.number + ".gif";
+        cardsInHandBlock.appendChild(cardImage);
+    });
 }
 
 function onError(evt) {
