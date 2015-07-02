@@ -9,7 +9,7 @@ let createDummyPlayer = function (teamName, name, clientApiMock) {
     let team =  Team.create(teamName);
     let player = Player.create(team, name, clientApiMock);
     player.requestCard = function() {
-      return player.cards[0];
+      return Promise.resolve(player.cards[0]);
     };
     player.dealCards = function(cards) {
         player.cards = cards;

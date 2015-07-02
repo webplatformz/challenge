@@ -56,27 +56,33 @@ describe('Game', function () {
     });
 
     it('should request the trumpf from the correct player when the player schiebs', (done) => {
-        let player0Mock = sinon.mock(players[0]).expects('requestTrumpf').withArgs(false).once().returns(Promise.resolve({
-            mode: GameMode.SCHIEBEN
-        }));
-        let player2Mock = sinon.mock(players[2]).expects('requestTrumpf').withArgs(true).once().returns(Promise.resolve({
-            mode: 'mode',
-            trumpfColor: 'trumpfColor'
-        }));
+        let ex1 = clientApiMock.expects('requestTrumpf').once()
+            .withArgs(false).returns(Promise.resolve({
+                mode: GameMode.SCHIEBEN
+            }));
+
+        let ex2 = clientApiMock.expects('requestTrumpf').once()
+            .withArgs(true).returns(Promise.resolve({
+                mode: GameMode.OBENABEN
+            }));
+
+        let cycle = {
+            iterate: () => {
+            }
+        };
+
+        let cycleMock = sinon.mock(cycle).expects('iterate').exactly(9).returns(Promise.resolve());
+        cycleFactoryMock.expects('create').exactly(9).returns(cycle);
 
         game = Game.create(players, maxPoints, players[0], clientApi);
-        let gameMock = sinon.mock(game).expects('nextCycle').once().returns(Promise.resolve());
 
         game.start().then(() => {
-            player0Mock.verify();
-            player2Mock.verify();
-            gameMock.verify();
+            ex1.verify();
+            ex2.verify();
+            cycleFactoryMock.verify();
+            cycleMock.verify();
             done();
-        }).catch((error) => {
-            player0Mock.restore();
-            player2Mock.restore();
-            done(error);
-        });
+        }).catch(done);
 
     });
 
