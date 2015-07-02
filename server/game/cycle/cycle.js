@@ -22,7 +22,6 @@ let Cycle = {
                     let points = counter.count(that.gameType.mode, that.gameType.trumpfColor, that.playedCards);
                     winner.team.points += points;
                 }
-
             } else {
                 return that.currentPlayer.rejectCard(card, that.playedCards).then(handleChosenCard);
             }
@@ -60,7 +59,7 @@ let create = function (currentPlayer, players, clientApi, gameType) {
     cycle.players = players;
     cycle.gameType = gameType;
     cycle.clientApi = clientApi;
-    cycle.validator = Validation.create();
+    cycle.validator = Validation.create(gameType.mode, gameType.trumpfColor);
     cycle.playedCards = [];
     return cycle;
 };
