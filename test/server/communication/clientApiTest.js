@@ -8,7 +8,7 @@ let expect = require('chai').expect,
     GameMode = require('../../../server/game/gameMode'),
     CardColor = require('../../../server/game/deck/card').CardColor;
 
-let messages = require('../../../server/communication/messages');
+let messages = require('../../../shared/messages/messages');
 
 describe('Client API', () => {
 

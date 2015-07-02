@@ -1,6 +1,6 @@
 'use strict';
 
-let messages = require('./messages');
+let messages = require('../../shared/messages/messages');
 
 function toJSON(object) {
     return JSON.stringify(object);

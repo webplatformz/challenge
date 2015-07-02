@@ -31,6 +31,13 @@ module.exports = function (grunt) {
                     },
                     {
                         "expand": true,
+                        "cwd": "./shared/",
+                        "src": ["**/*.js"],
+                        "dest": "./build/shared/",
+                        "ext": ".js"
+                    },
+                    {
+                        "expand": true,
                         "cwd": "./test/",
                         "src": ["**/*.js"],
                         "dest": "./build/test/",
@@ -70,7 +77,7 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: './',
                         src: 'client/index.html',
-                        dest: 'build/',
+                        dest: 'build/'
                     }, {
                         expand: true,
                         cwd: './',
@@ -86,7 +93,7 @@ module.exports = function (grunt) {
                 tasks: ['sync']
             },
             babel: {
-                files: ['./**/*.js', '!./build/**/*.js'],
+                files: ['./server/**/*.js', './shared/**/*.js'],
                 tasks: ['clean', 'babel', 'simplemocha', 'jshint']
             }
         },
