@@ -6,7 +6,8 @@ let expect = require('chai').expect,
     ClientApi = require('../../lib/communication/clientApi'),
     GameType = require('../../lib/game/game').GameType,
     GameMode = require('../../lib/game/gameMode'),
-    CardColor = require('../../lib/game/deck/card').CardColor;
+    CardColor = require('../../lib/game/deck/card').CardColor,
+    Validation = require('../../lib/game/validation/validation');
 let JassSession = require('../../lib/game/session');
 
 let messages = require('../../lib/communication/messages');
@@ -26,11 +27,23 @@ describe('Integration test', () => {
     });
 
     describe('addClient', () => {
+        let trumpf = CardColor.SPADES;
         let choosePlayerName = (name) => {
             return messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, name);
         };
 
+        let giveValidCardFromHand = function(tableCards, handCards) {
+            let cardToPlay = handCards[0];
+            let validation = Validation.create(GameMode.TRUMPF, trumpf);
 
+            console.log("handCards length " + handCards.length);
+            //handCards.forEach((handCard) => {
+            //    if(validation.validate(tableCards, handCards, handCard)) {
+            //        cardToPlay = handCard;
+            //    }
+            //});
+            return cardToPlay;
+        };
 
         it('should start the game after 4 players have been connected', (done) => {
             let session = JassSession.create();
@@ -61,13 +74,13 @@ describe('Integration test', () => {
                 }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
-                    let handCard = handCards1[0];
+                    let handCard = giveValidCardFromHand(message.tableCards, handCards1);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client1.send(JSON.stringify(chooseCardResonse));
                 }
 
                 if (message.type === messages.MessageType.REQUEST_TRUMPF) {
-                    let gameType = GameType.create(GameMode.TRUMPF, CardColor.SPADES);
+                    let gameType = GameType.create(GameMode.TRUMPF, trumpf);
                     let chooseTrumpfResponse = messages.create(messages.MessageType.CHOOSE_TRUMPF, gameType);
                     client1.send(JSON.stringify(chooseTrumpfResponse));
                 }
