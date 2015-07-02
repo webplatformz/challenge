@@ -1,9 +1,9 @@
 'use strict';
 
 let expect = require('chai').expect;
-let Session = require('../../lib/game/session');
-let ClientApi = require('../../lib/communication/clientApi');
-let Game = require('../../lib/game/game');
+let Session = require('../../server/game/session');
+let ClientApi = require('../../server/communication/clientApi');
+let Game = require('../../server/game/game');
 let TestDataCreator = require('../testDataCreator');
 let sinon = require('sinon');
 

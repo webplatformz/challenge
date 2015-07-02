@@ -3,13 +3,13 @@
 let expect = require('chai').expect,
     WebSocket = require('ws'),
     WebSocketServer = require('ws').Server,
-    ClientApi = require('../../lib/communication/clientApi'),
-    GameType = require('../../lib/game/game').GameType,
-    GameMode = require('../../lib/game/gameMode'),
-    CardColor = require('../../lib/game/deck/card').CardColor;
-let JassSession = require('../../lib/game/session');
+    ClientApi = require('../../server/communication/clientApi'),
+    GameType = require('../../server/game/game').GameType,
+    GameMode = require('../../server/game/gameMode'),
+    CardColor = require('../../server/game/deck/card').CardColor;
+let JassSession = require('../../server/game/session');
 
-let messages = require('../../lib/communication/messages');
+let messages = require('../../server/communication/messages');
 
 describe.skip('Integration test', () => {
 

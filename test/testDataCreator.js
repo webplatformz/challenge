@@ -1,9 +1,9 @@
 'use strict';
 
-let Card = require('../lib/game/deck/card');
-let Deck = require('../lib/game/deck/deck');
-let Player = require('../lib/game/player/player');
-let Team = require('../lib/game/player/team');
+let Card = require('../server/game/deck/card');
+let Deck = require('../server/game/deck/deck');
+let Player = require('../server/game/player/player');
+let Team = require('../server/game/player/team');
 
 let createDummyPlayer = function (teamName, name, clientApiMock) {
     let team =  Team.create(teamName);

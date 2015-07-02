@@ -1,8 +1,8 @@
 "use strict";
 
 let assert = require('assert'); // node.js core module
-let Deck = require('../../../lib/game/deck/deck');
-let CardColor = require('../../../lib/game/deck/card').CardColor;
+let Deck = require('../../../server/game/deck/deck');
+let CardColor = require('../../../server/game/deck/card').CardColor;
 
 describe('Deck', function() {
 

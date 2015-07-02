@@ -1,9 +1,9 @@
 "use strict";
 
 let assert      = require("assert"); // node.js core module
-let Card        = require('../../../lib/game/deck/card');
-let UnderTrumpfValidator = require('../../../lib/game/validation/underTrumpfValidator');
-let GameMode = require('../../../lib/game/gameMode');
+let Card        = require('../../../server/game/deck/card');
+let UnderTrumpfValidator = require('../../../server/game/validation/underTrumpfValidator');
+let GameMode = require('../../../server/game/gameMode');
 
 
 describe('UnderTrumpf Validator', function () {

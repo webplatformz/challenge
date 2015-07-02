@@ -1,12 +1,12 @@
 "use strict";
 
 let assert = require("assert"); // node.js core module
-let Game = require('../../lib/game/game');
-let GameMode = require('../../lib/game/gameMode');
-let Player = require('../../lib/game/player/player');
-let Card = require('../../lib/game/deck/card');
-let clientApi = require('../../lib/communication/clientApi').create();
-let Cycle = require('../../lib/game/cycle/cycle');
+let Game = require('../../server/game/game');
+let GameMode = require('../../server/game/gameMode');
+let Player = require('../../server/game/player/player');
+let Card = require('../../server/game/deck/card');
+let clientApi = require('../../server/communication/clientApi').create();
+let Cycle = require('../../server/game/cycle/cycle');
 let sinon = require('sinon');
 let TestDataCreator = require('../testDataCreator');
 

@@ -6,7 +6,7 @@ let app = require('express')();
 let server = require('http').createServer(app);
 let WebSocketServer = require('ws').Server;
 let wss = new WebSocketServer({server: server});
-let JassSession = require('./lib/game/session');
+let JassSession = require('./server/game/session');
 
 let session = JassSession.create();
 

@@ -22,9 +22,9 @@ module.exports = function (grunt) {
                     },
                     {
                         "expand": true,
-                        "cwd": "./lib/",
+                        "cwd": "./server/",
                         "src": ["**/*.js"],
-                        "dest": "./build/lib/",
+                        "dest": "./build/server/",
                         "ext": ".js"
                     },
                     {
@@ -42,7 +42,7 @@ module.exports = function (grunt) {
                 reporter: require('jshint-stylish'),
                 jshintrc: '.jshintrc'
             },
-            all: ['lib/**/*.js', 'test/**/*.js', '*.js']
+            all: ['server/**/*.js', 'test/**/*.js', '*.js']
         },
         simplemocha: {
             options: {

@@ -2,15 +2,15 @@
 
 let assert = require("assert"); // node.js core module
 let expect = require('chai').expect;
-let Card = require('../../../lib/game/deck/card');
-let Cycle = require('../../../lib/game/cycle/cycle');
-let clientApi = require('../../../lib/communication/clientApi').create();
-let Player = require('../../../lib/game/player/player');
+let Card = require('../../../server/game/deck/card');
+let Cycle = require('../../../server/game/cycle/cycle');
+let clientApi = require('../../../server/communication/clientApi').create();
+let Player = require('../../../server/game/player/player');
 let TestDataCreator = require('../../testDataCreator');
 let sinon = require('sinon');
-let GameType = require('../../../lib/game/game').GameType;
-let GameMode = require('../../../lib/game/gameMode');
-let Deck = require('../../../lib/game/deck/deck');
+let GameType = require('../../../server/game/game').GameType;
+let GameMode = require('../../../server/game/gameMode');
+let Deck = require('../../../server/game/deck/deck');
 
 describe('Cycle', function () {
     let clientApiMock;
