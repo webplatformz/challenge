@@ -29,7 +29,6 @@ function request(client, messageType, onMessage, ...data) {
 
     return new Promise((resolve, reject) => {
         client.on('message', function handleMessage(message) {
-            console.log(message);
             client.removeListener('message', handleMessage);
             onMessage(message, resolve, reject);
         });
