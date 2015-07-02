@@ -1,6 +1,6 @@
 'use strict';
 
-let messages = require('./messages'),
+let messages = require('../../shared/messages/messages'),
     clientCommunication = require('./clientCommunication');
 
 function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {

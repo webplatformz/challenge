@@ -2,7 +2,7 @@
 
 let clientCommunication = require('../../../server/communication/clientCommunication'),
     WebSocket = require('ws'),
-    messages = require('../../../server/communication/messages'),
+    messages = require('../../../shared/messages/messages'),
     expect = require('chai').expect,
     sinon = require('sinon');
 

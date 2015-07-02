@@ -10,7 +10,7 @@ let expect = require('chai').expect,
     Validation = require('../../../server/game/validation/validation'),
     JassSession = require('../../../server/game/session');
 
-let messages = require('../../../server/communication/messages');
+let messages = require('../../../shared/messages/messages');
 
 describe.skip('Integration test', () => {
 

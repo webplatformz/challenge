@@ -14,9 +14,6 @@ let createDummyPlayer = function (teamName, name, clientApiMock) {
     player.dealCards = function(cards) {
         player.cards = cards;
     };
-    player.requestTrumpf = function(isGeschoben) {
-        return clientApiMock.requestTrumpf(isGeschoben);
-    };
 
     return player;
 };

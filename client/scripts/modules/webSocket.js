@@ -7,7 +7,8 @@ let secureCb,
     connectBut,
     disconnectBut,
     clearLogBut,
-    websocket;
+    websocket,
+    messages = require('../../../shared/messages/messages');
 
 function handlePageLoad() {
     secureCb = document.getElementById("secureCb");
@@ -27,10 +28,31 @@ function handlePageLoad() {
 
     document.getElementById("choosePlayerName").addEventListener('click', () => {
         let playerName = document.getElementById('playerName').value,
-            message = JSON.stringify({
-                type: "CHOOSE_PLAYER_NAME",
-                data: playerName
-            });
+            message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, playerName));
+        websocket.send(message);
+
+        logToConsole("SENT: " + message);
+    });
+
+    document.getElementById("chooseTrumpf").addEventListener('click', () => {
+        let gameMode = document.getElementById('gameMode').value,
+            cardColor  = document.getElementById('cardColor').value,
+            message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_TRUMPF, {
+                gameMode,
+                cardColor
+            }));
+        websocket.send(message);
+
+        logToConsole("SENT: " + message);
+    });
+
+    document.getElementById("chooseCard").addEventListener('click', () => {
+        let number = document.getElementById('number').value,
+            color  = document.getElementById('color').value,
+            message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_CARD, {
+                number,
+                color
+            }));
         websocket.send(message);
 
         logToConsole("SENT: " + message);
@@ -38,8 +60,11 @@ function handlePageLoad() {
 
     consoleLog = document.getElementById("consoleLog");
 
-    clearLogBut = document.getElementById("clearLogBut");
-    clearLogBut.onclick = clearLog;
+    document.getElementById("clearLogBut").addEventListener('click', () => {
+        while (consoleLog.childNodes.length > 0) {
+            consoleLog.removeChild(consoleLog.lastChild);
+        }
+    });
 
     setGuiConnected(false);
 
@@ -141,12 +166,6 @@ function setGuiConnected(isConnected) {
     }
     secureCbLabel.style.color = labelColor;
 
-}
-
-function clearLog() {
-    while (consoleLog.childNodes.length > 0) {
-        consoleLog.removeChild(consoleLog.lastChild);
-    }
 }
 
 window.addEventListener("load", handlePageLoad, false);

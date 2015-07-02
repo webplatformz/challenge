@@ -20,11 +20,22 @@
         <button id="disconnect" disabled="">Disconnect</button>
         <br>
         <br>
-        <strong>Message:</strong>
-        <br>
-        <form>
+        <form name="choosePlayerName">
+            <h3>Choose Playername</h3>
             <input value="PlayerName" size="35" id="playerName">
             <button type="button" id="choosePlayerName">Send</button>
+        </form>
+        <form name="chooseTrumpf">
+            <h3>Choose Trumpf</h3>
+            <input value="Trumpf" size="10" id="gameMode">
+            <input value="hearts" size="10" id="cardColor">
+            <button type="button" id="chooseTrumpf">Send</button>
+        </form>
+        <form name="chooseCard">
+            <h3>Choose Card</h3>
+            <input value="11" size="10" id="number">
+            <input value="hearts" size="10" id="color">
+            <button type="button" id="chooseCard">Send</button>
         </form>
     </div>
     <div style="float: left; margin-left: 20px; padding-left: 20px; width: 350px; border-left: solid 1px #cccccc;" id="echo-log"> <strong>Log:</strong>
