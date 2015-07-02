@@ -48,6 +48,10 @@ describe('Integration test', () => {
             return cardToPlay;
         };
 
+        function createClient() {
+            return new WebSocket('ws://localhost:10001');
+        }
+
         it('should start the game after 4 players have been connected', (done) => {
             let session = JassSession.create();
 
@@ -62,11 +66,12 @@ describe('Integration test', () => {
             });
 
 
-            let client1 = new WebSocket('ws://localhost:10001');
             let handCards1,
                 handCards2,
                 handCards3,
                 handCards4;
+
+            let client1 = createClient();
             client1.on('message', (messageJson) => {
                 let message = JSON.parse(messageJson);
 
@@ -91,7 +96,7 @@ describe('Integration test', () => {
                 }
             });
 
-            let client2 = new WebSocket('ws://localhost:10001');
+            let client2 = createClient();
             client2.on('message', (message) => {
                 message = JSON.parse(message);
 
@@ -110,7 +115,7 @@ describe('Integration test', () => {
                 }
             });
 
-            let client3 = new WebSocket('ws://localhost:10001');
+            let client3 = createClient();
             client3.on('message', (message) => {
                 message = JSON.parse(message);
 
@@ -129,7 +134,9 @@ describe('Integration test', () => {
                 }
             });
 
-            let client4 = new WebSocket('ws://localhost:10001');
+
+
+            let client4 = createClient();
             client4.on('message', (message) => {
                 message = JSON.parse(message);
 
@@ -146,7 +153,6 @@ describe('Integration test', () => {
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client4.send(JSON.stringify(chooseCardResonse));
                     done();
-                    
                 }
             });
 
