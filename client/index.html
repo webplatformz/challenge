@@ -3,70 +3,61 @@
 <meta charset="utf-8"/>
 
 <title>Web Platform - Jass Challenge</title>
-
+<link rel="stylesheet" href="styles/style.css">
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 <script language="javascript" type="text/javascript" src="scripts/app.js"></script>
 
-<div id="echo">
-    <div style="float: left;" id="echo-config">
-        <strong>Card Type:</strong>
-        <br>
-        <label>
-            <input type="radio" name="cardType" value="FRENCH" checked>
-            French
-        </label>
-        <label>
-            <input type="radio" name="cardType" value="GERMAN">
-            German
-        </label>
-        <br>
-        <br>
-        <strong>Location:</strong>
-        <br>
-        <input size="35" id="wsUri" value="">
-        <br>
-        <input type="checkbox" id="secureCb">
-        <span style="font-size: smaller; color: black;" id="secureCbLabel">Use secure WebSocket (TLS)</span>
-        <br>
-        <button id="connect">Connect</button>
-        <button id="disconnect" disabled="">Disconnect</button>
-        <br>
-        <br>
+<body>
+    <main>
+        <div id="panel">
+            <h3>Card Type:</h3>
+            <label>
+                <input type="radio" name="cardType" value="FRENCH" checked>
+                French
+            </label>
+            <label>
+                <input type="radio" name="cardType" value="GERMAN">
+                German
+            </label>
+            <br>
+            <br>
+            <strong>Location:</strong>
+            <br>
+            <input size="35" id="wsUri" value="">
+            <br>
+            <input type="checkbox" id="secureCb">
+            <span style="font-size: smaller; color: black;" id="secureCbLabel">Use secure WebSocket (TLS)</span>
+            <br>
+            <button id="connect">Connect</button>
+            <button id="disconnect" disabled="">Disconnect</button>
 
-        <form name="choosePlayerName">
-            <h3>Choose Playername</h3>
-            <input value="PlayerName" size="35" id="playerName">
-            <button type="button" id="choosePlayerName">Send</button>
-        </form>
-        <form name="chooseTrumpf">
-            <h3>Choose Trumpf</h3>
-            <input value="Trumpf" size="10" id="mode">
-            <input value="hearts" size="10" id="trumpfColor">
-            <button type="button" id="chooseTrumpf">Send</button>
-        </form>
-        <form name="chooseCard">
-            <h3>Choose Card</h3>
-            <input value="11" size="10" id="number">
-            <input value="hearts" size="10" id="color">
-            <button type="button" id="chooseCard">Send</button>
-        </form>
-    </div>
-    <div style="float: left; margin-left: 20px; padding-left: 20px; width: 350px; border-left: solid 1px #cccccc;"
-         id="echo-log"><strong>Log:</strong>
+            <form name="choosePlayerName">
+                <h3>Choose Playername</h3>
+                <input value="PlayerName" size="35" id="playerName">
+                <button type="button" id="choosePlayerName">Send</button>
+            </form>
+            <form name="chooseTrumpf">
+                <h3>Choose Trumpf</h3>
+                <input value="Trumpf" size="10" id="mode">
+                <input value="hearts" size="10" id="trumpfColor">
+                <button type="button" id="chooseTrumpf">Send</button>
+            </form>
+            <form name="chooseCard">
+                <h3>Choose Card</h3>
+                <input value="11" size="10" id="number">
+                <input value="hearts" size="10" id="color">
+                <button type="button" id="chooseCard">Send</button>
+            </form>
+        </div>
+
+        <div id="cardsPlayed"></div>
+    </main>
+    <div id="echoLog">
+        <strong>Log:</strong>
 
         <div id="consoleLog"></div>
         <button style="position: relative; top: 3px;" id="clearLogBut">Clear log</button>
     </div>
-
-    <div style="clear: both;"></div>
-
-    <div style="margin-top: 30px">
-        <h1>Cards played</h1>
-        <div id="cardsPlayed"></div>
+    <div id="cardsInHand">
     </div>
-
-    <div style="margin-top: 30px">
-        <h1>Your cards</h1>
-        <div style="width: 100%" id="cardsInHand"></div>
-    </div>
-</div>
+</body>
