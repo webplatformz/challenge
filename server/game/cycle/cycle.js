@@ -32,7 +32,7 @@ let Cycle = {
             that.clientApi.broadcastStich(createStichMessage(winner));
 
             if(winner.cards.length === 0) {
-                winner.team.points += 5;
+                winner.team.points += counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
                 let otherTeam;
                 that.players.forEach((player) => {
                     if(player != winner) {

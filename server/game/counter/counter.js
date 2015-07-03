@@ -84,13 +84,12 @@ let Counter = {
     },
 
     calculateMatchValues(mode, cardColor) {
-        if(mode === GameMode.OBENABEN || mode === GameMode.UNTENRAUF) {
-            return 300;
-        }
-        if(cardColor === CardColor.HEARTS || cardColor  === CardColor.DIAMONDS) {
-            return 100;
-        }
-        return 200;
+        return calculateMultiplicator(mode, cardColor) * 100;
+    },
+
+    calculateLastStichValue(mode, cardColor) {
+        return calculateMultiplicator(mode, cardColor) * 5;
+
     }
 
 };
