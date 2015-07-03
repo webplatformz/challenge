@@ -27,7 +27,7 @@ describe('Integration test', () => {
         wss.close();
     });
 
-    describe.skip('addClient', () => {
+    describe('addClient', () => {
         let trumpf = CardColor.SPADES;
         let choosePlayerName = (name) => {
             return messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, name);
@@ -91,6 +91,11 @@ describe('Integration test', () => {
                 if (message.type === messages.MessageType.DEAL_CARDS) {
                     handCards1 = mapCardsFromJson(message.data);
                 }
+                
+                if (message.type === messages.MessageType.BROADCAST_WINNER_TEAM) {
+                    console.log("We have a winner!!!!");
+                    done();
+                }
 
                 if (message.type === messages.MessageType.REQUEST_CARD) {
                     let handCard = giveValidCardFromHand(mapCardsFromJson(message.data), handCards1);
@@ -103,9 +108,6 @@ describe('Integration test', () => {
                     let gameType = GameType.create(GameMode.TRUMPF, trumpf);
                     let chooseTrumpfResponse = messages.create(messages.MessageType.CHOOSE_TRUMPF, gameType);
                     client1.send(JSON.stringify(chooseTrumpfResponse));
-                    if(++trumpfCounter >= 4) {
-                        done(); 
-                    }
                 }
             });
 
@@ -127,6 +129,11 @@ describe('Integration test', () => {
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client2.send(JSON.stringify(chooseCardResonse));
                 }
+                if (message.type === messages.MessageType.REQUEST_TRUMPF) {
+                    let gameType = GameType.create(GameMode.TRUMPF, trumpf);
+                    let chooseTrumpfResponse = messages.create(messages.MessageType.CHOOSE_TRUMPF, gameType);
+                    client2.send(JSON.stringify(chooseTrumpfResponse));
+                }
             });
 
             let client3 = createClient();
@@ -146,6 +153,11 @@ describe('Integration test', () => {
                     handCards3.splice(handCards3.indexOf(handCard), 1);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client3.send(JSON.stringify(chooseCardResonse));
+                }
+                if (message.type === messages.MessageType.REQUEST_TRUMPF) {
+                    let gameType = GameType.create(GameMode.TRUMPF, trumpf);
+                    let chooseTrumpfResponse = messages.create(messages.MessageType.CHOOSE_TRUMPF, gameType);
+                    client3.send(JSON.stringify(chooseTrumpfResponse));
                 }
             });
 
@@ -168,6 +180,12 @@ describe('Integration test', () => {
                     handCards4.splice(handCards4.indexOf(handCard), 1);
                     let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
                     client4.send(JSON.stringify(chooseCardResonse));
+                }
+                
+                if (message.type === messages.MessageType.REQUEST_TRUMPF) {
+                    let gameType = GameType.create(GameMode.TRUMPF, trumpf);
+                    let chooseTrumpfResponse = messages.create(messages.MessageType.CHOOSE_TRUMPF, gameType);
+                    client4.send(JSON.stringify(chooseTrumpfResponse));
                 }
             });
 

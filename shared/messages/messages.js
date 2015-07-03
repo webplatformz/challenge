@@ -114,6 +114,8 @@ function create(messageType, ...data) {
             return createChooseTrumpf(...data);
         case MessageType.BROADCAST_TRUMPF:
             return createBroadcastTrumpf(...data);
+        case MessageType.BROADCAST_WINNER_TEAM:
+            return createBroadcastWinnerTeam(...data);
         case MessageType.BROADCAST_STICH:
             return createBroadcastStich(...data);
         case MessageType.PLAYED_CARDS:

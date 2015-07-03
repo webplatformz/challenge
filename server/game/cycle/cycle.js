@@ -16,8 +16,9 @@ let Cycle = {
                 that.currentPlayer.removeCard(card);
                 that.clientApi.broadcastCardPlayed(that.playedCards);
             } else {
-                return that.currentPlayer.rejectCard(card, that.playedCards)
-                    .then(that.currentPlayer.requestCard(that.playedCards))
+                that.currentPlayer.rejectCard(card, that.playedCards);
+
+                return that.currentPlayer.requestCard(that.playedCards)
                     .then(handleChosenCard.bind(null, player));
             }
 
@@ -33,9 +34,9 @@ let Cycle = {
 
         function createStichMessage(winner) {
             return {
-                name : winner.name,
-                playedCards : that.playedCards,
-                teams : [
+                name: winner.name,
+                playedCards: that.playedCards,
+                teams: [
                     winner.team,
                     getOtherTeam(winner.team)
                 ]
