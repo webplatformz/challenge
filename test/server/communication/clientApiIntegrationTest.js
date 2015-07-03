@@ -14,11 +14,11 @@ let expect = require('chai').expect,
 let messages = require('../../../shared/messages/messages');
 
 
-let trumpf = CardColor.SPADES;
 
 let Client = {
     handcards : [],
     name: [],
+    gameType: GameType.create(GameMode.TRUMPF, CardColor.SPADES),
 
     onMessage : function (messageJson) {
         let message = JSON.parse(messageJson);
@@ -43,8 +43,7 @@ let Client = {
         }
 
         if (message.type === messages.MessageType.REQUEST_TRUMPF) {
-            let gameType = GameType.create(GameMode.TRUMPF, trumpf);
-            let chooseTrumpfResponse = messages.create(messages.MessageType.CHOOSE_TRUMPF, gameType);
+            let chooseTrumpfResponse = messages.create(messages.MessageType.CHOOSE_TRUMPF, this.gameType);
             this.client.send(JSON.stringify(chooseTrumpfResponse));
         }
     },
@@ -58,7 +57,7 @@ let Client = {
     giveValidCardFromHand : function(tableCards, handCards) {
         let cardToPlay;
 
-        let validation = Validation.create(GameMode.TRUMPF, trumpf);
+        let validation = Validation.create(this.gameType.mode, this.gameType.trumpfColor);
         handCards.forEach((handCard) => {
             if(validation.validate(tableCards, handCards, handCard)) {
                 cardToPlay = handCard;
@@ -72,8 +71,7 @@ let Client = {
         let clientBot = Object.create(Client);
         clientBot.doneFunction = doneFunction;
         clientBot.client = new WebSocket('ws://localhost:10001');
-        let boundOnMessage = clientBot.onMessage.bind(clientBot);
-        clientBot.client.on('message', boundOnMessage);
+        clientBot.client.on('message', clientBot.onMessage.bind(clientBot));
         clientBot.name = name;
         return clientBot;
     }
