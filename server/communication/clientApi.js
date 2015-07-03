@@ -44,6 +44,10 @@ let ClientApi = {
     broadcastStich: function broadcastStich(winner) {
         clientCommunication.broadcast(this.clients, messages.MessageType.BROADCAST_STICH, winner);
     },
+    
+    broadcastGameFinished: function broadcastStich(teams) {
+        clientCommunication.broadcast(this.clients, messages.MessageType.BROADCAST_GAME_FINISHED, teams);
+    },
 
     broadcastWinnerTeam: function broadcastWinnerTeam(team) {
         clientCommunication.broadcast(this.clients, messages.MessageType.BROADCAST_WINNER_TEAM, team);
