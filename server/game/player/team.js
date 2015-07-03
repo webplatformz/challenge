@@ -3,7 +3,8 @@
 let create = function create(name) {
     return {
         name,
-        points : 0
+        points : 0,
+        currentRoundPoints : 0
     };
 };
 
