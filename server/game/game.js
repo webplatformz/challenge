@@ -26,7 +26,7 @@ let Game = {
                 return actPlayer.requestTrumpf(true)
                     .then((gameType) => {
                         this.gameType = gameType;
-                        this.clientApi.broadcastTrumpf(gameType);
+                        this.clientApi.broadcastTrumpf(this.createBroadcastTrumpfMessage(gameType));
                         return this.nextCycle();
                     });
             }
@@ -40,10 +40,14 @@ let Game = {
                     return this.schieben();
                 } else {
                     this.gameType = gameType;
-                    this.clientApi.broadcastTrumpf(gameType);
+                    this.clientApi.broadcastTrumpf(this.createBroadcastTrumpfMessage(gameType));
                     return this.nextCycle();
                 }
             });
+    },
+
+    createBroadcastTrumpfMessage : function(gameType) {
+        return gameType.mode === GameMode.TRUMPF ? gameType : gameType.mode;
     }
 };
 
