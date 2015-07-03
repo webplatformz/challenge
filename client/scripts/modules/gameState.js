@@ -13,6 +13,8 @@ function compareCards(card1, card2) {
 
 let GameState = {
 
+    startingPlayerIndex: 0,
+
     setCardsInHand: function (cardsInHand) {
         this.cardsInHand = cardsInHand.sort(compareCards);
     },

@@ -32,7 +32,7 @@ let Cycle = {
             that.clientApi.broadcastStich(createStichMessage(winner));
 
             if(winner.cards.length === 0) {
-                winner.team.points += 5;
+                winner.team.points += counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
                 let otherTeam;
                 that.players.forEach((player) => {
                     if(player != winner) {
@@ -41,7 +41,7 @@ let Cycle = {
                 });
 
                 if(otherTeam.currentRoundPoints === 0) {
-                    winner.team.points += 100;
+                    winner.team.points += counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
                 }
 
                 that.clientApi.broadcastGameFinished([winner.team, otherTeam]);
@@ -53,6 +53,7 @@ let Cycle = {
         function createStichMessage(winner) {
             return {
                 name: winner.name,
+                id: winner.id,
                 playedCards: that.playedCards,
                 teams: [
                     winner.team,

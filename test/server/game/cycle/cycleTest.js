@@ -55,6 +55,7 @@ describe('Cycle', function () {
 
         let expectedStichMessage = {
             "name": "hans",
+            "id": 0,
             "playedCards": [card2, card3, card4, winnerCard],
             "teams": [{"name": "team1", "points": 30, "currentRoundPoints":30}, {"name": "team2", "points": 0, "currentRoundPoints":0}]
         };
