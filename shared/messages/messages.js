@@ -65,6 +65,14 @@ function createBroadcastStich (winner) {
     };
 }
 
+function createBroadcastGameWinner (team) {
+    return {
+        type: MessageType.BROADCAST_GAME_WINNER,
+        data: winner
+    };
+}
+
+
 function createBroadcastWinnerTeam(team) {
     return {
         type: MessageType.BROADCAST_WINNER_TEAM,
@@ -118,6 +126,8 @@ function create(messageType, ...data) {
             return createBroadcastWinnerTeam(...data);
         case MessageType.BROADCAST_STICH:
             return createBroadcastStich(...data);
+        case MessageType.BROADCAST_GAME_WINNER:
+            return createBroadcastGameWinner(...data);
         case MessageType.PLAYED_CARDS:
             return createPlayedCards(...data);
         case MessageType.REQUEST_CARD:
