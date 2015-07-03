@@ -1,5 +1,6 @@
 'use strict';
 let _ = require('underscore');
+let GameMode = require('../gameMode');
 
 let validationSuccess = {
     permitted: true
@@ -13,7 +14,7 @@ let AngebenValidator = {
         }
         
         let hasOnlyBuur = function(handCards, leadColor, trumpfColor) {
-            if(leadColor === trumpfColor) {
+            if(leadColor === trumpfColor && validationParameter.mode === GameMode.TRUMPF) {
                 let trumpfCards = handCards.filter(function (card) {
                     return card.color === trumpfColor;
                 });
