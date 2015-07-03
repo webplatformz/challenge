@@ -170,7 +170,7 @@ function onMessage(evt) {
         }
     }
 
-    logToConsole('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
+    logToConsole('<span style="color: red;">RESPONSE: ' + evt.data + '</span>');
 }
 
 function handleDealCards(cards) {
