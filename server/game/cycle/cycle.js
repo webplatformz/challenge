@@ -41,7 +41,7 @@ let Cycle = {
                 });
 
                 if(otherTeam.currentRoundPoints === 0) {
-                    winner.team.points += 100;
+                    winner.team.points += counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
                 }
 
                 that.clientApi.broadcastGameFinished([winner.team, otherTeam]);

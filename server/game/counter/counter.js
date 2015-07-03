@@ -52,6 +52,7 @@ let untenraufCardValues = {
     14: 0
 };
 
+
 let calculateMultiplicator = function calculateMultiplicator(mode, gameTrumpf) {
     if(mode === GameMode.OBENABEN || mode === GameMode.UNTENRAUF) {
         return 3;
@@ -80,6 +81,16 @@ let Counter = {
 
         result = calculateMultiplicator(mode, cardColor) * result;
         return result;
+    },
+
+    calculateMatchValues(mode, cardColor) {
+        if(mode === GameMode.OBENABEN || mode === GameMode.UNTENRAUF) {
+            return 300;
+        }
+        if(cardColor === CardColor.HEARTS || cardColor  === CardColor.DIAMONDS) {
+            return 100;
+        }
+        return 200;
     }
 
 };
