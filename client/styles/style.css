@@ -16,8 +16,11 @@ body {
 
 main {
     display: flex;
+    display: -webkit-flex;
     justify-content: space-around;
+    -webikt-justify-content: space-around;
     flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
     padding: 20px;
 }
 
@@ -29,6 +32,7 @@ div#panel {
     margin-right: 20px;
     min-width: 300px;
     flex-grow: 0;
+    -webkit-flex-grow: 0;
     background-color: rgba(255, 255, 255, 0.4);
     border-radius: 20px;
     padding: 10px;
@@ -40,19 +44,29 @@ div#cardsPlayed {
     height: 600px;
     background: url("/images/jassteppich.jpg") center center;
     border-radius: 20px;
+
     display: flex;
+    display: -webkit-flex;
     justify-content: center;
+    -webkit-justify-content: center;
     flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
     flex-grow: 1;
+    -webkit-flex-grow: 1;
 }
 
 div#cardsPlayed div {
     padding: 20px;
-    flex-grow: 0;
     width: 50%;
+
     display: flex;
+    display: -webkit-flex;
+    flex-grow: 0;
+    -webkit-flex-grow: 0;
     align-items: center;
+    -webkit-align-items: center;
     justify-content: center;
+    -webkit-justify-content: center;
 }
 
 div#cardsPlayed img {
