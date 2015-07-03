@@ -201,11 +201,10 @@ function handlePlayedCards(playedCards) {
 
 function drawPlayedCards() {
     if (gameState.playedCards) {
-        let playedCardsBlock = document.getElementById('cardsPlayed');
+        removeAllChildrenOnAllElements(document.querySelectorAll('#cardsPlayed div'));
 
-        removeAllChildren(playedCardsBlock);
-        gameState.playedCards.forEach((playedCard) => {
-            addCardToDom(playedCardsBlock, playedCard);
+        gameState.playedCards.forEach((playedCard, index) => {
+            addCardToDom(document.getElementById('player' + index), playedCard);
         });
     }
 }
@@ -242,6 +241,12 @@ function playCard(card) {
 function removeAllChildren(node) {
     while (node.hasChildNodes()) {
         node.removeChild(node.lastChild);
+    }
+}
+
+function removeAllChildrenOnAllElements(nodes) {
+    for(let i = 0; i < nodes.length; i++) {
+        removeAllChildren(nodes[i]);
     }
 }
 
