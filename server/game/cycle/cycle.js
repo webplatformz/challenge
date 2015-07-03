@@ -29,6 +29,11 @@ let Cycle = {
             let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
             winner.team.points += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
             that.clientApi.broadcastStich(createStichMessage(winner));
+
+            if(winner.cards.length === 0) {
+                winner.team.points += 5;
+            }
+
             return winner;
         }
 
