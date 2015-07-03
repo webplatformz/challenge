@@ -1,5 +1,6 @@
 'use strict';
 let _ = require('underscore');
+let GameMode = require('../gameMode');
 
 let validationSuccess = {
     permitted: true
@@ -10,7 +11,7 @@ let UnderTrumpfValidator = {
         let trumpfQuantifier = [6,7,8,10,12,13,14,9,11]; 
         let trumpfColor = validationParameter.color;
         
-        if (validationParameter.tableCards.length === 0) {
+        if (validationParameter.tableCards.length === 0 || validationParameter.mode !== GameMode.TRUMPF) {
             return validationSuccess;
         }
         

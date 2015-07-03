@@ -8,6 +8,10 @@ let validationSuccess = {
 
 let AngebenValidator = {
     validate: function (validationParameter) {
+        if (validationParameter.tableCards.length === 0) {
+            return validationSuccess;
+        }
+        
         let hasOnlyBuur = function(handCards, leadColor, trumpfColor) {
             if(leadColor === trumpfColor) {
                 let trumpfCards = handCards.filter(function (card) {
@@ -20,9 +24,6 @@ let AngebenValidator = {
             }
             return false;
         };
-        if (validationParameter.tableCards.length === 0) {
-            return validationSuccess;
-        }
 
         if (validationParameter.cardToPlay.color === validationParameter.color) {
             return validationSuccess;

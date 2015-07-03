@@ -106,5 +106,31 @@ describe('Angeben Validator', function () {
 
         assert(validationResult.permitted);
     });
+
+    it('should allow card if obenabä', () => {
+        let parameters = {
+            mode: GameMode.OBENABEN,
+            tableCards: [Card.create(6, Card.CardColor.DIAMONDS)],
+            handCards: [Card.create(11, Card.CardColor.SPADES), Card.create(10, Card.CardColor.HEARTS), Card.create(10, Card.CardColor.HEARTS)],
+            cardToPlay: Card.create(10, Card.CardColor.HEARTS)
+        };
+
+        let validationResult = AngebenValidator.validate(parameters);
+
+        assert(validationResult.permitted);
+    });
+
+    it('should deny card if undäufä and could angeben', () => {
+        let parameters = {
+            mode: GameMode.UNTENRAUF,
+            tableCards: [Card.create(6, Card.CardColor.DIAMONDS)],
+            handCards: [Card.create(11, Card.CardColor.SPADES), Card.create(10, Card.CardColor.DIAMONDS), Card.create(10, Card.CardColor.HEARTS)],
+            cardToPlay: Card.create(11, Card.CardColor.SPADES)
+        };
+
+        let validationResult = AngebenValidator.validate(parameters);
+
+        assert(!validationResult.permitted);
+    });
 });
 
