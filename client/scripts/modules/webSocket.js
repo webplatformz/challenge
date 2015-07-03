@@ -173,10 +173,17 @@ function onMessage(evt) {
             case messages.MessageType.PLAYED_CARDS:
                 handlePlayedCards(message.data);
                 break;
+            case messages.MessageType.BROADCAST_STICH:
+                handleBroadcastStich(message.data);
+                break;
         }
     }
 
     logToConsole('<span style="color: red;">RESPONSE: ' + evt.data + '</span>');
+}
+
+function handleBroadcastStich(stich) {
+    gameState.startingPlayerIndex = stich.id;
 }
 
 function handleDealCards(cards) {
@@ -203,9 +210,12 @@ function drawPlayedCards() {
     if (gameState.playedCards) {
         removeAllChildrenOnAllElements(document.querySelectorAll('#cardsPlayed div'));
 
-        gameState.playedCards.forEach((playedCard, index) => {
-            addCardToDom(document.getElementById('player' + index), playedCard);
-        });
+        let playerIndex = gameState.startingPlayerIndex;
+        for(let i = 0; i < gameState.playedCards.length; i++) {
+            playerIndex = (gameState.startingPlayerIndex + i) % 4;
+            let card = gameState.playedCards[i];
+            addCardToDom(document.getElementById('player' + playerIndex), card);
+        }
     }
 }
 
