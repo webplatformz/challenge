@@ -16,8 +16,9 @@ let Cycle = {
                 that.currentPlayer.removeCard(card);
                 that.clientApi.broadcastCardPlayed(that.playedCards);
             } else {
-                return that.currentPlayer.rejectCard(card, that.playedCards)
-                    .then(that.currentPlayer.requestCard(that.playedCards))
+                that.currentPlayer.rejectCard(card, that.playedCards);
+
+                return that.currentPlayer.requestCard(that.playedCards)
                     .then(handleChosenCard.bind(null, player));
             }
 
@@ -27,17 +28,15 @@ let Cycle = {
         function broadcastAndReturnWinner(playedCards) {
             let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
             winner.team.points += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
-
             that.clientApi.broadcastStich(createStichMessage(winner));
-
             return winner;
         }
 
         function createStichMessage(winner) {
             return {
-                name : winner.name,
-                playedCards : that.playedCards,
-                teams : [
+                name: winner.name,
+                playedCards: that.playedCards,
+                teams: [
                     winner.team,
                     getOtherTeam(winner.team)
                 ]
@@ -45,13 +44,11 @@ let Cycle = {
         }
 
         function getOtherTeam(team) {
-            let otherTeam;
-            that.players.forEach((player) => {
-                if (team.name !== player.team.name) {
-                    otherTeam = player.team;
+            for (var i = 0; i < that.players.length; i++) {
+                if (that.players[i].team.name !== team.name) {
+                    return that.players[i].team;
                 }
-            });
-            return otherTeam;
+            }
         }
 
         return that.players.reduce((previousPlayer, currentPlayer, index) => {

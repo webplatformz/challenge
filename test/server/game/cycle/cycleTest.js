@@ -47,6 +47,39 @@ describe('Cycle', function () {
             }).catch(done);
     });
 
+    it('should broadcast the correct message', (done) => {
+        let winnerCard = Card.create(11, Card.CardColor.DIAMONDS);
+        let card2 = Card.create(10, Card.CardColor.DIAMONDS);
+        let card3 = Card.create(6, Card.CardColor.DIAMONDS);
+        let card4 = Card.create(7, Card.CardColor.DIAMONDS);
+
+        let expectedStichMessage = {
+            "name": "hans",
+            "playedCards": [card2, card3, card4, winnerCard],
+            "teams": [{"name": "team1", "points": 30}, {"name": "team2", "points": 0}]
+        };
+
+        clientApiMock.expects('broadcastStich').exactly(1).withArgs(expectedStichMessage);
+
+        sinon.stub(players[0], 'requestCard').returns(Promise.resolve(winnerCard));
+        sinon.stub(players[1], 'requestCard').returns(Promise.resolve(card2));
+        sinon.stub(players[2], 'requestCard').returns(Promise.resolve(card3));
+        sinon.stub(players[3], 'requestCard').returns(Promise.resolve(card4));
+
+        let cycle = Cycle.create(players[1], players, clientApi, gameType);
+        cycle.validator = {
+            validate: function () {
+                return true;
+            }
+        };
+
+        cycle.iterate()
+            .then(function () {
+                clientApiMock.verify();
+                done();
+            }).catch(done);
+    });
+
     it('should start with currentPlayer', (done) => {
         sinon.stub(players[0], 'requestCard').returns(Promise.resolve(cards[1]));
         sinon.stub(players[1], 'requestCard').returns(Promise.resolve(cards[2]));
@@ -59,11 +92,6 @@ describe('Cycle', function () {
                 return true;
             }
         };
-
-        clientApiMock.expects('broadcastCardPlayed').withArgs([cards[2]]).once();
-        clientApiMock.expects('broadcastCardPlayed').withArgs([cards[2], cards[3]]).once();
-        clientApiMock.expects('broadcastCardPlayed').withArgs([cards[2], cards[3], cards[0]]).once();
-        clientApiMock.expects('broadcastCardPlayed').withArgs([cards[2], cards[3], cards[0], cards[1]]).once();
 
         cycle.iterate()
             .then(function () {
@@ -99,5 +127,6 @@ describe('Cycle', function () {
         playerMock.restore();
     });
 
-});
+})
+;
 

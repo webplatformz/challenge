@@ -45,8 +45,9 @@ let Session = {
         });
     },
 
-    gameCycle: function gameCycle() {
-        let game = Game.create(this.players, this.maxPoints, this.players[this.getNextStartingPlayer()], this.clientApi);
+    gameCycle: function gameCycle(nextStartingPlayer = this.getNextStartingPlayer()) {
+        let game = Game.create(this.players, this.maxPoints, this.players[nextStartingPlayer], this.clientApi);
+
         return game.start().then(() => {
             let pointsTeamA = this.teams[0].points;
             let pointsTeamB = this.teams[1].points;
@@ -61,7 +62,7 @@ let Session = {
                 this.clientApi.broadcastWinnerTeam(this.teams[1]);
                 return this.teams[1];
             }
-            return this.gameCycle();
+            return this.gameCycle(this.getNextStartingPlayer());
         });
     }
 };
