@@ -164,6 +164,12 @@ function onMessage(evt) {
             case messages.MessageType.DEAL_CARDS:
                 handleDealCards(message.data);
                 break;
+            case messages.MessageType.REQUEST_CARD:
+                handleRequestCard();
+                break;
+            case messages.MessageType.REJECT_CARD:
+                handleRejectCard();
+                break;
             case messages.MessageType.PLAYED_CARDS:
                 handlePlayedCards(message.data);
                 break;
@@ -176,6 +182,14 @@ function onMessage(evt) {
 function handleDealCards(cards) {
     gameState.setCardsInHand(cards);
     drawCardsInHand();
+}
+
+function handleRequestCard() {
+    gameState.yourTurn = true;
+}
+
+function handleRejectCard() {
+    alert('The card you played is invalid!');
 }
 
 function handlePlayedCards(playedCards) {
