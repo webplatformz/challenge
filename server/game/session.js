@@ -50,6 +50,8 @@ let Session = {
         return game.start().then(() => {
             let pointsTeamA = this.teams[0].points;
             let pointsTeamB = this.teams[1].points;
+                                 
+            console.log("Points Team A: " + pointsTeamA + " - " + "Points Team B: " + pointsTeamB);
 
             if (pointsTeamA > pointsTeamB && pointsTeamA >= this.maxPoints) {
                 this.clientApi.broadcastWinnerTeam(this.teams[0]);
