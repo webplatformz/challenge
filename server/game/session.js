@@ -46,14 +46,13 @@ let Session = {
     },
 
     gameCycle: function gameCycle(nextStartingPlayer = this.getNextStartingPlayer()) {
-        let game = Game.create(this.players, this.maxPoints, this.players[nextStartingPlayer], this.clientApi);
+        let players = this.players.slice();
+        let game = Game.create(players, this.maxPoints, this.players[nextStartingPlayer], this.clientApi);
 
         return game.start().then(() => {
             let pointsTeamA = this.teams[0].points;
             let pointsTeamB = this.teams[1].points;
                                  
-            console.log("Points Team A: " + pointsTeamA + " - " + "Points Team B: " + pointsTeamB);
-
             if (pointsTeamA > pointsTeamB && pointsTeamA >= this.maxPoints) {
                 this.clientApi.broadcastWinnerTeam(this.teams[0]);
                 return this.teams[0];

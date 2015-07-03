@@ -40,6 +40,18 @@ let StichGranter = {
             return card.number === 9 && card.color === trumpfColor;
         }
 
+        function buurAlreadyPlayed() {
+            return isBuur(winnerCard);
+        }
+
+        function nellAlreadyPlayed() {
+            return isNell(winnerCard);
+        }
+
+        function neitherBuurNorNellPlayed() {
+            return !(buurAlreadyPlayed() || nellAlreadyPlayed());
+        }
+
         function isHighestTrumpfSoFar(card) {
             if (!isTrumpf(card)) {
                 return false;
@@ -50,10 +62,11 @@ let StichGranter = {
             if(!isBuur(winnerCard) && isNell(card)) {
                 return true;
             }
-            if (trumpfAlreadyPlayed()) {
+
+            if (neitherBuurNorNellPlayed() && trumpfAlreadyPlayed()) {
                 return card.number > winnerCard.number;
             } else {
-                return true;
+                return !trumpfAlreadyPlayed();
             }
         }
 
