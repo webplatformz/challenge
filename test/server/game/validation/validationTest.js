@@ -24,5 +24,14 @@ describe('Validation', function () {
         let validation = Validation.create(GameMode.TRUMPF, Card.CardColor.CLUBS);
         assert(validation.validate(tableCards, handCards, handCardOne));
     });
+    it('should validate "angeben" without obenabä', () => {
+        let cardOne = Card.create(10, Card.CardColor.SPADES);
+        let handCardOne = Card.create(11, Card.CardColor.SPADES);
+        let handCardTwo = Card.create(11, Card.CardColor.HEARTS);
+        let tableCards = [cardOne];
+        let handCards = [handCardOne, handCardTwo];
+        let validation = Validation.create(GameMode.OBENABEN);
+        assert(validation.validate(tableCards, handCards, handCardOne));
+    });
 });
 
