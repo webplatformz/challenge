@@ -44,7 +44,7 @@ let Cycle = {
                     winner.team.points += 100;
                 }
 
-                this.clientApi.broadcastGameFinished([winner.team, otherTeam]);
+                that.clientApi.broadcastGameFinished([winner.team, otherTeam]);
             }
 
             return winner;

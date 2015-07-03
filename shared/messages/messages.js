@@ -11,6 +11,7 @@ let MessageType = {
     BROADCAST_TRUMPF: 'BROADCAST_TRUMPF',
     BROADCAST_STICH: 'BROADCAST_STICH',
     BROADCAST_WINNER_TEAM: 'BROADCAST_WINNER_TEAM',
+    BROADCAST_GAME_FINISHED: 'BROADCAST_GAME_FINISHED',
     PLAYED_CARDS: 'PLAYED_CARDS',
     REQUEST_CARD: 'REQUEST_CARD',
     CHOOSE_CARD: 'CHOOSE_CARD',
@@ -65,10 +66,10 @@ function createBroadcastStich (winner) {
     };
 }
 
-function createBroadcastGamefinished (teams) {
+function createBroadcastGameFinished (teams) {
     return {
         type: MessageType.BROADCAST_GAME_FINISHED,
-        data: winner
+        data: teams
     };
 }
 
