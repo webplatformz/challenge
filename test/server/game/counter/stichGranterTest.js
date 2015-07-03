@@ -55,14 +55,14 @@ describe('StichGranter', function () {
         let mode = GameMode.TRUMPF;
         let trumpfColor = CardColor.SPADES;
 
-        let winnerCard = Card.create(10, CardColor.SPADES);
-        let expectedWinner = players[3];
+        let winnerCard = Card.create(11, CardColor.SPADES);
+        let expectedWinner = players[0];
 
         let cardSet = [
+            winnerCard,
             Card.create(6, CardColor.SPADES),
-            Card.create(12, CardColor.DIAMONDS),
-            Card.create(10, CardColor.DIAMONDS),
-            winnerCard
+            Card.create(12, CardColor.SPADES),
+            Card.create(10, CardColor.DIAMONDS)
         ];
 
         let actualWinner = StichGranter.determineWinner(mode, trumpfColor, cardSet, players);

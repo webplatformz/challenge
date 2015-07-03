@@ -40,6 +40,18 @@ let StichGranter = {
             return card.number === 9 && card.color === trumpfColor;
         }
 
+        function buurAlreadyPlayed() {
+            return isBuur(winnerCard);
+        }
+
+        function nellAlreadyPlayed() {
+            return isNell(winnerCard);
+        }
+
+        function neitherBuurNorNellPlayed() {
+            return !(buurAlreadyPlayed() || nellAlreadyPlayed());
+        }
+
         function isHighestTrumpfSoFar(card) {
             if (!isTrumpf(card)) {
                 return false;
@@ -48,12 +60,19 @@ let StichGranter = {
                 return true;
             }
             if(!isBuur(winnerCard) && isNell(card)) {
+                console.log('is Nell');
                 return true;
             }
-            if (trumpfAlreadyPlayed()) {
+
+            console.log('checking: ' + JSON.stringify(card));
+            console.log('buur played: ' + buurAlreadyPlayed() + ', nell played: ' + nellAlreadyPlayed());
+            console.log('buur nor nell: ' + !(buurAlreadyPlayed() || nellAlreadyPlayed()));
+            console.log('trumpf already played: ' + trumpfAlreadyPlayed());
+
+            if (neitherBuurNorNellPlayed() && trumpfAlreadyPlayed()) {
                 return card.number > winnerCard.number;
             } else {
-                return true;
+                return !trumpfAlreadyPlayed();
             }
         }
 
@@ -70,6 +89,8 @@ let StichGranter = {
                     setCardToCurrentWinner(index, card);
                 } else if (noTrumpfPlayedYet() && isHighestCardSoFar(card)) {
                     setCardToCurrentWinner(index, card);
+                } else {
+                    console.log('lower trumpf');
                 }
             } else if (mode === GameMode.UNTENRAUF) {
                 if (isLowestCardSoFar(card)) {
@@ -80,6 +101,7 @@ let StichGranter = {
                     setCardToCurrentWinner(index, card);
                 }
             }
+            console.log('current winner card: ' + JSON.stringify(card));
         });
         return players[winnerIndex];
     }
