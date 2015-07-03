@@ -53,6 +53,7 @@ let Cycle = {
         function createStichMessage(winner) {
             return {
                 name: winner.name,
+                id: winner.id,
                 playedCards: that.playedCards,
                 teams: [
                     winner.team,
