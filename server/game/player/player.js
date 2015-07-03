@@ -1,9 +1,10 @@
 'use strict';
 
-let create = function create(team, name, clientApi) {
+let create = function create(team, name, id, clientApi) {
     return {
         team,
         name,
+        id,
         clientApi,
         cards : [],
 
