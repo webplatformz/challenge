@@ -28,10 +28,23 @@ let Cycle = {
         function broadcastAndReturnWinner(playedCards) {
             let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
             winner.team.points += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
+            winner.team.currentRoundPoints += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
             that.clientApi.broadcastStich(createStichMessage(winner));
 
             if(winner.cards.length === 0) {
                 winner.team.points += 5;
+                let otherTeam;
+                that.players.forEach((player) => {
+                    if(player != winner) {
+                        otherTeam = player.team;
+                    }
+                });
+
+                if(otherTeam.currentRoundPoints === 0) {
+                    winner.team.points += 100;
+                }
+
+                that.clientApi.broadcastGameFinished([winner.team, otherTeam]);
             }
 
             return winner;
