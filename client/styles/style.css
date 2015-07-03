@@ -11,7 +11,7 @@ html, body {
 }
 
 body {
-    padding-bottom: 100px;
+    padding-bottom: 200px;
     background: url("/images/table.jpg") center center;
 }
 
@@ -42,7 +42,8 @@ div#cardsPlayed {
 }
 
 div#cardsPlayed img {
-    margin: 20px;
+    max-height: 250px;
+    margin: 25px;
 }
 
 div#cardsInHand {
