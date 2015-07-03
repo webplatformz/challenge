@@ -56,7 +56,7 @@ describe('Cycle', function () {
         let expectedStichMessage = {
             "name": "hans",
             "playedCards": [card2, card3, card4, winnerCard],
-            "teams": [{"name": "team1", "points": 30, "currentRoundPoints":0}, {"name": "team2", "points": 0, "currentRoundPoints":0}]
+            "teams": [{"name": "team1", "points": 30, "currentRoundPoints":30}, {"name": "team2", "points": 0, "currentRoundPoints":0}]
         };
 
         clientApiMock.expects('broadcastStich').exactly(1).withArgs(expectedStichMessage);
