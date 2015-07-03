@@ -37,10 +37,12 @@ div#cardsPlayed {
     border-radius: 20px;
     flex-grow: 0;
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 div#cardsPlayed img {
-    width: 50%;
+    margin: 20px;
 }
 
 div#cardsInHand {
