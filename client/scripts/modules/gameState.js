@@ -18,9 +18,9 @@ let GameState = {
     },
 
     removeLastCardPlayed: function () {
-        if (this.lastCardPlayed) {
+        if (this.yourTurn) {
             this.cardsInHand.splice(this.cardsInHand.indexOf(this.lastCardPlayed), 1);
-            this.lastCardPlayed = undefined;
+            this.yourTurn = false;
         }
     }
 };
@@ -28,6 +28,7 @@ let GameState = {
 let create = function create() {
     let gameState = Object.create(GameState);
     gameState.cardType = CardType.FRENCH;
+    gameState.yourTurn = false;
 
     return gameState;
 };
