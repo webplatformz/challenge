@@ -3,6 +3,9 @@
 - Frontend displaying scores
 
 
+###Wiki:
+https://github.com/webplatformz/challenge/wiki
+
 ###Styleguide: 
 https://github.com/RisingStack/node-style-guide
 
@@ -41,8 +44,6 @@ or:
 $ npm start
 ```
 
-## Architecture
-To be filled out.
 ## TechStack
 - NodeJs
 - Grunt
