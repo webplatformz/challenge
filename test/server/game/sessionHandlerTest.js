@@ -3,7 +3,7 @@
 let sinon = require('sinon');
 let ClientApi = require('../../../server/communication/clientApi');
 let JassSession = require('../../../server/game/session');
-let SessionChoice = require('../../../server/game/sessionChoice');
+let SessionChoice = require('../../../shared/game/sessionChoice');
 let sessionHandler = require('../../../server/game/sessionHandler');
 
 let uuidMatcher = sinon.match((name) => {

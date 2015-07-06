@@ -9,7 +9,7 @@ let WebSocket = require('ws'),
     CardColor = Card.CardColor,
     Validation = require('../../../server/game/validation/validation'),
     messages = require('../../../shared/messages/messages'),
-    SessionChoice = require('../../../server/game/sessionChoice'),
+    SessionChoice = require('../../../shared/game/sessionChoice'),
     expect = require('chai').expect;
 
 let SimpleBot = {
