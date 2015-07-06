@@ -23,6 +23,30 @@ describe('sessionHandler', () => {
             sessionHandler.resetInstance();
         });
 
+        it('should create random Session name and add player', (done) => {
+            let sessionName = 'sessionName',
+                webSocket = 'webSocket';
+
+            clientApiMock.expects('requestPlayerName').once().returns(Promise.resolve('playerName'));
+            clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({}));
+
+            jassSessionFactoryMock.expects('create').withArgs(sinon.match.string).once().returns({
+                addPlayer: () => {
+                },
+                isComplete: () => {
+                    return false;
+                }
+            });
+
+            let promise = sessionHandler.handleClientConnection(webSocket);
+
+            promise.then(() => {
+                clientApiMock.verify();
+                jassSessionFactoryMock.verify();
+                done();
+            }).catch(done);
+        });
+
         it('should create Session and add player', (done) => {
             let sessionName = 'sessionName',
                 webSocket = 'webSocket';
