@@ -1,7 +1,6 @@
 "use strict";
 
 let assert = require("assert");
-let expect = require('chai').expect;
 let Game = require('../../../server/game/game');
 let GameMode = require('../../../server/game/gameMode');
 let GameType = require('../../../server/game/gameType');
