@@ -16,19 +16,14 @@ Installing node.js:
 
 See http://nodejs.org/download/
 
-
-Install bower: 
-```sh
-$ npm install -g bower
-```
 Install node modules:
 ```sh
 $ npm install
 ```
 
-Install frontend dependencies: 
+Start the server:
 ```sh
-$ bower install
+$ npm start
 ```
 
 ## Development
@@ -51,12 +46,6 @@ To be filled out.
 ## TechStack
 - NodeJs
 - Grunt
-- AngularJs
-- Angular-Material
-- Bower
-- MongoDB
-- Nightwatch
-- Karma
 - Mocha
 - Express
-- Socket.io
+- WebSockets
