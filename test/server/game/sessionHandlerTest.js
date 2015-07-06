@@ -1,6 +1,7 @@
 'use strict';
 
 let sinon = require('sinon');
+let expect = require('chai').expect;
 let ClientApi = require('../../../server/communication/clientApi');
 let JassSession = require('../../../server/game/session');
 let SessionChoice = require('../../../shared/game/sessionChoice');
@@ -143,7 +144,7 @@ describe('sessionHandler', () => {
             });
         });
 
-        it('should not show complete sessions', (done) => {
+        it('should not show complete sessions and remove finished sessions from sessions array', (done) => {
             let sessionName = 'sessionName',
                 webSocket = 'webSocket';
 
@@ -175,12 +176,14 @@ describe('sessionHandler', () => {
             });
 
             sessionHandler.handleClientConnection(webSocket).then(() => {
+                expect(sessionHandler.sessions.length).to.equal(0);
+
                 sessionHandler.handleClientConnection(webSocket).then(() => {
                     clientApiMock.verify();
                     jassSessionFactoryMock.verify();
                     done();
                 }).catch(done);
-            });
+            }).catch(done);
         });
     });
 });

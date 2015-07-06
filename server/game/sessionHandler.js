@@ -5,70 +5,72 @@ let JassSession = require('./session');
 let SessionChoice = require('../../shared/game/sessionChoice');
 let UUID = require('uuid');
 
-let sessions = [];
-
-function findOrCreateSessionWithSpace() {
+function findOrCreateSessionWithSpace(sessions) {
     let filteredSessions = sessions.filter((element) => {
         return !element.isComplete();
     });
 
     if (filteredSessions.length === 0) {
-        return createSession(UUID.v4());
+        return createSession(sessions, UUID.v4());
     }
 
     return filteredSessions[0];
 }
 
-function createSession(sessionName) {
+function createSession(sessions, sessionName) {
     let session = JassSession.create(sessionName);
     sessions.push(session);
     return session;
 }
 
-function findSession(sessionName) {
+function findSession(sessions, sessionName) {
     let filteredSessions = sessions.filter((element) => {
         return element.name === sessionName;
     });
 
     if (filteredSessions.length === 0) {
-        return createSession(sessionName);
+        return createSession(sessions, sessionName);
     }
 
     return filteredSessions[0];
 }
 
-function createOrJoinSession(sessionChoiceResponse) {
+function createOrJoinSession(sessions, sessionChoiceResponse) {
     switch (sessionChoiceResponse.sessionChoice) {
         case SessionChoice.CREATE_NEW:
-            return createSession(sessionChoiceResponse.sessionName);
+            return createSession(sessions, sessionChoiceResponse.sessionName);
         case SessionChoice.JOIN_EXISTING:
-            return findSession(sessionChoiceResponse.sessionName);
+            return findSession(sessions, sessionChoiceResponse.sessionName);
         default:
-            return findOrCreateSessionWithSpace();
+            return findOrCreateSessionWithSpace(sessions);
     }
-}
-
-function getAvailableSessionNames() {
-    return sessions.filter((session) => {
-        return !session.isComplete();
-    }).map((session) => {
-        return session.name;
-    });
 }
 
 let SessionHandler = {
 
+    sessions: [],
+
+    getAvailableSessionNames() {
+        return this.sessions.filter((session) => {
+            return !session.isComplete();
+        }).map((session) => {
+            return session.name;
+        });
+    },
+
     handleClientConnection : function handleClientConnection(ws) {
         return clientApi.requestPlayerName(ws).then((playerName) => {
-            return clientApi.requestSessionChoice(ws, getAvailableSessionNames()).then((sessionChoiceResponse) => {
-                let session = createOrJoinSession(sessionChoiceResponse);
+            return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
+                let session = createOrJoinSession(this.sessions, sessionChoiceResponse);
 
                 session.addPlayer(ws, playerName);
 
                 if (session.isComplete()) {
                     session.start().then((team) => {
                         //TODO let bots restart the session
-                        console.log("Team " + team.name + " won ");
+                        console.log("Team " + team.name + " won!");
+                        let index = this.sessions.indexOf(session);
+                        this.sessions.splice(index, 1);
                     });
                 }
             });
@@ -76,7 +78,7 @@ let SessionHandler = {
     },
 
     resetInstance : function resetInstance() {
-        sessions = [];
+        this.sessions = [];
     }
 
 };
