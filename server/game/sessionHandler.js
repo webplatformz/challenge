@@ -49,7 +49,9 @@ function createOrJoinSession(sessionChoiceResponse) {
 }
 
 function getAvailableSessionNames() {
-    return sessions.map((session) => {
+    return sessions.filter((session) => {
+        return !session.isComplete();
+    }).map((session) => {
         return session.name;
     });
 }
