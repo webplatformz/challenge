@@ -307,4 +307,41 @@ describe('Client API', () => {
             }).then(done, done);
         });
     });
+
+    describe('requestSessionChoice', () => {
+        it('should request session to join from client', (done) => {
+            let availableSessions = ['Session 1', 'Session2', 'Session 3'],
+                sessionChoice = 'sessionChoice',
+                sessionName = 'sessionName',
+                chooseSession = {
+                    type: messages.MessageType.CHOOSE_SESSION,
+                    data: {
+                        sessionChoice,
+                        sessionName
+                    }
+                };
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.requestSessionChoice(client, availableSessions).then((data) => {
+                    expect(data.sessionChoice).to.equal(sessionChoice);
+                    expect(data.sessionName).to.equal(sessionName);
+                    done();
+                }).catch(done);
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            new Promise(() => {
+                client.on('message', (message) => {
+                    message = JSON.parse(message);
+
+                    expect(message.type).to.equal(messages.MessageType.REQUEST_SESSION_CHOICE);
+                    expect(message.data).to.eql(availableSessions);
+                    client.send(JSON.stringify(chooseSession));
+                });
+            }).catch(done);
+        });
+    });
 });

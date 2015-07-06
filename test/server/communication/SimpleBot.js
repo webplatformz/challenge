@@ -8,7 +8,9 @@ let WebSocket = require('ws'),
     Card = require('../../../shared/deck/card'),
     CardColor = Card.CardColor,
     Validation = require('../../../server/game/validation/validation'),
-    messages = require('../../../shared/messages/messages');
+    messages = require('../../../shared/messages/messages'),
+    SessionChoice = require('../../../server/game/sessionChoice'),
+    expect = require('chai').expect;
 
 let SimpleBot = {
     gameType: GameType.create(GameMode.TRUMPF, CardColor.SPADES),
@@ -18,6 +20,17 @@ let SimpleBot = {
 
         if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
             this.client.send(JSON.stringify(messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, this.name)));
+        }
+
+        if (message.type === messages.MessageType.REQUEST_SESSION_CHOICE) {
+            let sessionName = 'Session 1';
+
+            if (this.id === 1){
+                expect(message.data.length).to.equal(0);
+                this.client.send(JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION, SessionChoice.CREATE_NEW, sessionName)));
+            }
+
+            this.client.send(JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION, SessionChoice.JOIN_EXISTING, sessionName)));
         }
 
         if (message.type === messages.MessageType.DEAL_CARDS) {
@@ -61,8 +74,9 @@ let SimpleBot = {
 };
 
 module.exports = {
-    create: function create(name, doneFunction) {
+    create: function create(id, name, doneFunction) {
         let clientBot = Object.create(SimpleBot);
+        clientBot.id = id;
         clientBot.handcards = [];
         clientBot.name = [];
         clientBot.doneFunction = doneFunction;

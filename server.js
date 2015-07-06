@@ -9,27 +9,13 @@ let WebSocketServer = require('ws').Server;
 let wss = new WebSocketServer({
     server
 });
-let clientApi = require('./server/communication/clientApi').create();
 
-let JassSession = require('./server/game/session');
-
-let session = JassSession.create();
-let sessions = [];
+let sessionHandler = require('./server/game/sessionHandler');
 
 app.use(express.static(__dirname + '/client'));
 
 wss.on('connection', (ws) => {
-    clientApi.requestPlayerName(ws).then((playerName) => {
-        session.addPlayer(ws, playerName);
-
-        if (session.isComplete()) {
-            session.start().then((team) => {
-                console.log("Team " + team.name + " won ");
-            });
-
-            session = JassSession.create();
-        }
-    });
+    sessionHandler.handleClientConnection(ws);
 });
 
 server.listen(port, () => {
@@ -37,7 +23,8 @@ server.listen(port, () => {
 });
 
 module.exports = {
-    close: function() {
+    close: function () {
+        sessionHandler.resetInstance();
         server.close();
     }
 };

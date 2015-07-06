@@ -61,6 +61,12 @@ let ClientApi = {
 
     rejectCard: function rejectCard(client, card, cardsOnTable) {
         clientCommunication.send(client, messages.MessageType.REJECT_CARD, card, cardsOnTable);
+    },
+
+    requestSessionChoice: function requestSessionChoice(client, availableSessions) {
+        return clientCommunication.request(client, messages.MessageType.REQUEST_SESSION_CHOICE,
+            resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_SESSION),
+            availableSessions);
     }
 };
 

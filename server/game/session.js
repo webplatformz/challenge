@@ -59,9 +59,10 @@ let Session = {
     }
 };
 
-let create = function create() {
+let create = function create(name) {
     let session = Object.create(Session);
     session.players = [];
+    session.name = name;
     session.teams = [
         Team.create('Team 1'),
         Team.create('Team 2')
