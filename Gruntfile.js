@@ -98,7 +98,7 @@ module.exports = function (grunt) {
                 tasks: ['sync']
             },
             babel: {
-                files: ['./server/**/*.js', './shared/**/*.js', './test/**/*.js'],
+                files: ['./server/**/*.js', './shared/**/*.js', './test/**/*.js', './server.js'],
                 tasks: ['jshint', 'babel']
             },
             browserify: {
