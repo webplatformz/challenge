@@ -8,7 +8,7 @@ let clientApi = require('../../../../server/communication/clientApi').create();
 let Player = require('../../../../server/game/player/player');
 let TestDataCreator = require('../../../testDataCreator');
 let sinon = require('sinon');
-let GameType = require('../../../../server/game/game').GameType;
+let GameType = require('../../../../server/game/gameType');
 let GameMode = require('../../../../server/game/gameMode');
 let Deck = require('../../../../server/game/deck/deck');
 

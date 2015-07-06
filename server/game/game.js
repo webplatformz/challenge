@@ -65,16 +65,6 @@ let create = function create(players, maxPoints, startPlayer, clientApi) {
     return game;
 };
 
-let GameType = {
-    create: function (gameMode, cardColor) {
-        return {
-            mode: gameMode,
-            trumpfColor: cardColor
-        };
-    }
-};
-
 module.exports = {
-    GameType,
     create
 };

@@ -3,7 +3,7 @@
 let WebSocket = require('ws'),
     WebSocketServer = require('ws').Server,
     ClientApi = require('../../../server/communication/clientApi'),
-    GameType = require('../../../server/game/game').GameType,
+    GameType = require('../../../server/game/gameType'),
     GameMode = require('../../../server/game/gameMode'),
     Card = require('../../../shared/deck/card'),
     CardColor = Card.CardColor,

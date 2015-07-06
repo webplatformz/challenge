@@ -4,6 +4,7 @@ let assert = require("assert");
 let expect = require('chai').expect;
 let Game = require('../../../server/game/game');
 let GameMode = require('../../../server/game/gameMode');
+let GameType = require('../../../server/game/gameType');
 let Player = require('../../../server/game/player/player');
 let Card = require('../../../shared/deck/card');
 let clientApi = require('../../../server/communication/clientApi').create();
@@ -89,7 +90,7 @@ describe('Game', function () {
     it('should save and broadcast the trumpf when it has been chosen from the player', (done) => {
         let gameMode = GameMode.TRUMPF;
         let cardColor = Card.CardColor.HEARTS;
-        let gameType = Game.GameType.create(gameMode, cardColor);
+        let gameType = GameType.create(gameMode, cardColor);
 
         let cycle = {
             iterate: () => {
@@ -116,10 +117,7 @@ describe('Game', function () {
     });
 
     it('should start with player who won last cycle', (done) => {
-        let gameType = {
-            mode: GameMode.TRUMPF,
-            trumpfColor: Card.CardColor.CLUBS
-        };
+        let gameType = GameType.create(GameMode.TRUMPF, Card.CardColor.CLUBS);
 
         let cycle = {
             iterate: () => {
