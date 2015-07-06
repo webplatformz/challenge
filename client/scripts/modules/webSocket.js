@@ -159,6 +159,9 @@ function onClose() {
 function onMessage(evt) {
     let message = JSON.parse(evt.data);
 
+    logToConsole('<span style="color: red;">RESPONSE: ' + evt.data + '</span>');
+
+
     if (message.type) {
         switch (message.type) {
             case messages.MessageType.DEAL_CARDS:
@@ -176,10 +179,18 @@ function onMessage(evt) {
             case messages.MessageType.BROADCAST_STICH:
                 handleBroadcastStich(message.data);
                 break;
+            case messages.MessageType.REQUEST_SESSION_CHOICE:
+                handleRequestSessionChoice();
+                break;
         }
     }
 
-    logToConsole('<span style="color: red;">RESPONSE: ' + evt.data + '</span>');
+}
+
+function handleRequestSessionChoice() {
+    let message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION));
+    websocket.send(message);
+    logToConsole("SENT: " + message);
 }
 
 function handleBroadcastStich(stich) {
@@ -211,7 +222,7 @@ function drawPlayedCards() {
         removeAllChildrenOnAllElements(document.querySelectorAll('#cardsPlayed div'));
 
         let playerIndex = gameState.startingPlayerIndex;
-        for(let i = 0; i < gameState.playedCards.length; i++) {
+        for (let i = 0; i < gameState.playedCards.length; i++) {
             playerIndex = (gameState.startingPlayerIndex + i) % 4;
             let card = gameState.playedCards[i];
             addCardToDom(document.getElementById('player' + playerIndex), card);
@@ -255,7 +266,7 @@ function removeAllChildren(node) {
 }
 
 function removeAllChildrenOnAllElements(nodes) {
-    for(let i = 0; i < nodes.length; i++) {
+    for (let i = 0; i < nodes.length; i++) {
         removeAllChildren(nodes[i]);
     }
 }

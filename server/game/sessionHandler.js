@@ -2,7 +2,7 @@
 
 let clientApi = require('../communication/clientApi').create();
 let JassSession = require('./session');
-let SessionChoice = require('./sessionChoice');
+let SessionChoice = require('../../shared/game/sessionChoice');
 let UUID = require('uuid');
 
 let sessions = [];
