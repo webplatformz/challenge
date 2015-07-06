@@ -24,9 +24,11 @@ describe('Integration test', () => {
         it('should start the game after 4 players have been connected', (done) => {
             let emptyFunction = () => {};
             SimpleBot.create(1, "Client 1", done);
-            setTimeout(SimpleBot.create.bind(null, 2, "Client 2", emptyFunction), 10);
-            setTimeout(SimpleBot.create.bind(null, 3, "Client 3", emptyFunction), 10);
-            setTimeout(SimpleBot.create.bind(null, 4, "Client 4", emptyFunction), 10);
+            setTimeout(() => {
+                SimpleBot.create(2, "Client 2", emptyFunction);
+                SimpleBot.create(3, "Client 3", emptyFunction);
+                SimpleBot.create(4, "Client 4", emptyFunction);
+            }, 10); //wait for session to be created
         });
     });
 
