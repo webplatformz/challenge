@@ -78,7 +78,6 @@ module.exports = {
         let clientBot = Object.create(SimpleBot);
         clientBot.id = id;
         clientBot.handcards = [];
-        clientBot.name = [];
         clientBot.doneFunction = doneFunction;
         clientBot.client = new WebSocket('ws://localhost:10001');
         clientBot.client.on('message', clientBot.onMessage.bind(clientBot));
