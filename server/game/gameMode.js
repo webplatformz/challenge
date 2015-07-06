@@ -1,4 +1,4 @@
-let GameMode = {
+const GameMode = {
     TRUMPF: "Trumpf",
     OBENABEN: "Obenaben",
     UNTENRAUF: "Untenrauf",
