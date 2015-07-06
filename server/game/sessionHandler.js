@@ -71,6 +71,8 @@ let SessionHandler = {
                         console.log("Team " + team.name + " won!");
                         let index = this.sessions.indexOf(session);
                         this.sessions.splice(index, 1);
+                    }).catch((error) => {
+                        console.log(error);
                     });
                 }
             });
