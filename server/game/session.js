@@ -8,7 +8,6 @@ let Team = require('./player/team');
 let Session = {
     maxPoints: 2500,
     startingPlayer: 0,
-    playerNameRequests: [],
 
     addPlayer: function addPlayer(webSocket) {
         let team = this.teams[this.players.length % 2];
@@ -69,6 +68,7 @@ let Session = {
 let create = function create() {
     let session = Object.create(Session);
     session.players = [];
+    session.playerNameRequests = [];
     session.teams = [
         Team.create('Team 1'),
         Team.create('Team 2')
