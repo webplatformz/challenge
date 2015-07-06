@@ -67,6 +67,7 @@ let SessionHandler = {
 
                 if (session.isComplete()) {
                     session.start().then((team) => {
+                        //TODO let bots restart the session
                         console.log("Team " + team.name + " won ");
                     });
                 }
