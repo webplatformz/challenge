@@ -6,6 +6,10 @@ let JassSession = require('../../../server/game/session');
 let SessionChoice = require('../../../server/game/sessionChoice');
 let sessionHandler = require('../../../server/game/sessionHandler');
 
+let uuidMatcher = sinon.match((name) => {
+    return name.length === 36;
+});
+
 describe('sessionHandler', () => {
     describe('handleClientConnection', () => {
 
@@ -30,7 +34,7 @@ describe('sessionHandler', () => {
             clientApiMock.expects('requestPlayerName').once().returns(Promise.resolve('playerName'));
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({}));
 
-            jassSessionFactoryMock.expects('create').withArgs(sinon.match.string).once().returns({
+            jassSessionFactoryMock.expects('create').withArgs(uuidMatcher).once().returns({
                 addPlayer: () => {
                 },
                 isComplete: () => {
@@ -129,6 +133,46 @@ describe('sessionHandler', () => {
             });
 
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, [sessionName]).returns(Promise.resolve({}));
+
+            sessionHandler.handleClientConnection(webSocket).then(() => {
+                sessionHandler.handleClientConnection(webSocket).then(() => {
+                    clientApiMock.verify();
+                    jassSessionFactoryMock.verify();
+                    done();
+                }).catch(done);
+            });
+        });
+
+        it('should not show complete sessions', (done) => {
+            let sessionName = 'sessionName',
+                webSocket = 'webSocket';
+
+            clientApiMock.expects('requestPlayerName').twice().returns(Promise.resolve('playerName'));
+            clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({
+                sessionChoice: SessionChoice.CREATE_NEW,
+                sessionName: sessionName
+            }));
+
+            jassSessionFactoryMock.expects('create').withArgs(sessionName).once().returns({
+                addPlayer: () => {
+                },
+                isComplete: () => {
+                    return true;
+                },
+                start: () => {
+                    return Promise.resolve({name: 'team'});
+                }
+            });
+
+            clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({}));
+
+            jassSessionFactoryMock.expects('create').withArgs(uuidMatcher).once().returns({
+                addPlayer: () => {
+                },
+                isComplete: () => {
+                    return false;
+                }
+            });
 
             sessionHandler.handleClientConnection(webSocket).then(() => {
                 sessionHandler.handleClientConnection(webSocket).then(() => {
