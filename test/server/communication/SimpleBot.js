@@ -11,8 +11,6 @@ let WebSocket = require('ws'),
     messages = require('../../../shared/messages/messages');
 
 let SimpleBot = {
-    handcards : [],
-    name: [],
     gameType: GameType.create(GameMode.TRUMPF, CardColor.SPADES),
 
     onMessage : function (messageJson) {
@@ -50,24 +48,23 @@ let SimpleBot = {
     },
 
     giveValidCardFromHand : function(tableCards, handCards) {
-        let cardToPlay;
-
         let validation = Validation.create(this.gameType.mode, this.gameType.trumpfColor);
-        handCards.forEach((handCard) => {
+
+        for(let i = 0; i < handCards.length; i++) {
+            let handCard = handCards[i];
+
             if(validation.validate(tableCards, handCards, handCard)) {
-                cardToPlay = handCard;
+                return handCard;
             }
-        });
-
-        return cardToPlay;
-    },
-
-
+        }
+    }
 };
 
 module.exports = {
     create: function create(name, doneFunction) {
         let clientBot = Object.create(SimpleBot);
+        clientBot.handcards = [];
+        clientBot.name = [];
         clientBot.doneFunction = doneFunction;
         clientBot.client = new WebSocket('ws://localhost:10001');
         clientBot.client.on('message', clientBot.onMessage.bind(clientBot));

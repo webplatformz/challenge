@@ -9,9 +9,9 @@ let Session = {
     maxPoints: 2500,
     startingPlayer: 0,
 
-    addPlayer: function addPlayer(webSocket) {
+    addPlayer: function addPlayer(webSocket, playerName) {
         let team = this.teams[this.players.length % 2];
-        let player = Player.create(team, '', this.players.length, {
+        let player = Player.create(team, playerName, this.players.length, {
             dealCards: this.clientApi.dealCards.bind(this.clientApi, webSocket),
             requestTrumpf: this.clientApi.requestTrumpf.bind(this.clientApi, webSocket),
             requestCard: this.clientApi.requestCard.bind(this.clientApi, webSocket),
@@ -20,10 +20,6 @@ let Session = {
 
         this.players.push(player);
         this.clientApi.addClient(webSocket);
-
-        this.playerNameRequests.push(this.clientApi.requestPlayerName(webSocket).then((playerName) => {
-            player.name = playerName;
-        }));
     },
 
     isComplete: function isComplete() {
@@ -39,9 +35,7 @@ let Session = {
             throw 'Not enough players to start game!';
         }
 
-        return Promise.all(this.playerNameRequests).then(() => {
-            return this.gameCycle();
-        });
+        return this.gameCycle();
     },
 
     gameCycle: function gameCycle(nextStartingPlayer = this.getNextStartingPlayer()) {
@@ -68,7 +62,6 @@ let Session = {
 let create = function create() {
     let session = Object.create(Session);
     session.players = [];
-    session.playerNameRequests = [];
     session.teams = [
         Team.create('Team 1'),
         Team.create('Team 2')

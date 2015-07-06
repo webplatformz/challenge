@@ -33,65 +33,42 @@ describe('Session', function () {
     });
 
     describe('addPlayer', () => {
-        let clientApiMock,
-            requestPlayerNamePromises = [
-                Promise.resolve('Peter'),
-                Promise.resolve('Hans'),
-                Promise.resolve('Homer'),
-                Promise.resolve('Luke')
-            ];
+        it('should add alternating team to player and ask for player name', () => {
+            var playerName0 = 'Peter';
+            var playerName1 = 'Hans';
+            var playerName2 = 'Homer';
+            var playerName3 = 'Luke';
 
-        beforeEach(() => {
-            clientApiMock = sinon.mock(session.clientApi);
-            clientApiMock.expects("requestPlayerName").withExactArgs('webSocket').once().returns(requestPlayerNamePromises[0]);
-            clientApiMock.expects("requestPlayerName").withExactArgs('webSocket').once().returns(requestPlayerNamePromises[1]);
-            clientApiMock.expects("requestPlayerName").withExactArgs('webSocket').once().returns(requestPlayerNamePromises[2]);
-            clientApiMock.expects("requestPlayerName").withExactArgs('webSocket').once().returns(requestPlayerNamePromises[3]);
-        });
-
-        it('should add alternating team to player and ask for player name', (done) => {
-            session.addPlayer('webSocket');
-            session.addPlayer('webSocket');
-            session.addPlayer('webSocket');
-            session.addPlayer('webSocket');
-
-            clientApiMock.verify();
+            session.addPlayer('webSocket', playerName0);
+            session.addPlayer('webSocket', playerName1);
+            session.addPlayer('webSocket', playerName2);
+            session.addPlayer('webSocket', playerName3);
 
             expect(session.players[0].team).to.equal(session.teams[0]);
+            expect(session.players[0].name).to.equal(playerName0);
             expect(session.players[1].team).to.equal(session.teams[1]);
+            expect(session.players[1].name).to.equal(playerName1);
             expect(session.players[2].team).to.equal(session.teams[0]);
+            expect(session.players[2].name).to.equal(playerName2);
             expect(session.players[3].team).to.equal(session.teams[1]);
-
-            Promise.all(requestPlayerNamePromises).then(() => {
-                expect(session.players[0].name).to.equal('Peter');
-                expect(session.players[1].name).to.equal('Hans');
-                expect(session.players[2].name).to.equal('Homer');
-                expect(session.players[3].name).to.equal('Luke');
-
-                done();
-            }).catch(done);
+            expect(session.players[3].name).to.equal(playerName3);
         });
 
         describe('isComplete', () => {
             it('should mark session as complete when four players are added', () => {
-                session.addPlayer('webSocket');
+                var playerName = 'player';
+                session.addPlayer('webSocket', playerName);
                 expect(session.isComplete()).to.equal(false);
 
-                session.addPlayer('webSocket');
+                session.addPlayer('webSocket', playerName);
                 expect(session.isComplete()).to.equal(false);
 
-                session.addPlayer('webSocket');
+                session.addPlayer('webSocket', playerName);
                 expect(session.isComplete()).to.equal(false);
 
-                session.addPlayer('webSocket');
+                session.addPlayer('webSocket', playerName);
                 expect(session.isComplete()).to.equal(true);
-
-                clientApiMock.verify();
             });
-        });
-
-        afterEach(() => {
-            clientApiMock.restore();
         });
     });
 
@@ -110,13 +87,6 @@ describe('Session', function () {
             expect(() => {
                 session.start();
             }).to.throw('Not enough players to start game!');
-        });
-
-        it('should wait for pending playername requests', (done) => {
-            session.players = fourPlayers;
-            session.playerNameRequests = [Promise.reject()];
-
-            session.start().catch(done);
         });
 
         it('should finish a game after max points have been reached', (done) => {
