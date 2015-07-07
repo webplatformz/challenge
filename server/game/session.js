@@ -4,6 +4,7 @@ let ClientApi = require('../communication/clientApi');
 let Game = require('./game');
 let Player = require('./player/player');
 let Team = require('./player/team');
+let CloseEventCode = require('../communication/closeEventCode');
 
 let Session = {
     maxPoints: 2500,
@@ -45,7 +46,7 @@ let Session = {
         return game.start().then(() => {
             let pointsTeamA = this.teams[0].points;
             let pointsTeamB = this.teams[1].points;
-                                 
+
             if (pointsTeamA > pointsTeamB && pointsTeamA >= this.maxPoints) {
                 this.clientApi.broadcastWinnerTeam(this.teams[0]);
                 return this.teams[0];
@@ -56,6 +57,10 @@ let Session = {
             }
             return this.gameCycle(this.getNextStartingPlayer());
         });
+    },
+
+    close: function close() {
+        this.clientApi.closeAll(CloseEventCode.NORMAL, 'Game Finished');
     }
 };
 

@@ -6,6 +6,7 @@ let ClientApi = require('../../../server/communication/clientApi');
 let Game = require('../../../server/game/game');
 let TestDataCreator = require('../../testDataCreator');
 let sinon = require('sinon');
+let CloseEventCode = require('../../../server/communication/closeEventCode');
 
 
 describe('Session', function () {
@@ -83,6 +84,11 @@ describe('Session', function () {
             fourPlayers = TestDataCreator.createPlayers(clientApiMock);
         });
 
+        afterEach(function () {
+            gameFactoryMock.restore();
+            clientApiMock.restore();
+        });
+
         it('should fail if session is not complete', () => {
             expect(() => {
                 session.start();
@@ -128,10 +134,20 @@ describe('Session', function () {
             }).catch(done);
         });
 
-        afterEach(function () {
-            gameFactoryMock.restore();
-            clientApiMock.restore();
+
+    });
+
+    describe('close', () => {
+        it('should close all client connections',() => {
+            let clientApiMock = sinon.mock(session.clientApi);
+
+            clientApiMock.expects('closeAll').once().withArgs(CloseEventCode.NORMAL, 'Game Finished');
+            session.close();
+            clientApiMock.verify();
+
         });
+
+
     });
 
 

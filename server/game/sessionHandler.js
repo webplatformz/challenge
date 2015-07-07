@@ -69,6 +69,7 @@ let SessionHandler = {
                     session.start().then((team) => {
                         //TODO let bots restart the session
                         console.log("Team " + team.name + " won!");
+                        session.close();
                         let index = this.sessions.indexOf(session);
                         this.sessions.splice(index, 1);
                     }).catch((error) => {

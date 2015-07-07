@@ -154,26 +154,32 @@ describe('sessionHandler', () => {
                 sessionName: sessionName
             }));
 
-            jassSessionFactoryMock.expects('create').withArgs(sessionName).once().returns({
+
+            let session = {
                 addPlayer: () => {
                 },
                 isComplete: () => {
-                    return true;
                 },
                 start: () => {
-                    return Promise.resolve({name: 'team'});
+                },
+                close: () => {
                 }
-            });
+
+            };
+
+            let sessionMock = sinon.mock(session);
+
+            jassSessionFactoryMock.expects('create').withArgs(sessionName).once().returns(session);
 
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({}));
+            sessionMock.expects('addPlayer').once();
+            sessionMock.expects('isComplete').once().returns(true);
+            sessionMock.expects('start').once().returns(Promise.resolve({name: 'team'}));
+            sessionMock.expects('close').once();
 
-            jassSessionFactoryMock.expects('create').withArgs(uuidMatcher).once().returns({
-                addPlayer: () => {
-                },
-                isComplete: () => {
-                    return false;
-                }
-            });
+            jassSessionFactoryMock.expects('create').withArgs(uuidMatcher).once().returns(session);
+            sessionMock.expects('addPlayer').once();
+            sessionMock.expects('isComplete').once().returns(false);
 
             sessionHandler.handleClientConnection(webSocket).then(() => {
                 expect(sessionHandler.sessions.length).to.equal(0);
@@ -181,6 +187,7 @@ describe('sessionHandler', () => {
                 sessionHandler.handleClientConnection(webSocket).then(() => {
                     clientApiMock.verify();
                     jassSessionFactoryMock.verify();
+                    sessionMock.verify();
                     done();
                 }).catch(done);
             }).catch(done);
