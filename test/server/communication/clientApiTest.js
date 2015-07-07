@@ -8,7 +8,8 @@ let expect = require('chai').expect,
     GameMode = require('../../../server/game/gameMode'),
     CardColor = require('../../../shared/deck/card').CardColor,
     TestDataCreator = require('../../testDataCreator'),
-    CloseEventCode = require('../../../server/communication/closeEventCode');
+    CloseEventCode = require('../../../server/communication/closeEventCode'),
+    sinon = require('sinon');
 
 let messages = require('../../../shared/messages/messages');
 
@@ -27,12 +28,34 @@ describe('Client API', () => {
     });
 
     describe('addClient', () => {
+        let webSocket;
+
+        beforeEach(() => {
+            webSocket = {
+                on: () => {
+                }
+            };
+        });
+
         it('should add given client to clients array', () => {
-            let client = 'client';
+            clientApi.addClient(webSocket);
 
-            clientApi.addClient(client);
+            expect(clientApi.clients[0]).to.equal(webSocket);
+        });
 
-            expect(clientApi.clients[0]).to.equal(client);
+        it('should return promise which rejects on client close event', (done) => {
+            let disconnectMessage = 'message';
+            sinon.stub(webSocket, 'on').withArgs('close', sinon.match.func).callsArgWith(1, CloseEventCode.NORMAL, disconnectMessage);
+
+            let promise = clientApi.addClient(webSocket);
+
+            promise.then(() => {
+                done('This promise should never resolve');
+            }, ({code: code, message: message}) => {
+                expect(code).to.equal(CloseEventCode.NORMAL);
+                expect(message).to.equal(disconnectMessage);
+                done();
+            }).catch(done);
         });
     });
 

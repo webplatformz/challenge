@@ -20,9 +20,10 @@ let Session = {
         });
 
         this.players.push(player);
-        this.clientApi.addClient(webSocket);
-
-        return player;
+        return this.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
+            this.handlePlayerLeft(player, code, message);
+            return Promise.reject();
+        });
     },
 
     isComplete: function isComplete() {
@@ -65,8 +66,13 @@ let Session = {
         this.clientApi.closeAll(CloseEventCode.NORMAL, 'Game Finished');
     },
 
-    handlePlayerLeft: function(player, code, message) {
+    handlePlayerLeft: function handlePlayerLeft(player, code, message) {
+        let team = this.teams.filter((team) => {
+            return team.name !== player.team.name;
+        })[0];
 
+        this.clientApi.broadcastWinnerTeam(team);
+        this.clientApi.closeAll(code, message);
     }
 };
 

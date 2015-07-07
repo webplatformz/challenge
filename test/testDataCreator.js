@@ -21,10 +21,10 @@ let createDummyPlayer = function (teamName, name, id, clientApiMock) {
 let TestDataCreator = {
     createPlayers: function (clientApiMock) {
         let deck = Deck.create();
-        let player1 = createDummyPlayer("team1", "hans", 0, clientApiMock);
-        let player2 = createDummyPlayer("team2", "peter", 1, clientApiMock);
-        let player3 = createDummyPlayer("team1", "homer", 2, clientApiMock);
-        let player4 = createDummyPlayer("team2", "luke", 3, clientApiMock);
+        let player1 = createDummyPlayer("Team 1", "hans", 0, clientApiMock);
+        let player2 = createDummyPlayer("Team 2", "peter", 1, clientApiMock);
+        let player3 = createDummyPlayer("Team 1", "homer", 2, clientApiMock);
+        let player4 = createDummyPlayer("Team 2", "luke", 3, clientApiMock);
         let players = [player1, player2, player3, player4];
         players.forEach(player => {
             deck.deal(player, 9);

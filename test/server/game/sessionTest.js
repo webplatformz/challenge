@@ -10,10 +10,18 @@ let CloseEventCode = require('../../../server/communication/closeEventCode');
 
 
 describe('Session', function () {
-    let session;
+    let session,
+        fourPlayers,
+        clientApiMock;
 
     beforeEach(() => {
-        session = Session.create();
+        session = Session.create('TestSession');
+        clientApiMock = sinon.mock(session.clientApi);
+        fourPlayers = TestDataCreator.createPlayers(clientApiMock);
+    });
+
+    afterEach(() => {
+        clientApiMock.restore();
     });
 
     describe('create', () => {
@@ -34,11 +42,14 @@ describe('Session', function () {
     });
 
     describe('addPlayer', () => {
+
         it('should add alternating team to player and ask for player name', () => {
             var playerName0 = 'Peter';
             var playerName1 = 'Hans';
             var playerName2 = 'Homer';
             var playerName3 = 'Luke';
+
+            clientApiMock.expects('addClient').exactly(4).returns(Promise.resolve());
 
             session.addPlayer('webSocket', playerName0);
             session.addPlayer('webSocket', playerName1);
@@ -53,40 +64,49 @@ describe('Session', function () {
             expect(session.players[2].name).to.equal(playerName2);
             expect(session.players[3].team).to.equal(session.teams[1]);
             expect(session.players[3].name).to.equal(playerName3);
+
+            clientApiMock.verify();
         });
 
-        describe('isComplete', () => {
-            it('should mark session as complete when four players are added', () => {
-                var playerName = 'player';
-                session.addPlayer('webSocket', playerName);
-                expect(session.isComplete()).to.equal(false);
+        it('should close session and return rejected Promise', (done) => {
+            var rejectedPromise = Promise.reject();
+            clientApiMock.expects('addClient').once().returns(rejectedPromise);
 
-                session.addPlayer('webSocket', playerName);
-                expect(session.isComplete()).to.equal(false);
+            let promise = session.addPlayer('webSocket', 'playerName');
 
-                session.addPlayer('webSocket', playerName);
-                expect(session.isComplete()).to.equal(false);
+            promise.catch(() => {
+                clientApiMock.verify();
+                done();
+            }).catch(done);
+        });
+    });
 
-                session.addPlayer('webSocket', playerName);
-                expect(session.isComplete()).to.equal(true);
-            });
+    describe('isComplete', () => {
+        it('should mark session as complete when four players are added', () => {
+            var playerName = 'player';
+            session.addPlayer('webSocket', playerName);
+            expect(session.isComplete()).to.equal(false);
+
+            session.addPlayer('webSocket', playerName);
+            expect(session.isComplete()).to.equal(false);
+
+            session.addPlayer('webSocket', playerName);
+            expect(session.isComplete()).to.equal(false);
+
+            session.addPlayer('webSocket', playerName);
+            expect(session.isComplete()).to.equal(true);
         });
     });
 
     describe('start', () => {
-        let gameFactoryMock,
-            clientApiMock,
-            fourPlayers;
+        let gameFactoryMock;
 
         beforeEach(function () {
             gameFactoryMock = sinon.mock(Game);
-            clientApiMock = sinon.mock(session.clientApi);
-            fourPlayers = TestDataCreator.createPlayers(clientApiMock);
         });
 
         afterEach(function () {
             gameFactoryMock.restore();
-            clientApiMock.restore();
         });
 
         it('should fail if session is not complete', () => {
@@ -139,16 +159,23 @@ describe('Session', function () {
 
     describe('close', () => {
         it('should close all client connections',() => {
-            let clientApiMock = sinon.mock(session.clientApi);
-
             clientApiMock.expects('closeAll').once().withArgs(CloseEventCode.NORMAL, 'Game Finished');
             session.close();
             clientApiMock.verify();
-
         });
-
-
     });
 
+    describe('handlePlayerLeft', () => {
+        it('should broadcast opposite team as winners', () => {
+            let code = CloseEventCode.ABNORMAL,
+                message = 'message';
 
+            clientApiMock.expects('broadcastWinnerTeam').once().withArgs(fourPlayers[1].team);
+            clientApiMock.expects('closeAll').once().withArgs(code, message);
+
+            session.handlePlayerLeft(fourPlayers[0], code, message);
+
+            clientApiMock.verify();
+        });
+    });
 });

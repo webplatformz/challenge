@@ -68,10 +68,7 @@ let SessionHandler = {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
                 let session = createOrJoinSession(this.sessions, sessionChoiceResponse);
 
-                let player = session.addPlayer(ws, playerName);
-
-                ws.on('close', (code, message) => {
-                    session.handlePlayerLeft(player, code, message);
+                session.addPlayer(ws, playerName).catch(() => {
                     removeSession(this.sessions, session);
                 });
 

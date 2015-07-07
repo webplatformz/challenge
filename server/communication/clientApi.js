@@ -16,6 +16,12 @@ function resolveCorrectMessageOrReject(expectedMessageType, message, resolve, re
 let ClientApi = {
     addClient: function addClient(client) {
         this.clients.push(client);
+
+        return new Promise((resolve, reject) => {
+            client.on('close', (code, message) => {
+                reject({code, message});
+            });
+        });
     },
 
     requestPlayerName: function requestPlayerName(client) {
