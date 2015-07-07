@@ -24,8 +24,8 @@ function createSession(sessions, sessionName) {
 }
 
 function findSession(sessions, sessionName) {
-    let filteredSessions = sessions.filter((element) => {
-        return element.name === sessionName;
+    let filteredSessions = sessions.filter((session) => {
+        return !session.isComplete() && session.name === sessionName;
     });
 
     if (filteredSessions.length === 0) {
