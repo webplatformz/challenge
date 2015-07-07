@@ -16,7 +16,8 @@ let Session = {
             dealCards: this.clientApi.dealCards.bind(this.clientApi, webSocket),
             requestTrumpf: this.clientApi.requestTrumpf.bind(this.clientApi, webSocket),
             requestCard: this.clientApi.requestCard.bind(this.clientApi, webSocket),
-            rejectCard: this.clientApi.rejectCard.bind(this.clientApi, webSocket)
+            rejectCard: this.clientApi.rejectCard.bind(this.clientApi, webSocket),
+            rejectTrumpf: this.clientApi.rejectTrumpf.bind(this.clientApi, webSocket)
         });
 
         this.players.push(player);

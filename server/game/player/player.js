@@ -18,6 +18,10 @@ let Player = {
         return this.clientApi.requestTrumpf(isGeschoben);
     },
 
+    rejectTrumpf: function (gameType) {
+        return this.clientApi.rejectTrumpf(gameType);
+    },
+
     removeCard: function removeCard(cardToRemove) {
         this.cards = this.cards.filter((card) => {
             return !card.equals(cardToRemove);

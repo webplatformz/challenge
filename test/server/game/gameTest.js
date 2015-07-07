@@ -86,6 +86,41 @@ describe('Game', function () {
 
     });
 
+    it('should deny mode SCHIEBE if geschoben', (done) => {
+        clientApiMock.expects('requestTrumpf').once().withArgs(false).returns(Promise.resolve({
+            mode: GameMode.SCHIEBE
+        }));
+
+        clientApiMock.expects('requestTrumpf').once().withArgs(true).returns(Promise.resolve({
+            mode: GameMode.SCHIEBE
+        }));
+
+        clientApiMock.expects('rejectTrumpf').once().withArgs({mode: GameMode.SCHIEBE});
+
+        clientApiMock.expects('requestTrumpf').once().withArgs(true).returns(Promise.resolve({
+            mode: GameMode.OBEABE
+        }));
+
+        let cycle = {
+            iterate: () => {
+            }
+        };
+
+        let cycleMock = sinon.mock(cycle).expects('iterate').exactly(9).returns(Promise.resolve());
+        cycleFactoryMock.expects('create').exactly(9).returns(cycle);
+
+
+        game = Game.create(players, maxPoints, players[0], clientApi);
+
+        game.start().then(() => {
+            clientApiMock.verify();
+            cycleFactoryMock.verify();
+            cycleMock.verify();
+            done();
+        }).catch(done);
+
+    });
+
     it('should save and broadcast the trumpf when it has been chosen from the player', (done) => {
         let gameMode = GameMode.TRUMPF;
         let cardColor = Card.CardColor.HEARTS;

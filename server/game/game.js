@@ -31,7 +31,12 @@ let Game = {
             if (actPlayer !== this.startPlayer && actPlayer.team.name === this.startPlayer.team.name) {
                 return actPlayer.requestTrumpf(true)
                     .then((gameType) => {
-                        return handleChooseTrumpf(this, gameType);
+                        if (gameType.mode !== GameMode.SCHIEBE) {
+                            return handleChooseTrumpf(this, gameType);
+                        } else {
+                            actPlayer.rejectTrumpf(gameType);
+                            return this.schieben();
+                        }
                     });
             }
         }
