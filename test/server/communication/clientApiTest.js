@@ -7,7 +7,8 @@ let expect = require('chai').expect,
     GameType = require('../../../server/game/gameType'),
     GameMode = require('../../../server/game/gameMode'),
     CardColor = require('../../../shared/deck/card').CardColor,
-    TestDataCreator = require('../../testDataCreator');
+    TestDataCreator = require('../../testDataCreator'),
+    CloseEventCode = require('../../../server/communication/closeEventCode');
 
 let messages = require('../../../shared/messages/messages');
 
@@ -341,6 +342,43 @@ describe('Client API', () => {
                     expect(message.data).to.eql(availableSessions);
                     client.send(JSON.stringify(chooseSession));
                 });
+            }).catch(done);
+        });
+    });
+
+
+    describe('closeAll', () => {
+        it('should gracefully close all clients with given message', (done) => {
+            let connectedClients = 0,
+                disconnectMessage = 'disconnect due to failing bot',
+                expectCodeAndMessage = (resolve, code, message) => {
+                    expect(code).to.equal(CloseEventCode.NORMAL);
+                    expect(message).to.equal(disconnectMessage);
+                    resolve();
+                };
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                if (++connectedClients === 2) {
+                    clientApi.closeAll(CloseEventCode.NORMAL, disconnectMessage);
+                }
+            });
+
+            let client1 = new WebSocket('ws://localhost:10001');
+            let client2 = new WebSocket('ws://localhost:10001');
+
+            Promise.all([
+                new Promise((resolve) => {
+                    client1.on('close', expectCodeAndMessage.bind(null, resolve));
+                }),
+                new Promise((resolve) => {
+                    client2.on('close', expectCodeAndMessage.bind(null, resolve));
+                })
+            ]).then(() => {
+                expect(client1.readyState).to.equal(WebSocket.CLOSED);
+                expect(client2.readyState).to.equal(WebSocket.CLOSED);
+                done();
             }).catch(done);
         });
     });

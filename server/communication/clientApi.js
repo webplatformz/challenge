@@ -67,6 +67,12 @@ let ClientApi = {
         return clientCommunication.request(client, messages.MessageType.REQUEST_SESSION_CHOICE,
             resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_SESSION),
             availableSessions);
+    },
+
+    closeAll: function closeAll(code, message) {
+        this.clients.forEach((client) => {
+            client.close(code, message);
+        });
     }
 };
 
