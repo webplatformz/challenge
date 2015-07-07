@@ -1,10 +1,10 @@
 "use strict";
 
 const CardColor = {
-    HEARTS: "hearts",
-    DIAMONDS: "diamonds",
-    CLUBS: "clubs",
-    SPADES: "spades"
+    HEARTS: "HEARTS",
+    DIAMONDS: "DIAMONDS",
+    CLUBS: "CLUBS",
+    SPADES: "SPADES"
 };
 
 Object.freeze(CardColor);

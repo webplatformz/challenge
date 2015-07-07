@@ -109,7 +109,7 @@ describe('Angeben Validator', function () {
 
     it('should allow card if obenabä', () => {
         let parameters = {
-            mode: GameMode.OBENABEN,
+            mode: GameMode.OBEABE,
             tableCards: [Card.create(6, Card.CardColor.DIAMONDS)],
             handCards: [Card.create(11, Card.CardColor.SPADES), Card.create(10, Card.CardColor.HEARTS), Card.create(10, Card.CardColor.HEARTS)],
             cardToPlay: Card.create(10, Card.CardColor.HEARTS)
@@ -122,7 +122,7 @@ describe('Angeben Validator', function () {
 
     it('should deny card if undäufä and could angeben', () => {
         let parameters = {
-            mode: GameMode.UNTENRAUF,
+            mode: GameMode.UNDEUFE,
             tableCards: [Card.create(6, Card.CardColor.DIAMONDS)],
             handCards: [Card.create(11, Card.CardColor.SPADES), Card.create(10, Card.CardColor.DIAMONDS), Card.create(10, Card.CardColor.HEARTS)],
             cardToPlay: Card.create(11, Card.CardColor.SPADES)

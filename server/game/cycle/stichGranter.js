@@ -84,11 +84,11 @@ let StichGranter = {
                 } else if (noTrumpfPlayedYet() && isHighestCardSoFar(card)) {
                     setCardToCurrentWinner(index, card);
                 }
-            } else if (mode === GameMode.UNTENRAUF) {
+            } else if (mode === GameMode.UNDEUFE) {
                 if (isLowestCardSoFar(card)) {
                     setCardToCurrentWinner(index, card);
                 }
-            } else if(mode === GameMode.OBENABEN) {
+            } else if(mode === GameMode.OBEABE) {
                 if(isHighestCardSoFar(card)) {
                     setCardToCurrentWinner(index, card);
                 }

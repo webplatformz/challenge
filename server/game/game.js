@@ -36,7 +36,7 @@ let Game = {
     start: function () {
         return this.startPlayer.requestTrumpf(false)
             .then((gameType) => {
-                if (gameType.mode === GameMode.SCHIEBEN) {
+                if (gameType.mode === GameMode.SCHIEBE) {
                     return this.schieben();
                 } else {
                     this.gameType = gameType;

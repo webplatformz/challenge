@@ -1,8 +1,8 @@
 const GameMode = {
-    TRUMPF: "Trumpf",
-    OBENABEN: "Obenaben",
-    UNTENRAUF: "Untenrauf",
-    SCHIEBEN: "Schieben"
+    TRUMPF: "TRUMPF",
+    OBEABE: "OBEABE",
+    UNDEUFE: "UNDEUFE",
+    SCHIEBE: "SCHIEBE"
 };
 
 Object.freeze(GameMode);

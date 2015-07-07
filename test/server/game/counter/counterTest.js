@@ -54,7 +54,7 @@ describe('Counter', function() {
     });
 
     it('should count simple array with obenaben', function() {
-        let mode = GameMode.OBENABEN;
+        let mode = GameMode.OBEABE;
 
         let cardSet = [
             Card.create(8, CardColor.DIAMONDS),
@@ -68,7 +68,7 @@ describe('Counter', function() {
     });
 
     it('should count simple array with untenrauf', function() {
-        let mode = GameMode.UNTENRAUF;
+        let mode = GameMode.UNDEUFE;
 
         let cardSet = [
             Card.create(8, CardColor.DIAMONDS),

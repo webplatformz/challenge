@@ -124,7 +124,7 @@ describe('StichGranter', function () {
     });
 
     it('should determine the correct winner when the mode is Untenrauf and all cards have the same color', function () {
-        let mode = GameMode.UNTENRAUF;
+        let mode = GameMode.UNDEUFE;
 
         let winnerCard = Card.create(6, CardColor.DIAMONDS);
         let expectedWinner = players[2];
@@ -141,7 +141,7 @@ describe('StichGranter', function () {
     });
 
     it('should determine the correct winner when the mode is Obenaben and all cards have the same color', function () {
-        let mode = GameMode.OBENABEN;
+        let mode = GameMode.OBEABE;
 
         let winnerCard = Card.create(10, CardColor.SPADES);
         let expectedWinner = players[1];
@@ -158,7 +158,7 @@ describe('StichGranter', function () {
     });
 
     it('should determine the correct winner when the mode is Obenaben and cards have several colors', function () {
-        let mode = GameMode.OBENABEN;
+        let mode = GameMode.OBEABE;
 
         let winnerCard = Card.create(10, CardColor.SPADES);
         let expectedWinner = players[1];
@@ -175,7 +175,7 @@ describe('StichGranter', function () {
     });
 
     it('should determine the correct winner when the mode is Untenrauf and cards have several colors', function () {
-        let mode = GameMode.UNTENRAUF;
+        let mode = GameMode.UNDEUFE;
 
         let winnerCard = Card.create(14, CardColor.CLUBS);
         let expectedWinner = players[0];

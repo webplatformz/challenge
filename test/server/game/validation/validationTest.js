@@ -30,7 +30,7 @@ describe('Validation', function () {
         let handCardTwo = Card.create(11, Card.CardColor.HEARTS);
         let tableCards = [cardOne];
         let handCards = [handCardOne, handCardTwo];
-        let validation = Validation.create(GameMode.OBENABEN);
+        let validation = Validation.create(GameMode.OBEABE);
         assert(validation.validate(tableCards, handCards, handCardOne));
     });
 });

@@ -58,12 +58,12 @@ describe('Game', function () {
     it('should request the trumpf from the correct player when the player schiebs', (done) => {
         let ex1 = clientApiMock.expects('requestTrumpf').once()
             .withArgs(false).returns(Promise.resolve({
-                mode: GameMode.SCHIEBEN
+                mode: GameMode.SCHIEBE
             }));
 
         let ex2 = clientApiMock.expects('requestTrumpf').once()
             .withArgs(true).returns(Promise.resolve({
-                mode: GameMode.OBENABEN
+                mode: GameMode.OBEABE
             }));
 
         let cycle = {
