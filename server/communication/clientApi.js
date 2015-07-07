@@ -39,6 +39,10 @@ let ClientApi = {
             pushed);
     },
 
+    rejectTrumpf: function rejectTrumpf(client, gameType) {
+        clientCommunication.send(client, messages.MessageType.REJECT_TRUMPF, gameType);
+    },
+
     broadcastTrumpf: function broadcastTrumpf(gameType) {
         clientCommunication.broadcast(this.clients, messages.MessageType.BROADCAST_TRUMPF, gameType);
     },

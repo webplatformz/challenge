@@ -8,6 +8,7 @@ let MessageType = {
     DEAL_CARDS: 'DEAL_CARDS',
     REQUEST_TRUMPF: 'REQUEST_TRUMPF',
     CHOOSE_TRUMPF: 'CHOOSE_TRUMPF',
+    REJECT_TRUMPF: 'REJECT_TRUMPF',
     BROADCAST_TRUMPF: 'BROADCAST_TRUMPF',
     BROADCAST_STICH: 'BROADCAST_STICH',
     BROADCAST_WINNER_TEAM: 'BROADCAST_WINNER_TEAM',
@@ -44,6 +45,13 @@ function createRequestTrumpf (geschoben) {
     return {
         type: MessageType.REQUEST_TRUMPF,
         data: geschoben
+    };
+}
+
+function createRejectTrumpf (gameType) {
+    return {
+        type: MessageType.REJECT_TRUMPF,
+        data: gameType
     };
 }
 
@@ -138,6 +146,8 @@ function create(messageType, ...data) {
             return createDealCards(...data);
         case MessageType.REQUEST_TRUMPF:
             return createRequestTrumpf(...data);
+        case MessageType.REJECT_TRUMPF:
+            return createRejectTrumpf(...data);
         case MessageType.CHOOSE_TRUMPF:
             return createChooseTrumpf(...data);
         case MessageType.BROADCAST_TRUMPF:

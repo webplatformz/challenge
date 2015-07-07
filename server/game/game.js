@@ -5,6 +5,12 @@ let Cycle = require('./cycle/cycle');
 let Counter = require('./counter/counter');
 let GameMode = require('./gameMode');
 
+function handleChooseTrumpf(game, gameType) {
+    game.gameType = gameType;
+    game.clientApi.broadcastTrumpf(game.createBroadcastTrumpfMessage(gameType));
+    return game.nextCycle();
+}
+
 let Game = {
     currentRound: 0,
 
@@ -25,9 +31,7 @@ let Game = {
             if (actPlayer !== this.startPlayer && actPlayer.team.name === this.startPlayer.team.name) {
                 return actPlayer.requestTrumpf(true)
                     .then((gameType) => {
-                        this.gameType = gameType;
-                        this.clientApi.broadcastTrumpf(this.createBroadcastTrumpfMessage(gameType));
-                        return this.nextCycle();
+                        return handleChooseTrumpf(this, gameType);
                     });
             }
         }
@@ -39,9 +43,7 @@ let Game = {
                 if (gameType.mode === GameMode.SCHIEBE) {
                     return this.schieben();
                 } else {
-                    this.gameType = gameType;
-                    this.clientApi.broadcastTrumpf(this.createBroadcastTrumpfMessage(gameType));
-                    return this.nextCycle();
+                    return handleChooseTrumpf(this, gameType);
                 }
             });
     },

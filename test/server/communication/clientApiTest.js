@@ -177,6 +177,30 @@ describe('Client API', () => {
         });
     });
 
+    describe('rejectTrumpf', () => {
+        it('should reject trumpf to given client', (done) => {
+            let gameType = GameType.create(GameMode.SCHIEBE);
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+                clientApi.rejectTrumpf(client, gameType);
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            new Promise((resolve) => {
+                client.on('message', (message) => {
+                    message = JSON.parse(message);
+
+                    expect(message.type).to.equal(messages.MessageType.REJECT_TRUMPF);
+                    expect(message.data.mode).to.equal(gameType.mode);
+
+                    resolve();
+                });
+            }).then(() => done()).catch(done);
+        });
+    });
+
     describe('broadcastStich', () => {
         it('should send the stich message to all clients', (done) => {
             let clients,
