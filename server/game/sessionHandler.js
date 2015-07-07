@@ -58,17 +58,29 @@ let SessionHandler = {
         });
     },
 
-    handleClientConnection : function handleClientConnection(ws) {
+    handleClientConnection: function handleClientConnection(ws) {
         return clientApi.requestPlayerName(ws).then((playerName) => {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
                 let session = createOrJoinSession(this.sessions, sessionChoiceResponse);
 
                 session.addPlayer(ws, playerName);
 
+                ws.on('close', (code, message) => {
+                    console.log('Client ' + playerName + ' disappeared. Code: ' + code + ' Message: ' + message);
+
+                   // session.handlePlayerLeft();
+                    session.close();
+
+                    let index = this.sessions.indexOf(session);
+                    this.sessions.splice(index, 1);
+
+
+                });
+
                 if (session.isComplete()) {
                     session.start().then((team) => {
                         //TODO let bots restart the session
-                        console.log("Team " + team.name + " won!");
+                        console.log('Team ' + team.name + ' won!');
                         session.close();
                         let index = this.sessions.indexOf(session);
                         this.sessions.splice(index, 1);
@@ -80,7 +92,7 @@ let SessionHandler = {
         });
     },
 
-    resetInstance : function resetInstance() {
+    resetInstance: function resetInstance() {
         this.sessions = [];
     }
 

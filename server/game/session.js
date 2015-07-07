@@ -21,6 +21,7 @@ let Session = {
 
         this.players.push(player);
         this.clientApi.addClient(webSocket);
+        return player;
     },
 
     isComplete: function isComplete() {
