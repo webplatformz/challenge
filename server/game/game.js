@@ -26,7 +26,7 @@ let Game = {
     },
 
     schieben: function () {
-        for(let i = 0; i < this.players.length; i++) {
+        for (let i = 0; i < this.players.length; i++) {
             let actPlayer = this.players[i];
             if (actPlayer !== this.startPlayer && actPlayer.team.name === this.startPlayer.team.name) {
                 return actPlayer.requestTrumpf(true)
@@ -35,7 +35,9 @@ let Game = {
                             return handleChooseTrumpf(this, gameType);
                         } else {
                             actPlayer.rejectTrumpf(gameType);
-                            return this.schieben();
+                            return actPlayer.requestTrumpf(true).then((gameType) => {
+                                return handleChooseTrumpf(this, gameType);
+                            });
                         }
                     });
             }
@@ -53,7 +55,7 @@ let Game = {
             });
     },
 
-    createBroadcastTrumpfMessage : function(gameType) {
+    createBroadcastTrumpfMessage: function (gameType) {
         return gameType.mode === GameMode.TRUMPF ? gameType : gameType.mode;
     }
 };
