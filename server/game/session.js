@@ -21,6 +21,7 @@ let Session = {
 
         this.players.push(player);
         this.clientApi.addClient(webSocket);
+
         return player;
     },
 
@@ -62,6 +63,10 @@ let Session = {
 
     close: function close() {
         this.clientApi.closeAll(CloseEventCode.NORMAL, 'Game Finished');
+    },
+
+    handlePlayerLeft: function(player, code, message) {
+
     }
 };
 

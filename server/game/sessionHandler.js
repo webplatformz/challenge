@@ -46,6 +46,11 @@ function createOrJoinSession(sessions, sessionChoiceResponse) {
     }
 }
 
+function removeSession(sessions, session) {
+    let index = sessions.indexOf(session);
+    sessions.splice(index, 1);
+}
+
 let SessionHandler = {
 
     sessions: [],
@@ -63,27 +68,18 @@ let SessionHandler = {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
                 let session = createOrJoinSession(this.sessions, sessionChoiceResponse);
 
-                session.addPlayer(ws, playerName);
+                let player = session.addPlayer(ws, playerName);
 
                 ws.on('close', (code, message) => {
-                    console.log('Client ' + playerName + ' disappeared. Code: ' + code + ' Message: ' + message);
-
-                   // session.handlePlayerLeft();
-                    session.close();
-
-                    let index = this.sessions.indexOf(session);
-                    this.sessions.splice(index, 1);
-
-
+                    session.handlePlayerLeft(player, code, message);
+                    removeSession(this.sessions, session);
                 });
 
                 if (session.isComplete()) {
-                    session.start().then((team) => {
+                    session.start().then(() => {
                         //TODO let bots restart the session
-                        console.log('Team ' + team.name + ' won!');
                         session.close();
-                        let index = this.sessions.indexOf(session);
-                        this.sessions.splice(index, 1);
+                        removeSession(this.sessions, session);
                     }).catch((error) => {
                         console.log(error);
                     });
