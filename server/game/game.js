@@ -11,6 +11,17 @@ function handleChooseTrumpf(game, gameType) {
     return game.nextCycle();
 }
 
+function handleChooseTrumpfGeschoben(game, actPlayer, gameType) {
+    if (gameType.mode !== GameMode.SCHIEBE) {
+        return handleChooseTrumpf(game, gameType);
+    }
+
+    actPlayer.rejectTrumpf(gameType);
+    return actPlayer.requestTrumpf(true).then((gameType) => {
+        return handleChooseTrumpfGeschoben(game, actPlayer, gameType);
+    });
+}
+
 let Game = {
     currentRound: 0,
 
@@ -31,14 +42,7 @@ let Game = {
             if (actPlayer !== this.startPlayer && actPlayer.team.name === this.startPlayer.team.name) {
                 return actPlayer.requestTrumpf(true)
                     .then((gameType) => {
-                        if (gameType.mode !== GameMode.SCHIEBE) {
-                            return handleChooseTrumpf(this, gameType);
-                        } else {
-                            actPlayer.rejectTrumpf(gameType);
-                            return actPlayer.requestTrumpf(true).then((gameType) => {
-                                return handleChooseTrumpf(this, gameType);
-                            });
-                        }
+                        return handleChooseTrumpfGeschoben(this, actPlayer, gameType);
                     });
             }
         }

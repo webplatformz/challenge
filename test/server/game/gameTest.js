@@ -98,6 +98,12 @@ describe('Game', function () {
         clientApiMock.expects('rejectTrumpf').once().withArgs({mode: GameMode.SCHIEBE});
 
         clientApiMock.expects('requestTrumpf').once().withArgs(true).returns(Promise.resolve({
+            mode: GameMode.SCHIEBE
+        }));
+
+        clientApiMock.expects('rejectTrumpf').once().withArgs({mode: GameMode.SCHIEBE});
+
+        clientApiMock.expects('requestTrumpf').once().withArgs(true).returns(Promise.resolve({
             mode: GameMode.OBEABE
         }));
 
