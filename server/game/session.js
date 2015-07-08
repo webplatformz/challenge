@@ -5,6 +5,7 @@ let Game = require('./game');
 let Player = require('./player/player');
 let Team = require('./player/team');
 let CloseEventCode = require('../communication/closeEventCode');
+let SessionType = require('./SessionType');
 
 let Session = {
     maxPoints: 2500,
@@ -77,10 +78,11 @@ let Session = {
     }
 };
 
-let create = function create(name) {
+let create = function create(name, type) {
     let session = Object.create(Session);
     session.players = [];
     session.name = name;
+    session.type = type || SessionType.SINGLE_GAME;
     session.teams = [
         Team.create('Team 1'),
         Team.create('Team 2')
