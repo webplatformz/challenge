@@ -50,6 +50,7 @@ describe('Session', function () {
             var playerName2 = 'Homer';
             var playerName3 = 'Luke';
 
+            clientApiMock.expects('broadcastSessionJoined').exactly(4);
             clientApiMock.expects('addClient').exactly(4).returns(Promise.resolve());
 
             session.addPlayer('webSocket', playerName0);
@@ -69,8 +70,21 @@ describe('Session', function () {
             clientApiMock.verify();
         });
 
+        it('should broadcast session joined', () => {
+            let playerName = 'Peter';
+
+            clientApiMock.expects('broadcastSessionJoined').once().withArgs(playerName, 0);
+            clientApiMock.expects('addClient').once().returns(Promise.resolve());
+
+            session.addPlayer('webSocket', playerName);
+
+            clientApiMock.verify();
+        });
+
         it('should close session and return rejected Promise', (done) => {
             var rejectedPromise = Promise.reject();
+
+            clientApiMock.expects('broadcastSessionJoined').once();
             clientApiMock.expects('addClient').once().returns(rejectedPromise);
 
             let promise = session.addPlayer('webSocket', 'playerName');
@@ -85,6 +99,10 @@ describe('Session', function () {
     describe('isComplete', () => {
         it('should mark session as complete when four players are added', () => {
             var playerName = 'player';
+
+            clientApiMock.expects('broadcastSessionJoined').exactly(4);
+            clientApiMock.expects('addClient').exactly(4).returns(Promise.resolve());
+
             session.addPlayer('webSocket', playerName);
             expect(session.isComplete()).to.equal(false);
 
@@ -96,6 +114,8 @@ describe('Session', function () {
 
             session.addPlayer('webSocket', playerName);
             expect(session.isComplete()).to.equal(true);
+
+            clientApiMock.verify();
         });
     });
 

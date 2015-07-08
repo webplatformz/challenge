@@ -38,6 +38,8 @@ let Session = {
         });
 
         this.players.push(player);
+        this.clientApi.broadcastSessionJoined(player.name, player.id);
+
         return this.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
             this.handlePlayerLeft(player, code, message);
             return Promise.reject();

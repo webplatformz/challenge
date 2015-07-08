@@ -83,6 +83,10 @@ let ClientApi = {
             availableSessions);
     },
 
+    broadcastSessionJoined: function broadcastSessionJoined(name, id) {
+        clientCommunication.broadcast(this.clients, messages.MessageType.BROADCAST_SESSION_JOINED, name, id);
+    },
+
     closeAll: function closeAll(code, message) {
         this.clients.forEach((client) => {
             client.close(code, message);

@@ -464,4 +464,44 @@ describe('Client API', () => {
             }).catch(done);
         });
     });
+
+    describe('broadcastSessionJoined', () => {
+        it('should send the player name and id to all clients', (done) => {
+            let clients,
+                clientPromises = [],
+                name = 'name',
+                id = 0,
+                sessionJoinedMessage = {
+                    name: name,
+                    id: id
+                };
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                if (clientApi.clients.length === clients.length) {
+                    clientApi.broadcastSessionJoined(name, id);
+                }
+            });
+
+            clients = [new WebSocket('ws://localhost:10001'), new WebSocket('ws://localhost:10001')];
+
+            clients.forEach((client) => {
+                clientPromises.push(new Promise((resolve) => {
+                    client.on('message', (message) => {
+                        message = JSON.parse(message);
+
+                        expect(message.type).to.equal(messages.MessageType.BROADCAST_SESSION_JOINED);
+                        expect(message.data).to.eql(sessionJoinedMessage);
+
+                        resolve();
+                    });
+                }));
+            });
+
+            Promise.all(clientPromises).then(() => {
+                done();
+            }).catch(done);
+        });
+    });
 });

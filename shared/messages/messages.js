@@ -19,7 +19,8 @@ let MessageType = {
     CHOOSE_CARD: 'CHOOSE_CARD',
     REJECT_CARD: 'REJECT_CARD',
     REQUEST_SESSION_CHOICE: 'REQUEST_SESSION_CHOICE',
-    CHOOSE_SESSION: 'CHOOSE_SESSION'
+    CHOOSE_SESSION: 'CHOOSE_SESSION',
+    BROADCAST_SESSION_JOINED: 'BROADCAST_SESSION_JOINED'
 };
 
 function createRequestPlayerName () {
@@ -144,6 +145,16 @@ function createChooseSession(sessionChoice, sessionName) {
     };
 }
 
+function createBroadcastSessionJoined(name, id) {
+    return {
+        type: MessageType.BROADCAST_SESSION_JOINED,
+        data: {
+            name,
+            id
+        }
+    };
+}
+
 function create(messageType, ...data) {
     switch (messageType) {
         case MessageType.REQUEST_PLAYER_NAME:
@@ -180,6 +191,8 @@ function create(messageType, ...data) {
             return createRequestSessionChoice(...data);
         case MessageType.CHOOSE_SESSION:
             return createChooseSession(...data);
+        case MessageType.BROADCAST_SESSION_JOINED:
+            return createBroadcastSessionJoined(...data);
         default:
             throw 'Unknown message type ' + messageType;
     }
