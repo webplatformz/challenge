@@ -279,7 +279,7 @@ function drawCardsInHand() {
 
 function addCardToDom(node, card, onClick) {
     let cardImage = document.createElement('img');
-    cardImage.src = 'images/cards/' + gameState.cardType + '/' + card.color + "_" + card.number + ".gif";
+    cardImage.src = 'images/cards/' + gameState.cardType + '/' + card.color.toLowerCase() + "_" + card.number + ".gif";
 
     if (onClick) {
         cardImage.onclick = onClick;
