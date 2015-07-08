@@ -7,7 +7,7 @@ let GameMode = require('./gameMode');
 
 function handleChooseTrumpf(game, gameType) {
     game.gameType = gameType;
-    game.clientApi.broadcastTrumpf(game.createBroadcastTrumpfMessage(gameType));
+    game.clientApi.broadcastTrumpf(gameType);
     return game.nextCycle();
 }
 
@@ -57,10 +57,6 @@ let Game = {
                     return handleChooseTrumpf(this, gameType);
                 }
             });
-    },
-
-    createBroadcastTrumpfMessage: function (gameType) {
-        return gameType.mode === GameMode.TRUMPF ? gameType : gameType.mode;
     }
 };
 
