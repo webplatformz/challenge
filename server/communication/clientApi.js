@@ -29,6 +29,10 @@ let ClientApi = {
             resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_PLAYER_NAME));
     },
 
+    broadcastTeams: function broadcastTeams(teams) {
+        clientCommunication.broadcast(this.clients, messages.MessageType.BROADCAST_TEAMS, teams);
+    },
+
     dealCards: function dealCards(client, cards) {
         clientCommunication.send(client, messages.MessageType.DEAL_CARDS, cards);
     },

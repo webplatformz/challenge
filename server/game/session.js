@@ -7,6 +7,22 @@ let Team = require('./player/team');
 let CloseEventCode = require('../communication/closeEventCode');
 let SessionType = require('./sessionType');
 
+function createTeamsArrayForClient(session) {
+    return session.teams.map((team) => {
+        return {
+            name: team.name,
+            players: session.players.filter((player) => {
+                return player.team.name === team.name;
+            }).map((player) => {
+                return {
+                    name: player.name,
+                    id: player.id
+                };
+            })
+        };
+    });
+}
+
 let Session = {
     maxPoints: 2500,
     startingPlayer: 0,
@@ -44,6 +60,8 @@ let Session = {
         if (!this.isComplete()) {
             throw 'Not enough players to start game!';
         }
+
+        this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
 
         return this.gameCycle();
     },

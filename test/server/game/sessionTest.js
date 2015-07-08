@@ -116,6 +116,51 @@ describe('Session', function () {
             }).to.throw('Not enough players to start game!');
         });
 
+        it('should broadcast teams', (done) => {
+            let game = {
+                    start: function () {
+                        session.teams[0].points += 1000;
+                        return Promise.resolve();
+                    }
+                },
+                teams = [
+                    {
+                        name: session.teams[0].name,
+                        players: [
+                            {
+                                name: fourPlayers[0].name,
+                                id: fourPlayers[0].id
+                            }, {
+                                name: fourPlayers[2].name,
+                                id: fourPlayers[2].id
+                            }
+                        ]
+                    }, {
+                        name: session.teams[1].name,
+                        players: [
+                            {
+                                name: fourPlayers[1].name,
+                                id: fourPlayers[1].id
+                            }, {
+                                name: fourPlayers[3].name,
+                                id: fourPlayers[3].id
+                            }
+                        ]
+                    }
+                ];
+
+            session.players = fourPlayers;
+
+            gameFactoryMock.expects('create').exactly(3).returns(game);
+            clientApiMock.expects('broadcastTeams').once().withArgs(teams);
+            clientApiMock.expects('broadcastWinnerTeam').once();
+
+            session.start().then(() => {
+                clientApiMock.verify();
+                done();
+            }).catch(done);
+        });
+
         it('should finish a game after max points have been reached', (done) => {
             let game = {
                 start: function () {
@@ -159,7 +204,7 @@ describe('Session', function () {
     });
 
     describe('close', () => {
-        it('should close all client connections',() => {
+        it('should close all client connections', () => {
             clientApiMock.expects('closeAll').once().withArgs(CloseEventCode.NORMAL, 'Game Finished');
             session.close();
             clientApiMock.verify();

@@ -128,6 +128,41 @@ describe('Client API', () => {
         });
     });
 
+    describe('broadcastTeams', () => {
+        it('should send the teams message to all clients', (done) => {
+            let clients,
+                clientPromises = [],
+                teamsMessage = [];
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                if (clientApi.clients.length === clients.length) {
+                    clientApi.broadcastTeams(teamsMessage);
+                }
+            });
+
+            clients = [new WebSocket('ws://localhost:10001'), new WebSocket('ws://localhost:10001')];
+
+            clients.forEach((client) => {
+                clientPromises.push(new Promise((resolve) => {
+                    client.on('message', (message) => {
+                        message = JSON.parse(message);
+
+                        expect(message.type).to.equal(messages.MessageType.BROADCAST_TEAMS);
+                        expect(message.data).to.eql(teamsMessage);
+
+                        resolve();
+                    });
+                }));
+            });
+
+            Promise.all(clientPromises).then(() => {
+                done();
+            }).catch(done);
+        });
+    });
+
     describe('dealCards', () => {
         it('should deal cards to given client', (done) => {
             let cards = ['a', 'b', 'c'];

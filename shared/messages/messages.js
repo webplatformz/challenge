@@ -5,6 +5,7 @@ let Card = require('../deck/card');
 let MessageType = {
     REQUEST_PLAYER_NAME: 'REQUEST_PLAYER_NAME',
     CHOOSE_PLAYER_NAME: 'CHOOSE_PLAYER_NAME',
+    BROADCAST_TEAMS: 'BROADCAST_TEAMS',
     DEAL_CARDS: 'DEAL_CARDS',
     REQUEST_TRUMPF: 'REQUEST_TRUMPF',
     CHOOSE_TRUMPF: 'CHOOSE_TRUMPF',
@@ -31,6 +32,13 @@ function createChoosePlayerName (playerName) {
     return {
         type: MessageType.CHOOSE_PLAYER_NAME,
         data: playerName
+    };
+}
+
+function createBroadcastTeams (teams) {
+    return {
+        type: MessageType.BROADCAST_TEAMS,
+        data: teams
     };
 }
 
@@ -142,6 +150,8 @@ function create(messageType, ...data) {
             return createRequestPlayerName();
         case MessageType.CHOOSE_PLAYER_NAME:
             return createChoosePlayerName(...data);
+        case MessageType.BROADCAST_TEAMS:
+            return createBroadcastTeams(...data);
         case MessageType.DEAL_CARDS:
             return createDealCards(...data);
         case MessageType.REQUEST_TRUMPF:
