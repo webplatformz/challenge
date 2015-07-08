@@ -20,7 +20,6 @@ function findOrCreateSessionWithSpace(sessions) {
 }
 
 function createSession(sessions, sessionChoiceResponse) {
-    console.log('creating session ' + sessionChoiceResponse.sessionName);
     let session = JassSession.create(sessionChoiceResponse.sessionName);
     sessions.push(session);
     return session;
