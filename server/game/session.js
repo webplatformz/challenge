@@ -5,7 +5,7 @@ let Game = require('./game');
 let Player = require('./player/player');
 let Team = require('./player/team');
 let CloseEventCode = require('../communication/closeEventCode');
-let SessionType = require('./SessionType');
+let SessionType = require('./sessionType');
 
 let Session = {
     maxPoints: 2500,
