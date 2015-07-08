@@ -112,7 +112,12 @@ module.exports = function (grunt) {
         },
         nodemon: {
             dev: {
-                script: './build/server.js'
+                script: './build/server.js',
+                options: {
+                    env: {
+                        DEBUG: 'true'
+                    }
+                }
             }
         },
         concurrent: {
