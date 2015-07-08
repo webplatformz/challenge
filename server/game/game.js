@@ -52,6 +52,7 @@ let Game = {
         return this.startPlayer.requestTrumpf(false)
             .then((gameType) => {
                 if (gameType.mode === GameMode.SCHIEBE) {
+                    this.clientApi.broadcastTrumpf(gameType);
                     return this.schieben();
                 } else {
                     return handleChooseTrumpf(this, gameType);

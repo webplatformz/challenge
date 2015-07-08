@@ -56,15 +56,18 @@ describe('Game', function () {
     });
 
     it('should request the trumpf from the correct player when the player schiebs', (done) => {
-        let ex1 = clientApiMock.expects('requestTrumpf').once()
-            .withArgs(false).returns(Promise.resolve({
+        var gameModeSchiebe = {
                 mode: GameMode.SCHIEBE
-            }));
-
-        let ex2 = clientApiMock.expects('requestTrumpf').once()
-            .withArgs(true).returns(Promise.resolve({
+            },
+            gameModeObeabe = {
                 mode: GameMode.OBEABE
-            }));
+            };
+
+        clientApiMock.expects('requestTrumpf').once().withArgs(false).returns(Promise.resolve(gameModeSchiebe));
+        clientApiMock.expects('broadcastTrumpf').once().withArgs(gameModeSchiebe);
+
+        clientApiMock.expects('requestTrumpf').once().withArgs(true).returns(Promise.resolve(gameModeObeabe));
+        clientApiMock.expects('broadcastTrumpf').once().withArgs(gameModeObeabe);
 
         let cycle = {
             iterate: () => {
@@ -77,8 +80,7 @@ describe('Game', function () {
         game = Game.create(players, maxPoints, players[0], clientApi);
 
         game.start().then(() => {
-            ex1.verify();
-            ex2.verify();
+            clientApiMock.verify();
             cycleFactoryMock.verify();
             cycleMock.verify();
             done();
