@@ -11,25 +11,27 @@ function findOrCreateSessionWithSpace(sessions) {
     });
 
     if (filteredSessions.length === 0) {
-        return createSession(sessions, UUID.v4());
+        return createSession(sessions, {
+            sessionName: UUID.v4()
+        });
     }
 
     return filteredSessions[0];
 }
 
-function createSession(sessions, sessionName) {
-    let session = JassSession.create(sessionName);
+function createSession(sessions, sessionChoiceResponse) {
+    let session = JassSession.create(sessionChoiceResponse.sessionName);
     sessions.push(session);
     return session;
 }
 
-function findSession(sessions, sessionName) {
+function findSession(sessions, sessionChoiceResponse) {
     let filteredSessions = sessions.filter((session) => {
-        return !session.isComplete() && session.name === sessionName;
+        return !session.isComplete() && session.name === sessionChoiceResponse.sessionName;
     });
 
     if (filteredSessions.length === 0) {
-        return createSession(sessions, sessionName);
+        return createSession(sessions, sessionChoiceResponse);
     }
 
     return filteredSessions[0];
@@ -38,9 +40,10 @@ function findSession(sessions, sessionName) {
 function createOrJoinSession(sessions, sessionChoiceResponse) {
     switch (sessionChoiceResponse.sessionChoice) {
         case SessionChoice.CREATE_NEW:
-            return createSession(sessions, sessionChoiceResponse.sessionName);
+            return createSession(sessions, sessionChoiceResponse);
+        case SessionChoice.SPECTATOR:
         case SessionChoice.JOIN_EXISTING:
-            return findSession(sessions, sessionChoiceResponse.sessionName);
+            return findSession(sessions, sessionChoiceResponse);
         default:
             return findOrCreateSessionWithSpace(sessions);
     }
@@ -68,18 +71,22 @@ let SessionHandler = {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
                 let session = createOrJoinSession(this.sessions, sessionChoiceResponse);
 
-                session.addPlayer(ws, playerName).catch(() => {
-                    removeSession(this.sessions, session);
-                });
-
-                if (session.isComplete()) {
-                    session.start().then(() => {
-                        //TODO let bots restart the session
-                        session.close();
+                if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR) {
+                    session.addSpectator(ws);
+                } else {
+                    session.addPlayer(ws, playerName).catch(() => {
                         removeSession(this.sessions, session);
-                    }).catch((error) => {
-                        console.log(error);
                     });
+
+                    if (session.isComplete()) {
+                        session.start().then(() => {
+                            //TODO let bots restart the session
+                            session.close();
+                            removeSession(this.sessions, session);
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+                    }
                 }
             });
         });

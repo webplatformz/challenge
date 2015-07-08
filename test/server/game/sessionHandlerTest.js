@@ -35,8 +35,9 @@ describe('sessionHandler', () => {
                 close: () => {
                 },
                 handlePlayerLeft: () => {
+                },
+                addSpectator: () => {
                 }
-
             };
             sessionMock = sinon.mock(session);
         });
@@ -138,6 +139,27 @@ describe('sessionHandler', () => {
             }).catch(done);
         });
 
+        it('should create Session and add spectator', (done) => {
+            clientApiMock.expects('requestPlayerName').once().returns(Promise.resolve());
+            clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({
+                sessionChoice: SessionChoice.SPECTATOR,
+                sessionName: sessionName
+            }));
+
+            session.name = sessionName;
+            jassSessionFactoryMock.expects('create').withArgs(sessionName).once().returns(session);
+            sessionMock.expects('addSpectator').once();
+            sessionMock.expects('addPlayer').never();
+            sessionMock.expects('isComplete').never();
+
+            sessionHandler.handleClientConnection(webSocket).then(() => {
+                    clientApiMock.verify();
+                    jassSessionFactoryMock.verify();
+                    sessionMock.verify();
+                    done();
+            }).catch(done);
+        });
+
         it('should not show complete sessions and remove finished sessions from sessions array', (done) => {
             clientApiMock.expects('requestPlayerName').twice().returns(Promise.resolve('playerName'));
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({
@@ -197,4 +219,5 @@ describe('sessionHandler', () => {
             }).catch(done);
         });
     });
-});
+})
+;

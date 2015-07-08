@@ -7,7 +7,7 @@ let Game = require('../../../server/game/game');
 let TestDataCreator = require('../../testDataCreator');
 let sinon = require('sinon');
 let CloseEventCode = require('../../../server/communication/closeEventCode');
-
+let SessionType = require('../../../server/game/sessionType');
 
 describe('Session', function () {
     let session,
@@ -25,9 +25,10 @@ describe('Session', function () {
     });
 
     describe('create', () => {
-        it('should initialize player and team array', () => {
+        it('should initialize player and team array and have default sessiontype', () => {
             expect(session.players).to.have.length(0);
             expect(session.teams).to.have.length(2);
+            expect(session.type).to.equal(SessionType.SINGLE_GAME);
         });
     });
 
@@ -174,6 +175,16 @@ describe('Session', function () {
             clientApiMock.expects('closeAll').once().withArgs(code, message);
 
             session.handlePlayerLeft(fourPlayers[0], code, message);
+
+            clientApiMock.verify();
+        });
+    });
+
+    describe('addSpectator', () => {
+        it('should add Spectator to clients', () => {
+            let webSocket = 'webSocket';
+            clientApiMock.expects('addClient').once().withArgs(webSocket);
+            session.addSpectator(webSocket);
 
             clientApiMock.verify();
         });
