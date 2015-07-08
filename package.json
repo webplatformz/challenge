@@ -5,9 +5,6 @@
   "engines": {
     "node": "0.12.x"
   },
-  "config": {
-    "debug": false
-  },
   "scripts": {
     "test": "./node_modules/grunt-cli/bin/grunt simplemocha",
     "start": "node ./build/server.js",
