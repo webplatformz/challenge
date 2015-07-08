@@ -6,7 +6,6 @@ let secureCb,
     consoleLog,
     connectBut,
     disconnectBut,
-    clearLogBut,
     websocket,
     messages = require('../../../shared/messages/messages'),
     gameState = require('./gameState').create(),
@@ -144,6 +143,7 @@ function logToConsole(message) {
         consoleLog.removeChild(consoleLog.firstChild);
     }
 
+
     consoleLog.scrollTop = consoleLog.scrollHeight;
 }
 
@@ -157,12 +157,7 @@ function onClose() {
     setGuiConnected(false);
 }
 
-function onMessage(evt) {
-    let message = JSON.parse(evt.data);
-
-    logToConsole('<span style="color: red;">RESPONSE: ' + evt.data + '</span>');
-
-
+function applyMessageToUI(message) {
     if (message.type) {
         switch (message.type) {
             case messages.MessageType.DEAL_CARDS:
@@ -185,12 +180,53 @@ function onMessage(evt) {
                 break;
         }
     }
+}
 
+function isSpectatorRelevantMessage(message) {
+    switch (message.type) {
+        case messages.MessageType.PLAYED_CARDS:
+        case messages.MessageType.BROADCAST_STICH:
+            return true;
+        default:
+            return false;
+    }
+}
+
+function bindSpectatorControls() {
+    gameState.currentSpectatorIndex = -1;
+    document.getElementById('previousStep').addEventListener('click', () => {
+        if (gameState.currentSpectatorIndex > 0) {
+            --gameState.currentSpectatorIndex;
+            applyMessageToUI(gameState.spectatorRelevantSteps[gameState.currentSpectatorIndex]);
+        }
+    });
+    document.getElementById('nextStep').addEventListener('click', () => {
+        if (gameState.currentSpectatorIndex < gameState.spectatorRelevantSteps.length) {
+            ++gameState.currentSpectatorIndex;
+            applyMessageToUI(gameState.spectatorRelevantSteps[gameState.currentSpectatorIndex]);
+        }
+    });
+}
+
+function onMessage(evt) {
+    let message = JSON.parse(evt.data);
+
+    logToConsole('<span style="color: red;">RESPONSE: ' + evt.data + '</span>');
+
+    if (gameState.isSpectator && isSpectatorRelevantMessage(message)) {
+        gameState.spectatorRelevantSteps.push(message);
+        if (gameState.spectatorRelevantSteps.length === 1) {
+            bindSpectatorControls();
+        }
+    } else {
+        applyMessageToUI(message);
+    }
 }
 
 function handleRequestSessionChoice() {
-    let isSpectator = document.getElementById('useAsSpectator').checked;
-    let message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION, isSpectator ? SessionChoice.SPECTATOR : undefined));
+    gameState.isSpectator = document.getElementById('useAsSpectator').checked;
+    gameState.spectatorRelevantSteps = [];
+    let message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION, gameState.isSpectator ? SessionChoice.SPECTATOR : undefined));
     websocket.send(message);
     logToConsole("SENT: " + message);
 }

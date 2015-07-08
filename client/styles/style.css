@@ -158,7 +158,7 @@ div#cardsInHand img:hover {
     cursor: pointer;
 }
 
-div#echoLog {
+div#echoLog, div#specatorControls {
     margin-bottom: 200px;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.4);
