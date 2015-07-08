@@ -28,7 +28,7 @@ let trumpCardValues = {
     14: 11
 };
 
-let obenabeCardValues = {
+let obeabeCardValues = {
     6: 0,
     7: 0,
     8: 8,
@@ -40,7 +40,7 @@ let obenabeCardValues = {
     14: 11
 };
 
-let untenraufCardValues = {
+let undeufeCardValues = {
     6: 11,
     7: 0,
     8: 8,
@@ -56,10 +56,10 @@ let untenraufCardValues = {
 let calculateMultiplicator = function calculateMultiplicator(mode, gameTrumpf) {
     if(mode === GameMode.OBEABE || mode === GameMode.UNDEUFE) {
         return 3;
-    } else if(gameTrumpf === CardColor.DIAMONDS || gameTrumpf === CardColor.HEARTS) {
-        return 1;
-    } else {
+    } else if (gameTrumpf === CardColor.CLUBS || gameTrumpf === CardColor.SPADES) {
         return 2;
+    } else {
+        return 1;
     }
 };
 
@@ -69,9 +69,9 @@ let Counter = {
 
         cardSet.forEach(card => {
             if(mode === GameMode.OBEABE) {
-                result += obenabeCardValues[card.number];
+                result += obeabeCardValues[card.number];
             } else if(mode === GameMode.UNDEUFE) {
-                result += untenraufCardValues[card.number];
+                result += undeufeCardValues[card.number];
             } else if (cardColor === card.color) {
                 result += trumpCardValues[card.number];
             } else {
