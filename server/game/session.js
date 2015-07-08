@@ -28,6 +28,10 @@ let Session = {
         });
     },
 
+    addSpectator: function addSpectator(webSocket) {
+        this.clientApi.addClient(webSocket);
+    },
+
     isComplete: function isComplete() {
         return this.players.length === 4;
     },

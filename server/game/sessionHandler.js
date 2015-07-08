@@ -41,6 +41,7 @@ function createOrJoinSession(sessions, sessionChoiceResponse) {
     switch (sessionChoiceResponse.sessionChoice) {
         case SessionChoice.CREATE_NEW:
             return createSession(sessions, sessionChoiceResponse);
+        case SessionChoice.SPECTATOR:
         case SessionChoice.JOIN_EXISTING:
             return findSession(sessions, sessionChoiceResponse);
         default:
@@ -70,18 +71,22 @@ let SessionHandler = {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
                 let session = createOrJoinSession(this.sessions, sessionChoiceResponse);
 
-                session.addPlayer(ws, playerName).catch(() => {
-                    removeSession(this.sessions, session);
-                });
-
-                if (session.isComplete()) {
-                    session.start().then(() => {
-                        //TODO let bots restart the session
-                        session.close();
+                if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR) {
+                    session.addSpectator(ws);
+                } else {
+                    session.addPlayer(ws, playerName).catch(() => {
                         removeSession(this.sessions, session);
-                    }).catch((error) => {
-                        console.log(error);
                     });
+
+                    if (session.isComplete()) {
+                        session.start().then(() => {
+                            //TODO let bots restart the session
+                            session.close();
+                            removeSession(this.sessions, session);
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+                    }
                 }
             });
         });

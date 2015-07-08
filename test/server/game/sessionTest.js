@@ -179,4 +179,14 @@ describe('Session', function () {
             clientApiMock.verify();
         });
     });
+
+    describe('addSpectator', () => {
+        it('should add Spectator to clients', () => {
+            let webSocket = 'webSocket';
+            clientApiMock.expects('addClient').once().withArgs(webSocket);
+            session.addSpectator(webSocket);
+
+            clientApiMock.verify();
+        });
+    });
 });
