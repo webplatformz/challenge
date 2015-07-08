@@ -31,9 +31,9 @@ function broadcast(clients, messageType, ...data) {
 }
 
 function request(client, messageType, onMessage, ...data) {
-    var messageToSend = messages.create(messageType, ...data);
+    var messageToSend = toJSON(messages.create(messageType, ...data));
+    client.send(messageToSend);
     Logger.debug('<-- Send Message: ' + messageToSend);
-    client.send(toJSON(messageToSend));
 
     return new Promise((resolve, reject) => {
         client.on('message', function handleMessage(message) {
