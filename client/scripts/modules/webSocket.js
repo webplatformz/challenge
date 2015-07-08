@@ -10,7 +10,8 @@ let secureCb,
     websocket,
     messages = require('../../../shared/messages/messages'),
     gameState = require('./gameState').create(),
-    cardType = require('./gameState').CardType;
+    cardType = require('./gameState').CardType,
+    SessionChoice = require('../../../shared/game/sessionChoice');
 
 function handlePageLoad() {
     secureCb = document.getElementById("secureCb");
@@ -188,7 +189,8 @@ function onMessage(evt) {
 }
 
 function handleRequestSessionChoice() {
-    let message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION));
+    let isSpectator = document.getElementById('useAsSpectator').checked;
+    let message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION, isSpectator ? SessionChoice.SPECTATOR : undefined));
     websocket.send(message);
     logToConsole("SENT: " + message);
 }

@@ -31,6 +31,7 @@ let create = function create() {
     let gameState = Object.create(GameState);
     gameState.cardType = CardType.FRENCH;
     gameState.yourTurn = false;
+    gameState.cardsInHand = [];
 
     return gameState;
 };
