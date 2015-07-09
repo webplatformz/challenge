@@ -10,7 +10,8 @@ let secureCb,
     messages = require('../../../shared/messages/messages'),
     gameState = require('./gameState').create(),
     cardType = require('./gameState').CardType,
-    SessionChoice = require('../../../shared/game/sessionChoice');
+    SessionChoice = require('../../../shared/game/sessionChoice'),
+    spectatorTimeout;
 
 function handlePageLoad() {
     secureCb = document.getElementById("secureCb");
@@ -34,6 +35,7 @@ function handlePageLoad() {
             gameState.cardType = cardType[this.value];
             drawPlayedCards();
             drawCardsInHand();
+            drawTrumpfIcon();
         };
     }
 
@@ -157,6 +159,7 @@ function onClose() {
     setGuiConnected(false);
 }
 
+
 function applyMessageToUI(message) {
     if (message.type) {
         switch (message.type) {
@@ -178,22 +181,73 @@ function applyMessageToUI(message) {
             case messages.MessageType.REQUEST_SESSION_CHOICE:
                 handleRequestSessionChoice();
                 break;
+            case messages.MessageType.BROADCAST_TRUMPF:
+                handleBroadcastTrumpf(message.data);
+                break;
         }
     }
 }
+
+function drawTrumpfIcon() {
+    if (gameState.trumpf) {
+        switch (gameState.trumpf.mode) {
+            case 'TRUMPF':
+                let trumpfImage = document.createElement('img');
+                trumpfImage.src = 'images/trumpf/' + gameState.cardType + '/' + gameState.trumpf.trumpfColor.toLowerCase() + ".png";
+
+                let trumpfHolder = document.getElementById('trumpfHolder');
+                removeAllChildren(trumpfHolder);
+                trumpfHolder.appendChild(trumpfImage);
+        }
+    }
+}
+function handleBroadcastTrumpf(trumpf) {
+    gameState.trumpf = trumpf;
+    drawTrumpfIcon();
+}
+
 
 function isSpectatorRelevantMessage(message) {
     switch (message.type) {
         case messages.MessageType.PLAYED_CARDS:
         case messages.MessageType.BROADCAST_STICH:
+        case messages.MessageType.CHOOSE_TRUMPF:
             return true;
         default:
             return false;
     }
 }
 
+function calculateDelayToMillis() {
+    return (spectatorTimeout + 1) * 500;
+}
+
+function stepForward() {
+    if (gameState.currentSpectatorIndex < gameState.spectatorRelevantSteps.length) {
+        ++gameState.currentSpectatorIndex;
+        let message = gameState.spectatorRelevantSteps[gameState.currentSpectatorIndex];
+        if (message)
+            applyMessageToUI(gameState.spectatorRelevantSteps[gameState.currentSpectatorIndex]);
+    }
+    let delay = calculateDelayToMillis(spectatorTimeout);
+    console.log(delay);
+    setTimeout(stepForward, delay);
+}
+
 function bindSpectatorControls() {
     gameState.currentSpectatorIndex = -1;
+    document.getElementById('specatorControls').style.display = 'block';
+
+    document.getElementById('spectatorSpeed').addEventListener('input', (evt) => {
+        spectatorTimeout = parseInt(evt.target.value);
+    });
+
+    spectatorTimeout = parseInt(document.getElementById('spectatorSpeed').value);
+
+
+    stepForward();
+
+
     document.getElementById('previousStep').addEventListener('click', () => {
         if (gameState.currentSpectatorIndex > 0) {
             --gameState.currentSpectatorIndex;
@@ -233,6 +287,7 @@ function handleRequestSessionChoice() {
 
 function handleBroadcastStich(stich) {
     gameState.startingPlayerIndex = stich.id;
+    document.getElementById('player' + gameState.startingPlayerIndex).classList.add('stichMade');
 }
 
 function handleDealCards(cards) {
@@ -248,7 +303,9 @@ function handleRejectCard() {
     alert('The card you played is invalid!');
 }
 
+
 function handlePlayedCards(playedCards) {
+    document.getElementById('player' + gameState.startingPlayerIndex).classList.remove('stichMade');
     gameState.playedCards = playedCards;
     gameState.removeLastCardPlayed();
     drawCardsInHand();
@@ -257,7 +314,7 @@ function handlePlayedCards(playedCards) {
 
 function drawPlayedCards() {
     if (gameState.playedCards) {
-        removeAllChildrenOnAllElements(document.querySelectorAll('#cardsPlayed div'));
+        removeAllChildrenOnAllElements(document.querySelectorAll('#cardsPlayed div:not(#trumpfHolder)'));
 
         let playerIndex = gameState.startingPlayerIndex;
         for (let i = 0; i < gameState.playedCards.length; i++) {
