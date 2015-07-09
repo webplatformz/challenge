@@ -37,13 +37,15 @@ let Session = {
             rejectTrumpf: this.clientApi.rejectTrumpf.bind(this.clientApi, webSocket)
         });
 
-        this.players.push(player);
-        this.clientApi.broadcastSessionJoined(player.name, player.id);
-
-        return this.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
+        let clientPromise = this.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
             this.handlePlayerLeft(player, code, message);
             return Promise.reject();
         });
+
+        this.players.push(player);
+        this.clientApi.broadcastSessionJoined(player.name, player.id);
+
+        return clientPromise;
     },
 
     addSpectator: function addSpectator(webSocket) {
