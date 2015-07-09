@@ -27,24 +27,30 @@ let Cycle = {
 
         function broadcastAndReturnWinner(playedCards) {
             let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
-            winner.team.points += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
-            winner.team.currentRoundPoints += counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
+            let winnerTeam = winner.team;
+            let looserTeam = that.players.filter((player) => {
+                return player.team !== winner.team;
+            })[0].team;
+            let actPoints = counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
+
+            winnerTeam.points += actPoints;
+            winnerTeam.currentRoundPoints += actPoints;
             that.clientApi.broadcastStich(createStichMessage(winner));
 
             if(winner.cards.length === 0) {
-                winner.team.points += counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
-                let otherTeam;
-                that.players.forEach((player) => {
-                    if(player != winner) {
-                        otherTeam = player.team;
-                    }
-                });
+                let lastStichPoints = counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
+                winnerTeam.points += lastStichPoints;
+                winnerTeam.currentRoundPoints += lastStichPoints;
 
-                if(otherTeam.currentRoundPoints === 0) {
-                    winner.team.points += counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
+                if(looserTeam.currentRoundPoints === 0) {
+                    var matchPoints = counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
+                    winnerTeam.points += matchPoints;
+                    winnerTeam.currentRoundPoints += matchPoints;
                 }
 
-                that.clientApi.broadcastGameFinished([winner.team, otherTeam]);
+                that.clientApi.broadcastGameFinished([winnerTeam, looserTeam]);
+                winnerTeam.currentRoundPoints = 0;
+                looserTeam.currentRoundPoints = 0;
             }
 
             return winner;

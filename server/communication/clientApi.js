@@ -3,12 +3,13 @@
 let messages = require('../../shared/messages/messages'),
     clientCommunication = require('./clientCommunication');
 
-function resolveCorrectMessageOrReject(expectedMessageType, message, resolve, reject) {
+function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {
     let messageObject = clientCommunication.fromJSON(message);
 
     if (messageObject && messageObject.type === expectedMessageType) {
         resolve(messageObject.data);
     } else {
+        clientCommunication.send(client, messages.MessageType.BAD_MESSAGE, message);
         reject('Invalid client answer: ' + message);
     }
 }
@@ -26,7 +27,7 @@ let ClientApi = {
 
     requestPlayerName: function requestPlayerName(client) {
         return clientCommunication.request(client, messages.MessageType.REQUEST_PLAYER_NAME,
-            resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_PLAYER_NAME));
+            resolveCorrectMessageOrReject.bind(null, client, messages.MessageType.CHOOSE_PLAYER_NAME));
     },
 
     broadcastTeams: function broadcastTeams(teams) {
@@ -39,7 +40,7 @@ let ClientApi = {
 
     requestTrumpf: function requestTrumpf(client, pushed) {
         return clientCommunication.request(client, messages.MessageType.REQUEST_TRUMPF,
-            resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_TRUMPF),
+            resolveCorrectMessageOrReject.bind(null, client, messages.MessageType.CHOOSE_TRUMPF),
             pushed);
     },
 
@@ -69,7 +70,7 @@ let ClientApi = {
 
     requestCard: function requestCard(client, cardsOnTable) {
         return clientCommunication.request(client, messages.MessageType.REQUEST_CARD,
-            resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_CARD),
+            resolveCorrectMessageOrReject.bind(null, client, messages.MessageType.CHOOSE_CARD),
             cardsOnTable);
     },
 
@@ -79,7 +80,7 @@ let ClientApi = {
 
     requestSessionChoice: function requestSessionChoice(client, availableSessions) {
         return clientCommunication.request(client, messages.MessageType.REQUEST_SESSION_CHOICE,
-            resolveCorrectMessageOrReject.bind(null, messages.MessageType.CHOOSE_SESSION),
+            resolveCorrectMessageOrReject.bind(null, client, messages.MessageType.CHOOSE_SESSION),
             availableSessions);
     },
 

@@ -91,19 +91,22 @@ describe('Client API', () => {
 
                 clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
                     expect(data).to.equal('Invalid client answer: ' + JSON.stringify(clientAnswer));
-                    done();
                 }).catch(done);
             });
 
             let client = new WebSocket('ws://localhost:10001');
 
-            client.on('message', (message) => {
-                message = JSON.parse(message);
+            new Promise((resolve) => {
+                client.on('message', (message) => {
+                    message = JSON.parse(message);
 
-                if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
-                    client.send(JSON.stringify(clientAnswer));
-                }
-            });
+                    if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
+                        client.send(JSON.stringify(clientAnswer));
+                    } else if (message.type === messages.MessageType.BAD_MESSAGE) {
+                        resolve();
+                    }
+                });
+            }).then(done, done);
         });
 
         it('should reject empty answer messages', (done) => {
