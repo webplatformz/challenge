@@ -84,11 +84,11 @@ let Counter = {
     },
 
     calculateMatchValues(mode, cardColor) {
-        return calculateMultiplicator(mode, cardColor) * 100;
+        return 100 * calculateMultiplicator(mode, cardColor);
     },
 
     calculateLastStichValue(mode, cardColor) {
-        return calculateMultiplicator(mode, cardColor) * 5;
+        return 5 * calculateMultiplicator(mode, cardColor);
 
     }
 
