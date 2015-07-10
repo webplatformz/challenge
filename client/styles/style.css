@@ -193,3 +193,29 @@ div#cardsPlayed #trumpfHolder img {
     border: 1px solid white;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
 }
+
+div#cardsPlayed span {
+    position: absolute;
+    padding: 10px;
+    color: white;
+}
+
+div#cardsPlayed span.first {
+    top: 0;
+    left: 0;
+}
+
+div#cardsPlayed span.second {
+    top: 0;
+    right: 0;
+}
+
+div#cardsPlayed span.third {
+    bottom: 0;
+    right: 0;
+}
+
+div#cardsPlayed span.fourth {
+    bottom: 0;
+    left: 0;
+}

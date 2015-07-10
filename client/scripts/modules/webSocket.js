@@ -190,8 +190,25 @@ function applyMessageToUI(message) {
             case messages.MessageType.BROADCAST_TRUMPF:
                 handleBroadcastTrumpf(message.data);
                 break;
+            case messages.MessageType.BROADCAST_TEAMS:
+                handleBroadcastTeams(message.data);
+                break;
         }
     }
+}
+
+function handleBroadcastTeams(teams) {
+    let seatArray = ['first', 'third', 'second', 'fourth'],
+        index = 0;
+
+    teams.forEach((team) => {
+        team.players.forEach((player) => {
+            let playerName = document.createElement('span');
+            playerName.classList.add(seatArray[index++]);
+            playerName.innerHTML = player.name;
+            document.getElementById('cardsPlayed').appendChild(playerName);
+        });
+    });
 }
 
 function drawTrumpfIcon() {
