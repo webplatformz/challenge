@@ -52,7 +52,8 @@ module.exports = function (grunt) {
             },
             all: {
                 files: {
-                    'build/client/scripts/app.js': ['client/scripts/app.js']
+                    'build/client/scripts/app.js': ['client/scripts/app.js'],
+                    'build/client/scripts/react.js': ['client/scripts/react.js']
                 }
             }
         },
@@ -74,27 +75,32 @@ module.exports = function (grunt) {
         sync: {
             main: {
                 files: [{
-                        expand: true,
-                        cwd: './',
-                        src: 'client/index.html',
-                        dest: 'build/'
-                    }, {
-                        expand: true,
-                        cwd: './',
-                        src: 'client/images/**/*',
-                        dest: 'build/'
-                    }, {
-                        expand: true,
-                        cwd: './',
-                        src: 'client/styles/**/*.css',
-                        dest: 'build/'
-                    }
+                    expand: true,
+                    cwd: './',
+                    src: 'client/**/*.html',
+                    dest: 'build/'
+                }, {
+                    expand: true,
+                    cwd: './',
+                    src: 'client/images/**/*',
+                    dest: 'build/'
+                }, {
+                    expand: true,
+                    cwd: './',
+                    src: 'client/styles/**/*.css',
+                    dest: 'build/'
+                }, {
+                    expand: true,
+                    cwd: './',
+                    src: 'client/scripts/react/*.js',
+                    dest: 'build/'
+                }
                 ]
             }
         },
         watch: {
             sync: {
-                files: ['./client/*.html', './client/images/**/*', './client/**/*.css'],
+                files: ['./client/**/*.html', './client/images/**/*', './client/**/*.css'],
                 tasks: ['sync']
             },
             babel: {
