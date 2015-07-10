@@ -11,7 +11,9 @@ let secureCb,
     gameState = require('./gameState').create(),
     cardType = require('./gameState').CardType,
     SessionChoice = require('../../../shared/game/sessionChoice'),
-    spectatorTimeout;
+    spectatorTimeout,
+    sessionChoiceBut;
+
 
 function handlePageLoad() {
     secureCb = document.getElementById("secureCb");
@@ -28,6 +30,10 @@ function handlePageLoad() {
 
     disconnectBut = document.getElementById("disconnect");
     disconnectBut.onclick = doDisconnect;
+
+
+    sessionChoiceBut = document.getElementById("chooseSessionBtn");
+    sessionChoiceBut.onclick = doChooseSession;
 
     let cardTypeRadios = document.getElementsByName('cardType');
     for (let i = 0; i < cardTypeRadios.length; i++) {
@@ -179,7 +185,7 @@ function applyMessageToUI(message) {
                 handleBroadcastStich(message.data);
                 break;
             case messages.MessageType.REQUEST_SESSION_CHOICE:
-                handleRequestSessionChoice();
+                handleRequestSessionChoice(message.data);
                 break;
             case messages.MessageType.BROADCAST_TRUMPF:
                 handleBroadcastTrumpf(message.data);
@@ -212,6 +218,7 @@ function isSpectatorRelevantMessage(message) {
         case messages.MessageType.PLAYED_CARDS:
         case messages.MessageType.BROADCAST_STICH:
         case messages.MessageType.CHOOSE_TRUMPF:
+        case messages.MessageType.BROADCAST_WINNER_TEAM:
             return true;
         default:
             return false;
@@ -219,23 +226,26 @@ function isSpectatorRelevantMessage(message) {
 }
 
 function calculateDelayToMillis() {
-    return (spectatorTimeout + 1) * 500;
+    return (1.0 / (spectatorTimeout + 1)) * 500;
 }
 
 function stepForward() {
     if (gameState.currentSpectatorIndex < gameState.spectatorRelevantSteps.length) {
-        ++gameState.currentSpectatorIndex;
         let message = gameState.spectatorRelevantSteps[gameState.currentSpectatorIndex];
-        if (message)
-            applyMessageToUI(gameState.spectatorRelevantSteps[gameState.currentSpectatorIndex]);
+        ++gameState.currentSpectatorIndex;
+        if (message) {
+            applyMessageToUI(message);
+            if (message.type === messages.MessageType.BROADCAST_WINNER_TEAM) {
+                console.log('Spiel vorbei, ' + message.data.name + ' gewinnt mit ' + message.data.points + ' Punkten');
+            }
+        }
     }
     let delay = calculateDelayToMillis(spectatorTimeout);
-    console.log(delay);
     setTimeout(stepForward, delay);
 }
 
 function bindSpectatorControls() {
-    gameState.currentSpectatorIndex = -1;
+    gameState.currentSpectatorIndex = 0;
     document.getElementById('specatorControls').style.display = 'block';
 
     document.getElementById('spectatorSpeed').addEventListener('input', (evt) => {
@@ -246,20 +256,6 @@ function bindSpectatorControls() {
 
 
     stepForward();
-
-
-    document.getElementById('previousStep').addEventListener('click', () => {
-        if (gameState.currentSpectatorIndex > 0) {
-            --gameState.currentSpectatorIndex;
-            applyMessageToUI(gameState.spectatorRelevantSteps[gameState.currentSpectatorIndex]);
-        }
-    });
-    document.getElementById('nextStep').addEventListener('click', () => {
-        if (gameState.currentSpectatorIndex < gameState.spectatorRelevantSteps.length) {
-            ++gameState.currentSpectatorIndex;
-            applyMessageToUI(gameState.spectatorRelevantSteps[gameState.currentSpectatorIndex]);
-        }
-    });
 }
 
 function onMessage(evt) {
@@ -277,12 +273,35 @@ function onMessage(evt) {
     }
 }
 
-function handleRequestSessionChoice() {
-    gameState.isSpectator = document.getElementById('useAsSpectator').checked;
-    gameState.spectatorRelevantSteps = [];
-    let message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION, gameState.isSpectator ? SessionChoice.SPECTATOR : undefined));
+function doChooseSession() {
+    let sessionChoice = document.querySelector('input[name=sessionChoice]:checked').value;
+    let sessionName;
+    switch (sessionChoice) {
+        case SessionChoice.AUTOJOIN:
+            break;
+        case SessionChoice.CREATE_NEW:
+            sessionName = document.getElementById('createNewSessionText').value;
+            break;
+        case SessionChoice.JOIN_EXISTING:
+            sessionName = document.getElementById('joinExistingSelect').value;
+            break;
+        case SessionChoice.SPECTATOR:
+            sessionName = document.getElementById('useAsSpectatorText').value;
+            gameState.isSpectator = true;
+            gameState.spectatorRelevantSteps = [];
+            break;
+    }
+
+    let message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION, sessionChoice, sessionName));
     websocket.send(message);
     logToConsole("SENT: " + message);
+}
+
+function handleRequestSessionChoice(availableSessions) {
+    let sessionSelect = document.getElementById('joinExistingSelect');
+    availableSessions.forEach((element) => {
+        sessionSelect.appendChild(new Option(element,element));
+    });
 }
 
 function handleBroadcastStich(stich) {

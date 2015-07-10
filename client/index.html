@@ -36,9 +36,32 @@
             <input value="PlayerName" size="35" id="playerName">
             <button type="button" id="choosePlayerName">Send</button>
             <br>
-            <input type="checkbox" id="useAsSpectator" value="SPECTATOR">
-            <span style="font-size: smaller; color: black;">Use as Spectator</span>
+        </form>
+        <form name="chooseSession">
+            <h3>Choose Session</h3>
+
+
+            <input type="radio" name="sessionChoice" value="AUTOJOIN" checked>
+            <span style="font-size: smaller; color: black;">Auto Join</span>
+
             <br>
+            <input type="radio" name="sessionChoice" value="JOIN_EXISTING">
+            <span style="font-size: smaller; color: black;">Join Existing</span>
+            <select type="text"  id="joinExistingSelect">
+            </select>
+            <br>
+            <input type="radio" name="sessionChoice" value="CREATE_NEW">
+            <span style="font-size: smaller; color: black;">Create a new</span>
+            <input type="text" name="sessionChoice" id="createNewSessionText">
+
+            <br>
+            <input type="radio" name="sessionChoice" value="SPECTATOR">
+            <span style="font-size: smaller; color: black;">Use as Spectator</span>
+            <input type="text" name="sessionChoice" id="useAsSpectatorText">
+
+            <br>
+            <button type="button" id="chooseSessionBtn">Choose Session</button>
+
         </form>
         <form name="chooseTrumpf">
             <h3>Choose Trumpf</h3>
@@ -100,8 +123,6 @@
     <input id="spectatorSpeed" type="range" name="points" min="0" max="10" value="0">
 
 
-    <button style="position: relative; top: 3px;" id="previousStep">vorheriger Zug</button>
-    <button style="position: relative; top: 3px;" id="nextStep">nächster Zug</button>
 </div>
 <div id="echoLog">
 
