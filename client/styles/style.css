@@ -182,6 +182,7 @@ div#cardsPlayed > div.stichMade img {
 
 
 div#cardsPlayed #trumpfHolder {
+    z-index: 1;
     position: absolute;
     width: 100px;
     top: -40px;
