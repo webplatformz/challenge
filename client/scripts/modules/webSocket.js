@@ -199,14 +199,22 @@ function applyMessageToUI(message) {
 
 function handleBroadcastTeams(teams) {
     let seatArray = ['first', 'third', 'second', 'fourth'],
-        index = 0;
+        index = 0,
+        table = document.getElementById('cardsPlayed');
 
     teams.forEach((team) => {
         team.players.forEach((player) => {
             let playerName = document.createElement('span');
-            playerName.classList.add(seatArray[index++]);
+            var playerElement = document.createElement('div');
+
+            playerName.classList.add(seatArray[index]);
             playerName.innerHTML = player.name;
-            document.getElementById('cardsPlayed').appendChild(playerName);
+            playerElement.id = 'player' + player.id;
+            playerElement.classList.add(seatArray[index] + '-player');
+
+            table.appendChild(playerName);
+            table.appendChild(playerElement);
+            index++;
         });
     });
 }

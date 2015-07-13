@@ -220,3 +220,19 @@ div#cardsPlayed span.fourth {
     bottom: 0;
     left: 0;
 }
+
+div#cardsPlayed .first-player {
+    order: 1;
+}
+
+div#cardsPlayed .second-player {
+    order: 2;
+}
+
+div#cardsPlayed .third-player {
+    order: 4;
+}
+
+div#cardsPlayed .fourth-player {
+    order: 3;
+}
