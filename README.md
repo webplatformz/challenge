@@ -37,8 +37,20 @@ Start it with:
 ```sh
 $ grunt
 ```
+With this task you will also get a debug output on the server with every message sent/received like this:
+```
+<-- Start Broadcast: 
+<-- Send Message: {"type":"BROADCAST_WINNER_TEAM","data":{"name":"Team 2","points":0,"currentRoundPoints":0}}
+<-- Send Message: {"type":"REQUEST_PLAYER_NAME"}
+<-- Received Message: {"type":"CHOOSE_PLAYER_NAME","data":"PlayerName"}
+<-- Send Message: {"type":"REQUEST_SESSION_CHOICE","data":[]}
+<-- Received Message: {"type":"CHOOSE_SESSION","data":{"sessionChoice":"AUTOJOIN"}}
+<-- Start Broadcast: 
+<-- Send Message: {"type":"BROADCAST_SESSION_JOINED","data":{"name":"PlayerName","id":0}}
+End Broadcast -->
+```
 
-or:
+or if you just want to start the server without watching and debug output use:
 
 ```sh
 $ npm start
