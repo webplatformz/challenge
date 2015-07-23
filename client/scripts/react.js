@@ -1,4 +1,4 @@
-let JassTable = require('./react/modules/jassTable');
+let JassApp = require('./react/modules/jassApp');
 
 
-React.render(<JassTable />, document.getElementsByTagName('main')[0]);
+React.render(<JassApp />, document.getElementsByTagName('main')[0]);
