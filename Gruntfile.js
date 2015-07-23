@@ -2,7 +2,8 @@
 
 module.exports = function (grunt) {
 
-    var babelify = require('babelify');
+    var babelify = require('babelify'),
+        reactify = require('reactify');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
