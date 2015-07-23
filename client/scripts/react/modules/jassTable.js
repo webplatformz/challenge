@@ -1,5 +1,6 @@
 'use strict';
 
+let React = require('react');
 let Player = require('./player');
 
 module.exports = React.createClass({

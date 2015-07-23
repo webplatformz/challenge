@@ -48,7 +48,7 @@ module.exports = function (grunt) {
         },
         browserify: {
             options: {
-                transform: [babelify]
+                transform: [reactify, babelify]
             },
             all: {
                 files: {
