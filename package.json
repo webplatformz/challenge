@@ -8,7 +8,8 @@
   "scripts": {
     "test": "./node_modules/grunt-cli/bin/grunt simplemocha",
     "start": "node ./build/server.js",
-    "postinstall": "./node_modules/grunt-cli/bin/grunt build"
+    "postinstall": "./node_modules/grunt-cli/bin/grunt build",
+    "live": "./node_modules/grunt-cli/bin/grunt"
   },
   "dependencies": {
     "babelify": "6.1.2",
