@@ -4,8 +4,12 @@ let React = require('react');
 
 module.exports = React.createClass({
     render: function() {
-        return <span>asdf</span>;
+        return (
+            <div>
+                asdf
+            </div>
+        );
     }
 });
 
-React.render(<JassApp />, document.getElementsByTagName('main')[0]);
+React.render(<JassApp />, document.getElementById('jassApp'));

@@ -126,19 +126,27 @@ module.exports = function (grunt) {
             },
             babel: {
                 files: ['./server/**/*.js', './shared/**/*.js', './test/**/*.js', './server.js'],
-                tasks: ['jshint', 'babel']
+                tasks: ['jshint-jsx', 'babel']
             },
             browserify: {
                 files: ['./client/**/*.js', './shared/**/*.js'],
-                tasks: ['jshint', 'browserify']
+                tasks: ['jshint-jsx', 'browserify']
             },
-            test: {
+            serverTests: {
                 files: [
-                    './build/server/**/*.js',
-                    './build/shared/**/*.js',
-                    './build/test/server//**/*.js'
+                    './server/**/*.js',
+                    './shared/**/*.js',
+                    './test/server/**/*.js'
                 ],
                 tasks: ['simplemocha']
+            },
+            frontendTests: {
+                files: [
+                    './client/**/*.js',
+                    './shared/**/*.js',
+                    './test/client/**/*.js'
+                ],
+                tasks: ['karma']
             }
         },
         nodemon: {
@@ -152,7 +160,7 @@ module.exports = function (grunt) {
             }
         },
         concurrent: {
-            dev: ['babel', 'browserify', 'sync', 'nodemon', 'watch'],
+            dev: ['nodemon', 'watch'],
             options: {
                 logConcurrentOutput: true
             }

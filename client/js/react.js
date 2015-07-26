@@ -1,4 +1,4 @@
 'use strict';
 
-let JassApp = require('./jassApp.jsx');
-let ServerApi = require('./communication/serverApi');
+require('./communication/serverApi');
+require('./jassApp.jsx');
