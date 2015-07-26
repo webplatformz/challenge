@@ -55,8 +55,10 @@ function removeSession(sessions, session) {
 }
 
 function keepSessionAlive(webSocket, intervall) {
-    webSocket.ping();
-    setTimeout(keepSessionAlive.bind(null, webSocket, intervall), intervall);
+    if (webSocket.readyState === 1) {
+        webSocket.ping();
+        setTimeout(keepSessionAlive.bind(null, webSocket, intervall), intervall);
+    }
 }
 
 let SessionHandler = {
