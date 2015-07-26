@@ -7,7 +7,7 @@ let messages = require('../../shared/messages/messages'),
 function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {
     let messageObject = clientCommunication.fromJSON(message);
 
-    if (messageObject && messageObject.type === expectedMessageType) {
+    if (messageObject && messageObject.type === expectedMessageType.name) {
         resolve(messageObject.data);
     } else {
         clientCommunication.send(client, MessageType.BAD_MESSAGE.name, message);
@@ -28,7 +28,7 @@ let ClientApi = {
 
     requestPlayerName: function requestPlayerName(client) {
         return clientCommunication.request(client, MessageType.REQUEST_PLAYER_NAME.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_PLAYER_NAME.name));
+            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_PLAYER_NAME));
     },
 
     broadcastTeams: function broadcastTeams(teams) {
@@ -41,7 +41,7 @@ let ClientApi = {
 
     requestTrumpf: function requestTrumpf(client, pushed) {
         return clientCommunication.request(client, MessageType.REQUEST_TRUMPF.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_TRUMPF.name),
+            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_TRUMPF),
             pushed);
     },
 
@@ -71,7 +71,7 @@ let ClientApi = {
 
     requestCard: function requestCard(client, cardsOnTable) {
         return clientCommunication.request(client, MessageType.REQUEST_CARD.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_CARD.name),
+            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_CARD),
             cardsOnTable);
     },
 
@@ -81,7 +81,7 @@ let ClientApi = {
 
     requestSessionChoice: function requestSessionChoice(client, availableSessions) {
         return clientCommunication.request(client, MessageType.REQUEST_SESSION_CHOICE.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_SESSION.name),
+            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_SESSION),
             availableSessions);
     },
 
