@@ -47,7 +47,7 @@ module.exports = function (grunt) {
                     {
                         "expand": true,
                         "cwd": "./client/",
-                        "src": ["scripts/react/**/*.js"],
+                        "src": ["js/**/*.js"],
                         "dest": "./build/client/",
                         "ext": ".js"
                     }
@@ -60,17 +60,21 @@ module.exports = function (grunt) {
             },
             all: {
                 files: {
-                    'build/client/scripts/app.js': ['client/scripts/app.js'],
-                    'build/client/scripts/react.js': ['client/scripts/react.js']
+                    'build/client/js/react.js': ['client/js/react.js']
                 }
             }
         },
-        jshint: {
+        'jshint-jsx': {
             options: {
-                reporter: require('jshint-stylish'),
-                jshintrc: true
+                jshintrc: true,
+                convertJSX: true
             },
-            all: ['server/**/*.js', 'test/**/*.js', '*.js']
+            all: [
+                'client/**/*.js',
+                'shared/**/*.js',
+                'server/**/*.js',
+                'test/**/*.js'
+            ]
         },
         simplemocha: {
             options: {
@@ -112,13 +116,7 @@ module.exports = function (grunt) {
                     cwd: './',
                     src: 'client/styles/**/*.css',
                     dest: 'build/'
-                }, {
-                    expand: true,
-                    cwd: './',
-                    src: 'client/scripts/react/*.js',
-                    dest: 'build/'
-                }
-                ]
+                }]
             }
         },
         watch: {
@@ -135,7 +133,11 @@ module.exports = function (grunt) {
                 tasks: ['jshint', 'browserify']
             },
             test: {
-                files: ['./build/**/*.js'],
+                files: [
+                    './build/server/**/*.js',
+                    './build/shared/**/*.js',
+                    './build/test/server//**/*.js'
+                ],
                 tasks: ['simplemocha']
             }
         },
@@ -150,7 +152,7 @@ module.exports = function (grunt) {
             }
         },
         concurrent: {
-            dev: ['babel', 'sync', 'nodemon', 'watch'],
+            dev: ['babel', 'browserify', 'sync', 'nodemon', 'watch'],
             options: {
                 logConcurrentOutput: true
             }
@@ -160,12 +162,12 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     // Test task executes mocka tests and runs jshint
-    grunt.registerTask('test', ['jshint', 'clean', 'babel', 'browserify', 'simplemocha', 'karma']);
+    grunt.registerTask('test', ['build', 'simplemocha', 'karma']);
 
     // Default task executes concurrent target. Watching for changes to execute tests and restart server.
-    grunt.registerTask('default', ['clean', 'babel', 'browserify', 'sync', 'concurrent:dev']);
+    grunt.registerTask('default', ['build', 'concurrent:dev']);
 
     // start server
-    grunt.registerTask('build', ['clean', 'babel', 'browserify', 'sync']);
+    grunt.registerTask('build', ['jshint-jsx', 'clean', 'babel', 'browserify', 'sync']);
 
 };

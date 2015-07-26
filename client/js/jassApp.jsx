@@ -4,7 +4,8 @@ let React = require('react');
 
 module.exports = React.createClass({
     render: function() {
-        let elementId = 'player' + this.props.id;
-        return <div id={elementId}></div>;
+        return <span>asdf</span>;
     }
 });
+
+React.render(<JassApp />, document.getElementsByTagName('main')[0]);

@@ -10,7 +10,7 @@ describe('serverApi', () => {
             window.WebSocket = dummyWebSocket;
             let webSocket = sinon.spy(window, 'WebSocket');
 
-            let serverApi = require('../../../client/scripts/react/communication/serverApi');
+            let serverApi = require('../../../client/js/communication/serverApi');
 
             expect(webSocket.calledWithNew()).to.equal(true);
             expect(webSocket.calledWith('ws://' + window.location.host)).to.equal(true);

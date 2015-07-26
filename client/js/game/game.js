@@ -9,4 +9,4 @@ module.exports = {
         let game = Object.create(Game);
         return game;
     }
-}
+};
