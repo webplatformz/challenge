@@ -128,12 +128,18 @@ module.exports = function (grunt) {
         },
         watch: {
             sync: {
-                files: ['./client/**/*.html', './client/images/**/*', './client/**/*.css'],
-                tasks: ['sync']
+                files: ['./client/**/*.html', './client/images/**/*'],
+                tasks: ['sync'],
+                options: {
+                    livereload: true
+                }
             },
             less: {
                 files: ['./client/styles/**/*.less'],
-                tasks: ['less']
+                tasks: ['less'],
+                options: {
+                    livereload: true
+                }
             },
             babel: {
                 files: ['./server/**/*.js', './shared/**/*.js', './test/**/*.js', './server.js'],
@@ -141,7 +147,10 @@ module.exports = function (grunt) {
             },
             browserify: {
                 files: ['./client/**/*.js', './client/**/*.jsx', './shared/**/*.js'],
-                tasks: ['jshint-jsx', 'browserify']
+                tasks: ['jshint-jsx', 'browserify'],
+                options: {
+                    livereload: true
+                }
             },
             serverTests: {
                 files: [
