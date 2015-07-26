@@ -5,7 +5,15 @@ module.exports = {
         name: 'REQUEST_PLAYER_NAME'
     },
     CHOOSE_PLAYER_NAME: {
-        name: 'CHOOSE_PLAYER_NAME'
+        name: 'CHOOSE_PLAYER_NAME',
+        constraints: {
+            data: {
+                presence: true,
+                length: {
+                    minimum: 1
+                }
+            }
+        }
     },
     BROADCAST_TEAMS: {
         name: 'BROADCAST_TEAMS'

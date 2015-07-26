@@ -2,7 +2,15 @@
 
 let messages = require('../../shared/messages/messages'),
     MessageType = require('../../shared/messages/messageType'),
-    clientCommunication = require('./clientCommunication');
+    clientCommunication = require('./clientCommunication'),
+    validate = require('validate.js');
+
+function validateMessage(reject, messageObject, expectedMessageType) {
+    var validationResult = validate(messageObject, expectedMessageType.constraints);
+    if (validationResult) {
+        reject(validationResult);
+    }
+}
 
 function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {
     let messageObject = clientCommunication.fromJSON(message);
@@ -11,7 +19,7 @@ function resolveCorrectMessageOrReject(client, expectedMessageType, message, res
         resolve(messageObject.data);
     } else {
         clientCommunication.send(client, MessageType.BAD_MESSAGE.name, message);
-        reject('Invalid client answer: ' + message);
+        reject('Invalid Message: ' + message + ', expected message with type: ' + expectedMessageType.name);
     }
 }
 

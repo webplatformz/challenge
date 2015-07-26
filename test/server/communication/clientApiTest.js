@@ -90,7 +90,7 @@ describe('Client API', () => {
                 clientApi.addClient(client);
 
                 clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
-                    expect(data).to.equal('Invalid client answer: ' + JSON.stringify(clientAnswer));
+                    expect(data).to.equal('Invalid Message: ' + JSON.stringify(clientAnswer) + ', expected message with type: CHOOSE_PLAYER_NAME');
                 }).catch(done);
             });
 
@@ -114,7 +114,7 @@ describe('Client API', () => {
                 clientApi.addClient(client);
 
                 clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
-                    expect(data).to.equal('Invalid client answer: ');
+                    expect(data).to.equal('Invalid Message: , expected message with type: CHOOSE_PLAYER_NAME');
                     done();
                 }).catch(done);
             });
