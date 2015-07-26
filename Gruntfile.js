@@ -43,6 +43,13 @@ module.exports = function (grunt) {
                         "src": ["**/*.js"],
                         "dest": "./build/test/",
                         "ext": ".js"
+                    },
+                    {
+                        "expand": true,
+                        "cwd": "./client/",
+                        "src": ["scripts/react/**/*.js"],
+                        "dest": "./build/client/",
+                        "ext": ".js"
                     }
                 ]
             }
@@ -61,7 +68,7 @@ module.exports = function (grunt) {
         jshint: {
             options: {
                 reporter: require('jshint-stylish'),
-                jshintrc: '.jshintrc'
+                jshintrc: true
             },
             all: ['server/**/*.js', 'test/**/*.js', '*.js']
         },
@@ -71,7 +78,22 @@ module.exports = function (grunt) {
                 timeout: 3000,
                 ignoreLeaks: false
             },
-            all: {src: ['build/test/**/*.js']}
+            all: {
+                src: [
+                    'build/test/**/*.js',
+                    '!build/test/client/**/*.js'
+                ]
+            }
+        },
+        karma: {
+            unit: {
+                configFile: 'test/client/karma.conf.js',
+                options: {
+                    files: ['build/test/client/**/*.js'],
+                    exclude: ['build/test/client/karma.conf.js']
+                },
+                singleRun: true
+            }
         },
         sync: {
             main: {
@@ -138,11 +160,12 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     // Test task executes mocka tests and runs jshint
-    grunt.registerTask('test', ['clean', 'babel', 'browserify', 'simplemocha', 'jshint']);
+    grunt.registerTask('test', ['jshint', 'clean', 'babel', 'browserify', 'simplemocha', 'karma']);
 
     // Default task executes concurrent target. Watching for changes to execute tests and restart server.
     grunt.registerTask('default', ['clean', 'babel', 'browserify', 'sync', 'concurrent:dev']);
 
     // start server
     grunt.registerTask('build', ['clean', 'babel', 'browserify', 'sync']);
+
 };

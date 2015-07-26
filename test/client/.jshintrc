@@ -1,0 +1,6 @@
+{
+  "extends": "../../.jshintrc",
+
+  "browser"       : true,     // Web Browser (window, document, etc)
+  "browserify"    : true      // Browserify (node.js code in the browser)
+}

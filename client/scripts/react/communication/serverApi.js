@@ -1,7 +1,6 @@
 'use strict';
 
 const serverAddress = 'ws://' + window.location.host;
-const pingIntervall = 30000;
 
 let ServerApi = {
     handleMessage: (messageEvent) => {

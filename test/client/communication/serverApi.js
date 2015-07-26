@@ -1,11 +1,19 @@
 'use strict';
 
-let expect = require('chai').expect;
+let expect = require('chai').expect,
+    sinon = require('sinon');
 
 describe('serverApi', () => {
     describe('initialization', () => {
-        it('should connect to Server', () => {
-            //TODO make client modules available aso separate modules
+        it('should connect to Server and register handlMessage function', () => {
+            let dummyWebSocket = function () {};
+            window.WebSocket = dummyWebSocket;
+            let webSocket = sinon.spy(window, 'WebSocket');
+
+            let serverApi = require('../../../client/scripts/react/communication/serverApi');
+
+            expect(webSocket.calledWithNew()).to.equal(true);
+            expect(webSocket.calledWith('ws://' + window.location.host)).to.equal(true);
         });
     });
 });
