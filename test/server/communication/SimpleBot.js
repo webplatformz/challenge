@@ -9,6 +9,7 @@ let WebSocket = require('ws'),
     CardColor = Card.CardColor,
     Validation = require('../../../server/game/validation/validation'),
     messages = require('../../../shared/messages/messages'),
+    MessageType = require('../../../shared/messages/messageType'),
     SessionChoice = require('../../../shared/game/sessionChoice'),
     expect = require('chai').expect;
 
@@ -18,38 +19,38 @@ let SimpleBot = {
     onMessage : function (messageJson) {
         let message = JSON.parse(messageJson);
 
-        if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
-            this.client.send(JSON.stringify(messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, this.name)));
+        if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
+            this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_PLAYER_NAME.name, this.name)));
         }
 
-        if (message.type === messages.MessageType.REQUEST_SESSION_CHOICE) {
+        if (message.type === MessageType.REQUEST_SESSION_CHOICE.name) {
             let sessionName = 'Session 1';
 
             if (this.id === 1){
                 expect(message.data.length).to.equal(0);
-                this.client.send(JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION, SessionChoice.CREATE_NEW, sessionName)));
+                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, sessionName)));
             }
 
-            this.client.send(JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION, SessionChoice.JOIN_EXISTING, sessionName)));
+            this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, sessionName)));
         }
 
-        if (message.type === messages.MessageType.DEAL_CARDS) {
+        if (message.type === MessageType.DEAL_CARDS.name) {
             this.handcards = this.mapCardsFromJson(message.data);
         }
 
-        if (message.type === messages.MessageType.BROADCAST_WINNER_TEAM) {
+        if (message.type === MessageType.BROADCAST_WINNER_TEAM.name) {
             this.doneFunction();
         }
 
-        if (message.type === messages.MessageType.REQUEST_CARD) {
+        if (message.type === MessageType.REQUEST_CARD.name) {
             let handCard = this.giveValidCardFromHand(this.mapCardsFromJson(message.data), this.handcards);
             this.handcards.splice(this.handcards.indexOf(handCard), 1);
-            let chooseCardResonse = messages.create(messages.MessageType.CHOOSE_CARD, handCard);
+            let chooseCardResonse = messages.create(MessageType.CHOOSE_CARD.name, handCard);
             this.client.send(JSON.stringify(chooseCardResonse));
         }
 
-        if (message.type === messages.MessageType.REQUEST_TRUMPF) {
-            let chooseTrumpfResponse = messages.create(messages.MessageType.CHOOSE_TRUMPF, this.gameType);
+        if (message.type === MessageType.REQUEST_TRUMPF.name) {
+            let chooseTrumpfResponse = messages.create(MessageType.CHOOSE_TRUMPF.name, this.gameType);
             this.client.send(JSON.stringify(chooseTrumpfResponse));
         }
     },

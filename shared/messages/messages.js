@@ -1,94 +1,73 @@
 'use strict';
 
-let Card = require('../deck/card');
-
-let MessageType = {
-    REQUEST_PLAYER_NAME: 'REQUEST_PLAYER_NAME',
-    CHOOSE_PLAYER_NAME: 'CHOOSE_PLAYER_NAME',
-    BROADCAST_TEAMS: 'BROADCAST_TEAMS',
-    DEAL_CARDS: 'DEAL_CARDS',
-    REQUEST_TRUMPF: 'REQUEST_TRUMPF',
-    CHOOSE_TRUMPF: 'CHOOSE_TRUMPF',
-    REJECT_TRUMPF: 'REJECT_TRUMPF',
-    BROADCAST_TRUMPF: 'BROADCAST_TRUMPF',
-    BROADCAST_STICH: 'BROADCAST_STICH',
-    BROADCAST_WINNER_TEAM: 'BROADCAST_WINNER_TEAM',
-    BROADCAST_GAME_FINISHED: 'BROADCAST_GAME_FINISHED',
-    PLAYED_CARDS: 'PLAYED_CARDS',
-    REQUEST_CARD: 'REQUEST_CARD',
-    CHOOSE_CARD: 'CHOOSE_CARD',
-    REJECT_CARD: 'REJECT_CARD',
-    REQUEST_SESSION_CHOICE: 'REQUEST_SESSION_CHOICE',
-    CHOOSE_SESSION: 'CHOOSE_SESSION',
-    BROADCAST_SESSION_JOINED: 'BROADCAST_SESSION_JOINED',
-    BAD_MESSAGE: 'BAD_MESSAGE'
-};
+let Card = require('../deck/card'),
+    MessageType = require('./messageType');
 
 function createRequestPlayerName () {
     return {
-        type: MessageType.REQUEST_PLAYER_NAME
+        type: MessageType.REQUEST_PLAYER_NAME.name
     };
 }
 
 function createChoosePlayerName (playerName) {
     return {
-        type: MessageType.CHOOSE_PLAYER_NAME,
+        type: MessageType.CHOOSE_PLAYER_NAME.name,
         data: playerName
     };
 }
 
 function createBroadcastTeams (teams) {
     return {
-        type: MessageType.BROADCAST_TEAMS,
+        type: MessageType.BROADCAST_TEAMS.name,
         data: teams
     };
 }
 
 function createDealCards (cards) {
     return {
-        type: MessageType.DEAL_CARDS,
+        type: MessageType.DEAL_CARDS.name,
         data: cards
     };
 }
 
 function createRequestTrumpf (geschoben) {
     return {
-        type: MessageType.REQUEST_TRUMPF,
+        type: MessageType.REQUEST_TRUMPF.name,
         data: geschoben
     };
 }
 
 function createRejectTrumpf (gameType) {
     return {
-        type: MessageType.REJECT_TRUMPF,
+        type: MessageType.REJECT_TRUMPF.name,
         data: gameType
     };
 }
 
 function createChooseTrumpf (gameType) {
     return {
-        type: MessageType.CHOOSE_TRUMPF,
+        type: MessageType.CHOOSE_TRUMPF.name,
         data: gameType
     };
 }
 
 function createBroadcastTrumpf (gameType) {
     return {
-        type: MessageType.BROADCAST_TRUMPF,
+        type: MessageType.BROADCAST_TRUMPF.name,
         data: gameType
     };
 }
 
 function createBroadcastStich (winner) {
     return {
-        type: MessageType.BROADCAST_STICH,
+        type: MessageType.BROADCAST_STICH.name,
         data: winner
     };
 }
 
 function createBroadcastGameFinished (teams) {
     return {
-        type: MessageType.BROADCAST_GAME_FINISHED,
+        type: MessageType.BROADCAST_GAME_FINISHED.name,
         data: teams
     };
 }
@@ -96,49 +75,49 @@ function createBroadcastGameFinished (teams) {
 
 function createBroadcastWinnerTeam(team) {
     return {
-        type: MessageType.BROADCAST_WINNER_TEAM,
+        type: MessageType.BROADCAST_WINNER_TEAM.name,
         data: team
     };
 }
 
 function createPlayedCards (playedCards) {
     return {
-        type: MessageType.PLAYED_CARDS,
+        type: MessageType.PLAYED_CARDS.name,
         data: playedCards
     };
 }
 
 function createRequestCard (cards) {
     return {
-        type: MessageType.REQUEST_CARD,
+        type: MessageType.REQUEST_CARD.name,
         data: cards
     };
 }
 
 function createChooseCard (card) {
     return {
-        type: MessageType.CHOOSE_CARD,
+        type: MessageType.CHOOSE_CARD.name,
         data: Card.create(card.number, card.color)
     };
 }
 
 function createRejectCard (card) {
     return {
-        type: MessageType.REJECT_CARD,
+        type: MessageType.REJECT_CARD.name,
         data: card
     };
 }
 
 function createRequestSessionChoice (availableSessions) {
     return {
-        type: MessageType.REQUEST_SESSION_CHOICE,
+        type: MessageType.REQUEST_SESSION_CHOICE.name,
         data: availableSessions
     };
 }
 
 function createChooseSession(sessionChoice, sessionName) {
     return {
-        type: MessageType.CHOOSE_SESSION,
+        type: MessageType.CHOOSE_SESSION.name,
         data: {
             sessionChoice,
             sessionName
@@ -148,7 +127,7 @@ function createChooseSession(sessionChoice, sessionName) {
 
 function createBroadcastSessionJoined(name, id) {
     return {
-        type: MessageType.BROADCAST_SESSION_JOINED,
+        type: MessageType.BROADCAST_SESSION_JOINED.name,
         data: {
             name,
             id
@@ -158,50 +137,50 @@ function createBroadcastSessionJoined(name, id) {
 
 function createBadMessage(message) {
     return {
-        type: MessageType.BAD_MESSAGE,
+        type: MessageType.BAD_MESSAGE.name,
         data: message
     };
 }
 
 function create(messageType, ...data) {
     switch (messageType) {
-        case MessageType.REQUEST_PLAYER_NAME:
+        case MessageType.REQUEST_PLAYER_NAME.name:
             return createRequestPlayerName();
-        case MessageType.CHOOSE_PLAYER_NAME:
+        case MessageType.CHOOSE_PLAYER_NAME.name:
             return createChoosePlayerName(...data);
-        case MessageType.BROADCAST_TEAMS:
+        case MessageType.BROADCAST_TEAMS.name:
             return createBroadcastTeams(...data);
-        case MessageType.DEAL_CARDS:
+        case MessageType.DEAL_CARDS.name:
             return createDealCards(...data);
-        case MessageType.REQUEST_TRUMPF:
+        case MessageType.REQUEST_TRUMPF.name:
             return createRequestTrumpf(...data);
-        case MessageType.REJECT_TRUMPF:
+        case MessageType.REJECT_TRUMPF.name:
             return createRejectTrumpf(...data);
-        case MessageType.CHOOSE_TRUMPF:
+        case MessageType.CHOOSE_TRUMPF.name:
             return createChooseTrumpf(...data);
-        case MessageType.BROADCAST_TRUMPF:
+        case MessageType.BROADCAST_TRUMPF.name:
             return createBroadcastTrumpf(...data);
-        case MessageType.BROADCAST_WINNER_TEAM:
+        case MessageType.BROADCAST_WINNER_TEAM.name:
             return createBroadcastWinnerTeam(...data);
-        case MessageType.BROADCAST_STICH:
+        case MessageType.BROADCAST_STICH.name:
             return createBroadcastStich(...data);
-        case MessageType.BROADCAST_GAME_FINISHED:
+        case MessageType.BROADCAST_GAME_FINISHED.name:
             return createBroadcastGameFinished(...data);
-        case MessageType.PLAYED_CARDS:
+        case MessageType.PLAYED_CARDS.name:
             return createPlayedCards(...data);
-        case MessageType.REQUEST_CARD:
+        case MessageType.REQUEST_CARD.name:
             return createRequestCard(...data);
-        case MessageType.CHOOSE_CARD:
+        case MessageType.CHOOSE_CARD.name:
             return createChooseCard(...data);
-        case MessageType.REJECT_CARD:
+        case MessageType.REJECT_CARD.name:
             return createRejectCard(...data);
-        case MessageType.REQUEST_SESSION_CHOICE:
+        case MessageType.REQUEST_SESSION_CHOICE.name:
             return createRequestSessionChoice(...data);
-        case MessageType.CHOOSE_SESSION:
+        case MessageType.CHOOSE_SESSION.name:
             return createChooseSession(...data);
-        case MessageType.BROADCAST_SESSION_JOINED:
+        case MessageType.BROADCAST_SESSION_JOINED.name:
             return createBroadcastSessionJoined(...data);
-        case MessageType.BAD_MESSAGE:
+        case MessageType.BAD_MESSAGE.name:
             return createBadMessage(...data);
         default:
             throw 'Unknown message type ' + messageType;

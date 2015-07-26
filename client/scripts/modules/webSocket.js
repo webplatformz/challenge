@@ -8,6 +8,7 @@ let secureCb,
     disconnectBut,
     websocket,
     messages = require('../../../shared/messages/messages'),
+    MessageType = require('../../../shared/messages/messageType'),
     gameState = require('./gameState').create(),
     cardType = require('./gameState').CardType,
     SessionChoice = require('../../../shared/game/sessionChoice'),
@@ -47,7 +48,7 @@ function handlePageLoad() {
 
     document.getElementById("choosePlayerName").addEventListener('click', () => {
         let playerName = document.getElementById('playerName').value,
-            message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, playerName));
+            message = JSON.stringify(messages.create(MessageType.CHOOSE_PLAYER_NAME.name, playerName));
         websocket.send(message);
 
         logToConsole("SENT: " + message);
@@ -56,7 +57,7 @@ function handlePageLoad() {
     document.getElementById("chooseTrumpf").addEventListener('click', () => {
         let mode = document.getElementById('mode').value,
             trumpfColor = document.getElementById('trumpfColor').value,
-            message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_TRUMPF, {
+            message = JSON.stringify(messages.create(MessageType.CHOOSE_TRUMPF.name, {
                 mode,
                 trumpfColor
             }));
@@ -68,7 +69,7 @@ function handlePageLoad() {
     document.getElementById("chooseCard").addEventListener('click', () => {
         let number = Number(document.getElementById('number').value),
             color = document.getElementById('color').value,
-            message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_CARD, {
+            message = JSON.stringify(messages.create(MessageType.CHOOSE_CARD.name, {
                 number,
                 color
             }));
@@ -169,28 +170,28 @@ function onClose() {
 function applyMessageToUI(message) {
     if (message.type) {
         switch (message.type) {
-            case messages.MessageType.DEAL_CARDS:
+            case MessageType.DEAL_CARDS.name:
                 handleDealCards(message.data);
                 break;
-            case messages.MessageType.REQUEST_CARD:
+            case MessageType.REQUEST_CARD.name:
                 handleRequestCard();
                 break;
-            case messages.MessageType.REJECT_CARD:
+            case MessageType.REJECT_CARD.name:
                 handleRejectCard();
                 break;
-            case messages.MessageType.PLAYED_CARDS:
+            case MessageType.PLAYED_CARDS.name:
                 handlePlayedCards(message.data);
                 break;
-            case messages.MessageType.BROADCAST_STICH:
+            case MessageType.BROADCAST_STICH.name:
                 handleBroadcastStich(message.data);
                 break;
-            case messages.MessageType.REQUEST_SESSION_CHOICE:
+            case MessageType.REQUEST_SESSION_CHOICE.name:
                 handleRequestSessionChoice(message.data);
                 break;
-            case messages.MessageType.BROADCAST_TRUMPF:
+            case MessageType.BROADCAST_TRUMPF.name:
                 handleBroadcastTrumpf(message.data);
                 break;
-            case messages.MessageType.BROADCAST_TEAMS:
+            case MessageType.BROADCAST_TEAMS.name:
                 handleBroadcastTeams(message.data);
                 break;
         }
@@ -240,10 +241,10 @@ function handleBroadcastTrumpf(trumpf) {
 
 function isSpectatorRelevantMessage(message) {
     switch (message.type) {
-        case messages.MessageType.PLAYED_CARDS:
-        case messages.MessageType.BROADCAST_STICH:
-        case messages.MessageType.CHOOSE_TRUMPF:
-        case messages.MessageType.BROADCAST_WINNER_TEAM:
+        case MessageType.PLAYED_CARDS.name:
+        case MessageType.BROADCAST_STICH.name:
+        case MessageType.CHOOSE_TRUMPF.name:
+        case MessageType.BROADCAST_WINNER_TEAM.name:
             return true;
         default:
             return false;
@@ -260,7 +261,7 @@ function stepForward() {
         ++gameState.currentSpectatorIndex;
         if (message) {
             applyMessageToUI(message);
-            if (message.type === messages.MessageType.BROADCAST_WINNER_TEAM) {
+            if (message.type === MessageType.BROADCAST_WINNER_TEAM.name) {
                 console.log('Spiel vorbei, ' + message.data.name + ' gewinnt mit ' + message.data.points + ' Punkten');
             }
         }
@@ -317,7 +318,7 @@ function doChooseSession() {
             break;
     }
 
-    let message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_SESSION, sessionChoice, sessionName));
+    let message = JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, sessionChoice, sessionName));
     websocket.send(message);
     logToConsole("SENT: " + message);
 }
@@ -392,7 +393,7 @@ function addCardToDom(node, card, onClick) {
 function playCard(card) {
     gameState.lastCardPlayed = card;
 
-    let message = JSON.stringify(messages.create(messages.MessageType.CHOOSE_CARD, card));
+    let message = JSON.stringify(messages.create(MessageType.CHOOSE_CARD.name, card));
     websocket.send(message);
 
     logToConsole("SENT: " + message);

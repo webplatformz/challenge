@@ -3,12 +3,13 @@
 let clientCommunication = require('../../../server/communication/clientCommunication'),
     WebSocket = require('ws'),
     messages = require('../../../shared/messages/messages'),
+    MessageType = require('../../../shared/messages/messageType'),
     expect = require('chai').expect,
     sinon = require('sinon');
 
 describe('clientCommunication', () => {
     it('should convert message to JSON string', () => {
-        let message = messages.create(messages.MessageType.REQUEST_TRUMPF, false);
+        let message = messages.create(MessageType.REQUEST_TRUMPF.name, false);
 
         let actual = clientCommunication.toJSON(message);
 
@@ -20,7 +21,7 @@ describe('clientCommunication', () => {
 
         let actual = clientCommunication.fromJSON(message);
 
-        expect(actual.type).to.equal(messages.MessageType.REQUEST_TRUMPF);
+        expect(actual.type).to.equal(MessageType.REQUEST_TRUMPF.name);
         expect(actual.data).to.eql(false);
     });
 
@@ -35,7 +36,7 @@ describe('clientCommunication', () => {
 
         clientMock.expects('send').withExactArgs('{"type":"DEAL_CARDS","data":["a","b","c"]}').once();
 
-        clientCommunication.send(client, messages.MessageType.DEAL_CARDS, ['a', 'b', 'c']);
+        clientCommunication.send(client, MessageType.DEAL_CARDS.name, ['a', 'b', 'c']);
 
         clientMock.verify();
     });
@@ -54,7 +55,7 @@ describe('clientCommunication', () => {
         client1Mock.expects('send').withExactArgs('{"type":"PLAYED_CARDS","data":["a","b","c"]}').once();
         client2Mock.expects('send').withExactArgs('{"type":"PLAYED_CARDS","data":["a","b","c"]}').once();
 
-        clientCommunication.broadcast([client1, client2], messages.MessageType.PLAYED_CARDS, ['a', 'b', 'c']);
+        clientCommunication.broadcast([client1, client2], MessageType.PLAYED_CARDS.name, ['a', 'b', 'c']);
 
         client1Mock.verify();
         client2Mock.verify();
@@ -75,7 +76,7 @@ describe('clientCommunication', () => {
         clientMock.expects('send').withExactArgs('{"type":"REQUEST_TRUMPF","data":false}').once();
         clientMock.expects('removeListener').withArgs('message', sinon.match.func).once();
 
-        clientCommunication.request(client, messages.MessageType.REQUEST_TRUMPF, function onMessage(message, resolve) {
+        clientCommunication.request(client, MessageType.REQUEST_TRUMPF.name, function onMessage(message, resolve) {
             resolve();
             clientMock.verify();
             done();

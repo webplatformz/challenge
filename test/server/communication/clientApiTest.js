@@ -9,9 +9,10 @@ let expect = require('chai').expect,
     CardColor = require('../../../shared/deck/card').CardColor,
     TestDataCreator = require('../../testDataCreator'),
     CloseEventCode = require('../../../server/communication/closeEventCode'),
-    sinon = require('sinon');
-
-let messages = require('../../../shared/messages/messages');
+    sinon = require('sinon'),
+    messages = require('../../../shared/messages/messages'),
+    MessageType = require('../../../shared/messages/messageType'),
+    SessionChoice = require('../../../shared/game/sessionChoice');
 
 describe('Client API', () => {
 
@@ -61,7 +62,7 @@ describe('Client API', () => {
 
     describe('requestPlayerName', () => {
         it('should wait for choosePlayerName', (done) => {
-            let choosePlayerName = messages.create(messages.MessageType.CHOOSE_PLAYER_NAME, 'Hans');
+            let choosePlayerName = messages.create(MessageType.CHOOSE_PLAYER_NAME.name, 'Hans');
 
             wss.on('connection', (client) => {
                 clientApi.addClient(client);
@@ -77,20 +78,20 @@ describe('Client API', () => {
             client.on('message', (message) => {
                 message = JSON.parse(message);
 
-                if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
+                if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
                     client.send(JSON.stringify(choosePlayerName));
                 }
             });
         });
 
         it('should reject invalid answer messages', (done) => {
-            let clientAnswer = messages.create(messages.MessageType.PLAYED_CARDS, ['a', 'b', 'c']);
+            let clientAnswer = messages.create(MessageType.PLAYED_CARDS.name, ['a', 'b', 'c']);
 
             wss.on('connection', (client) => {
                 clientApi.addClient(client);
 
                 clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
-                    expect(data).to.equal('Invalid client answer: ' + JSON.stringify(clientAnswer));
+                    expect(data).to.equal('Invalid Message: ' + JSON.stringify(clientAnswer) + ', expected message with type: CHOOSE_PLAYER_NAME');
                 }).catch(done);
             });
 
@@ -100,9 +101,9 @@ describe('Client API', () => {
                 client.on('message', (message) => {
                     message = JSON.parse(message);
 
-                    if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
+                    if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
                         client.send(JSON.stringify(clientAnswer));
-                    } else if (message.type === messages.MessageType.BAD_MESSAGE) {
+                    } else if (message.type === MessageType.BAD_MESSAGE.name) {
                         resolve();
                     }
                 });
@@ -114,7 +115,7 @@ describe('Client API', () => {
                 clientApi.addClient(client);
 
                 clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
-                    expect(data).to.equal('Invalid client answer: ');
+                    expect(data).to.equal('Invalid Message: , expected message with type: CHOOSE_PLAYER_NAME');
                     done();
                 }).catch(done);
             });
@@ -124,10 +125,36 @@ describe('Client API', () => {
             client.on('message', (message) => {
                 message = JSON.parse(message);
 
-                if (message.type === messages.MessageType.REQUEST_PLAYER_NAME) {
+                if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
                     client.send(undefined);
                 }
             });
+        });
+
+        it('should reject wrong data type', (done) => {
+            let clientAnswer = messages.create(MessageType.CHOOSE_PLAYER_NAME.name, 13);
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
+                    expect(data.data).to.eql(['Data has an incorrect length']);
+                }).catch(done);
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            new Promise((resolve) => {
+                client.on('message', (message) => {
+                    message = JSON.parse(message);
+
+                    if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
+                        client.send(JSON.stringify(clientAnswer));
+                    } else if (message.type === MessageType.BAD_MESSAGE.name) {
+                        resolve();
+                    }
+                });
+            }).then(done, done);
         });
     });
 
@@ -152,7 +179,7 @@ describe('Client API', () => {
                     client.on('message', (message) => {
                         message = JSON.parse(message);
 
-                        expect(message.type).to.equal(messages.MessageType.BROADCAST_TEAMS);
+                        expect(message.type).to.equal(MessageType.BROADCAST_TEAMS.name);
                         expect(message.data).to.eql(teamsMessage);
 
                         resolve();
@@ -181,7 +208,7 @@ describe('Client API', () => {
                 client.on('message', (message) => {
                     message = JSON.parse(message);
 
-                    expect(message.type).to.equal(messages.MessageType.DEAL_CARDS);
+                    expect(message.type).to.equal(MessageType.DEAL_CARDS.name);
                     expect(message.data).to.eql(cards);
 
                     resolve();
@@ -192,13 +219,13 @@ describe('Client API', () => {
 
     describe('requestTrumpf', () => {
         it('should wait for chooseTrumpf', (done) => {
-            let chooseTrumpf = messages.create(messages.MessageType.CHOOSE_TRUMPF, 'Spades');
+            let chooseTrumpf = messages.create(MessageType.CHOOSE_TRUMPF.name, {mode: GameMode.TRUMPF, trumpfColor: CardColor.SPADES});
 
             wss.on('connection', (client) => {
                 clientApi.addClient(client);
 
                 clientApi.requestTrumpf(client, false).then((data) => {
-                    expect(data).to.equal(chooseTrumpf.data);
+                    expect(data).to.eql(chooseTrumpf.data);
                     done();
                 }).catch(done);
             });
@@ -208,7 +235,7 @@ describe('Client API', () => {
             client.on('message', (message) => {
                 message = JSON.parse(message);
 
-                if (message.type === messages.MessageType.REQUEST_TRUMPF) {
+                if (message.type === MessageType.REQUEST_TRUMPF.name) {
                     client.send(JSON.stringify(chooseTrumpf));
                 }
             });
@@ -230,7 +257,7 @@ describe('Client API', () => {
                 client.on('message', (message) => {
                     message = JSON.parse(message);
 
-                    expect(message.type).to.equal(messages.MessageType.REJECT_TRUMPF);
+                    expect(message.type).to.equal(MessageType.REJECT_TRUMPF.name);
                     expect(message.data.mode).to.equal(gameType.mode);
 
                     resolve();
@@ -260,7 +287,7 @@ describe('Client API', () => {
                     client.on('message', (message) => {
                         message = JSON.parse(message);
 
-                        expect(message.type).to.equal(messages.MessageType.BROADCAST_STICH);
+                        expect(message.type).to.equal(MessageType.BROADCAST_STICH.name);
                         expect(message.data).to.eql(stichMessage);
 
                         resolve();
@@ -295,7 +322,7 @@ describe('Client API', () => {
                     client.on('message', (message) => {
                         message = JSON.parse(message);
 
-                        expect(message.type).to.equal(messages.MessageType.PLAYED_CARDS);
+                        expect(message.type).to.equal(MessageType.PLAYED_CARDS.name);
                         expect(message.data).to.eql(playedCards);
 
                         resolve();
@@ -330,7 +357,7 @@ describe('Client API', () => {
                     client.on('message', (message) => {
                         message = JSON.parse(message);
 
-                        expect(message.type).to.equal(messages.MessageType.BROADCAST_TRUMPF);
+                        expect(message.type).to.equal(MessageType.BROADCAST_TRUMPF.name);
                         expect(message.data).to.eql(gameType);
 
                         resolve();
@@ -346,7 +373,7 @@ describe('Client API', () => {
 
     describe('requestCard', () => {
         it('should wait for chooseCard', (done) => {
-            let chooseCard = messages.create(messages.MessageType.CHOOSE_CARD, 'c'),
+            let chooseCard = messages.create(MessageType.CHOOSE_CARD.name, {number: 11, color: CardColor.SPADES}),
                 cardsOnTable = ['a', 'b'];
 
             wss.on('connection', (client) => {
@@ -363,7 +390,7 @@ describe('Client API', () => {
             client.on('message', (message) => {
                 message = JSON.parse(message);
 
-                if (message.type === messages.MessageType.REQUEST_CARD) {
+                if (message.type === MessageType.REQUEST_CARD.name) {
                     client.send(JSON.stringify(chooseCard));
                 }
             });
@@ -387,7 +414,7 @@ describe('Client API', () => {
                 client.on('message', (message) => {
                     message = JSON.parse(message);
 
-                    expect(message.type).to.equal(messages.MessageType.REJECT_CARD);
+                    expect(message.type).to.equal(MessageType.REJECT_CARD.name);
                     resolve();
                 });
             }).then(done, done);
@@ -397,12 +424,11 @@ describe('Client API', () => {
     describe('requestSessionChoice', () => {
         it('should request session to join from client', (done) => {
             let availableSessions = ['Session 1', 'Session2', 'Session 3'],
-                sessionChoice = 'sessionChoice',
                 sessionName = 'sessionName',
                 chooseSession = {
-                    type: messages.MessageType.CHOOSE_SESSION,
+                    type: MessageType.CHOOSE_SESSION.name,
                     data: {
-                        sessionChoice,
+                        sessionChoice: SessionChoice.CREATE_NEW,
                         sessionName
                     }
                 };
@@ -411,7 +437,7 @@ describe('Client API', () => {
                 clientApi.addClient(client);
 
                 clientApi.requestSessionChoice(client, availableSessions).then((data) => {
-                    expect(data.sessionChoice).to.equal(sessionChoice);
+                    expect(data.sessionChoice).to.equal(SessionChoice.CREATE_NEW);
                     expect(data.sessionName).to.equal(sessionName);
                     done();
                 }).catch(done);
@@ -423,7 +449,7 @@ describe('Client API', () => {
                 client.on('message', (message) => {
                     message = JSON.parse(message);
 
-                    expect(message.type).to.equal(messages.MessageType.REQUEST_SESSION_CHOICE);
+                    expect(message.type).to.equal(MessageType.REQUEST_SESSION_CHOICE.name);
                     expect(message.data).to.eql(availableSessions);
                     client.send(JSON.stringify(chooseSession));
                 });
@@ -494,7 +520,7 @@ describe('Client API', () => {
                     client.on('message', (message) => {
                         message = JSON.parse(message);
 
-                        expect(message.type).to.equal(messages.MessageType.BROADCAST_SESSION_JOINED);
+                        expect(message.type).to.equal(MessageType.BROADCAST_SESSION_JOINED.name);
                         expect(message.data).to.eql(sessionJoinedMessage);
 
                         resolve();

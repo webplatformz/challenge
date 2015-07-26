@@ -55,6 +55,7 @@ describe('sessionHandler', () => {
 
         it('should setup sessionkeepalive and create random Session name and add player', (done) => {
             let pingSpy = sinon.spy(webSocket, 'ping');
+            webSocket.readyState = 1;
             clientApiMock.expects('requestPlayerName').once().returns(Promise.resolve('playerName'));
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({}));
 
