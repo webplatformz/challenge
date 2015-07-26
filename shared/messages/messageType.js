@@ -1,5 +1,9 @@
 'use strict';
 
+let SessionChoice = require('../game/sessionChoice'),
+    GameMode = require('../../server/game/gameMode'),
+    CardColor = require('../deck/card').CardColor;
+
 module.exports = {
     REQUEST_PLAYER_NAME: {
         name: 'REQUEST_PLAYER_NAME'
@@ -7,7 +11,10 @@ module.exports = {
     CHOOSE_PLAYER_NAME: {
         name: 'CHOOSE_PLAYER_NAME',
         constraints: {
-            data: {
+            'type': {
+                presence: true
+            },
+            'data': {
                 presence: true,
                 length: {
                     minimum: 1
@@ -25,7 +32,23 @@ module.exports = {
         name: 'REQUEST_TRUMPF'
     },
     CHOOSE_TRUMPF: {
-        name: 'CHOOSE_TRUMPF'
+        name: 'CHOOSE_TRUMPF',
+        constraints: {
+            'type': {
+                presence: true
+            },
+            'data.mode': {
+                presence: true,
+                inclusion: {
+                    within: GameMode
+                }
+            },
+            'data.trumpfColor': {
+                inclusion: {
+                    within: CardColor
+                }
+            }
+        }
     },
     REJECT_TRUMPF: {
         name: 'REJECT_TRUMPF'
@@ -49,7 +72,24 @@ module.exports = {
         name: 'REQUEST_CARD'
     },
     CHOOSE_CARD: {
-        name: 'CHOOSE_CARD'
+        name: 'CHOOSE_CARD',
+        constraints: {
+            'type': {
+                presence: true
+            },
+            'data.number': {
+                presence: true,
+                inclusion: {
+                    within: [6,7,8,9,10,11,12,13,14]
+                }
+            },
+            'data.color': {
+                presence: true,
+                inclusion: {
+                    within: CardColor
+                }
+            }
+        }
     },
     REJECT_CARD: {
         name: 'REJECT_CARD'
@@ -58,7 +98,23 @@ module.exports = {
         name: 'REQUEST_SESSION_CHOICE'
     },
     CHOOSE_SESSION: {
-        name: 'CHOOSE_SESSION'
+        name: 'CHOOSE_SESSION',
+        constraints: {
+            'type': {
+                presence: true
+            },
+            'data.sessionChoice': {
+                presence: true,
+                inclusion: {
+                    within: SessionChoice
+                }
+            },
+            'data.sessionName': {
+                length: {
+                    minimum: 1
+                }
+            }
+        }
     },
     BROADCAST_SESSION_JOINED: {
         name: 'BROADCAST_SESSION_JOINED'
