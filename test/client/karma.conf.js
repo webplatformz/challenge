@@ -6,6 +6,8 @@ module.exports = function(config) {
 
         frameworks: ['browserify', 'mocha'],
 
+        reporters: ['mocha'],
+
         preprocessors: {
             'build/test/client/**/*.js': ['browserify']
         },
@@ -15,7 +17,8 @@ module.exports = function(config) {
         plugins: [
             'karma-mocha',
             'karma-phantomjs-launcher',
-            'karma-bro'
+            'karma-bro',
+            'karma-mocha-reporter'
         ]
     });
 };
