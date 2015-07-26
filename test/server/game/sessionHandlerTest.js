@@ -17,7 +17,7 @@ describe('sessionHandler', () => {
 
         let clientApiMock,
             jassSessionFactoryMock,
-            webSocket = 'webSocket',
+            webSocket,
             sessionName = 'sessionName',
             session,
             sessionMock;
@@ -40,6 +40,10 @@ describe('sessionHandler', () => {
                 }
             };
             sessionMock = sinon.mock(session);
+            webSocket = {
+                ping: () => {
+                }
+            };
         });
 
         afterEach(() => {
@@ -49,7 +53,8 @@ describe('sessionHandler', () => {
             sessionHandler.resetInstance();
         });
 
-        it('should create random Session name and add player', (done) => {
+        it('should setup sessionkeepalive and create random Session name and add player', (done) => {
+            let pingSpy = sinon.spy(webSocket, 'ping');
             clientApiMock.expects('requestPlayerName').once().returns(Promise.resolve('playerName'));
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({}));
 
@@ -58,6 +63,8 @@ describe('sessionHandler', () => {
             sessionMock.expects('isComplete').once().returns(false);
 
             let promise = sessionHandler.handleClientConnection(webSocket);
+
+            expect(pingSpy.calledOnce).to.equal(true);
 
             promise.then(() => {
                 clientApiMock.verify();

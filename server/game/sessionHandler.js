@@ -54,6 +54,11 @@ function removeSession(sessions, session) {
     sessions.splice(index, 1);
 }
 
+function keepSessionAlive(webSocket, intervall) {
+    webSocket.ping();
+    setTimeout(keepSessionAlive.bind(null, webSocket, intervall), intervall);
+}
+
 let SessionHandler = {
 
     sessions: [],
@@ -67,6 +72,8 @@ let SessionHandler = {
     },
 
     handleClientConnection: function handleClientConnection(ws) {
+        keepSessionAlive(ws, 30000);
+
         return clientApi.requestPlayerName(ws).then((playerName) => {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
                 let session = createOrJoinSession(this.sessions, sessionChoiceResponse);
