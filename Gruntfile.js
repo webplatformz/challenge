@@ -64,6 +64,13 @@ module.exports = function (grunt) {
                 }
             }
         },
+        less: {
+            development: {
+                files: {
+                    './build/client/styles/main.css': './client/styles/main.less'
+                }
+            }
+        },
         'jshint-jsx': {
             options: {
                 jshintrc: true,
@@ -124,12 +131,16 @@ module.exports = function (grunt) {
                 files: ['./client/**/*.html', './client/images/**/*', './client/**/*.css'],
                 tasks: ['sync']
             },
+            less: {
+                files: ['./client/styles/**/*.less'],
+                tasks: ['less']
+            },
             babel: {
                 files: ['./server/**/*.js', './shared/**/*.js', './test/**/*.js', './server.js'],
                 tasks: ['jshint-jsx', 'babel']
             },
             browserify: {
-                files: ['./client/**/*.js', './shared/**/*.js'],
+                files: ['./client/**/*.js', './client/**/*.jsx', './shared/**/*.js'],
                 tasks: ['jshint-jsx', 'browserify']
             },
             serverTests: {
@@ -176,6 +187,6 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['build', 'concurrent:dev']);
 
     // start server
-    grunt.registerTask('build', ['jshint-jsx', 'clean', 'babel', 'browserify', 'sync']);
+    grunt.registerTask('build', ['jshint-jsx', 'clean', 'babel', 'browserify', 'less', 'sync']);
 
 };

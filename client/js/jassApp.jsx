@@ -2,11 +2,11 @@
 
 let React = require('react');
 
-module.exports = React.createClass({
+let JassApp = React.createClass({
     render: function() {
         return (
-            <div>
-                asdf
+            <div id="title">
+                <span>Jass Challenge</span>
             </div>
         );
     }
