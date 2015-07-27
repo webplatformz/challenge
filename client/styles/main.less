@@ -20,5 +20,12 @@ body {
 
     border: 1px solid @white;
     border-radius: 10px;
+    outline: none;
+    -webkit-appearance: none;
+
+    &:focus {
+      -webkit-box-shadow: 0 0 10px @white;
+      box-shadow: 0 0 10px @white;
+    }
   }
 }

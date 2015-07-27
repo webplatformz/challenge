@@ -3,13 +3,21 @@
 const serverAddress = 'ws://' + window.location.host;
 
 let JassAppDispatcher = require('../jassAppDispatcher');
+let JassAppConstants = require('../jassAppConstants');
 let JassActions = require('../jassActions');
-let webSocket = new WebSocket(serverAddress);
+let messages = require('../../../shared/messages/messages');
 let MessageType = require('../../../shared/messages/messageType');
+
+let webSocket = new WebSocket(serverAddress);
+
+function sendJSONMessageToClient(messageType, ...data) {
+    webSocket.send(JSON.stringify(messages.create(messageType, ...data)));
+}
 
 let ServerApi = {
     handleMessageFromServer: (messageEvent) => {
-        var message = JSON.parse(messageEvent.data);
+        let message = JSON.parse(messageEvent.data);
+
         switch(message.type) {
             case MessageType.REQUEST_PLAYER_NAME.name:
                 JassActions.requestPlayerName();
@@ -19,7 +27,15 @@ let ServerApi = {
         }
     },
     handleActionsFromUi: (payload) => {
-        console.log(payload);
+        let action = payload.action;
+
+        switch(action.actionType) {
+            case JassAppConstants.CHOOSE_PLAYER_NAME:
+                sendJSONMessageToClient(MessageType.CHOOSE_PLAYER_NAME.name, action.data);
+                break;
+            default:
+                console.log(action);
+        }
     }
 };
 
