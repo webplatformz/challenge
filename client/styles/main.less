@@ -1,5 +1,4 @@
-@white: #fff;
-@blue-main: #3498db;
+@import './variables/colors';
 
 html, body {
   min-height: 100%;
@@ -9,15 +8,17 @@ body {
   background-color: @blue-main;
 }
 
-#title {
-  margin-top: 60px;
-
-  color: @white;
-  font-size: 32pt;
+#requestPlayerName {
+  margin-top: 100px;
   text-align: center;
 
-  span {
+  input {
     padding: 20px;
+
+    font-size: 32pt;
+    color: @grey;
+
     border: 1px solid @white;
+    border-radius: 10px;
   }
 }

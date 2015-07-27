@@ -1,14 +1,11 @@
 'use strict';
 
 let React = require('react');
+let RequestPlayerName = require('./gameSetup/requestPlayerName.jsx');
 
 let JassApp = React.createClass({
     render: function() {
-        return (
-            <div id="title">
-                <span>Jass Challenge</span>
-            </div>
-        );
+        return (<RequestPlayerName />);
     }
 });
 
