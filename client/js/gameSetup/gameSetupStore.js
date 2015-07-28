@@ -38,6 +38,11 @@ JassAppDispatcher.register(function (payload){
             GameSetupStore.state.status = GameSetupState.SET_PLAYER_NAME;
             GameSetupStore.emitChange();
             break;
+        case JassAppConstants.REQUEST_SESSION_CHOICE:
+            GameSetupStore.state.status = GameSetupState.CHOOSE_SESSION;
+            GameSetupStore.state.sessions = action.data;
+            GameSetupStore.emitChange();
+            break;
         default:
             console.log(action);
     }

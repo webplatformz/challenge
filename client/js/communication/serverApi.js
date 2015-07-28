@@ -22,6 +22,9 @@ let ServerApi = {
             case MessageType.REQUEST_PLAYER_NAME.name:
                 JassActions.requestPlayerName();
                 break;
+            case MessageType.REQUEST_SESSION_CHOICE.name:
+                JassActions.requestSessionChoice(message.data);
+                break;
             default:
                 console.log(message);
         }

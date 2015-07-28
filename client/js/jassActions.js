@@ -15,5 +15,12 @@ module.exports = {
             actionType: JassAppConstants.CHOOSE_PLAYER_NAME,
             data: playerName
         });
+    },
+
+    requestSessionChoice: (availableSessions) => {
+        JassAppDispatcher.handleServerAction({
+            actionType:JassAppConstants.REQUEST_SESSION_CHOICE,
+            data: availableSessions
+        });
     }
 };
