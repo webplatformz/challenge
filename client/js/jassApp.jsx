@@ -1,11 +1,14 @@
 'use strict';
 
-let React = require('react');
-let RequestPlayerName = require('./gameSetup/requestPlayerName.jsx');
+let React = require('react'),
+    GameSetup = require('./gameSetup/gameSetup.jsx'),
+    serverApi = require('./communication/serverApi');
 
 let JassApp = React.createClass({
     render: function() {
-        return (<RequestPlayerName />);
+        return (
+            <GameSetup />
+        );
     }
 });
 

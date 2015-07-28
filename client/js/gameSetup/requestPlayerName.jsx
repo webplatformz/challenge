@@ -17,7 +17,7 @@ module.exports = React.createClass({
 
     render: function () {
         return (
-            <div id="requestPlayerName">
+            <div id="requestPlayerName" className={(this.props.setupState === GameSetupStore.GameSetupState.SET_PLAYER_NAME ? '' : 'hidden')}>
                 <input placeholder="Enter Player Name..." onKeyPress={this.choosePlayerName}></input>
             </div>
         )

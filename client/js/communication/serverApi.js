@@ -27,14 +27,16 @@ let ServerApi = {
         }
     },
     handleActionsFromUi: (payload) => {
-        let action = payload.action;
+        if (payload.source === 'VIEW_ACTION') {
+            let action = payload.action;
 
-        switch(action.actionType) {
-            case JassAppConstants.CHOOSE_PLAYER_NAME:
-                sendJSONMessageToClient(MessageType.CHOOSE_PLAYER_NAME.name, action.data);
-                break;
-            default:
-                console.log(action);
+            switch (action.actionType) {
+                case JassAppConstants.CHOOSE_PLAYER_NAME:
+                    sendJSONMessageToClient(MessageType.CHOOSE_PLAYER_NAME.name, action.data);
+                    break;
+                default:
+                    console.log(action);
+            }
         }
     }
 };

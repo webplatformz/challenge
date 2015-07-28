@@ -1,31 +1,41 @@
 @import './variables/colors';
 
 html, body {
+  margin: 0;
+  padding: 0;
   min-height: 100%;
 }
 
-body {
-  background-color: @blue-main;
-}
-
-#requestPlayerName {
-  margin-top: 100px;
+#gameSetup {
+  min-height: 100%;
+  padding-top: 100px;
   text-align: center;
+  background-color: @blue-main;
 
-  input {
-    padding: 20px;
+  .hidden {
+    display: none;
+  }
 
-    font-size: 32pt;
-    color: @grey;
+  #connecting {
+    color: @white;
+  }
 
-    border: 1px solid @white;
-    border-radius: 10px;
-    outline: none;
-    -webkit-appearance: none;
+  #requestPlayerName {
+    input {
+      padding: 20px;
 
-    &:focus {
-      -webkit-box-shadow: 0 0 10px @white;
-      box-shadow: 0 0 10px @white;
+      font-size: 32pt;
+      color: @grey;
+
+      border: 1px solid @white;
+      border-radius: 10px;
+      outline: none;
+      -webkit-appearance: none;
+
+      &:focus {
+        -webkit-box-shadow: 0 0 10px @white;
+        box-shadow: 0 0 10px @white;
+      }
     }
   }
 }
