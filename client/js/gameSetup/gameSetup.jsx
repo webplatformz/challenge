@@ -6,6 +6,12 @@ let React = require('react'),
     ChooseSession = require('./chooseSession.jsx'),
     GameSetupStore = require('./gameSetupStore');
 
+function getSetupStateClassName(setupState) {
+    if (setupState.status === GameSetupStore.GameSetupState.FINISHED) {
+        return 'finished';
+    }
+}
+
 module.exports = React.createClass({
 
     handleGameSetupState: function () {
@@ -24,10 +30,10 @@ module.exports = React.createClass({
         this.state = GameSetupStore.state;
 
         return (
-            <div id="gameSetup">
+            <div id="gameSetup" className={getSetupStateClassName(this.state)}>
                 <Connecting setupState={this.state.status} />
                 <RequestPlayerName setupState={this.state.status} />
-                <ChooseSession setupState={this.state.status} />
+                <ChooseSession setupState={this.state} />
             </div>
         );
     }

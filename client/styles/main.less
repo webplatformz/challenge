@@ -1,4 +1,5 @@
-@import './variables/colors';
+@import './imports/colors';
+@import './imports/typography';
 
 html, body {
   margin: 0;
@@ -6,36 +7,4 @@ html, body {
   min-height: 100%;
 }
 
-#gameSetup {
-  min-height: 100%;
-  padding-top: 100px;
-  text-align: center;
-  background-color: @blue-main;
-
-  .hidden {
-    display: none;
-  }
-
-  #connecting {
-    color: @white;
-  }
-
-  #requestPlayerName {
-    input {
-      padding: 20px;
-
-      font-size: 32pt;
-      color: @grey;
-
-      border: 1px solid @white;
-      border-radius: 10px;
-      outline: none;
-      -webkit-appearance: none;
-
-      &:focus {
-        -webkit-box-shadow: 0 0 10px @white;
-        box-shadow: 0 0 10px @white;
-      }
-    }
-  }
-}
+@import './gameSetup';

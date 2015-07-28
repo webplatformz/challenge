@@ -1,0 +1,45 @@
+#gameSetup {
+  min-height: 100%;
+  padding-top: 100px;
+  text-align: center;
+  background-color: @blue-main;
+  color: @white;
+
+  transition: transform .5s ease-out;
+  -webkit-transition: -webkit-transform .5s ease-out;
+
+  .hidden {
+    display: none;
+  }
+
+  #connecting {
+    color: @white;
+  }
+
+  #requestPlayerName {
+    input {
+      padding: 20px;
+
+      font-size: 32pt;
+      color: @grey;
+
+      border: 1px solid @white;
+      border-radius: 10px;
+      outline: none;
+      -webkit-appearance: none;
+
+      &:focus {
+        -webkit-box-shadow: 0 0 10px @white;
+        box-shadow: 0 0 10px @white;
+      }
+    }
+  }
+
+  #chooseSession {
+
+  }
+
+  &.finished {
+    transform: translateY(-100%);
+  }
+}

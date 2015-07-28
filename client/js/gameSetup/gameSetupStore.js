@@ -7,7 +7,8 @@ let EventEmitter = require('events').EventEmitter,
 let GameSetupState = {
     CONNECTING: 'CONNECTING',
     SET_PLAYER_NAME: 'SET_PLAYER_NAME',
-    CHOOSE_SESSION: 'CHOOSE_SESSION'
+    CHOOSE_SESSION: 'CHOOSE_SESSION',
+    FINISHED: 'FINISHED'
 };
 
 let GameSetupStore = Object.create(EventEmitter.prototype);
@@ -43,8 +44,6 @@ JassAppDispatcher.register(function (payload){
             GameSetupStore.state.sessions = action.data;
             GameSetupStore.emitChange();
             break;
-        default:
-            console.log(action);
     }
 });
 
