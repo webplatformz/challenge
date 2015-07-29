@@ -31,7 +31,7 @@ module.exports = React.createClass({
                     <div>
                         <select name="existingSession" disabled={!this.hasSessions()}>
                             {sessions.map(function(session) {
-                                return <li value={session}>{session}</li>;
+                                return <option key={session}>{session}</option>;
                             })}
                         </select>
                         <button type="button" name="joinExisting" onClick={this.joinExistingSession} disabled={!this.hasSessions()}>
