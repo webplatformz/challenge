@@ -1,4 +1,4 @@
-'uset strict';
+'use strict';
 
 let React = require('react'),
     GameSetupStore = require('./gameSetupStore');

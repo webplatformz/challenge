@@ -7,4 +7,30 @@ html, body {
   min-height: 100%;
 }
 
+#errorToast {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  background-color: @red;
+  text-align: center;
+  font-size: 14pt;
+
+  padding: 20px;
+
+  transition: transform .2s ease;
+  -webkit-transition: -webkit-transform .2s ease;
+
+  &.out {
+    transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+  }
+
+  &.in {
+    transform: translateY(0%);
+    -webkit-transform: translateY(0%);
+  }
+}
+
 @import './gameSetup';

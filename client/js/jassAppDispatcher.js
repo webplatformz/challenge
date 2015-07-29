@@ -18,4 +18,11 @@ JassAppDispatcher.handleServerAction = function(action) {
     });
 };
 
+JassAppDispatcher.throwErrorAction = function(action) {
+    this.dispatch({
+        source: 'UNKNOWN',
+        action: action
+    });
+};
+
 module.exports = JassAppDispatcher;

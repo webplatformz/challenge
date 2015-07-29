@@ -3,6 +3,8 @@
 let keyMirror = require('react/lib/keyMirror');
 
 module.exports = keyMirror({
+    ERROR: null,
+    BAD_MESSAGE: null,
     REQUEST_PLAYER_NAME: null,
     CHOOSE_PLAYER_NAME: null,
     REQUEST_SESSION_CHOICE: null,

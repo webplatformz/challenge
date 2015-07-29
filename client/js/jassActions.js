@@ -4,6 +4,13 @@ let JassAppConstants = require('./jassAppConstants'),
     JassAppDispatcher = require('./jassAppDispatcher');
 
 module.exports = {
+    throwError: (error) => {
+        JassAppDispatcher.throwErrorAction({
+            actionType: JassAppConstants.ERROR,
+            data: error
+        });
+    },
+
     requestPlayerName: () => {
         JassAppDispatcher.handleServerAction({
             actionType: JassAppConstants.REQUEST_PLAYER_NAME

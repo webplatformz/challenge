@@ -9,7 +9,12 @@ let messages = require('../../../shared/messages/messages');
 let MessageType = require('../../../shared/messages/messageType');
 let SessionChoice = require('../../../shared/game/sessionChoice');
 
-let webSocket = new WebSocket(serverAddress);
+let webSocket;
+try {
+    webSocket = new WebSocket(serverAddress);
+} catch(e) {
+    JassActions.throwError(e);
+}
 
 function sendJSONMessageToClient(messageType, ...data) {
     webSocket.send(JSON.stringify(messages.create(messageType, ...data)));
@@ -20,6 +25,9 @@ let ServerApi = {
         let message = JSON.parse(messageEvent.data);
 
         switch(message.type) {
+            case MessageType.BAD_MESSAGE:
+                JassActions.throwError(message.data);
+                break;
             case MessageType.REQUEST_PLAYER_NAME.name:
                 JassActions.requestPlayerName();
                 break;

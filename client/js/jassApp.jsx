@@ -1,15 +1,35 @@
 'use strict';
 
 let React = require('react'),
+    JassAppStore = require('./jassAppStore'),
+    ErrorToast = require('./error/errorToast.jsx'),
     GameSetup = require('./gameSetup/gameSetup.jsx'),
     serverApi = require('./communication/serverApi');
 
 let JassApp = React.createClass({
+
+    handleGameSetupState: function () {
+        this.setState(JassAppStore.state);
+    },
+
+    componentDidMount: function () {
+        JassAppStore.addChangeListener(this.handleGameSetupState);
+    },
+
+    componentWillUnmount: function () {
+        JassAppStore.removeChangeListener(this.handleGameSetupState);
+    },
+
     render: function() {
+        this.state = this.state || {};
+
         return (
-            <GameSetup />
+            <main>
+                <ErrorToast error={this.state.error} />
+                <GameSetup />
+            </main>
         );
     }
 });
 
-React.render(<JassApp />, document.getElementById('jassApp'));
+React.render(<JassApp />, document.getElementsByTagName('body')[0]);
