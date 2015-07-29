@@ -29,12 +29,12 @@ module.exports = React.createClass({
                 <div>
                     <ul className={(!this.hasSessions) ? 'hidden' : ''}>
                         {sessions.map(function(session) {
-                            return <li key={session} onClick={this.joinExistingSession(session)}>{session}</li>;
-                        })}
+                            return <li key={session} onClick={this.joinExistingSession.bind(null, session)}>{session}</li>;
+                        }.bind(this))}
                     </ul>
                 </div>
                 <div>
-                    <input type="text" name="createNewSession"></input>
+                    <input type="text" name="createNewSession" placeholder="New Sessionname"></input>
                     <button type="button" name="createNewSession" onClick={this.createNewSession}>Create New Session</button>
                 </div>
                 <div>
