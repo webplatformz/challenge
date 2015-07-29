@@ -22,27 +22,17 @@
     color: @white;
   }
 
-  #requestPlayerName {
-    input {
-      padding: 20px;
+  #chooseSession {
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      margin-bottom: 20px;
 
-      font-size: 32pt;
-      color: @grey;
-
-      border: 1px solid @white;
-      border-radius: 10px;
-      outline: none;
-      -webkit-appearance: none;
-
-      &:focus {
-        -webkit-box-shadow: 0 0 10px @white;
-        box-shadow: 0 0 10px @white;
+      li {
+        padding: 10px;
       }
     }
-  }
-
-  #chooseSession {
-
   }
 
   &.finished {
