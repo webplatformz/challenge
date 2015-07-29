@@ -19,14 +19,14 @@ JassAppStore.addChangeListener = function(callback) {
 };
 
 JassAppStore.removeChangeListener = function(callback) {
-    this.on('removeListener', callback);
+    this.removeListener('change', callback);
 };
 
 JassAppDispatcher.register(function (payload){
     let action = payload.action;
 
     switch(action.actionType) {
-        case JassAppConstants.BAD_MESSAGE:
+        case JassAppConstants.ERROR:
             JassAppStore.state.error = action.data;
             JassAppStore.emitChange();
             break;

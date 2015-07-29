@@ -28,7 +28,7 @@ GameSetupStore.addChangeListener = function(callback) {
 };
 
 GameSetupStore.removeChangeListener = function(callback) {
-    this.on('removeListener', callback);
+    this.removeListener('change', callback);
 };
 
 JassAppDispatcher.register(function (payload){

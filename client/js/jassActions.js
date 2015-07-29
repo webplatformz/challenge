@@ -4,10 +4,11 @@ let JassAppConstants = require('./jassAppConstants'),
     JassAppDispatcher = require('./jassAppDispatcher');
 
 module.exports = {
-    throwError: (error) => {
+    throwError: (source, error) => {
         JassAppDispatcher.throwErrorAction({
             actionType: JassAppConstants.ERROR,
-            data: error
+            data: error,
+            source: source
         });
     },
 

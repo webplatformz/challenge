@@ -8,16 +8,16 @@ let React = require('react'),
 
 let JassApp = React.createClass({
 
-    handleGameSetupState: function () {
+    handleJassAppState: function () {
         this.setState(JassAppStore.state);
     },
 
     componentDidMount: function () {
-        JassAppStore.addChangeListener(this.handleGameSetupState);
+        JassAppStore.addChangeListener(this.handleJassAppState);
     },
 
     componentWillUnmount: function () {
-        JassAppStore.removeChangeListener(this.handleGameSetupState);
+        JassAppStore.removeChangeListener(this.handleJassAppState);
     },
 
     render: function() {

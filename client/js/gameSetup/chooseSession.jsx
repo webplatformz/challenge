@@ -10,9 +10,8 @@ module.exports = React.createClass({
         return this.props.setupState.sessions && this.props.setupState.sessions.length;
     },
 
-    joinExistingSession: function() {
-        let sessionChoice = document.querySelector('select[name=existingSession]').value;
-        JassActions.joinExistingSession(sessionChoice);
+    joinExistingSession: function(sessionName) {
+        JassActions.joinExistingSession(sessionName);
     },
 
     createNewSession: function() {
@@ -27,25 +26,20 @@ module.exports = React.createClass({
         return (
             <div id="chooseSession" className={(status !== GameSetupStore.GameSetupState.CHOOSE_SESSION ? 'hidden' : '')}>
                 <h1 className="jumbotron">Choose Session</h1>
-                <form>
-                    <div>
-                        <select name="existingSession" disabled={!this.hasSessions()}>
-                            {sessions.map(function(session) {
-                                return <option key={session}>{session}</option>;
-                            })}
-                        </select>
-                        <button type="button" name="joinExisting" onClick={this.joinExistingSession} disabled={!this.hasSessions()}>
-                            Join Existing Session
-                        </button>
-                    </div>
-                    <div>
-                        <input type="text" name="createNewSession"></input>
-                        <button type="button" name="createNewSession" onClick={this.createNewSession}>Create New Session</button>
-                    </div>
-                    <div>
-                        <button type="button" name="autoJoin" onClick={JassActions.autojoinSession}>Join first possible Session</button>
-                    </div>
-                </form>
+                <div>
+                    <ul className={(!this.hasSessions) ? 'hidden' : ''}>
+                        {sessions.map(function(session) {
+                            return <li key={session} onClick={this.joinExistingSession(session)}>{session}</li>;
+                        })}
+                    </ul>
+                </div>
+                <div>
+                    <input type="text" name="createNewSession"></input>
+                    <button type="button" name="createNewSession" onClick={this.createNewSession}>Create New Session</button>
+                </div>
+                <div>
+                    <button type="button" name="autoJoin" onClick={JassActions.autojoinSession}>Join first possible Session</button>
+                </div>
             </div>
         )
     }

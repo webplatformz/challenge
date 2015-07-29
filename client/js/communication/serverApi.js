@@ -2,19 +2,14 @@
 
 const serverAddress = 'ws://' + window.location.host;
 
-let JassAppDispatcher = require('../jassAppDispatcher');
-let JassAppConstants = require('../jassAppConstants');
-let JassActions = require('../jassActions');
-let messages = require('../../../shared/messages/messages');
-let MessageType = require('../../../shared/messages/messageType');
-let SessionChoice = require('../../../shared/game/sessionChoice');
+let JassAppDispatcher = require('../jassAppDispatcher'),
+    JassAppConstants = require('../jassAppConstants'),
+    JassActions = require('../jassActions'),
+    messages = require('../../../shared/messages/messages'),
+    MessageType = require('../../../shared/messages/messageType'),
+    SessionChoice = require('../../../shared/game/sessionChoice');
 
-let webSocket;
-try {
-    webSocket = new WebSocket(serverAddress);
-} catch(e) {
-    JassActions.throwError(e);
-}
+let webSocket = new WebSocket(serverAddress);
 
 function sendJSONMessageToClient(messageType, ...data) {
     webSocket.send(JSON.stringify(messages.create(messageType, ...data)));
@@ -26,7 +21,7 @@ let ServerApi = {
 
         switch(message.type) {
             case MessageType.BAD_MESSAGE:
-                JassActions.throwError(message.data);
+                JassActions.throwError('SERVER', message.data);
                 break;
             case MessageType.REQUEST_PLAYER_NAME.name:
                 JassActions.requestPlayerName();
@@ -62,10 +57,14 @@ let ServerApi = {
                     console.log(action);
             }
         }
+    },
+    handleErrorFromServer: () => {
+        JassActions.throwError('WEBSOCKET', 'The connection to the server has been lost!');
     }
 };
 
 webSocket.onmessage = ServerApi.handleMessageFromServer;
+webSocket.onerror = ServerApi.handleErrorFromServer;
 JassAppDispatcher.register(ServerApi.handleActionsFromUi);
 
 module.exports = ServerApi;
