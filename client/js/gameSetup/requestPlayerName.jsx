@@ -9,7 +9,7 @@ module.exports = React.createClass({
         let inputElement = event.target,
             playerName = inputElement.value;
 
-        if (event.charCode === 13 && playerName) {
+        if (event.charCode === 13 && playerName && playerName.trim()) {
             inputElement.disabled = true;
             JassActions.choosePlayerName(playerName);
         }

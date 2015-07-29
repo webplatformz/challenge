@@ -7,6 +7,7 @@ let JassAppConstants = require('../jassAppConstants');
 let JassActions = require('../jassActions');
 let messages = require('../../../shared/messages/messages');
 let MessageType = require('../../../shared/messages/messageType');
+let SessionChoice = require('../../../shared/game/sessionChoice');
 
 let webSocket = new WebSocket(serverAddress);
 
@@ -25,6 +26,9 @@ let ServerApi = {
             case MessageType.REQUEST_SESSION_CHOICE.name:
                 JassActions.requestSessionChoice(message.data);
                 break;
+            case MessageType.BROADCAST_SESSION_JOINED.name:
+                JassActions.sessionJoined(message.data);
+                break;
             default:
                 console.log(message);
         }
@@ -36,6 +40,15 @@ let ServerApi = {
             switch (action.actionType) {
                 case JassAppConstants.CHOOSE_PLAYER_NAME:
                     sendJSONMessageToClient(MessageType.CHOOSE_PLAYER_NAME.name, action.data);
+                    break;
+                case JassAppConstants.CHOOSE_EXISTING_SESSION:
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, action.data);
+                    break;
+                case JassAppConstants.CREATE_NEW_SESSION:
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, action.data);
+                    break;
+                case JassAppConstants.AUTOJOIN_SESSION:
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN);
                     break;
                 default:
                     console.log(action);

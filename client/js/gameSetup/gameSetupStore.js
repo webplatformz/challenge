@@ -44,6 +44,10 @@ JassAppDispatcher.register(function (payload){
             GameSetupStore.state.sessions = action.data;
             GameSetupStore.emitChange();
             break;
+        case JassAppConstants.SESSION_JOINED:
+            GameSetupStore.state.status = GameSetupState.FINISHED;
+            GameSetupStore.emitChange();
+            break;
     }
 });
 
