@@ -15,8 +15,13 @@ module.exports = React.createClass({
     },
 
     createNewSession: function() {
-        let sessionName = document.querySelector('input[name=createNewSession]').value;
-        JassActions.createNewSession(sessionName);
+        let inputElement = event.target,
+            sessionName = inputElement.value;
+
+        if (event.charCode === 13 && sessionName.trim()) {
+            inputElement.disabled = true;
+            JassActions.createNewSession(sessionName);
+        }
     },
 
     render: function () {
@@ -26,19 +31,21 @@ module.exports = React.createClass({
         return (
             <div id="chooseSession" className={(status !== GameSetupStore.GameSetupState.CHOOSE_SESSION ? 'hidden' : '')}>
                 <h1 className="jumbotron">Choose Session</h1>
-                <div>
-                    <ul className={(!this.hasSessions) ? 'hidden' : ''}>
+                <div className="session-choice">
+                    <ul className={(!this.hasSessions()) ? 'hidden' : ''}>
                         {sessions.map(function(session) {
-                            return <li key={session} onClick={this.joinExistingSession.bind(null, session)}>{session}</li>;
+                            return (
+                                <li key={session}>
+                                    <span  onClick={this.joinExistingSession.bind(null, session)}>{session}</span>
+                                </li>);
                         }.bind(this))}
                     </ul>
                 </div>
-                <div>
-                    <input type="text" name="createNewSession" placeholder="New Sessionname"></input>
-                    <button type="button" name="createNewSession" onClick={this.createNewSession}>Create New Session</button>
+                <div className="session-choice">
+                    <input type="text" name="createNewSession" placeholder="New Sessionname" onKeyPress={this.createNewSession}></input>
                 </div>
-                <div>
-                    <button type="button" name="autoJoin" onClick={JassActions.autojoinSession}>Join first possible Session</button>
+                <div className="session-choice">
+                    <button type="button" name="autoJoin" onClick={JassActions.autojoinSession}>Just Join!</button>
                 </div>
             </div>
         )
