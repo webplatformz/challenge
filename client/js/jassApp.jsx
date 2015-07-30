@@ -4,6 +4,7 @@ let React = require('react'),
     JassAppStore = require('./jassAppStore'),
     ErrorToast = require('./error/errorToast.jsx'),
     GameSetup = require('./gameSetup/gameSetup.jsx'),
+    JassTable = require('./game/jassTable.jsx'),
     serverApi = require('./communication/serverApi');
 
 let JassApp = React.createClass({
@@ -27,6 +28,7 @@ let JassApp = React.createClass({
             <main>
                 <ErrorToast error={this.state.error} />
                 <GameSetup />
+                <JassTable />
             </main>
         );
     }
