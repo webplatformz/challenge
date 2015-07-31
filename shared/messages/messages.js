@@ -125,12 +125,13 @@ function createChooseSession(sessionChoice, sessionName) {
     };
 }
 
-function createBroadcastSessionJoined(name, id) {
+function createBroadcastSessionJoined(sessionName, player, playersInSession) {
     return {
         type: MessageType.BROADCAST_SESSION_JOINED.name,
         data: {
-            name,
-            id
+            sessionName,
+            player,
+            playersInSession
         }
     };
 }

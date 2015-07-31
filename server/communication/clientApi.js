@@ -94,8 +94,8 @@ let ClientApi = {
             availableSessions);
     },
 
-    broadcastSessionJoined: function broadcastSessionJoined(name, id) {
-        clientCommunication.broadcast(this.clients, MessageType.BROADCAST_SESSION_JOINED.name, name, id);
+    broadcastSessionJoined: function broadcastSessionJoined(sessionName, player, playersInSession) {
+        clientCommunication.broadcast(this.clients, MessageType.BROADCAST_SESSION_JOINED.name, sessionName, player, playersInSession);
     },
 
     closeAll: function closeAll(code, message) {
