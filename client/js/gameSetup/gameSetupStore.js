@@ -48,6 +48,10 @@ JassAppDispatcher.register(function (payload){
             GameSetupStore.state.status = GameSetupState.FINISHED;
             GameSetupStore.emitChange();
             break;
+        case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
+            GameSetupStore.state.status = GameSetupState.FINISHED;
+            GameSetupStore.emitChange();
+            break;
     }
 });
 
