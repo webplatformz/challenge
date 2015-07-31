@@ -14,6 +14,10 @@ module.exports = React.createClass({
         JassActions.joinExistingSession(sessionName);
     },
 
+    joinExistingSessionAsSpectator: function(sessionName) {
+        JassActions.joinExistingSessionAsSpectator(sessionName);
+    },
+
     createNewSession: function() {
         let inputElement = event.target,
             sessionName = inputElement.value;
@@ -36,7 +40,8 @@ module.exports = React.createClass({
                         {sessions.map(function(session) {
                             return (
                                 <li key={session}>
-                                    <span  onClick={this.joinExistingSession.bind(null, session)}>{session}</span>
+                                    <div onClick={this.joinExistingSession.bind(null, session)}>{session}</div>
+                                    <div  onClick={this.joinExistingSessionAsSpectator.bind(null, session)}>S</div>
                                 </li>);
                         }.bind(this))}
                     </ul>

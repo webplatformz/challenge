@@ -38,34 +38,62 @@
       border: 1px solid @grey;
       border-radius: 10px;
 
-      li:first-child span {
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
+      li:first-child {
+        div:first-child {
+          border-top-left-radius: 10px;
+        }
+
+        div:last-child {
+          border-top-right-radius: 10px;
+        }
       }
 
-      li:last-child span {
-        border-bottom-right-radius: 10px;
-        border-bottom-left-radius: 10px;
+      li:last-child {
+        div:first-child {
+          border-bottom-left-radius: 10px;
+        }
+
+        div:last-child {
+          border-bottom-right-radius: 10px;
+        }
       }
 
       li:not(:first-child) span {
         border-top: 1px solid @grey;
       }
 
-      li span {
-        display: inline-block;
-        width: 100%;
-        padding: 20px;
-        font-size: 32pt;
-
-        background-color: @white;
-        color: @grey;
-
-        cursor: pointer;
+      li {
+        display: flex;
 
         &:hover {
-          background-color: @light-grey;
-          color: @white;
+          cursor: pointer;
+        }
+
+        div:first-child {
+          flex-grow: 2;
+          padding: 20px;
+          background-color: @white;
+          color: @grey;
+          font-size: 32pt;
+
+          &:hover {
+            background-color: @light-grey;
+            color: @white;
+          }
+        }
+
+        div:last-child {
+          background-color: @violet;
+          padding: 20px;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+          width: 80px;
+          font-size: 32pt;
+          text-align: center;
+
+          &:hover {
+            background-color: @dark-violet;
+          }
         }
       }
     }

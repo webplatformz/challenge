@@ -39,6 +39,13 @@ module.exports = {
         });
     },
 
+    joinExistingSessionAsSpectator: (sessionChoice) => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR,
+            data: sessionChoice
+        });
+    },
+
     createNewSession: (sessionName) => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.CREATE_NEW_SESSION,

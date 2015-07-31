@@ -1,22 +1,26 @@
 'use strict';
 
-let React = require('react');
+let React = require('react'),
+    GameStore = require('./gameStore');
 
 module.exports = React.createClass({
 
     handleGameSetupState: function () {
-        //TODO add and handle JassState
+        this.setState(GameStore.state);
     },
 
     componentDidMount: function () {
-        //TODO add and handle JassState
+        GameStore.addChangeListener(this.handleGameSetupState);
     },
 
     componentWillUnmount: function () {
-        //TODO add and handle JassState
+        GameStore.removeChangeListener(this.handleGameSetupState);
     },
 
     render: function () {
+        let state = this.state || {},
+            players = state.players || [];
+
         return (
             <div id="jassTable">
                 JassTable

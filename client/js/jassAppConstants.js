@@ -9,6 +9,7 @@ module.exports = keyMirror({
     CHOOSE_PLAYER_NAME: null,
     REQUEST_SESSION_CHOICE: null,
     CHOOSE_EXISTING_SESSION: null,
+    CHOOSE_EXISTING_SESSION_SPECTATOR: null,
     CREATE_NEW_SESSION: null,
     AUTOJOIN_SESSION: null,
     SESSION_JOINED: null

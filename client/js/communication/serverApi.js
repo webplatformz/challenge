@@ -47,6 +47,9 @@ let ServerApi = {
                 case JassAppConstants.CHOOSE_EXISTING_SESSION:
                     sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, action.data);
                     break;
+                case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.SPECTATOR, action.data);
+                    break;
                 case JassAppConstants.CREATE_NEW_SESSION:
                     sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, action.data);
                     break;
