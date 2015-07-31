@@ -43,7 +43,19 @@ let Session = {
         });
 
         this.players.push(player);
-        this.clientApi.broadcastSessionJoined(player.name, player.id);
+        this.clientApi.broadcastSessionJoined(
+            this.name,
+            {
+                id: player.id,
+                name: player.name
+            },
+            this.players.map(function(player) {
+                return {
+                    id: player.id,
+                    name: player.name
+                };
+            })
+        );
 
         return clientPromise;
     },

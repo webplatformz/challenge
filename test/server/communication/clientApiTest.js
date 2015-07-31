@@ -495,21 +495,34 @@ describe('Client API', () => {
     });
 
     describe('broadcastSessionJoined', () => {
-        it('should send the player name and id to all clients', (done) => {
+        it('should send the sessionname, player already joined players to all client', (done) => {
             let clients,
                 clientPromises = [],
-                name = 'name',
-                id = 0,
+                sessionName = 'sessionName',
+                playersInSession = [
+                    {
+                        name: 'name1',
+                        id: 'id1'
+                    },
+                    {
+                        name: 'name2',
+                        id: 'ide2'
+                    }
+                ],
                 sessionJoinedMessage = {
-                    name: name,
-                    id: id
+                    sessionName: sessionName,
+                    player: {
+                        name: playersInSession[1].name,
+                        id: playersInSession[1].id
+                    },
+                    playersInSession: playersInSession
                 };
 
             wss.on('connection', (client) => {
                 clientApi.addClient(client);
 
                 if (clientApi.clients.length === clients.length) {
-                    clientApi.broadcastSessionJoined(name, id);
+                    clientApi.broadcastSessionJoined(sessionName, playersInSession[1], playersInSession);
                 }
             });
 

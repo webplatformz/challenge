@@ -71,12 +71,22 @@ describe('Session', function () {
         });
 
         it('should broadcast session joined', () => {
-            let playerName = 'Peter';
+            let sessionPlayer = {
+                    id: 0,
+                    name: 'name'
+                },
+                sessionBroadcast = {
+                    sessionName: session.name,
+                    player: sessionPlayer,
+                    playersInSession: [
+                        sessionPlayer
+                    ]
+                };
 
-            clientApiMock.expects('broadcastSessionJoined').once().withArgs(playerName, 0);
+            clientApiMock.expects('broadcastSessionJoined').once().withArgs(session.name, sessionPlayer, [sessionPlayer]);
             clientApiMock.expects('addClient').once().returns(Promise.resolve());
 
-            session.addPlayer('webSocket', playerName);
+            session.addPlayer('webSocket', sessionPlayer.name);
 
             clientApiMock.verify();
         });
