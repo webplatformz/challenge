@@ -32,6 +32,9 @@ let ServerApi = {
             case MessageType.BROADCAST_SESSION_JOINED.name:
                 JassActions.sessionJoined(message.data);
                 break;
+            case MessageType.BROADCAST_TEAMS.name:
+                JassActions.broadcastTeams(message.data);
+                break;
             default:
                 console.log(message);
         }

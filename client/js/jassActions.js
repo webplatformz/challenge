@@ -64,5 +64,12 @@ module.exports = {
             actionType: JassAppConstants.SESSION_JOINED,
             data: playerInfo
         });
+    },
+
+    broadcastTeams: (teams) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.BROADCAST_TEAMS,
+            data: teams
+        });
     }
 };

@@ -12,5 +12,6 @@ module.exports = keyMirror({
     CHOOSE_EXISTING_SESSION_SPECTATOR: null,
     CREATE_NEW_SESSION: null,
     AUTOJOIN_SESSION: null,
-    SESSION_JOINED: null
+    SESSION_JOINED: null,
+    BROADCAST_TEAMS: null
 });

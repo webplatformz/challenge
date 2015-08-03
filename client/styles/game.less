@@ -1,0 +1,104 @@
+@cardSpacer: 30px;
+
+.card-horizontal {
+  position: absolute;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: -webkit-translateX(-50%);
+}
+
+.card-vertical {
+  position:absolute;
+  margin-top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: -webkit-translateY(-50%);
+}
+
+#jassTable {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+  background: url("/images/table.jpg");
+
+  #jassCarpet {
+    position: relative;
+    max-width: 500px;
+    height: 500px;
+    margin: 100px auto;
+    border-radius: 20px;
+    background: url('/images/jassTeppich.jpg') center center no-repeat;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.3);
+
+    [id^="player-"] {
+      position: absolute;
+      padding: 10px;
+      width: 200px;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      color: white;
+      background-color: @turquoise;
+      text-align: center;
+      border-radius: 0 0 5px 5px;
+      box-shadow: inset 0 5px 5px -3px rgba(0, 0, 0, 0.5);
+    }
+
+    #player-top {
+      top: 0;
+      margin-left: 50%;
+      transform: translateX(-50%) translateY(-100%) rotate(180deg);
+    }
+
+    #player-right {
+      right: 0;
+      margin-top: 50%;
+      transform: translateX(0%) translateY(-250%) rotate(-90deg);
+      transform-origin: top right;
+    }
+
+    #player-bottom {
+      bottom: 0;
+      margin-left: 50%;
+      transform: translateX(-50%) translateY(100%);
+    }
+
+    #player-left {
+      left: 0;
+      margin-top: 50%;
+      transform: translateX(0%) translateY(-250%) rotate(90deg);
+      transform-origin: top left;
+    }
+
+    .card-top:extend(.card-horizontal) {
+      top: @cardSpacer;
+    }
+
+    .card-right:extend(.card-vertical) {
+      right: @cardSpacer;
+    }
+
+    .card-bottom:extend(.card-horizontal) {
+      bottom: @cardSpacer;
+    }
+
+    .card-left:extend(.card-vertical) {
+      left: @cardSpacer;
+    }
+
+    img {
+      max-width: 120px;
+    }
+  }
+
+  #playerCards {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+  }
+}
