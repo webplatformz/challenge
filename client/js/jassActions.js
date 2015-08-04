@@ -85,5 +85,21 @@ module.exports = {
             actionType: JassAppConstants.DEAL_CARDS,
             data: cards
         });
+    },
+
+    requestTrumpf: () => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.REQUEST_TRUMPF
+        });
+    },
+
+    chooseTrumpf: (mode, trumpfColor) => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.CHOOSE_TRUMPF,
+            data: {
+                mode,
+                trumpfColor
+            }
+        });
     }
 };

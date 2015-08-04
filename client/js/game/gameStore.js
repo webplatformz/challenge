@@ -6,7 +6,8 @@ let EventEmitter = require('events').EventEmitter,
 
 let GameState = {
     WAITING: 'WAITING',
-    SESSION_STARTED: 'SESSION_STARTED'
+    SESSION_STARTED: 'SESSION_STARTED',
+    REQUESTING_TRUMPF: 'REQUESTING_TRUMPF'
 };
 
 let player,
@@ -69,6 +70,10 @@ JassAppDispatcher.register(function (payload){
             break;
         case JassAppConstants.PLAYED_CARDS:
             GameStore.state.tableCards = action.data;
+            GameStore.emitChange();
+            break;
+        case JassAppConstants.REQUEST_TRUMPF:
+            GameStore.state.status = GameState.REQUESTING_TRUMPF;
             GameStore.emitChange();
             break;
     }

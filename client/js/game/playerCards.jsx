@@ -5,7 +5,7 @@ let React = require('react');
 module.exports = React.createClass({
 
     playCard: function(color, number) {
-        //TODO send choose card to server
+
     },
 
     render: function () {

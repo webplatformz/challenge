@@ -3,7 +3,7 @@
 let Deck = require('./deck/deck');
 let Cycle = require('./cycle/cycle');
 let Counter = require('./counter/counter');
-let GameMode = require('./gameMode');
+let GameMode = require('./../../shared/game/gameMode');
 
 function handleChooseTrumpf(game, gameType) {
     game.gameType = gameType;

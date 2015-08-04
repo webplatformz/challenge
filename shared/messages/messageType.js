@@ -1,7 +1,7 @@
 'use strict';
 
 let SessionChoice = require('../game/sessionChoice'),
-    GameMode = require('../../server/game/gameMode'),
+    GameMode = require('../game/gameMode'),
     CardColor = require('../deck/card').CardColor;
 
 module.exports = {

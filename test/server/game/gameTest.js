@@ -2,7 +2,7 @@
 
 let assert = require("assert");
 let Game = require('../../../server/game/game');
-let GameMode = require('../../../server/game/gameMode');
+let GameMode = require('../../../shared/game/gameMode');
 let GameType = require('../../../server/game/gameType');
 let Player = require('../../../server/game/player/player');
 let Card = require('../../../shared/deck/card');

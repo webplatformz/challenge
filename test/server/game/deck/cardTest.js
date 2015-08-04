@@ -3,7 +3,7 @@
 let assert = require('assert');
 let Card = require('../../../../shared/deck/card');
 let CardColor = require('../../../../shared/deck/card').CardColor;
-let GameMode = require('../../../../server/game/gameMode');
+let GameMode = require('../../../../shared/game/gameMode');
 
 describe('Card', function() {
     it('should be possible to create cards', function() {

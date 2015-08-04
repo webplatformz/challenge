@@ -4,7 +4,8 @@ let React = require('react'),
     GameStore = require('./gameStore'),
     PlayerCards = require('./playerCards.jsx'),
     TableCards = require('./tableCards.jsx'),
-    PlayerNames = require('./playerNames.jsx');
+    PlayerNames = require('./playerNames.jsx'),
+    RequestTrumpf = require('./requestTrumpf.jsx');
 
 module.exports = React.createClass({
 
@@ -33,6 +34,11 @@ module.exports = React.createClass({
                     <TableCards></TableCards>
                 </div>
                 <PlayerCards cards={playerCards}></PlayerCards>
+                {(() => {
+                    if (state.status === GameStore.GameState.REQUESTING_TRUMPF) {
+                        return <RequestTrumpf></RequestTrumpf>;
+                    }
+                })()}
             </div>
         );
     }

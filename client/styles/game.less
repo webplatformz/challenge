@@ -108,4 +108,32 @@
     overflow-x: scroll;
     white-space: nowrap;
   }
+
+  #requestTrumpf {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 100px;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .request-trumpf-dialog {
+      margin: 100px auto 0;
+      text-align: center;
+
+      div {
+        margin: 10px auto;
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+        border-radius: 50%;
+        border: 1px solid @white;
+        background-color: @blue-main;
+
+        color: @white;
+        font-size: 32pt;
+        cursor: pointer;
+      }
+    }
+  }
 }

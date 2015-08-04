@@ -41,6 +41,9 @@ let ServerApi = {
             case MessageType.DEAL_CARDS.name:
                 JassActions.dealCards(message.data);
                 break;
+            case MessageType.REQUEST_TRUMPF.name:
+                JassActions.requestTrumpf();
+                break;
             default:
                 console.log(message);
         }
@@ -64,6 +67,9 @@ let ServerApi = {
                     break;
                 case JassAppConstants.AUTOJOIN_SESSION:
                     sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN);
+                    break;
+                case JassAppConstants.CHOOSE_TRUMPF:
+                    sendJSONMessageToClient(MessageType.CHOOSE_TRUMPF.name, action.data);
                     break;
                 default:
                     console.log(action);

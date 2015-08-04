@@ -15,5 +15,7 @@ module.exports = keyMirror({
     SESSION_JOINED: null,
     BROADCAST_TEAMS: null,
     PLAYED_CARDS: null,
-    DEAL_CARDS: null
+    DEAL_CARDS: null,
+    REQUEST_TRUMPF: null,
+    CHOOSE_TRUMPF: null
 });
