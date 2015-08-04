@@ -71,5 +71,19 @@ module.exports = {
             actionType: JassAppConstants.BROADCAST_TEAMS,
             data: teams
         });
+    },
+
+    playedCards: (cards) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.PLAYED_CARDS,
+            data: cards
+        });
+    },
+
+    dealCards: (cards) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.DEAL_CARDS,
+            data: cards
+        });
     }
 };

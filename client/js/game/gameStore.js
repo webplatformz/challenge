@@ -19,6 +19,9 @@ GameStore.GameState = GameState;
 GameStore.state = {
     players: [],
     playerSeating: ['bottom', 'left', 'top', 'right'],
+    tableCards: [],
+    playerCards: [],
+    startingPlayerIndex: 0,
     status: GameState.WAITING
 };
 
@@ -53,11 +56,19 @@ JassAppDispatcher.register(function (payload){
             }
 
             GameStore.state.playerSeating = playerSeating.concat(playerSeating.splice(0, 4 - playerIndex));
-
             GameStore.emitChange();
             break;
         case JassAppConstants.BROADCAST_TEAMS:
             GameStore.state.status = GameState.SESSION_STARTED;
+            //TODO handle teams and player for stats
+            GameStore.emitChange();
+            break;
+        case JassAppConstants.DEAL_CARDS:
+            GameStore.state.playerCards = action.data;
+            GameStore.emitChange();
+            break;
+        case JassAppConstants.PLAYED_CARDS:
+            GameStore.state.tableCards = action.data;
             GameStore.emitChange();
             break;
     }

@@ -13,5 +13,7 @@ module.exports = keyMirror({
     CREATE_NEW_SESSION: null,
     AUTOJOIN_SESSION: null,
     SESSION_JOINED: null,
-    BROADCAST_TEAMS: null
+    BROADCAST_TEAMS: null,
+    PLAYED_CARDS: null,
+    DEAL_CARDS: null
 });

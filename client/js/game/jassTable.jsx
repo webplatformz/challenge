@@ -1,7 +1,10 @@
 'use strict';
 
 let React = require('react'),
-    GameStore = require('./gameStore');
+    GameStore = require('./gameStore'),
+    PlayerCards = require('./playerCards.jsx'),
+    TableCards = require('./tableCards.jsx'),
+    PlayerNames = require('./playerNames.jsx');
 
 module.exports = React.createClass({
 
@@ -20,31 +23,16 @@ module.exports = React.createClass({
     render: function () {
         let state = this.state || {},
             players = state.players || [],
-            playerSeating = state.playerSeating;
+            playerSeating = state.playerSeating,
+            playerCards = state.playerCards;
 
         return (
             <div id="jassTable">
                 <div id="jassCarpet">
-                    {players.map(function(player, index) {
-                        return (
-                            <div key={player.id} id={'player-' + playerSeating[index]}>
-                                {player.name}
-                            </div>);
-                    })}
-                    <div className="card-top">
-                        <img src="/images/cards/french/clubs_6.gif" />
-                    </div>
-                    <div className="card-right">
-                        <img src="/images/cards/french/clubs_7.gif" />
-                    </div>
-                    <div className="card-bottom">
-                        <img src="/images/cards/french/clubs_10.gif" />
-                    </div>
-                    <div className="card-left">
-                        <img src="/images/cards/french/clubs_14.gif" />
-                    </div>
+                    <PlayerNames players={players} playerSeating={playerSeating}></PlayerNames>
+                    <TableCards></TableCards>
                 </div>
-                <div id="playerCards"></div>
+                <PlayerCards cards={playerCards}></PlayerCards>
             </div>
         );
     }

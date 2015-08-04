@@ -35,6 +35,12 @@ let ServerApi = {
             case MessageType.BROADCAST_TEAMS.name:
                 JassActions.broadcastTeams(message.data);
                 break;
+            case MessageType.PLAYED_CARDS.name:
+                JassActions.playedCards(message.data);
+                break;
+            case MessageType.DEAL_CARDS.name:
+                JassActions.dealCards(message.data);
+                break;
             default:
                 console.log(message);
         }
