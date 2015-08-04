@@ -36,7 +36,7 @@ module.exports = React.createClass({
                 <PlayerCards cards={playerCards}></PlayerCards>
                 {(() => {
                     if (state.status === GameStore.GameState.REQUESTING_TRUMPF) {
-                        return <RequestTrumpf></RequestTrumpf>;
+                        return <RequestTrumpf isGeschoben={state.isGeschoben}></RequestTrumpf>;
                     }
                 })()}
             </div>

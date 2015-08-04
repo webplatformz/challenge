@@ -42,7 +42,10 @@ let ServerApi = {
                 JassActions.dealCards(message.data);
                 break;
             case MessageType.REQUEST_TRUMPF.name:
-                JassActions.requestTrumpf();
+                JassActions.requestTrumpf(message.data);
+                break;
+            case MessageType.BROADCAST_TRUMPF.name:
+                JassActions.broadastTrumpf(message.data);
                 break;
             default:
                 console.log(message);

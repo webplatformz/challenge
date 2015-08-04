@@ -87,9 +87,10 @@ module.exports = {
         });
     },
 
-    requestTrumpf: () => {
+    requestTrumpf: (isGeschoben) => {
         JassAppDispatcher.handleServerAction({
-            actionType: JassAppConstants.REQUEST_TRUMPF
+            actionType: JassAppConstants.REQUEST_TRUMPF,
+            data: isGeschoben
         });
     },
 
@@ -100,6 +101,13 @@ module.exports = {
                 mode,
                 trumpfColor
             }
+        });
+    },
+
+    broadastTrumpf: (gameMode) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.BROADCAST_TRUMPF,
+            data: gameMode
         });
     }
 };

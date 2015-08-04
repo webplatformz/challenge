@@ -7,7 +7,9 @@ let EventEmitter = require('events').EventEmitter,
 let GameState = {
     WAITING: 'WAITING',
     SESSION_STARTED: 'SESSION_STARTED',
-    REQUESTING_TRUMPF: 'REQUESTING_TRUMPF'
+    REQUESTING_TRUMPF: 'REQUESTING_TRUMPF',
+    TRUMPF_CHOSEN: 'TRUMPF_CHOSEN',
+    REQUESTING_CARDS: 'REQUESTING_CARDS'
 };
 
 let player,
@@ -74,6 +76,15 @@ JassAppDispatcher.register(function (payload){
             break;
         case JassAppConstants.REQUEST_TRUMPF:
             GameStore.state.status = GameState.REQUESTING_TRUMPF;
+            GameStore.state.isGeschoben = action.data;
+            GameStore.emitChange();
+            break;
+        case JassAppConstants.CHOOSE_TRUMPF:
+            GameStore.state.status = GameState.TRUMPF_CHOSEN;
+            GameStore.emitChange();
+            break;
+        case JassAppConstants.BROADCAST_TRUMPF:
+            GameStore.state.status = GameState.REQUESTING_CARDS;
             GameStore.emitChange();
             break;
     }

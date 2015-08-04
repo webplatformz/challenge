@@ -17,5 +17,6 @@ module.exports = keyMirror({
     PLAYED_CARDS: null,
     DEAL_CARDS: null,
     REQUEST_TRUMPF: null,
-    CHOOSE_TRUMPF: null
+    CHOOSE_TRUMPF: null,
+    BROADCAST_TRUMPF: null
 });
