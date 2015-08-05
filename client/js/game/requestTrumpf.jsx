@@ -14,19 +14,17 @@ module.exports = React.createClass({
     render: function () {
         return (
             <div id="requestTrumpf">
-                <div className="request-trumpf-dialog">
-                    <div onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.HEARTS)}>H</div>
-                    <div onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.DIAMONDS)}>D</div>
-                    <div onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.CLUBS)}>C</div>
-                    <div onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.SPADES)}>S</div>
-                    <div onClick={this.chooseTrumpf.bind(null, GameMode.UNDEUFE, undefined)}>U</div>
-                    <div onClick={this.chooseTrumpf.bind(null, GameMode.OBEABE, undefined)}>O</div>
-                    {((component) => {
-                        if (!component.props.isGeschoben) {
-                            return <div onClick={component.chooseTrumpf.bind(null, GameMode.SCHIEBE, undefined)}>Sc</div>;
-                        }
-                    })(this)}
-                </div>
+                <img onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.HEARTS)} src="/images/trumpf/french/hearts.png" />
+                <img onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.DIAMONDS)} src="/images/trumpf/french/diamonds.png" />
+                <img onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.CLUBS)} src="/images/trumpf/french/clubs.png" />
+                <img onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.SPADES)} src="/images/trumpf/french/spades.png" />
+                <img onClick={this.chooseTrumpf.bind(null, GameMode.UNDEUFE, undefined)} src="/images/trumpf/undeufe.jpg" />
+                <img onClick={this.chooseTrumpf.bind(null, GameMode.OBEABE, undefined)} src="/images/trumpf/obeabe.jpg" />
+                {((component) => {
+                    if (!component.props.isGeschoben) {
+                        return <img onClick={component.chooseTrumpf.bind(null, GameMode.SCHIEBE, undefined)} src="/images/trumpf/schiebe.jpg" />;
+                    }
+                })(this)}
             </div>
         );
     }

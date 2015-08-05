@@ -15,13 +15,13 @@ module.exports = React.createClass({
                 imagePath = '/images/trumpf/french/' + color.toLowerCase() + '.png';
                 break;
             case GameMode.OBEABE:
-                imagePath = '';
+                imagePath = '/images/trumpf/obeabe.jpg';
                 break;
             case GameMode.UNDEUFE:
-                imagePath = '';
+                imagePath = '/images/trumpf/undeufe.jpg';
                 break;
             case GameMode.SCHIEBE:
-                imagePath = '';
+                imagePath = '/images/trumpf/schiebe.jpg';
                 break;
         }
 
