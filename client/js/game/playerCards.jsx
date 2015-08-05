@@ -15,7 +15,7 @@ module.exports = React.createClass({
             <div id="playerCards">
                 {cards.map(function(card) {
                     return (
-                        <img src={'/images/cards/french/' + card.color + '_' + card.number + '.gif'}
+                        <img key={card.color + '-' + card.number} src={'/images/cards/french/' + card.color + '_' + card.number + '.gif'}
                             onClick={this.playCard(card.color, card.number)} />);
                 }.bind(this))}
             </div>

@@ -5,7 +5,8 @@ let React = require('react'),
     PlayerCards = require('./playerCards.jsx'),
     TableCards = require('./tableCards.jsx'),
     PlayerNames = require('./playerNames.jsx'),
-    RequestTrumpf = require('./requestTrumpf.jsx');
+    RequestTrumpf = require('./requestTrumpf.jsx'),
+    Trumpf = require('./trumpf.jsx');
 
 module.exports = React.createClass({
 
@@ -32,6 +33,7 @@ module.exports = React.createClass({
                 <div id="jassCarpet">
                     <PlayerNames players={players} playerSeating={playerSeating}></PlayerNames>
                     <TableCards></TableCards>
+                    <Trumpf mode={state.mode} color={state.color}></Trumpf>
                 </div>
                 <PlayerCards cards={playerCards}></PlayerCards>
                 {(() => {

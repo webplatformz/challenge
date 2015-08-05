@@ -84,7 +84,9 @@ JassAppDispatcher.register(function (payload){
             GameStore.emitChange();
             break;
         case JassAppConstants.BROADCAST_TRUMPF:
-            GameStore.state.status = GameState.REQUESTING_CARDS;
+            GameStore.state.status = GameState.TRUMPF_CHOSEN;
+            GameStore.state.mode = action.data.mode;
+            GameStore.state.color = action.data.trumpfColor;
             GameStore.emitChange();
             break;
     }
