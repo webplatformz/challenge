@@ -17,7 +17,7 @@ module.exports = function(config) {
         plugins: [
             'karma-mocha',
             'karma-phantomjs-launcher',
-            'karma-bro',
+            'karma-browserify',
             'karma-mocha-reporter'
         ]
     });
