@@ -18,5 +18,6 @@ module.exports = keyMirror({
     DEAL_CARDS: null,
     REQUEST_TRUMPF: null,
     CHOOSE_TRUMPF: null,
-    BROADCAST_TRUMPF: null
+    BROADCAST_TRUMPF: null,
+    CHANGE_CARD_TYPE: null
 });

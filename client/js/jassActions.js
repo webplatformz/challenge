@@ -109,5 +109,12 @@ module.exports = {
             actionType: JassAppConstants.BROADCAST_TRUMPF,
             data: gameMode
         });
+    },
+
+    changeCardType: (cardType) => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.CHANGE_CARD_TYPE,
+            data: cardType
+        });
     }
 };

@@ -8,11 +8,12 @@ module.exports = React.createClass({
     render: function () {
         let mode = this.props.mode,
             color = this.props.color,
+            cardType = this.props.cardType,
             imagePath;
 
         switch (mode) {
             case GameMode.TRUMPF:
-                imagePath = '/images/trumpf/french/' + color.toLowerCase() + '.png';
+                imagePath = '/images/trumpf/' + cardType + '/' + color.toLowerCase() + '.png';
                 break;
             case GameMode.OBEABE:
                 imagePath = '/images/trumpf/obeabe.jpg';

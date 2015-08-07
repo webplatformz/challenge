@@ -36,6 +36,40 @@
 
   background: url("../images/table.jpg");
 
+  #cardTypeSwitcher {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &> div {
+      display: inline-block;
+      border-radius: 5px;
+
+      &:last-child {
+        margin-left: 10px;
+      }
+
+      input[type=radio] {
+        display: none;
+      }
+
+      img {
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+
+        &:first-child {
+          border-radius: 0 0 0 5px;
+        }
+
+        &:last-child {
+          border-radius: 0 0 5px 0;
+        }
+      }
+    }
+  }
+
   #jassCarpet {
     position: relative;
     max-width: 500px;
@@ -200,8 +234,8 @@
     img {
       display: inline-block;
       margin: 5px 10px;
-      width: 100px;
-      height: 100px;
+      width: 60px;
+      height: 60px;
       line-height: 100px;
       border-radius: 50%;
       cursor: pointer;

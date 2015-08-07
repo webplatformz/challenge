@@ -12,14 +12,21 @@ let GameState = {
     REQUESTING_CARDS: 'REQUESTING_CARDS'
 };
 
+let CardType = {
+    FRENCH: 'french',
+    GERMAN: 'german'
+};
+
 let player,
     playerIndex;
 
 let GameStore = Object.create(EventEmitter.prototype);
 
 GameStore.GameState = GameState;
+GameStore.CardType = CardType;
 
 GameStore.state = {
+    cardType: CardType.FRENCH,
     players: [],
     playerSeating: ['bottom', 'left', 'top', 'right'],
     tableCards: [],
@@ -89,6 +96,9 @@ JassAppDispatcher.register(function (payload){
             GameStore.state.color = action.data.trumpfColor;
             GameStore.emitChange();
             break;
+        case JassAppConstants.CHANGE_CARD_TYPE:
+            GameStore.state.cardType = action.data;
+            GameStore.emitChange();
     }
 });
 
