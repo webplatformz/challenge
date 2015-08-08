@@ -35,9 +35,6 @@ let ServerApi = {
             case MessageType.BROADCAST_TEAMS.name:
                 JassActions.broadcastTeams(message.data);
                 break;
-            case MessageType.PLAYED_CARDS.name:
-                JassActions.playedCards(message.data);
-                break;
             case MessageType.DEAL_CARDS.name:
                 JassActions.dealCards(message.data);
                 break;
@@ -46,6 +43,15 @@ let ServerApi = {
                 break;
             case MessageType.BROADCAST_TRUMPF.name:
                 JassActions.broadastTrumpf(message.data);
+                break;
+            case MessageType.REQUEST_CARD.name:
+                JassActions.requestCard(message.data);
+                break;
+            case MessageType.REJECT_CARD.name:
+                JassActions.rejectCard(message.data);
+                break;
+            case MessageType.PLAYED_CARDS.name:
+                JassActions.playedCards(message.data);
                 break;
             default:
                 console.log(message);
@@ -74,8 +80,9 @@ let ServerApi = {
                 case JassAppConstants.CHOOSE_TRUMPF:
                     sendJSONMessageToClient(MessageType.CHOOSE_TRUMPF.name, action.data);
                     break;
-                default:
-                    console.log(action);
+                case JassAppConstants.CHOOSE_CARD:
+                    sendJSONMessageToClient(MessageType.CHOOSE_CARD.name, action.data);
+                    break;
             }
         }
     },

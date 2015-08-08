@@ -9,7 +9,9 @@ let GameState = {
     SESSION_STARTED: 'SESSION_STARTED',
     REQUESTING_TRUMPF: 'REQUESTING_TRUMPF',
     TRUMPF_CHOSEN: 'TRUMPF_CHOSEN',
-    REQUESTING_CARDS: 'REQUESTING_CARDS'
+    REQUESTING_CARD: 'REQUESTING_CARD',
+    REJECTED_CARD: 'REJECTED_CARD',
+    REQUESTING_CARDS_FROM_OTHER_PLAYERS: 'REQUESTING_CARDS_FROM_OTHER_PLAYERS'
 };
 
 let CardType = {
@@ -17,8 +19,7 @@ let CardType = {
     GERMAN: 'german'
 };
 
-let player,
-    playerIndex;
+let player;
 
 let GameStore = Object.create(EventEmitter.prototype);
 
@@ -52,7 +53,8 @@ JassAppDispatcher.register(function (payload){
 
     switch(action.actionType) {
         case JassAppConstants.SESSION_JOINED:
-            let playerSeating = GameStore.state.playerSeating;
+            let playerSeating = GameStore.state.playerSeating,
+                playerIndex;
 
             if (!player) {
                 player = action.data.player;
@@ -77,10 +79,6 @@ JassAppDispatcher.register(function (payload){
             GameStore.state.playerCards = action.data;
             GameStore.emitChange();
             break;
-        case JassAppConstants.PLAYED_CARDS:
-            GameStore.state.tableCards = action.data;
-            GameStore.emitChange();
-            break;
         case JassAppConstants.REQUEST_TRUMPF:
             GameStore.state.status = GameState.REQUESTING_TRUMPF;
             GameStore.state.isGeschoben = action.data;
@@ -99,6 +97,29 @@ JassAppDispatcher.register(function (payload){
         case JassAppConstants.CHANGE_CARD_TYPE:
             GameStore.state.cardType = action.data;
             GameStore.emitChange();
+            break;
+        case JassAppConstants.REQUEST_CARD:
+            GameStore.state.status = GameState.REQUESTING_CARD;
+            GameStore.emitChange();
+            break;
+        case JassAppConstants.CHOOSE_CARD:
+            let chosenCard = action.data;
+            GameStore.state.playerCards = GameStore.state.playerCards.filter((card) => {
+                return chosenCard.color !== card.color || chosenCard.number !== card.number;
+            });
+            GameStore.emitChange();
+            break;
+        case JassAppConstants.REJECT_CARD:
+            let rejectedCard = action.data;
+            GameStore.state.status = GameState.REJECTED_CARD;
+            GameStore.state.playerCards.push(rejectedCard);
+            GameStore.emitChange();
+            break;
+        case JassAppConstants.PLAYED_CARDS:
+            GameStore.state.status = GameState.REQUESTING_CARDS_FROM_OTHER_PLAYERS;
+            GameStore.state.tableCards = action.data;
+            GameStore.emitChange();
+            break;
     }
 });
 

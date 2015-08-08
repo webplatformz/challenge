@@ -14,10 +14,13 @@ module.exports = keyMirror({
     AUTOJOIN_SESSION: null,
     SESSION_JOINED: null,
     BROADCAST_TEAMS: null,
-    PLAYED_CARDS: null,
     DEAL_CARDS: null,
     REQUEST_TRUMPF: null,
     CHOOSE_TRUMPF: null,
     BROADCAST_TRUMPF: null,
-    CHANGE_CARD_TYPE: null
+    CHANGE_CARD_TYPE: null,
+    REQUEST_CARD: null,
+    CHOOSE_CARD: null,
+    REJECT_CARD: null,
+    PLAYED_CARDS: null
 });

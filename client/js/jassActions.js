@@ -73,13 +73,6 @@ module.exports = {
         });
     },
 
-    playedCards: (cards) => {
-        JassAppDispatcher.handleServerAction({
-            actionType: JassAppConstants.PLAYED_CARDS,
-            data: cards
-        });
-    },
-
     dealCards: (cards) => {
         JassAppDispatcher.handleServerAction({
             actionType: JassAppConstants.DEAL_CARDS,
@@ -115,6 +108,37 @@ module.exports = {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.CHANGE_CARD_TYPE,
             data: cardType
+        });
+    },
+
+    requestCard: (playedCards) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.REQUEST_CARD,
+            data: playedCards
+        });
+    },
+
+    chooseCard: (color, number) => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.CHOOSE_CARD,
+            data: {
+                color,
+                number
+            }
+        });
+    },
+
+    rejectCard: (card) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.REJECT_CARD,
+            data: card
+        });
+    },
+
+    playedCards: (playedCards) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.PLAYED_CARDS,
+            data: playedCards
         });
     }
 };

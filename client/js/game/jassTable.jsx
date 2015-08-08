@@ -27,17 +27,18 @@ module.exports = React.createClass({
         let state = this.state || {},
             players = state.players || [],
             playerSeating = state.playerSeating,
-            playerCards = state.playerCards;
+            playerCards = state.playerCards,
+            tableCards = state.tableCards || [];
 
         return (
             <div id="jassTable">
                 <CardTypeSwitcher cardType={state.cardType}></CardTypeSwitcher>
                 <div id="jassCarpet">
                     <PlayerNames players={players} playerSeating={playerSeating}></PlayerNames>
-                    <TableCards cardType={state.cardType}></TableCards>
+                    <TableCards cardType={state.cardType} cards={tableCards} startingPlayerIndex={state.startingPlayerIndex} playerSeating={state.playerSeating}></TableCards>
                     <Trumpf mode={state.mode} color={state.color} cardType={state.cardType}></Trumpf>
                 </div>
-                <PlayerCards cards={playerCards} cardType={state.cardType}></PlayerCards>
+                <PlayerCards cards={playerCards} cardType={state.cardType} state={state.status}></PlayerCards>
                 {(() => {
                     if (state.status === GameStore.GameState.REQUESTING_TRUMPF) {
                         return <RequestTrumpf isGeschoben={state.isGeschoben} cardType={state.cardType}></RequestTrumpf>;
