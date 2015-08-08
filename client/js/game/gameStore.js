@@ -11,7 +11,8 @@ let GameState = {
     TRUMPF_CHOSEN: 'TRUMPF_CHOSEN',
     REQUESTING_CARD: 'REQUESTING_CARD',
     REJECTED_CARD: 'REJECTED_CARD',
-    REQUESTING_CARDS_FROM_OTHER_PLAYERS: 'REQUESTING_CARDS_FROM_OTHER_PLAYERS'
+    REQUESTING_CARDS_FROM_OTHER_PLAYERS: 'REQUESTING_CARDS_FROM_OTHER_PLAYERS',
+    STICH: 'STICH'
 };
 
 let CardType = {
@@ -118,6 +119,19 @@ JassAppDispatcher.register(function (payload){
         case JassAppConstants.PLAYED_CARDS:
             GameStore.state.status = GameState.REQUESTING_CARDS_FROM_OTHER_PLAYERS;
             GameStore.state.tableCards = action.data;
+            GameStore.emitChange();
+            break;
+        case JassAppConstants.BROADCAST_STICH:
+            let playerId = action.data.id;
+            GameStore.state.status = GameState.STICH;
+            GameStore.state.players.every((player, index) => {
+                if (player.id === playerId) {
+                    GameStore.state.startingPlayerIndex = index;
+                    return false;
+                }
+
+                return true;
+            });
             GameStore.emitChange();
             break;
     }

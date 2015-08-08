@@ -140,5 +140,12 @@ module.exports = {
             actionType: JassAppConstants.PLAYED_CARDS,
             data: playedCards
         });
+    },
+
+    broadcastStich: (stich) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.BROADCAST_STICH,
+            data: stich
+        });
     }
 };

@@ -53,6 +53,9 @@ let ServerApi = {
             case MessageType.PLAYED_CARDS.name:
                 JassActions.playedCards(message.data);
                 break;
+            case MessageType.BROADCAST_STICH.name:
+                JassActions.broadcastStich(message.data);
+                break;
             default:
                 console.log(message);
         }
