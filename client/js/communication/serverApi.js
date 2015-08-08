@@ -9,7 +9,7 @@ let JassAppDispatcher = require('../jassAppDispatcher'),
     MessageType = require('../../../shared/messages/messageType'),
     SessionChoice = require('../../../shared/game/sessionChoice');
 
-let webSocket = new WebSocket(serverAddress);
+let webSocket;
 
 function sendJSONMessageToClient(messageType, ...data) {
     webSocket.send(JSON.stringify(messages.create(messageType, ...data)));
@@ -56,8 +56,6 @@ let ServerApi = {
             case MessageType.BROADCAST_STICH.name:
                 JassActions.broadcastStich(message.data);
                 break;
-            default:
-                console.log(message);
         }
     },
     handleActionsFromUi: (payload) => {
@@ -91,11 +89,14 @@ let ServerApi = {
     },
     handleErrorFromServer: () => {
         JassActions.throwError('WEBSOCKET', 'The connection to the server has been lost!');
+    },
+
+    connect: () => {
+        webSocket = new WebSocket(serverAddress);
+        webSocket.onmessage = ServerApi.handleMessageFromServer;
+        webSocket.onerror = ServerApi.handleErrorFromServer;
+        JassAppDispatcher.register(ServerApi.handleActionsFromUi);
     }
 };
-
-webSocket.onmessage = ServerApi.handleMessageFromServer;
-webSocket.onerror = ServerApi.handleErrorFromServer;
-JassAppDispatcher.register(ServerApi.handleActionsFromUi);
 
 module.exports = ServerApi;

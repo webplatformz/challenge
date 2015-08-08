@@ -14,6 +14,7 @@ let JassApp = React.createClass({
     },
 
     componentDidMount: function () {
+        serverApi.connect();
         JassAppStore.addChangeListener(this.handleJassAppState);
     },
 

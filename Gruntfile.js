@@ -50,6 +50,13 @@ module.exports = function (grunt) {
                         "src": ["js/**/*.js"],
                         "dest": "./build/client/",
                         "ext": ".js"
+                    },
+                    {
+                        "expand": true,
+                        "cwd": "./client/",
+                        "src": ["js/**/*.jsx"],
+                        "dest": "./build/client/",
+                        "ext": ".jsx"
                     }
                 ]
             }
@@ -100,7 +107,9 @@ module.exports = function (grunt) {
             unit: {
                 configFile: 'test/client/karma.conf.js',
                 options: {
-                    files: ['build/test/client/**/*.js'],
+                    files: [
+                        'build/test/client/**/*.js'
+                    ],
                     exclude: ['build/test/client/karma.conf.js']
                 },
                 singleRun: true

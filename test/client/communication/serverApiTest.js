@@ -5,13 +5,16 @@ let expect = require('chai').expect,
     JassAppDispatcher = require('../../../client/js/jassAppDispatcher');
 
 describe('serverApi', () => {
+
+    let serverApi = require('../../../client/js/communication/serverApi');
+
     describe('initialization', () => {
         it('should connect to Server and register handleMessage/handleActions functions', () => {
             window.WebSocket = function () {};
             let webSocket = sinon.spy(window, 'WebSocket');
             let registerSpy = sinon.spy(JassAppDispatcher, 'register');
 
-            let serverApi = require('../../../client/js/communication/serverApi');
+            serverApi.connect();
 
             expect(webSocket.calledWithNew()).to.equal(true);
             expect(webSocket.calledWith('ws://' + window.location.host)).to.equal(true);
