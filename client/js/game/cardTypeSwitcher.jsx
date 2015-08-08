@@ -15,18 +15,16 @@ module.exports = React.createClass({
             <div id="cardTypeSwitcher">
                 {Object.getOwnPropertyNames(CardType).map((cardTypeKey) => {
                     let cardType = CardType[cardTypeKey],
-                        id = 'cardType-' + cardType,
                         imagePath = '/images/trumpf/' + cardType;
 
                     return (
                         <div>
-                            <input id={id} type="radio" name="cardType" onClick={this.changeCardType.bind(null, cardType)} />
-                            <label htmlFor={id}>
+                            <a onClick={this.changeCardType.bind(null, cardType)}>
                                 <img src={imagePath + '/hearts.png'} />
                                 <img src={imagePath + '/diamonds.png'} />
                                 <img src={imagePath + '/clubs.png'} />
                                 <img src={imagePath + '/spades.png'} />
-                            </label>
+                            </a>
                         </div>
                     );
                 })}
