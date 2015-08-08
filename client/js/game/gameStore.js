@@ -20,7 +20,8 @@ let CardType = {
     GERMAN: 'german'
 };
 
-let player;
+let player,
+    nextStartingPlayerIndex = 0;
 
 let GameStore = Object.create(EventEmitter.prototype);
 
@@ -30,6 +31,7 @@ GameStore.CardType = CardType;
 GameStore.state = {
     cardType: CardType.FRENCH,
     players: [],
+    teams : [],
     playerSeating: ['bottom', 'left', 'top', 'right'],
     tableCards: [],
     playerCards: [],
@@ -73,7 +75,7 @@ JassAppDispatcher.register(function (payload){
             break;
         case JassAppConstants.BROADCAST_TEAMS:
             GameStore.state.status = GameState.SESSION_STARTED;
-            //TODO handle teams and player for stats
+            GameStore.state.teams = action.data;
             GameStore.emitChange();
             break;
         case JassAppConstants.DEAL_CARDS:
@@ -117,22 +119,30 @@ JassAppDispatcher.register(function (payload){
             GameStore.emitChange();
             break;
         case JassAppConstants.PLAYED_CARDS:
+            GameStore.state.startingPlayerIndex = nextStartingPlayerIndex;
             GameStore.state.status = GameState.REQUESTING_CARDS_FROM_OTHER_PLAYERS;
             GameStore.state.tableCards = action.data;
             GameStore.emitChange();
             break;
         case JassAppConstants.BROADCAST_STICH:
-            let playerId = action.data.id;
+            let playerId = action.data.id,
+                teams = action.data.teams;
             GameStore.state.status = GameState.STICH;
             GameStore.state.players.every((player, index) => {
                 if (player.id === playerId) {
-                    GameStore.state.startingPlayerIndex = index;
+                    nextStartingPlayerIndex = index;
                     return false;
                 }
 
                 return true;
             });
-            GameStore.emitChange();
+            teams.forEach((team) => {
+                GameStore.state.teams.forEach((stateTeam) => {
+                    if (stateTeam.name === team.name) {
+                        stateTeam.currentRoundPoints = team.currentRoundPoints;
+                    }
+                });
+            });
             break;
     }
 });
