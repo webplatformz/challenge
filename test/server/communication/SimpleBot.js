@@ -29,9 +29,9 @@ let SimpleBot = {
             if (this.id === 1){
                 expect(message.data.length).to.equal(0);
                 this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, sessionName)));
+            } else {
+                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, sessionName)));
             }
-
-            this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, sessionName)));
         }
 
         if (message.type === MessageType.DEAL_CARDS.name) {
