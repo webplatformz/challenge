@@ -35,4 +35,4 @@ let JassApp = React.createClass({
     }
 });
 
-React.render(<JassApp />, document.getElementsByTagName('body')[0]);
+module.exports = JassApp;

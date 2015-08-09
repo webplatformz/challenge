@@ -2,8 +2,7 @@
 
 module.exports = function (grunt) {
 
-    var babelify = require('babelify'),
-        reactify = require('reactify');
+    var babelify = require('babelify');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -63,7 +62,7 @@ module.exports = function (grunt) {
         },
         browserify: {
             options: {
-                transform: [reactify, babelify]
+                transform: [babelify]
             },
             all: {
                 files: {

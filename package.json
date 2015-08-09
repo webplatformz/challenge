@@ -38,7 +38,6 @@
     "mocha-sinon": "1.1.4",
     "mockery": "1.4.0",
     "react": "0.13.3",
-    "reactify": "1.1.1",
     "sinon": "1.12.2",
     "socket.io-client": "1.3.5",
     "underscore": "1.8.2",
