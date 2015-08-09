@@ -1,24 +1,13 @@
 'use strict';
 
-let React = require('react'),
-    GameSetupStore = require('./gameSetupStore'),
-    JassActions = require('../jassActions');
+import React from 'react';
+import ExistingSessions from './existingSessions.jsx';
+import GameSetupStore from './gameSetupStore';
+import JassActions from '../jassActions';
 
 module.exports = React.createClass({
 
-    hasSessions: function() {
-        return this.props.setupState.sessions && this.props.setupState.sessions.length;
-    },
-
-    joinExistingSession: function(sessionName) {
-        JassActions.joinExistingSession(sessionName);
-    },
-
-    joinExistingSessionAsSpectator: function(sessionName) {
-        JassActions.joinExistingSessionAsSpectator(sessionName);
-    },
-
-    createNewSession: function() {
+    createNewSession: function(event) {
         let inputElement = event.target,
             sessionName = inputElement.value;
 
@@ -29,23 +18,12 @@ module.exports = React.createClass({
     },
 
     render: function () {
-        let status = this.props.setupState.status,
-            sessions = this.props.setupState.sessions || [];
+        let status = this.props.setupState.status;
 
         return (
             <div id="chooseSession" className={(status !== GameSetupStore.GameSetupState.CHOOSE_SESSION ? 'hidden' : '')}>
                 <h1 className="jumbotron">Choose Session</h1>
-                <div className="session-choice">
-                    <ul className={(!this.hasSessions()) ? 'hidden' : ''}>
-                        {sessions.map(function(session) {
-                            return (
-                                <li key={session}>
-                                    <div onClick={this.joinExistingSession.bind(null, session)}>{session}</div>
-                                    <div  onClick={this.joinExistingSessionAsSpectator.bind(null, session)}>S</div>
-                                </li>);
-                        }.bind(this))}
-                    </ul>
-                </div>
+                <ExistingSessions sessions={this.props.setupState.sessions}></ExistingSessions>
                 <div className="session-choice">
                     <input type="text" name="createNewSession" placeholder="New Sessionname" onKeyPress={this.createNewSession}></input>
                 </div>
