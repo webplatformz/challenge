@@ -7,8 +7,7 @@
   },
   "scripts": {
     "test": "./node_modules/grunt-cli/bin/grunt test",
-    "start": "node ./build/server.js",
-    "postinstall": "./node_modules/grunt-cli/bin/grunt build",
+    "start": "./node_modules/grunt-cli/bin/grunt build; node ./build/server.js",
     "live": "./node_modules/grunt-cli/bin/grunt"
   },
   "dependencies": {
