@@ -23,7 +23,7 @@ let JassApp = React.createClass({
     },
 
     render: function() {
-        this.state = this.state || {};
+        this.state = this.state || JassAppStore.state;
 
         return (
             <main>

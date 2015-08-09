@@ -11,7 +11,7 @@ const TestUtils = React.addons.TestUtils;
 
 import GameSetup from '../../../client/js/gameSetup/gameSetup.jsx';
 
-describe('JassApp Component', () => {
+describe('GameSetup Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
 
