@@ -1,8 +1,8 @@
 'use strict';
 
-let React = require('react'),
-    CardType = require('./gameStore').CardType,
-    JassActions = require('../jassActions');
+import React from 'react';
+import {CardType} from './gameStore';
+import JassActions from '../jassActions';
 
 module.exports = React.createClass({
 
@@ -18,7 +18,7 @@ module.exports = React.createClass({
                         imagePath = '/images/trumpf/' + cardType;
 
                     return (
-                        <div>
+                        <div key={cardType}>
                             <a onClick={this.changeCardType.bind(null, cardType)}>
                                 <img src={imagePath + '/hearts.png'} />
                                 <img src={imagePath + '/diamonds.png'} />
