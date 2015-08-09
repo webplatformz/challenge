@@ -1,10 +1,10 @@
 'use strict';
 
-let EventEmitter = require('events').EventEmitter,
-    JassAppDispatcher = require('../jassAppDispatcher'),
-    JassAppConstants = require('../jassAppConstants');
+import {EventEmitter} from 'events';
+import JassAppDispatcher from '../jassAppDispatcher';
+import JassAppConstants from '../jassAppConstants';
 
-let GameState = {
+const GameState = {
     WAITING: 'WAITING',
     SESSION_STARTED: 'SESSION_STARTED',
     REQUESTING_TRUMPF: 'REQUESTING_TRUMPF',
@@ -15,46 +15,56 @@ let GameState = {
     STICH: 'STICH'
 };
 
-let CardType = {
+const CardType = {
     FRENCH: 'french',
     GERMAN: 'german'
+};
+
+const PlayerType = {
+    PLAYER: 'PLAYER',
+    SPECTATOR: 'SPECTATOR'
 };
 
 let player,
     nextStartingPlayerIndex = 0;
 
-let GameStore = Object.create(EventEmitter.prototype);
+let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
+    GameState,
+    CardType,
+    PlayerType,
 
-GameStore.GameState = GameState;
-GameStore.CardType = CardType;
+    state: {
+        playerType: PlayerType.PLAYER,
+        cardType: CardType.FRENCH,
+        players: [],
+        teams : [],
+        playerSeating: ['bottom', 'left', 'top', 'right'],
+        tableCards: [],
+        playerCards: [],
+        startingPlayerIndex: 0,
+        status: GameState.WAITING
+    },
 
-GameStore.state = {
-    cardType: CardType.FRENCH,
-    players: [],
-    teams : [],
-    playerSeating: ['bottom', 'left', 'top', 'right'],
-    tableCards: [],
-    playerCards: [],
-    startingPlayerIndex: 0,
-    status: GameState.WAITING
-};
+    emitChange: function() {
+        this.emit('change');
+    },
 
-GameStore.emitChange = function() {
-    this.emit('change');
-};
+    addChangeListener: function(callback) {
+        this.on('change', callback);
+    },
 
-GameStore.addChangeListener = function(callback) {
-    this.on('change', callback);
-};
-
-GameStore.removeChangeListener = function(callback) {
-    this.removeListener('change', callback);
-};
+    removeChangeListener: function(callback) {
+        this.removeListener('change', callback);
+    }
+});
 
 JassAppDispatcher.register(function (payload){
     let action = payload.action;
 
     switch(action.actionType) {
+        case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
+
+            break;
         case JassAppConstants.SESSION_JOINED:
             let playerSeating = GameStore.state.playerSeating,
                 playerIndex;

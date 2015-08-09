@@ -38,7 +38,11 @@ module.exports = React.createClass({
                     <TableCards cardType={state.cardType} cards={tableCards} startingPlayerIndex={state.startingPlayerIndex} playerSeating={state.playerSeating}></TableCards>
                     <Trumpf mode={state.mode} color={state.color} cardType={state.cardType}></Trumpf>
                 </div>
-                <PlayerCards cards={playerCards} cardType={state.cardType} state={state.status}></PlayerCards>
+                {(() => {
+                    if (state.playerType === GameStore.PlayerType.PLAYER) {
+                        return <PlayerCards cards={playerCards} cardType={state.cardType} state={state.status}></PlayerCards>;
+                    }
+                })()}
                 {(() => {
                     if (state.status === GameStore.GameState.REQUESTING_TRUMPF) {
                         return <RequestTrumpf isGeschoben={state.isGeschoben} cardType={state.cardType}></RequestTrumpf>;

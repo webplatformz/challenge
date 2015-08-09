@@ -1,11 +1,11 @@
 'use strict';
 
-let React = require('react'),
-    JassAppStore = require('./jassAppStore'),
-    ErrorToast = require('./error/errorToast.jsx'),
-    GameSetup = require('./gameSetup/gameSetup.jsx'),
-    JassTable = require('./game/jassTable.jsx'),
-    serverApi = require('./communication/serverApi');
+import React from 'react';
+import JassAppStore from './jassAppStore.js';
+import ErrorToast from './error/errorToast.jsx';
+import GameSetup from './gameSetup/gameSetup.jsx';
+import JassTable from './game/jassTable.jsx';
+import serverApi from './communication/serverApi';
 
 let JassApp = React.createClass({
 

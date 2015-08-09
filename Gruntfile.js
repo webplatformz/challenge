@@ -172,6 +172,7 @@ module.exports = function (grunt) {
             frontendTests: {
                 files: [
                     './client/**/*.js',
+                    './client/**/*.jsx',
                     './shared/**/*.js',
                     './test/client/**/*.js'
                 ],
