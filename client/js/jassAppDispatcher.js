@@ -1,28 +1,28 @@
 'use strict';
 
-let Dispatcher = require('flux').Dispatcher;
+const Dispatcher = require('flux').Dispatcher;
 
-let JassAppDispatcher = new Dispatcher();
+let JassAppDispatcher = Object.assign(new Dispatcher(), {
+    handleViewAction: function (action) {
+        this.dispatch({
+            source: 'VIEW_ACTION',
+            action: action
+        });
+    },
 
-JassAppDispatcher.handleViewAction = function(action) {
-    this.dispatch({
-        source: 'VIEW_ACTION',
-        action: action
-    });
-};
+    handleServerAction: function (action) {
+        this.dispatch({
+            source: 'SERVER_ACTION',
+            action: action
+        });
+    },
 
-JassAppDispatcher.handleServerAction = function(action) {
-    this.dispatch({
-        source: 'SERVER_ACTION',
-        action: action
-    });
-};
-
-JassAppDispatcher.throwErrorAction = function(action) {
-    this.dispatch({
-        source: action.source,
-        action: action
-    });
-};
+    throwErrorAction: function (action) {
+        this.dispatch({
+            source: action.source,
+            action: action
+        });
+    }
+});
 
 module.exports = JassAppDispatcher;

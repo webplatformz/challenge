@@ -108,6 +108,7 @@ module.exports = function (grunt) {
                 configFile: 'test/client/karma.conf.js',
                 options: {
                     files: [
+                        'build/client/js/+polyfills.js',
                         'build/test/client/**/*.js'
                     ],
                     exclude: ['build/test/client/karma.conf.js']

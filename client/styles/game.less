@@ -34,10 +34,12 @@
   @rotate: -8deg + 2 * @zeroBasedIndex;
 
   transform: translateX(@translateX) translateY(@translateY) rotate(@rotate);
+  -webkit-transform: translateX(@translateX) translateY(@translateY) rotate(@rotate);
 
   &:hover {
     @translateYHover: @translateY - 30%;
     transform: translateX(@translateX) translateY(@translateYHover) rotate(@rotate);
+    -webkit-transform: translateX(@translateX) translateY(@translateYHover) rotate(@rotate);
   }
 }
 
@@ -69,6 +71,7 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
 
     &> div {
       display: inline-block;
@@ -129,26 +132,32 @@
       top: 0;
       margin-left: 50%;
       transform: translateX(-50%) translateY(-100%) rotate(180deg);
+      -webkit-transform: translateX(-50%) translateY(-100%) rotate(180deg);
     }
 
     #player-right {
       right: 0;
       margin-top: 50%;
       transform: translateX(0%) translateY(-250%) rotate(-90deg);
+      -webkit-transform: translateX(0%) translateY(-250%) rotate(-90deg);
       transform-origin: top right;
+      -webkit-transform-origin: top right;
     }
 
     #player-bottom {
       bottom: 0;
       margin-left: 50%;
       transform: translateX(-50%) translateY(100%);
+      -webkit-transform: translateX(-50%) translateY(100%);
     }
 
     #player-left {
       left: 0;
       margin-top: 50%;
       transform: translateX(0%) translateY(-250%) rotate(90deg);
+      -webkit-transform: translateX(0%) translateY(-250%) rotate(90deg);
       transform-origin: top left;
+      -webkit-transform-origin: top left;
     }
 
     [class^="card-"] {
@@ -206,7 +215,8 @@
       height: auto;
 
       transition: transform .2s cubic-bezier(0.49, 0.82, 0.85, 1.26);
-      box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.5);
+      -webkit-transition: -webkit-transform .2s cubic-bezier(0.49, 0.82, 0.85, 1.26);
+      box-shadow: 0 -2px 10px 0 rgba(0, 0, 0, 0.5);
       border-radius: 5px;
     }
 
@@ -265,6 +275,7 @@
     top: 150px;
     left: 50%;
     transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
     text-align: center;
     width: 400px;
     padding: 20px;
