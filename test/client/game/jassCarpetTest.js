@@ -11,7 +11,7 @@ const TestUtils = React.addons.TestUtils;
 
 import JassCarpet from '../../../client/js/game/jassCarpet.jsx';
 
-describe('JassTable Component', () => {
+describe('JassCarpet Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
 
