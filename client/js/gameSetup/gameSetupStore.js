@@ -1,40 +1,40 @@
 'use strict';
 
-let EventEmitter = require('events').EventEmitter,
-    JassAppDispatcher = require('../jassAppDispatcher'),
-    JassAppConstants = require('../jassAppConstants');
+import {EventEmitter} from 'events';
+import JassAppDispatcher from '../jassAppDispatcher';
+import JassAppConstants from '../jassAppConstants';
 
-let GameSetupState = {
+const GameSetupState = {
     CONNECTING: 'CONNECTING',
     SET_PLAYER_NAME: 'SET_PLAYER_NAME',
     CHOOSE_SESSION: 'CHOOSE_SESSION',
     FINISHED: 'FINISHED'
 };
 
-let GameSetupStore = Object.create(EventEmitter.prototype);
+let GameSetupStore = Object.assign(Object.create(EventEmitter.prototype), {
+    GameSetupState,
 
-GameSetupStore.GameSetupState = GameSetupState;
+    state: {
+        status: GameSetupState.CONNECTING
+    },
 
-GameSetupStore.state = {
-    status:GameSetupState.CONNECTING
-};
+    emitChange: function () {
+        this.emit('change');
+    },
 
-GameSetupStore.emitChange = function() {
-    this.emit('change');
-};
+    addChangeListener: function (callback) {
+        this.on('change', callback);
+    },
 
-GameSetupStore.addChangeListener = function(callback) {
-    this.on('change', callback);
-};
+    removeChangeListener: function (callback) {
+        this.removeListener('change', callback);
+    }
+});
 
-GameSetupStore.removeChangeListener = function(callback) {
-    this.removeListener('change', callback);
-};
-
-JassAppDispatcher.register(function (payload){
+JassAppDispatcher.register(function (payload) {
     let action = payload.action;
 
-    switch(action.actionType) {
+    switch (action.actionType) {
         case JassAppConstants.REQUEST_PLAYER_NAME:
             GameSetupStore.state.status = GameSetupState.SET_PLAYER_NAME;
             GameSetupStore.emitChange();

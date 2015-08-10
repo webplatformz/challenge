@@ -8,11 +8,11 @@ describe('serverApi', () => {
 
     let serverApi = require('../../../client/js/communication/serverApi');
 
-    describe('initialization', () => {
+    describe('connect', () => {
         it('should connect to Server and register handleMessage/handleActions functions', () => {
             window.WebSocket = function () {};
-            let webSocket = sinon.spy(window, 'WebSocket');
-            let registerSpy = sinon.spy(JassAppDispatcher, 'register');
+            let webSocket = sinon.stub(window, 'WebSocket');
+            let registerSpy = sinon.stub(JassAppDispatcher, 'register');
 
             serverApi.connect();
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const Dispatcher = require('flux').Dispatcher;
+import {Dispatcher} from 'flux';
 
 let JassAppDispatcher = Object.assign(new Dispatcher(), {
     handleViewAction: function (action) {
