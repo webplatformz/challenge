@@ -7,6 +7,7 @@ import CardTypeSwitcher from '../../../client/js/game/cardTypeSwitcher.jsx';
 import JassCarpet from '../../../client/js/game/jassCarpet.jsx';
 import PlayerCards from '../../../client/js/game/playerCards.jsx';
 import RequestTrumpf from '../../../client/js/game/requestTrumpf.jsx';
+import SpectatorControls from '../../../client/js/game/spectatorControls.jsx';
 
 const TestUtils = React.addons.TestUtils;
 
@@ -29,11 +30,12 @@ describe('JassTable Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         let children = actual._store.props.children;
-        expect(children.length).to.equal(4);
+        expect(children.length).to.equal(5);
         expect(children[0].type).to.equal(CardTypeSwitcher);
         expect(children[1].type).to.equal(JassCarpet);
         expect(children[2].type).to.equal(PlayerCards);
         expect(children[3]).to.equal(undefined);
+        expect(children[4]).to.equal(undefined);
     });
 
     it('should render children when spectator', () => {
@@ -42,11 +44,12 @@ describe('JassTable Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         let children = actual._store.props.children;
-        expect(children.length).to.equal(4);
+        expect(children.length).to.equal(5);
         expect(children[0].type).to.equal(CardTypeSwitcher);
         expect(children[1].type).to.equal(JassCarpet);
         expect(children[2]).to.equal(undefined);
         expect(children[3]).to.equal(undefined);
+        expect(children[4].type).to.equal(SpectatorControls);
     });
 
     it('should pass correct properties to JassCarpet', () => {

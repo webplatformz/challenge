@@ -7,6 +7,7 @@ import CardTypeSwitcher from './cardTypeSwitcher.jsx';
 import PlayerCards from './playerCards.jsx';
 import RequestTrumpf from './requestTrumpf.jsx';
 import JassCarpet from './jassCarpet.jsx';
+import SpectatorControls from './spectatorControls.jsx';
 
 module.exports = React.createClass({
 
@@ -49,6 +50,11 @@ module.exports = React.createClass({
                 {(() => {
                     if (state.status === GameStore.GameState.REQUESTING_TRUMPF) {
                         return <RequestTrumpf isGeschoben={state.isGeschoben} cardType={state.cardType}></RequestTrumpf>;
+                    }
+                })()}
+                {(() => {
+                    if (state.playerType === GameStore.PlayerType.SPECTATOR) {
+                        return <SpectatorControls></SpectatorControls>;
                     }
                 })()}
             </div>
