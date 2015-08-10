@@ -15,6 +15,16 @@ describe('PlayerCards Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
 
+    let chooseCardSpy;
+
+    beforeEach(() => {
+        chooseCardSpy = sinon.spy(JassActions, 'chooseCard');
+    });
+
+    afterEach(() => {
+        JassActions.chooseCard.restore();
+    });
+
     it('should render a div element with id and no class when not requesting card', () => {
         shallowRenderer.render(React.createElement(PlayerCards));
         let actual = shallowRenderer.getRenderOutput();
@@ -130,8 +140,7 @@ describe('PlayerCards Component', () => {
                 ],
 
                 state: GameStore.GameState.REQUESTING_CARD
-            },
-            chooseCardSpy = sinon.spy(JassActions, 'chooseCard');
+            };
 
         shallowRenderer.render(React.createElement(PlayerCards, props));
         let actual = shallowRenderer.getRenderOutput();
@@ -141,4 +150,5 @@ describe('PlayerCards Component', () => {
         playCardFunction();
         expect(chooseCardSpy.withArgs(props.cards[0].color, props.cards[0].number).calledOnce).to.equal(true);
     });
+
 });
