@@ -26,7 +26,9 @@ const PlayerType = {
 };
 
 let player,
-    nextStartingPlayerIndex = 0;
+    nextStartingPlayerIndex = 0,
+    spectatorEventQueue = [],
+    spectatorRenderingIntervall = 500;
 
 let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
     GameState,
@@ -46,7 +48,11 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
     },
 
     emitChange: function() {
-        this.emit('change');
+        if(this.state.playerType === PlayerType.SPECTATOR) {
+            spectatorEventQueue.push('change');
+        } else {
+            this.emit('change');
+        }
     },
 
     addChangeListener: function(callback) {
@@ -55,6 +61,14 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 
     removeChangeListener: function(callback) {
         this.removeListener('change', callback);
+    },
+
+    spectatorRendering: function() {
+        var event = spectatorEventQueue.pop();
+        if (event) {
+            this.emit(event);
+        }
+        setTimeout(this.spectatorRendering.bind(GameStore), spectatorRenderingIntervall);
     }
 });
 
@@ -63,7 +77,9 @@ JassAppDispatcher.register(function (payload){
 
     switch(action.actionType) {
         case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
-            //TODO handle SPECTATOR view
+            GameStore.state.playerType = PlayerType.SPECTATOR;
+            GameStore.spectatorRendering();
+            GameStore.emitChange();
             break;
         case JassAppConstants.SESSION_JOINED:
             let playerSeating = GameStore.state.playerSeating,
