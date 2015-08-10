@@ -15,7 +15,7 @@ module.exports = React.createClass({
                 {cards.map((card, index) => {
                     let actPlayerIndex = (startingPlayerIndex + index) % 4;
                     return (
-                        <img key={card.color + '_' + card.number} className={'card-' + playerSeating[actPlayerIndex]} src={imagePath + card.color + '_' + card.number + '.gif'} />
+                        <img key={card.color + '_' + card.number} className={'card-' + playerSeating[actPlayerIndex]} src={imagePath + card.color.toLowerCase() + '_' + card.number + '.gif'} />
                     );
                 })}
             </div>
