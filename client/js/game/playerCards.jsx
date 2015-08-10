@@ -36,7 +36,7 @@ module.exports = React.createClass({
                     return colorIndices[a.color] - colorIndices[b.color] + a.number - b.number;
                 }).map((card) => {
                     return (
-                        <img key={card.color + '-' + card.number} src={'/images/cards/' + this.props.cardType + '/' + card.color + '_' + card.number + '.gif'}
+                        <img key={card.color + '-' + card.number} src={'/images/cards/' + this.props.cardType + '/' + card.color.toLowerCase() + '_' + card.number + '.gif'}
                             onClick={cardClick.bind(null, card.color, card.number)} />);
                 })}
             </div>

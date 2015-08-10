@@ -102,7 +102,7 @@ describe('PlayerCards Component', () => {
             let expectedCard = sortedCards[index];
 
             expect(actCard.key).to.equal(expectedCard.color + '-' + expectedCard.number);
-            expect(actCard._store.props.src).to.equal('/images/cards/' + GameStore.CardType.FRENCH + '/' + expectedCard.color + '_' + expectedCard.number + '.gif');
+            expect(actCard._store.props.src).to.equal('/images/cards/' + GameStore.CardType.FRENCH + '/' + expectedCard.color.toLowerCase() + '_' + expectedCard.number + '.gif');
             expect(actCard._store.props.onClick.__reactBoundMethod).to.equal(PlayerCards.prototype.playCard);
         });
     });
