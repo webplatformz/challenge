@@ -63,7 +63,7 @@ JassAppDispatcher.register(function (payload){
 
     switch(action.actionType) {
         case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
-
+            //TODO handle SPECTATOR view
             break;
         case JassAppConstants.SESSION_JOINED:
             let playerSeating = GameStore.state.playerSeating,

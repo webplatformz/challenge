@@ -1,13 +1,12 @@
 'use strict';
 
-let React = require('react'),
-    GameStore = require('./gameStore'),
-    CardTypeSwitcher = require('./cardTypeSwitcher.jsx'),
-    PlayerCards = require('./playerCards.jsx'),
-    TableCards = require('./tableCards.jsx'),
-    PlayerNames = require('./playerNames.jsx'),
-    RequestTrumpf = require('./requestTrumpf.jsx'),
-    Trumpf = require('./trumpf.jsx');
+
+import React from 'react';
+import GameStore from './gameStore';
+import CardTypeSwitcher from './cardTypeSwitcher.jsx';
+import PlayerCards from './playerCards.jsx';
+import RequestTrumpf from './requestTrumpf.jsx';
+import JassCarpet from './jassCarpet.jsx';
 
 module.exports = React.createClass({
 
@@ -24,7 +23,7 @@ module.exports = React.createClass({
     },
 
     render: function () {
-        let state = this.state || {},
+        let state = this.state || GameStore.state,
             players = state.players || [],
             playerSeating = state.playerSeating,
             playerCards = state.playerCards,
@@ -33,11 +32,15 @@ module.exports = React.createClass({
         return (
             <div id="jassTable">
                 <CardTypeSwitcher cardType={state.cardType}></CardTypeSwitcher>
-                <div id="jassCarpet">
-                    <PlayerNames players={players} playerSeating={playerSeating}></PlayerNames>
-                    <TableCards cardType={state.cardType} cards={tableCards} startingPlayerIndex={state.startingPlayerIndex} playerSeating={state.playerSeating}></TableCards>
-                    <Trumpf mode={state.mode} color={state.color} cardType={state.cardType}></Trumpf>
-                </div>
+                <JassCarpet
+                    cardType={state.cardType}
+                    players={players}
+                    playerSeating={playerSeating}
+                    cards={tableCards}
+                    startingPlayerIndex={state.startingPlayerIndex}
+                    mode={state.mode}
+                    color={state.color}>
+                </JassCarpet>
                 {(() => {
                     if (state.playerType === GameStore.PlayerType.PLAYER) {
                         return <PlayerCards cards={playerCards} cardType={state.cardType} state={state.status}></PlayerCards>;
