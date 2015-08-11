@@ -300,13 +300,22 @@
 
   #spectatorControls {
     position: absolute;
-    bottom: 50px;
+    bottom: 25px;
     left: 50%;
     transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
 
+    img {
+      width: 40px;
+      padding: 5px;
+      background-color: @white;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+
     input {
-      width: 150px;
+      margin: 0 10px;
+      width: 250px;
     }
   }
 }

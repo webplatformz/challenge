@@ -25,9 +25,9 @@ describe('SpectatorControls Component', () => {
         shallowRenderer.render(React.createElement(SpectatorControls));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.children.type).to.equal('input');
-        expect(actual._store.props.children._store.props.type).to.equal('range');
-        expect(actual._store.props.children._store.props.onChange.__reactBoundMethod).to.equal(SpectatorControls.prototype.handlePlayingSpeed);
+        expect(actual._store.props.children[1].type).to.equal('input');
+        expect(actual._store.props.children[1]._store.props.type).to.equal('range');
+        expect(actual._store.props.children[1]._store.props.onChange.__reactBoundMethod).to.equal(SpectatorControls.prototype.handlePlayingSpeed);
     });
 
     describe('handlePlayingSpeed', () => {
@@ -52,7 +52,7 @@ describe('SpectatorControls Component', () => {
             shallowRenderer.render(React.createElement(SpectatorControls));
             let actual = shallowRenderer.getRenderOutput();
 
-            actual._store.props.children._store.props.onChange(eventDummy);
+            actual._store.props.children[1]._store.props.onChange(eventDummy);
             expect(adjustSpectatorSpeedSpy.withArgs(eventDummy.target.value).calledOnce).to.equal(true);
         });
     });

@@ -12,7 +12,9 @@ module.exports = React.createClass({
     render: function() {
         return (
             <div id="spectatorControls">
-                <input id="playingSpeed" onChange={this.handlePlayingSpeed} type="range" min="50" max="1000" step="50" value="500"/>
+                <img src="/images/turtle.png" />
+                <input id="playingSpeed" onChange={this.handlePlayingSpeed} type="range" min="50" max="1000" step="50" />
+                <img src="/images/rabbit.png" />
             </div>
         );
     }
