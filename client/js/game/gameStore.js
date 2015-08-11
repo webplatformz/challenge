@@ -48,7 +48,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
     },
 
     emitChange: function(source) {
-        if(source === 'SERVER_ACTION' && this.state.playerType === PlayerType.SPECTATOR) {
+        if(source === JassAppDispatcher.Source.SERVER_ACTION && this.state.playerType === PlayerType.SPECTATOR) {
             spectatorEventQueue.push('change');
         } else {
             this.emit('change');

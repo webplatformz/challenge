@@ -2,13 +2,13 @@
 
 import {Dispatcher} from 'flux';
 
-const SOURCE = {
+const Source = {
     VIEW_ACTION: 'VIEW_ACTION',
     SERVER_ACTION: 'SERVER_ACTION'
 };
 
 let JassAppDispatcher = Object.assign(new Dispatcher(), {
-    SOURCE,
+    Source,
 
     handleViewAction: function (action) {
         this.dispatch({
