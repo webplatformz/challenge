@@ -81,6 +81,9 @@ JassAppDispatcher.register(function (payload){
             GameStore.spectatorRendering();
             GameStore.emitChange(payload.source);
             break;
+        case JassAppConstants.ADJUST_SPECTATOR_SPEED:
+            spectatorRenderingIntervall = action.data;
+            break;
         case JassAppConstants.SESSION_JOINED:
             let playerSeating = GameStore.state.playerSeating,
                 playerIndex;
