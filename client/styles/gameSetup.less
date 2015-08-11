@@ -63,6 +63,7 @@
       }
 
       li {
+        display: -webkit-flex;
         display: flex;
 
         &:hover {
@@ -70,6 +71,7 @@
         }
 
         div:first-child {
+          -webkit-flex-grow: 2;
           flex-grow: 2;
           padding: 20px;
           background-color: @white;
@@ -96,6 +98,10 @@
           }
         }
       }
+    }
+
+    input[type=text] {
+      max-width: 500px;
     }
   }
 
