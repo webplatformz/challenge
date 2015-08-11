@@ -5,6 +5,7 @@ import sinon from 'sinon';
 import GameStore from '../../../client/js/game/gameStore';
 import JassAppConstants from '../../../client/js/jassAppConstants';
 import JassAppDispatcher from '../../../client/js/jassAppDispatcher';
+import {CardColor} from '../../../shared/deck/card';
 
 describe('GameStore', () => {
 
@@ -75,5 +76,76 @@ describe('GameStore', () => {
 
         expect(GameStore.state.players).to.eql(dummyPayload.action.data.playersInSession);
         expect(GameStore.state.playerSeating).to.eql(['right', 'bottom', 'left', 'top']);
+
+        let dummyPayload2 = {
+            action: {
+                actionType: JassAppConstants.SESSION_JOINED,
+                data: {
+                    player: {
+                        name: 'Player 2',
+                        id: 2
+                    },
+                    playersInSession: [
+                        {
+                            name: 'Player 0',
+                            id: 0
+                        },
+                        {
+                            name: 'Player 1',
+                            id: 1
+                        },
+                        {
+                            name: 'Player 2',
+                            id: 2
+                        }
+                    ]
+                }
+            }
+        };
+
+        GameStore.handleAction(dummyPayload2);
+
+        expect(GameStore.state.players).to.eql(dummyPayload2.action.data.playersInSession);
+        expect(GameStore.state.playerSeating).to.eql(['right', 'bottom', 'left', 'top']);
     });
+
+    it('should filter cards on chooseCard', () => {
+        let dummyPayload = {
+            action: {
+                actionType: JassAppConstants.CHOOSE_CARD,
+                data: {
+                    color: CardColor.HEARTS,
+                    number: 9
+                }
+            }
+        };
+        GameStore.state.playerCards = [
+            {
+                color: CardColor.DIAMONDS,
+                number: 6
+            },
+            {
+                color: CardColor.HEARTS,
+                number: 9
+            },
+            {
+                color: CardColor.HEARTS,
+                number: 14
+            }
+        ];
+
+        GameStore.handleAction(dummyPayload);
+
+        expect(GameStore.state.playerCards).to.eql([
+            {
+                color: CardColor.DIAMONDS,
+                number: 6
+            },
+            {
+                color: CardColor.HEARTS,
+                number: 14
+            }
+        ]);
+    });
+
 });
