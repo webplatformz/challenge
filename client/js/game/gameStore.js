@@ -47,8 +47,8 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         status: GameState.WAITING
     },
 
-    emitChange: function() {
-        if(this.state.playerType === PlayerType.SPECTATOR) {
+    emitChange: function(source) {
+        if(source === 'SERVER_ACTION' && this.state.playerType === PlayerType.SPECTATOR) {
             spectatorEventQueue.push('change');
         } else {
             this.emit('change');
@@ -79,7 +79,7 @@ JassAppDispatcher.register(function (payload){
         case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
             GameStore.state.playerType = PlayerType.SPECTATOR;
             GameStore.spectatorRendering();
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.SESSION_JOINED:
             let playerSeating = GameStore.state.playerSeating,
@@ -97,58 +97,58 @@ JassAppDispatcher.register(function (payload){
             }
 
             GameStore.state.playerSeating = playerSeating.concat(playerSeating.splice(0, 4 - playerIndex));
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.BROADCAST_TEAMS:
             GameStore.state.status = GameState.SESSION_STARTED;
             GameStore.state.teams = action.data;
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.DEAL_CARDS:
             GameStore.state.playerCards = action.data;
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.REQUEST_TRUMPF:
             GameStore.state.status = GameState.REQUESTING_TRUMPF;
             GameStore.state.isGeschoben = action.data;
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.CHOOSE_TRUMPF:
             GameStore.state.status = GameState.TRUMPF_CHOSEN;
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.BROADCAST_TRUMPF:
             GameStore.state.status = GameState.TRUMPF_CHOSEN;
             GameStore.state.mode = action.data.mode;
             GameStore.state.color = action.data.trumpfColor;
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.CHANGE_CARD_TYPE:
             GameStore.state.cardType = action.data;
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.REQUEST_CARD:
             GameStore.state.status = GameState.REQUESTING_CARD;
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.CHOOSE_CARD:
             let chosenCard = action.data;
             GameStore.state.playerCards = GameStore.state.playerCards.filter((card) => {
                 return chosenCard.color !== card.color || chosenCard.number !== card.number;
             });
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.REJECT_CARD:
             let rejectedCard = action.data;
             GameStore.state.status = GameState.REJECTED_CARD;
             GameStore.state.playerCards.push(rejectedCard);
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.PLAYED_CARDS:
             GameStore.state.startingPlayerIndex = nextStartingPlayerIndex;
             GameStore.state.status = GameState.REQUESTING_CARDS_FROM_OTHER_PLAYERS;
             GameStore.state.tableCards = action.data;
-            GameStore.emitChange();
+            GameStore.emitChange(payload.source);
             break;
         case JassAppConstants.BROADCAST_STICH:
             let playerId = action.data.id,

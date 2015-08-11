@@ -1,11 +1,12 @@
 'use strict';
 
-let React = require('react');
+import React from 'react';
+import JassActions from '../jassActions';
 
 module.exports = React.createClass({
 
-    handlePlayingSpeed: function() {
-        //TODO add handling of range change
+    handlePlayingSpeed: function(event) {
+        JassActions.adjustSpectatorSpeed(event.target.value);
     },
 
     render: function() {

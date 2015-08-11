@@ -147,5 +147,12 @@ module.exports = {
             actionType: JassAppConstants.BROADCAST_STICH,
             data: stich
         });
+    },
+
+    adjustSpectatorSpeed: (speedInMs) => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.ADJUST_SPECTATOR_SPEED,
+            data: speedInMs
+        });
     }
 };
