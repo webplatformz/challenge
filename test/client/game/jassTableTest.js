@@ -17,6 +17,16 @@ describe('JassTable Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
 
+    let initialGameState;
+
+    beforeEach(() => {
+        initialGameState = GameStore.state;
+    });
+
+    afterEach(() => {
+        GameStore.state = initialGameState;
+    });
+
     it('should render a div element with id', () => {
         shallowRenderer.render(React.createElement(JassTable));
         let actual = shallowRenderer.getRenderOutput();
@@ -26,6 +36,8 @@ describe('JassTable Component', () => {
     });
 
     it('should render children when player', () => {
+        GameStore.state.playerType = GameStore.PlayerType.PLAYER;
+
         shallowRenderer.render(React.createElement(JassTable));
         let actual = shallowRenderer.getRenderOutput();
 
@@ -40,6 +52,7 @@ describe('JassTable Component', () => {
 
     it('should render children when spectator', () => {
         GameStore.state.playerType = GameStore.PlayerType.SPECTATOR;
+
         shallowRenderer.render(React.createElement(JassTable));
         let actual = shallowRenderer.getRenderOutput();
 
