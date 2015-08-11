@@ -167,6 +167,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 teams.forEach((team) => {
                     this.state.teams.forEach((stateTeam) => {
                         if (stateTeam.name === team.name) {
+                            stateTeam.points = team.points;
                             stateTeam.currentRoundPoints = team.currentRoundPoints;
                         }
                     });

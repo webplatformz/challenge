@@ -148,4 +148,73 @@ describe('GameStore', () => {
         ]);
     });
 
+    it('should calculate team points and set Player to start next turn', () => {
+        let dummyPayload = {
+            action: {
+                actionType: JassAppConstants.BROADCAST_STICH,
+                data: {
+                    "name" : "Player 1",
+                    "id" : 1,
+                    "playedCards" : [],
+                    "teams" : [
+                        {
+                            "name" : "Team 2",
+                            "points" : 157,
+                            "currentRoundPoints" : 0
+                        },
+                        {
+                            "name" : "Team 1",
+                            "points" : 0,
+                            "currentRoundPoints" : 42
+                        }
+                    ]
+                }
+            }
+        };
+        GameStore.state.players = [
+            {
+                name: 'Player 0',
+                id: 0
+            },
+            {
+                name: 'Player 1',
+                id: 1
+            },
+            {
+                name: 'Player 2',
+                id: 2
+            },
+            {
+                name: 'Player 3',
+                id: 3
+            }
+        ];
+        GameStore.state.teams = [
+            {
+                name: 'Team 1'
+            },
+            {
+                name: 'Team 2'
+            }
+        ];
+
+        GameStore.handleAction(dummyPayload);
+
+        expect(GameStore.state.status).to.equal(GameStore.GameState.STICH);
+        expect(GameStore.state.teams[0].points).to.equal(dummyPayload.action.data.teams[1].points);
+        expect(GameStore.state.teams[0].currentRoundPoints).to.equal(dummyPayload.action.data.teams[1].currentRoundPoints);
+        expect(GameStore.state.teams[1].points).to.equal(dummyPayload.action.data.teams[0].points);
+        expect(GameStore.state.teams[1].currentRoundPoints).to.equal(dummyPayload.action.data.teams[0].currentRoundPoints);
+
+        let dummyPayload2 = {
+            action: {
+                actionType: JassAppConstants.PLAYED_CARDS
+            }
+        };
+
+        GameStore.handleAction(dummyPayload2);
+
+        expect(GameStore.state.startingPlayerIndex).to.equal(1);
+    });
+
 });
