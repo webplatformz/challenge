@@ -1,5 +1,6 @@
 'use strict';
 
+import './polyfills';
 import React from 'react';
 
 let JassApp = require('./jassApp.jsx');
