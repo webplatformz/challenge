@@ -7,6 +7,7 @@ import CardTypeSwitcher from './cardTypeSwitcher.jsx';
 import PlayerCards from './playerCards.jsx';
 import RequestTrumpf from './requestTrumpf.jsx';
 import JassCarpet from './jassCarpet.jsx';
+import Points from './points.jsx';
 import SpectatorControls from './spectatorControls.jsx';
 
 module.exports = React.createClass({
@@ -42,6 +43,7 @@ module.exports = React.createClass({
                     mode={state.mode}
                     color={state.color}>
                 </JassCarpet>
+                <Points />
                 {(() => {
                     if (state.playerType === GameStore.PlayerType.PLAYER) {
                         return <PlayerCards cards={playerCards} cardType={state.cardType} state={state.status}></PlayerCards>;
