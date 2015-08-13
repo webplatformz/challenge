@@ -29,7 +29,7 @@ describe('GameStore', () => {
         expect(state.cardType).to.equal(GameStore.CardType.FRENCH);
         expect(state.players).to.eql([]);
         expect(state.teams).to.eql([]);
-        expect(state.playerSeating).to.eql(['bottom', 'left', 'top', 'right']);
+        expect(state.playerSeating).to.eql(['bottom', 'right', 'top', 'left']);
         expect(state.tableCards).to.eql([]);
         expect(state.playerCards).to.eql([]);
         expect(state.startingPlayerIndex).to.equal(0);
@@ -75,7 +75,7 @@ describe('GameStore', () => {
         GameStore.handleAction(dummyPayload);
 
         expect(GameStore.state.players).to.eql(dummyPayload.action.data.playersInSession);
-        expect(GameStore.state.playerSeating).to.eql(['right', 'bottom', 'left', 'top']);
+        expect(GameStore.state.playerSeating).to.eql(['left', 'bottom', 'right', 'top']);
 
         let dummyPayload2 = {
             action: {
@@ -106,7 +106,7 @@ describe('GameStore', () => {
         GameStore.handleAction(dummyPayload2);
 
         expect(GameStore.state.players).to.eql(dummyPayload2.action.data.playersInSession);
-        expect(GameStore.state.playerSeating).to.eql(['right', 'bottom', 'left', 'top']);
+        expect(GameStore.state.playerSeating).to.eql(['left', 'bottom', 'right', 'top']);
     });
 
     it('should filter cards on chooseCard', () => {

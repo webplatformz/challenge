@@ -40,7 +40,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         cardType: CardType.FRENCH,
         players: [],
         teams : [],
-        playerSeating: ['bottom', 'left', 'top', 'right'],
+        playerSeating: ['bottom', 'right', 'top', 'left'],
         tableCards: [],
         playerCards: [],
         startingPlayerIndex: 0,
