@@ -21,7 +21,7 @@ describe('PlayerNames Component', () => {
         expect(actual._store.props.id).to.equal('playerNames');
     });
 
-    it('should render a player div for each given player with the id where he sits', () => {
+    it('should render a player div for each given player with the id where he sits and no class', () => {
         let props = {
                 players: [
                     {
@@ -45,10 +45,37 @@ describe('PlayerNames Component', () => {
         let playerNameElements = actual._store.props.children;
         expect(Number(playerNameElements[0].key)).to.equal(props.players[0].id);
         expect(playerNameElements[0]._store.props.id).to.equal('player-' + props.playerSeating[0]);
+        expect(playerNameElements[0]._store.props.className).to.equal('');
         expect(playerNameElements[0]._store.props.children).to.equal(props.players[0].name);
         expect(Number(playerNameElements[1].key)).to.equal(props.players[1].id);
+        expect(playerNameElements[1]._store.props.className).to.equal('');
         expect(playerNameElements[1]._store.props.id).to.equal('player-' + props.playerSeating[1]);
         expect(playerNameElements[1]._store.props.children).to.equal(props.players[1].name);
+    });
+
+    it('should render a player div for each given player with the id where he sits and no class', () => {
+        let props = {
+            players: [
+                {
+                    id: 0,
+                    name: 'Player 1'
+                },
+                {
+                    id: 1,
+                    name: 'Player 2'
+                }
+            ],
+            playerSeating: [
+                'top',
+                'right'
+            ],
+            nextStartingPlayerIndex: 1
+        };
+
+        shallowRenderer.render(React.createElement(PlayerNames, props));
+        let actual = shallowRenderer.getRenderOutput();
+
+        expect(actual._store.props.children[1]._store.props.className).to.equal('active');
     });
 
 });
