@@ -93,6 +93,23 @@ describe('JassTable Component', () => {
         expect(jassCarpet._store.props.color).to.equal(GameStore.state.color);
     });
 
+    it('should pass correct properties to Points', () => {
+        GameStore.state.teams = [
+            {
+                name: 'Team 1'
+            },
+            {
+                name: 'Team 2'
+            }
+        ];
+
+
+        shallowRenderer.render(React.createElement(JassTable));
+        let actual = shallowRenderer.getRenderOutput();
+
+        let points = actual._store.props.children[2];
+        expect(points._store.props.teams).to.equal(GameStore.state.teams);
+    });
 
     it('should pass correct properties to PlayerCards', () => {
         GameStore.state.playerType = GameStore.PlayerType.PLAYER;
