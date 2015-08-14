@@ -318,4 +318,42 @@
       width: 250px;
     }
   }
+
+  #points {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    min-width: 100px;
+    min-height: 100px;
+    padding: 10px;
+    background-image: url("/images/chalkboard.jpg");
+
+    color: @white;
+    border: 1px solid @white;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    h3 {
+      border-bottom: 1px solid @white;
+      max-width: 300px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .current-round-points {
+      color: @yellow;
+    }
+
+    .total-points {
+      color: @red;
+    }
+
+    &:not(.shown) {
+      h3 {
+        margin: 10px 0 0;
+      }
+    }
+  }
 }
