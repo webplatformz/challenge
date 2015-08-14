@@ -9,7 +9,7 @@ let Player = require('../../../../server/game/player/player');
 let TestDataCreator = require('../../../testDataCreator');
 let sinon = require('sinon');
 let GameType = require('../../../../server/game/gameType');
-let GameMode = require('../../../../server/game/gameMode');
+let GameMode = require('../../../../shared/game/gameMode');
 let Deck = require('../../../../server/game/deck/deck');
 
 describe('Cycle', function () {

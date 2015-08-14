@@ -1,6 +1,6 @@
 'use strict';
 
-let GameMode = require('../gameMode');
+let GameMode = require('../../../shared/game/gameMode');
 let Card = require('../../../shared/deck/card');
 
 let StichGranter = {

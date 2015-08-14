@@ -1,0 +1,112 @@
+#gameSetup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+
+  padding-top: 100px;
+  text-align: center;
+  background-color: @blue-main;
+  color: @white;
+
+  transition: transform .5s ease-out;
+  -webkit-transition: -webkit-transform .5s ease-out;
+
+  .hidden {
+    display: none;
+  }
+
+  #connecting {
+    color: @white;
+  }
+
+  #chooseSession {
+    .session-choice {
+      margin-bottom: 20px;
+    }
+
+    ul {
+      max-width: 500px;
+      max-height: 300px;
+      overflow-y: scroll;
+      margin: 0 auto 20px;
+      padding: 0;
+      list-style: none;
+
+      border: 1px solid @grey;
+      border-radius: 10px;
+
+      li:first-child {
+        div:first-child {
+          border-top-left-radius: 10px;
+        }
+
+        div:last-child {
+          border-top-right-radius: 10px;
+        }
+      }
+
+      li:last-child {
+        div:first-child {
+          border-bottom-left-radius: 10px;
+        }
+
+        div:last-child {
+          border-bottom-right-radius: 10px;
+        }
+      }
+
+      li:not(:first-child) span {
+        border-top: 1px solid @grey;
+      }
+
+      li {
+        display: -webkit-flex;
+        display: flex;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        div:first-child {
+          -webkit-flex-grow: 2;
+          flex-grow: 2;
+          padding: 20px;
+          background-color: @white;
+          color: @grey;
+          font-size: 32pt;
+
+          &:hover {
+            background-color: @light-grey;
+            color: @white;
+          }
+        }
+
+        div:last-child {
+          background-color: @violet;
+          padding: 20px;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+          width: 80px;
+          font-size: 32pt;
+          text-align: center;
+
+          &:hover {
+            background-color: @dark-violet;
+          }
+        }
+      }
+    }
+
+    input[type=text] {
+      max-width: 500px;
+    }
+  }
+
+  &.finished {
+    transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+  }
+}

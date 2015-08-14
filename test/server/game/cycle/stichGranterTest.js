@@ -1,7 +1,7 @@
 "use strict";
 
 let assert = require("assert");
-let GameMode = require('../../../../server/game/gameMode');
+let GameMode = require('../../../../shared/game/gameMode');
 let StichGranter = require('../../../../server/game/cycle/stichGranter');
 let CardColor = require('../../../../shared/deck/card').CardColor;
 let Card = require('../../../../shared/deck/card');

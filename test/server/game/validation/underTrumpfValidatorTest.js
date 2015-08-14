@@ -3,7 +3,7 @@
 let assert      = require("assert"); // node.js core module
 let Card        = require('../../../../shared/deck/card');
 let UnderTrumpfValidator = require('../../../../server/game/validation/underTrumpfValidator');
-let GameMode = require('../../../../server/game/gameMode');
+let GameMode = require('../../../../shared/game/gameMode');
 
 
 describe('UnderTrumpf Validator', function () {

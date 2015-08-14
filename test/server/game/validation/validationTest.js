@@ -3,7 +3,7 @@
 let assert      = require("assert"); // node.js core module
 let Card        = require('../../../../shared/deck/card');
 let Validation  = require('../../../../server/game/validation/validation');
-let GameMode = require('../../../../server/game/gameMode');
+let GameMode = require('../../../../shared/game/gameMode');
 
 //let player      = require('../../../server/game/player/player').create();
 //let sinon       = require('sinon');

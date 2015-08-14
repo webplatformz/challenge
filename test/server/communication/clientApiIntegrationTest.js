@@ -8,7 +8,8 @@ let expect = require('chai').expect,
     SimpleBot = require('./SimpleBot');
 
 
-describe('Integration test', () => {
+describe('Integration test', function() {
+    this.timeout(5000);
 
     let server;
 

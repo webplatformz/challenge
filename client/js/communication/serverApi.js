@@ -1,0 +1,102 @@
+'use strict';
+
+const serverAddress = 'ws://' + window.location.host;
+
+let JassAppDispatcher = require('../jassAppDispatcher'),
+    JassAppConstants = require('../jassAppConstants'),
+    JassActions = require('../jassActions'),
+    messages = require('../../../shared/messages/messages'),
+    MessageType = require('../../../shared/messages/messageType'),
+    SessionChoice = require('../../../shared/game/sessionChoice');
+
+let webSocket;
+
+function sendJSONMessageToClient(messageType, ...data) {
+    webSocket.send(JSON.stringify(messages.create(messageType, ...data)));
+}
+
+let ServerApi = {
+    handleMessageFromServer: (messageEvent) => {
+        let message = JSON.parse(messageEvent.data);
+
+        switch(message.type) {
+            case MessageType.BAD_MESSAGE:
+                JassActions.throwError('SERVER', message.data);
+                break;
+            case MessageType.REQUEST_PLAYER_NAME.name:
+                JassActions.requestPlayerName();
+                break;
+            case MessageType.REQUEST_SESSION_CHOICE.name:
+                JassActions.requestSessionChoice(message.data);
+                break;
+            case MessageType.BROADCAST_SESSION_JOINED.name:
+                JassActions.sessionJoined(message.data);
+                break;
+            case MessageType.BROADCAST_TEAMS.name:
+                JassActions.broadcastTeams(message.data);
+                break;
+            case MessageType.DEAL_CARDS.name:
+                JassActions.dealCards(message.data);
+                break;
+            case MessageType.REQUEST_TRUMPF.name:
+                JassActions.requestTrumpf(message.data);
+                break;
+            case MessageType.BROADCAST_TRUMPF.name:
+                JassActions.broadastTrumpf(message.data);
+                break;
+            case MessageType.REQUEST_CARD.name:
+                JassActions.requestCard(message.data);
+                break;
+            case MessageType.REJECT_CARD.name:
+                JassActions.rejectCard(message.data);
+                break;
+            case MessageType.PLAYED_CARDS.name:
+                JassActions.playedCards(message.data);
+                break;
+            case MessageType.BROADCAST_STICH.name:
+                JassActions.broadcastStich(message.data);
+                break;
+        }
+    },
+    handleActionsFromUi: (payload) => {
+        if (payload.source === 'VIEW_ACTION') {
+            let action = payload.action;
+
+            switch (action.actionType) {
+                case JassAppConstants.CHOOSE_PLAYER_NAME:
+                    sendJSONMessageToClient(MessageType.CHOOSE_PLAYER_NAME.name, action.data);
+                    break;
+                case JassAppConstants.CHOOSE_EXISTING_SESSION:
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, action.data);
+                    break;
+                case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.SPECTATOR, action.data);
+                    break;
+                case JassAppConstants.CREATE_NEW_SESSION:
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, action.data);
+                    break;
+                case JassAppConstants.AUTOJOIN_SESSION:
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN);
+                    break;
+                case JassAppConstants.CHOOSE_TRUMPF:
+                    sendJSONMessageToClient(MessageType.CHOOSE_TRUMPF.name, action.data);
+                    break;
+                case JassAppConstants.CHOOSE_CARD:
+                    sendJSONMessageToClient(MessageType.CHOOSE_CARD.name, action.data);
+                    break;
+            }
+        }
+    },
+    handleErrorFromServer: () => {
+        JassActions.throwError('WEBSOCKET', 'The connection to the server has been lost!');
+    },
+
+    connect: () => {
+        webSocket = new WebSocket(serverAddress);
+        webSocket.onmessage = ServerApi.handleMessageFromServer;
+        webSocket.onerror = ServerApi.handleErrorFromServer;
+        JassAppDispatcher.register(ServerApi.handleActionsFromUi);
+    }
+};
+
+module.exports = ServerApi;

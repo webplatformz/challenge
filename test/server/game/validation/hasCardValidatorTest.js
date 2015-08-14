@@ -3,7 +3,7 @@
 let assert = require("assert"); // node.js core module
 let Card = require('../../../../shared/deck/card');
 let HasCardValidator = require('../../../../server/game/validation/hasCardValidator');
-let GameMode = require('../../../../server/game/gameMode');
+let GameMode = require('../../../../shared/game/gameMode');
 
 
 describe('Has card validator', function () {

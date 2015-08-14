@@ -1,6 +1,6 @@
 'use strict';
 let _ = require('underscore');
-let GameMode = require('../gameMode');
+let GameMode = require('../../../shared/game/gameMode');
 
 let validationSuccess = {
     permitted: true

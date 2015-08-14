@@ -1,0 +1,35 @@
+input[type=text] {
+  padding: 20px;
+  color: @grey;
+
+  font-size: 32pt;
+  border-radius: 10px;
+  border: 1px solid @white;
+  outline: none;
+  -webkit-appearance: none;
+
+  &:focus {
+    -webkit-box-shadow: 0 0 10px @white;
+    box-shadow: 0 0 10px @white;
+  }
+}
+
+button {
+  font-size: 32pt;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid @grey;
+  background-color: @white;
+  color: @grey;
+
+  cursor: pointer;
+
+  &:hover, &:focus, &:active {
+    background-color: @light-grey;
+    color: @white;
+  }
+}
+
+a:not([href]) {
+  cursor: pointer;
+}
