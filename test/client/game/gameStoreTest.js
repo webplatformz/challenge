@@ -33,6 +33,7 @@ describe('GameStore', () => {
         expect(state.tableCards).to.eql([]);
         expect(state.playerCards).to.eql([]);
         expect(state.startingPlayerIndex).to.equal(0);
+        expect(state.nextStartingPlayerIndex).to.equal(0);
         expect(state.status).to.equal(GameStore.GameState.WAITING);
     });
 
@@ -201,6 +202,8 @@ describe('GameStore', () => {
         GameStore.handleAction(dummyPayload);
 
         expect(GameStore.state.status).to.equal(GameStore.GameState.STICH);
+        expect(GameStore.state.startingPlayerIndex).to.equal(0);
+        expect(GameStore.state.nextStartingPlayerIndex).to.equal(1);
         expect(GameStore.state.teams[0].points).to.equal(dummyPayload.action.data.teams[1].points);
         expect(GameStore.state.teams[0].currentRoundPoints).to.equal(dummyPayload.action.data.teams[1].currentRoundPoints);
         expect(GameStore.state.teams[1].points).to.equal(dummyPayload.action.data.teams[0].points);
@@ -215,6 +218,7 @@ describe('GameStore', () => {
         GameStore.handleAction(dummyPayload2);
 
         expect(GameStore.state.startingPlayerIndex).to.equal(1);
+        expect(GameStore.state.nextStartingPlayerIndex).to.equal(1);
     });
 
 });

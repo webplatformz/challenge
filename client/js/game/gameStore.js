@@ -26,7 +26,6 @@ const PlayerType = {
 };
 
 let player,
-    nextStartingPlayerIndex = 0,
     spectatorEventQueue = [],
     spectatorRenderingIntervall = 500;
 
@@ -44,6 +43,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         tableCards: [],
         playerCards: [],
         startingPlayerIndex: 0,
+        nextStartingPlayerIndex: 0,
         status: GameState.WAITING
     },
 
@@ -147,7 +147,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 this.emitChange(payload.source);
                 break;
             case JassAppConstants.PLAYED_CARDS:
-                this.state.startingPlayerIndex = nextStartingPlayerIndex;
+                this.state.startingPlayerIndex = this.state.nextStartingPlayerIndex;
                 this.state.status = GameState.REQUESTING_CARDS_FROM_OTHER_PLAYERS;
                 this.state.tableCards = action.data;
                 this.emitChange(payload.source);
@@ -158,7 +158,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 this.state.status = GameState.STICH;
                 this.state.players.every((player, index) => {
                     if (player.id === playerId) {
-                        nextStartingPlayerIndex = index;
+                        this.state.nextStartingPlayerIndex = index;
                         return false;
                     }
 
