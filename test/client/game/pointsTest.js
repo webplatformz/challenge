@@ -12,7 +12,11 @@ describe('Points Component', () => {
     let shallowRenderer = TestUtils.createRenderer();
 
     it('should render a div with id', () => {
-        shallowRenderer.render(React.createElement(Points));
+        let props = {
+            teams: []
+        };
+
+        shallowRenderer.render(React.createElement(Points, props));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');

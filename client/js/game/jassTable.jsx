@@ -29,7 +29,8 @@ module.exports = React.createClass({
             players = state.players || [],
             playerSeating = state.playerSeating,
             playerCards = state.playerCards,
-            tableCards = state.tableCards || [];
+            tableCards = state.tableCards || [],
+            teams = state.teams || [];
 
         return (
             <div id="jassTable">
@@ -44,7 +45,7 @@ module.exports = React.createClass({
                     mode={state.mode}
                     color={state.color}>
                 </JassCarpet>
-                <Points teams={state.teams} />
+                <Points teams={teams} />
                 {(() => {
                     if (state.playerType === GameStore.PlayerType.PLAYER) {
                         return <PlayerCards cards={playerCards} cardType={state.cardType} state={state.status}></PlayerCards>;

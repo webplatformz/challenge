@@ -164,7 +164,6 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 
                     return true;
                 });
-                this.emitChange(payload.source);
                 teams.forEach((team) => {
                     this.state.teams.forEach((stateTeam) => {
                         if (stateTeam.name === team.name) {
@@ -173,6 +172,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                         }
                     });
                 });
+                this.emitChange(payload.source);
                 break;
         }
     }
