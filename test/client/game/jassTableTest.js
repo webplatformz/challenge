@@ -74,6 +74,7 @@ describe('JassTable Component', () => {
         GameStore.state.playerSeating = ['playerSeating'];
         GameStore.state.tableCards = ['card'];
         GameStore.state.startingPlayerIndex = 1;
+        GameStore.state.nextStartingPlayerIndex = 2;
         GameStore.state.mode = 'mode';
         GameStore.state.color = 'color';
 
@@ -87,6 +88,7 @@ describe('JassTable Component', () => {
         expect(jassCarpet._store.props.playerSeating).to.eql(GameStore.state.playerSeating);
         expect(jassCarpet._store.props.cards).to.eql(GameStore.state.tableCards);
         expect(jassCarpet._store.props.startingPlayerIndex).to.equal(GameStore.state.startingPlayerIndex);
+        expect(jassCarpet._store.props.nextStartingPlayerIndex).to.equal(GameStore.state.nextStartingPlayerIndex);
         expect(jassCarpet._store.props.mode).to.equal(GameStore.state.mode);
         expect(jassCarpet._store.props.color).to.equal(GameStore.state.color);
     });

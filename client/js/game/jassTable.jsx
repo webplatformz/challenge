@@ -40,6 +40,7 @@ module.exports = React.createClass({
                     playerSeating={playerSeating}
                     cards={tableCards}
                     startingPlayerIndex={state.startingPlayerIndex}
+                    nextStartingPlayerIndex={state.nextStartingPlayerIndex}
                     mode={state.mode}
                     color={state.color}>
                 </JassCarpet>

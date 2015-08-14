@@ -37,7 +37,8 @@ describe('JassCarpet Component', () => {
     it('should pass correct props to PlayerNames', () => {
         let props = {
             players: ['player1'],
-            playerSeating: ['playerSeating']
+            playerSeating: ['playerSeating'],
+            nextStartingPlayerIndex: 2
         };
 
         shallowRenderer.render(React.createElement(JassCarpet, props));
@@ -46,6 +47,7 @@ describe('JassCarpet Component', () => {
         let playerNames = actual._store.props.children[0];
         expect(playerNames._store.props.players).to.eql(props.players);
         expect(playerNames._store.props.playerSeating).to.eql(props.playerSeating);
+        expect(playerNames._store.props.nextStartingPlayerIndex).to.equal(props.nextStartingPlayerIndex);
     });
 
     it('should pass correct props to TableCards', () => {
