@@ -57,8 +57,12 @@ $ npm start
 ```
 
 ## TechStack
+- ECMA Script 6
 - NodeJs
 - Grunt
 - Mocha
+- Karma
 - Express
 - WebSockets
+- React
+- Flux
