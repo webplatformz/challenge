@@ -119,6 +119,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 break;
             case JassAppConstants.CHOOSE_TRUMPF:
                 this.state.status = GameState.TRUMPF_CHOSEN;
+                this.state.tableCards = [];
                 this.emitChange(payload.source);
                 break;
             case JassAppConstants.BROADCAST_TRUMPF:
