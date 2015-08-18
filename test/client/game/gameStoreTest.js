@@ -34,6 +34,8 @@ describe('GameStore', () => {
         expect(state.playerCards).to.eql([]);
         expect(state.startingPlayerIndex).to.equal(0);
         expect(state.nextStartingPlayerIndex).to.equal(0);
+        expect(state.roundPlayerIndex).to.equal(0);
+        expect(state.cyclesMade).to.equal(0);
         expect(state.status).to.equal(GameStore.GameState.WAITING);
     });
 
@@ -219,6 +221,65 @@ describe('GameStore', () => {
 
         expect(GameStore.state.startingPlayerIndex).to.equal(1);
         expect(GameStore.state.nextStartingPlayerIndex).to.equal(1);
+    });
+
+    it('should set next roundPlayer after 9 cycles', () => {
+        let dummyPayload = {
+            action: {
+                actionType: JassAppConstants.BROADCAST_STICH,
+                data: {
+                    "name" : "Player 1",
+                    "id" : 1,
+                    "playedCards" : [],
+                    "teams" : [
+                        {
+                            "name" : "Team 2",
+                            "points" : 157,
+                            "currentRoundPoints" : 0
+                        },
+                        {
+                            "name" : "Team 1",
+                            "points" : 0,
+                            "currentRoundPoints" : 42
+                        }
+                    ]
+                }
+            }
+        };
+        GameStore.state.players = [
+            {
+                name: 'Player 0',
+                id: 0
+            },
+            {
+                name: 'Player 1',
+                id: 1
+            },
+            {
+                name: 'Player 2',
+                id: 2
+            },
+            {
+                name: 'Player 3',
+                id: 3
+            }
+        ];
+        GameStore.state.teams = [
+            {
+                name: 'Team 1'
+            },
+            {
+                name: 'Team 2'
+            }
+        ];
+        GameStore.state.roundPlayerIndex = 3;
+        GameStore.state.cyclesMade = 8;
+
+        GameStore.handleAction(dummyPayload);
+
+        expect(GameStore.state.status).to.equal(GameStore.GameState.STICH);
+        expect(GameStore.state.roundPlayerIndex).to.equal(0);
+        expect(GameStore.state.nextStartingPlayerIndex).to.equal(0);
     });
 
 });

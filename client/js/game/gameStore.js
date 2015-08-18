@@ -38,32 +38,34 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         playerType: PlayerType.PLAYER,
         cardType: CardType.FRENCH,
         players: [],
-        teams : [],
+        teams: [],
         playerSeating: ['bottom', 'right', 'top', 'left'],
         tableCards: [],
         playerCards: [],
         startingPlayerIndex: 0,
         nextStartingPlayerIndex: 0,
+        roundPlayerIndex: 0,
+        cyclesMade: 0,
         status: GameState.WAITING
     },
 
-    emitChange: function(source) {
-        if(source === JassAppDispatcher.Source.SERVER_ACTION && this.state.playerType === PlayerType.SPECTATOR) {
+    emitChange: function (source) {
+        if (source === JassAppDispatcher.Source.SERVER_ACTION && this.state.playerType === PlayerType.SPECTATOR) {
             spectatorEventQueue.push('change');
         } else {
             this.emit('change');
         }
     },
 
-    addChangeListener: function(callback) {
+    addChangeListener: function (callback) {
         this.on('change', callback);
     },
 
-    removeChangeListener: function(callback) {
+    removeChangeListener: function (callback) {
         this.removeListener('change', callback);
     },
 
-    spectatorRendering: function() {
+    spectatorRendering: function () {
         var event = spectatorEventQueue.pop();
         if (event) {
             this.emit(event);
@@ -71,10 +73,10 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         setTimeout(this.spectatorRendering.bind(GameStore), spectatorRenderingIntervall);
     },
 
-    handleAction: function(payload) {
+    handleAction: function (payload) {
         let action = payload.action;
 
-        switch(action.actionType) {
+        switch (action.actionType) {
             case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
                 this.state.playerType = PlayerType.SPECTATOR;
                 this.spectatorRendering();
@@ -156,14 +158,23 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 let playerId = action.data.id,
                     teams = action.data.teams;
                 this.state.status = GameState.STICH;
-                this.state.players.every((player, index) => {
-                    if (player.id === playerId) {
-                        this.state.nextStartingPlayerIndex = index;
-                        return false;
-                    }
+                this.state.cyclesMade++;
 
-                    return true;
-                });
+                if (this.state.cyclesMade === 9) {
+                    this.state.cyclesMade = 0;
+                    this.state.roundPlayerIndex = ++this.state.roundPlayerIndex % 4;
+                    this.state.nextStartingPlayerIndex = this.state.roundPlayerIndex;
+                } else {
+                    this.state.players.every((player, index) => {
+                        if (player.id === playerId) {
+                            this.state.nextStartingPlayerIndex = index;
+                            return false;
+                        }
+
+                        return true;
+                    });
+                }
+
                 teams.forEach((team) => {
                     this.state.teams.forEach((stateTeam) => {
                         if (stateTeam.name === team.name) {

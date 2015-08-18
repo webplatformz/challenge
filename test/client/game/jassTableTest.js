@@ -77,6 +77,7 @@ describe('JassTable Component', () => {
         GameStore.state.nextStartingPlayerIndex = 2;
         GameStore.state.mode = 'mode';
         GameStore.state.color = 'color';
+        GameStore.state.roundPlayerIndex = 0;
 
 
         shallowRenderer.render(React.createElement(JassTable));
@@ -91,6 +92,7 @@ describe('JassTable Component', () => {
         expect(jassCarpet._store.props.nextStartingPlayerIndex).to.equal(GameStore.state.nextStartingPlayerIndex);
         expect(jassCarpet._store.props.mode).to.equal(GameStore.state.mode);
         expect(jassCarpet._store.props.color).to.equal(GameStore.state.color);
+        expect(jassCarpet._store.props.roundPlayerIndex).to.equal(GameStore.state.roundPlayerIndex);
     });
 
     it('should pass correct properties to Points', () => {

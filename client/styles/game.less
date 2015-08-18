@@ -117,7 +117,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
 
-      color: white;
+      color: @white;
       background-color: @turquoise;
       text-align: center;
       border-radius: 0 0 5px 5px;
@@ -125,6 +125,22 @@
 
       &.active {
         background-color: @blue-main;
+      }
+
+      object {
+        display: none;
+      }
+
+      &.round-player {
+        padding-right: 30px;
+
+        object {
+          display: block;
+          position: absolute;
+          height: 18px;
+          right: 8px;
+          top: 10px;
+        }
       }
     }
 

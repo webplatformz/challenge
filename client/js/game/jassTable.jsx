@@ -43,7 +43,8 @@ module.exports = React.createClass({
                     startingPlayerIndex={state.startingPlayerIndex}
                     nextStartingPlayerIndex={state.nextStartingPlayerIndex}
                     mode={state.mode}
-                    color={state.color}>
+                    color={state.color}
+                    roundPlayerIndex={state.roundPlayerIndex}>
                 </JassCarpet>
                 <Points teams={teams} />
                 {(() => {
