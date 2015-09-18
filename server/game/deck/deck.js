@@ -1,6 +1,6 @@
 'use strict';
 
-let _ = require('underscore');
+let _ = require('lodash');
 let Card = require('./../../../shared/deck/card');
 
 let cards = _.map(_.range(36), function(element, index) {

@@ -1,5 +1,5 @@
 'use strict';
-let _ = require('underscore');
+let _ = require('lodash');
 
 let HasCardValidator = {
     validate: function (validationParameter) {

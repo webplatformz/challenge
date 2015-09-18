@@ -1,5 +1,5 @@
 'use strict';
-let _ = require('underscore');
+let _ = require('lodash');
 let HandCardValidator = require('./hasCardValidator');
 let AngebenValidator = require('./angebenValidator');
 let UnderTrumpfValidator = require('./underTrumpfValidator');
