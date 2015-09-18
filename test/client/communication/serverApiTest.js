@@ -10,14 +10,14 @@ describe('serverApi', () => {
 
     describe('connect', () => {
         it('should connect to Server and register handleMessage/handleActions functions', () => {
-            window.WebSocket = function () {};
-            let webSocket = sinon.stub(window, 'WebSocket');
+            let webSocketSpy = sinon.spy();
             let registerSpy = sinon.stub(JassAppDispatcher, 'register');
+            window.WebSocket = webSocketSpy;
 
             serverApi.connect();
 
-            expect(webSocket.calledWithNew()).to.equal(true);
-            expect(webSocket.calledWith('ws://' + window.location.host)).to.equal(true);
+            expect(webSocketSpy.calledWithNew()).to.equal(true);
+            expect(webSocketSpy.calledWith('ws://' + window.location.host)).to.equal(true);
             expect(registerSpy.calledWith(serverApi.handleActionsFromUi)).to.equal(true);
         });
     });
