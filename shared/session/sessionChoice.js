@@ -7,6 +7,4 @@ const SessionChoice = {
     SPECTATOR: 'SPECTATOR'
 };
 
-Object.freeze(SessionChoice);
-
 module.exports = SessionChoice;
