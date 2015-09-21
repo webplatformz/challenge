@@ -1,11 +1,11 @@
 'use strict';
 
 import ClientApi from '../communication/clientApi.js';
-import Game from './../game/game.js';
-import Player from './../game/player/player.js';
-import Team from './../game/player/team.js';
+import Game from '../game/game.js';
+import Player from '../game/player/player.js';
+import Team from '../game/player/team.js';
 import CloseEventCode from '../communication/closeEventCode.js';
-import SessionType from './../../shared/session/sessionType.js';
+import SessionType from '../../shared/session/sessionType.js';
 
 function createTeamsArrayForClient(session) {
     return session.teams.map((team) => {
@@ -26,6 +26,7 @@ function createTeamsArrayForClient(session) {
 let Session = {
     maxPoints: 2500,
     startingPlayer: 0,
+    type: SessionType.SINGLE_GAME,
 
     addPlayer: function addPlayer(webSocket, playerName) {
         let team = this.teams[this.players.length % 2];
@@ -116,11 +117,10 @@ let Session = {
     }
 };
 
-let create = function create(name, type) {
+let create = function create(name) {
     let session = Object.create(Session);
     session.players = [];
     session.name = name;
-    session.type = type || SessionType.SINGLE_GAME;
     session.teams = [
         Team.create('Team 1'),
         Team.create('Team 2')

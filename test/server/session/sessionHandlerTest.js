@@ -3,7 +3,7 @@
 import sinon from 'sinon';
 import {expect} from 'chai';
 import ClientApi from '../../../server/communication/clientApi.js';
-import JassSession from '../../../server/session/session.js';
+import SingleGameSession from '../../../server/session/singleGameSession.js';
 import SessionChoice from '../../../shared/session/sessionChoice.js';
 import sessionHandler from '../../../server/session/sessionHandler.js';
 import CloseEventCode from '../../../server/communication/closeEventCode.js';
@@ -24,18 +24,13 @@ describe('sessionHandler', () => {
 
         beforeEach(() => {
             clientApiMock = sinon.mock(Object.getPrototypeOf(ClientApi.create()));
-            jassSessionFactoryMock = sinon.mock(JassSession);
+            jassSessionFactoryMock = sinon.mock(SingleGameSession);
             session = {
-                addPlayer: () => {
-                },
-                isComplete: () => {
-                },
-                start: () => {
-                },
-                handlePlayerLeft: () => {
-                },
-                addSpectator: () => {
-                }
+                addPlayer: () => {},
+                isComplete: () => {},
+                start: () => {},
+                handlePlayerLeft: () => {},
+                addSpectator: () => {}
             };
             sessionMock = sinon.mock(session);
             webSocket = {

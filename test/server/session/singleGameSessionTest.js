@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 import sinon from 'sinon';
-import Session from '../../../server/session/session.js';
+import SingleGameSession from '../../../server/session/singleGameSession.js';
 import ClientApi from '../../../server/communication/clientApi.js';
 import Game from '../../../server/game/game.js';
 import TestDataCreator from '../../testDataCreator.js';
@@ -15,7 +15,7 @@ describe('Session', function () {
         clientApiMock;
 
     beforeEach(() => {
-        session = Session.create('TestSession');
+        session = SingleGameSession.create('TestSession');
         clientApiMock = sinon.mock(session.clientApi);
         fourPlayers = TestDataCreator.createPlayers(clientApiMock);
     });

@@ -1,8 +1,9 @@
 'use strict';
 
 import ClientApi from '../communication/clientApi.js';
-import JassSession from './session.js';
+import SessionFactory from './sessionFactory.js';
 import SessionChoice from '../../shared/session/sessionChoice.js';
+import SessionType from '../../shared/session/sessionType.js';
 import UUID from 'uuid';
 
 let clientApi = ClientApi.create();
@@ -14,7 +15,8 @@ function findOrCreateSessionWithSpace(sessions) {
 
     if (filteredSessions.length === 0) {
         return createSession(sessions, {
-            sessionName: UUID.v4()
+            sessionName: UUID.v4(),
+            sessionType: SessionType.SINGLE_GAME
         });
     }
 
@@ -22,7 +24,7 @@ function findOrCreateSessionWithSpace(sessions) {
 }
 
 function createSession(sessions, sessionChoiceResponse) {
-    let session = JassSession.create(sessionChoiceResponse.sessionName, sessionChoiceResponse.sessionType);
+    let session = SessionFactory.create(sessionChoiceResponse.sessionName, sessionChoiceResponse.sessionType);
     sessions.push(session);
     return session;
 }
