@@ -5,6 +5,4 @@ const GameMode = {
     SCHIEBE: "SCHIEBE"
 };
 
-Object.freeze(GameMode);
-
 module.exports = GameMode;

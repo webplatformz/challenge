@@ -7,8 +7,6 @@ const CardColor = {
     SPADES: "SPADES"
 };
 
-Object.freeze(CardColor);
-
 let Card = {
     equals: function(otherCard) {
         return this.number === otherCard.number && this.color === otherCard.color;
