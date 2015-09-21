@@ -72,9 +72,9 @@ describe('Session', function () {
 
         it('should broadcast session joined', () => {
             let sessionPlayer = {
-                    id: 0,
-                    name: 'name'
-                };
+                id: 0,
+                name: 'name'
+            };
 
             clientApiMock.expects('broadcastSessionJoined').once().withArgs(session.name, sessionPlayer, [sessionPlayer]);
             clientApiMock.expects('addClient').once().returns(Promise.resolve());
@@ -84,18 +84,23 @@ describe('Session', function () {
             clientApiMock.verify();
         });
 
-        it('should close session and return rejected Promise', (done) => {
-            var rejectedPromise = Promise.reject();
+        it('should close session if player left', (done) => {
+            var rejectedPromise = Promise.reject({
+                code: 0,
+                message: 'message'
+            });
 
             clientApiMock.expects('broadcastSessionJoined').once();
             clientApiMock.expects('addClient').once().returns(rejectedPromise);
+            clientApiMock.expects('broadcastWinnerTeam').once();
+            clientApiMock.expects('closeAll').once();
 
-            let promise = session.addPlayer('webSocket', 'playerName');
+            session.addPlayer('webSocket', 'playerName');
 
-            promise.catch(() => {
+            setTimeout(() => {
                 clientApiMock.verify();
                 done();
-            }).catch(done);
+            }, 1);
         });
     });
 
@@ -213,6 +218,7 @@ describe('Session', function () {
 
             gameFactoryMock.expects('create').exactly(3).returns(game);
             clientApiMock.expects('broadcastWinnerTeam').once();
+            clientApiMock.expects('closeAll').once();
 
             session.players = fourPlayers;
 
@@ -228,8 +234,12 @@ describe('Session', function () {
 
     describe('close', () => {
         it('should close all client connections', () => {
-            clientApiMock.expects('closeAll').once().withArgs(CloseEventCode.NORMAL, 'Game Finished');
-            session.close();
+            var code = CloseEventCode.NORMAL;
+            var message = 'Game Finished';
+            clientApiMock.expects('closeAll').once().withArgs(code, message);
+
+            session.close(code, message);
+
             clientApiMock.verify();
         });
     });

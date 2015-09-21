@@ -37,9 +37,8 @@ let Session = {
             rejectTrumpf: this.clientApi.rejectTrumpf.bind(this.clientApi, webSocket)
         });
 
-        let clientPromise = this.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
+        this.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
             this.handlePlayerLeft(player, code, message);
-            return Promise.reject();
         });
 
         this.players.push(player);
@@ -49,15 +48,13 @@ let Session = {
                 id: player.id,
                 name: player.name
             },
-            this.players.map(function(player) {
+            this.players.map(function (player) {
                 return {
                     id: player.id,
                     name: player.name
                 };
             })
         );
-
-        return clientPromise;
     },
 
     addSpectator: function addSpectator(webSocket) {
@@ -79,7 +76,10 @@ let Session = {
 
         this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
 
-        return this.gameCycle();
+        return this.gameCycle().then((winningTeam) => {
+            this.close(CloseEventCode.NORMAL, 'Game Finished');
+            return winningTeam;
+        });
     },
 
     gameCycle: function gameCycle(nextStartingPlayer = this.getNextStartingPlayer()) {
@@ -102,8 +102,8 @@ let Session = {
         });
     },
 
-    close: function close() {
-        this.clientApi.closeAll(CloseEventCode.NORMAL, 'Game Finished');
+    close: function close(code, message) {
+        this.clientApi.closeAll(code, message);
     },
 
     handlePlayerLeft: function handlePlayerLeft(player, code, message) {
@@ -112,7 +112,7 @@ let Session = {
         })[0];
 
         this.clientApi.broadcastWinnerTeam(team);
-        this.clientApi.closeAll(code, message);
+        this.close(code, message);
     }
 };
 

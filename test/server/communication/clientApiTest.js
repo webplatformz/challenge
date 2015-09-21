@@ -45,7 +45,7 @@ describe('Client API', () => {
             expect(clientApi.clients[0]).to.equal(webSocket);
         });
 
-        it('should return promise which rejects on client close event', (done) => {
+        it('should reject promise and remove client on close event', (done) => {
             let disconnectMessage = 'message';
             sinon.stub(webSocket, 'on').withArgs('close', sinon.match.func).callsArgWith(1, CloseEventCode.NORMAL, disconnectMessage);
 
@@ -56,6 +56,7 @@ describe('Client API', () => {
             }, ({code: code, message: message}) => {
                 expect(code).to.equal(CloseEventCode.NORMAL);
                 expect(message).to.equal(disconnectMessage);
+                expect(clientApi.clients).to.have.length(0);
                 done();
             }).catch(done);
         });

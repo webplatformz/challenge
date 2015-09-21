@@ -1,9 +1,9 @@
 'use strict';
 
-let messages = require('../../shared/messages/messages'),
-    MessageType = require('../../shared/messages/messageType'),
-    clientCommunication = require('./clientCommunication'),
-    validate = require('validate.js');
+import messages from '../../shared/messages/messages';
+import MessageType from '../../shared/messages/messageType';
+import clientCommunication from './clientCommunication';
+import validate from 'validate.js';
 
 function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {
     let messageObject = clientCommunication.fromJSON(message);
@@ -30,6 +30,9 @@ let ClientApi = {
 
         return new Promise((resolve, reject) => {
             client.on('close', (code, message) => {
+                this.clients = this.clients.filter((actClient) => {
+                    return actClient !== client;
+                });
                 reject({code, message});
             });
         });

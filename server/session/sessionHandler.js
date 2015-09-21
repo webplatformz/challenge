@@ -85,17 +85,14 @@ let SessionHandler = {
                 if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR) {
                     session.addSpectator(ws);
                 } else {
-                    session.addPlayer(ws, playerName).catch(() => {
-                        removeSession(this.sessions, session);
-                    });
+                    session.addPlayer(ws, playerName);
 
                     if (session.isComplete()) {
                         session.start().then(() => {
-                            //TODO let bots restart the session
-                            session.close();
                             removeSession(this.sessions, session);
                         }).catch((error) => {
                             console.log(error);
+                            removeSession(this.sessions, session);
                         });
                     }
                 }

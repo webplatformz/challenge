@@ -32,8 +32,6 @@ describe('sessionHandler', () => {
                 },
                 start: () => {
                 },
-                close: () => {
-                },
                 handlePlayerLeft: () => {
                 },
                 addSpectator: () => {
@@ -60,7 +58,7 @@ describe('sessionHandler', () => {
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({}));
 
             jassSessionFactoryMock.expects('create').withArgs(uuidMatcher).once().returns(session);
-            sessionMock.expects('addPlayer').once().returns(Promise.resolve());
+            sessionMock.expects('addPlayer').once();
             sessionMock.expects('isComplete').once().returns(false);
 
             let promise = sessionHandler.handleClientConnection(webSocket);
@@ -83,7 +81,7 @@ describe('sessionHandler', () => {
             }));
 
             jassSessionFactoryMock.expects('create').withArgs(sessionName).once().returns(session);
-            sessionMock.expects('addPlayer').once().returns(Promise.resolve());
+            sessionMock.expects('addPlayer').once();
             sessionMock.expects('isComplete').once().returns(false);
 
             let promise = sessionHandler.handleClientConnection(webSocket);
@@ -105,7 +103,7 @@ describe('sessionHandler', () => {
 
             session.name = sessionName;
             jassSessionFactoryMock.expects('create').withArgs(sessionName).once().returns(session);
-            sessionMock.expects('addPlayer').twice().returns(Promise.resolve());
+            sessionMock.expects('addPlayer').twice();
             sessionMock.expects('isComplete').exactly(4).returns(false);
 
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, [sessionName]).returns(Promise.resolve({
@@ -132,7 +130,7 @@ describe('sessionHandler', () => {
 
             session.name = sessionName;
             jassSessionFactoryMock.expects('create').withArgs(sessionName).once().returns(session);
-            sessionMock.expects('addPlayer').twice().returns(Promise.resolve());
+            sessionMock.expects('addPlayer').twice();
             sessionMock.expects('isComplete').exactly(4).returns(false);
 
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, [sessionName]).returns(Promise.resolve({}));
@@ -178,10 +176,9 @@ describe('sessionHandler', () => {
             jassSessionFactoryMock.expects('create').withArgs(sessionName).once().returns(session);
 
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({}));
-            sessionMock.expects('addPlayer').twice().returns(Promise.resolve());
+            sessionMock.expects('addPlayer').twice();
             sessionMock.expects('isComplete').once().returns(true);
             sessionMock.expects('start').once().returns(Promise.resolve({name: 'team'}));
-            sessionMock.expects('close').once();
 
             jassSessionFactoryMock.expects('create').withArgs(uuidMatcher).once().returns(session);
             sessionMock.expects('isComplete').once().returns(false);
@@ -194,35 +191,6 @@ describe('sessionHandler', () => {
                     jassSessionFactoryMock.verify();
                     sessionMock.verify();
                     done();
-                });
-            }).catch(done);
-        });
-
-
-        it('should handle a leaving client', (done) => {
-            let playerName = 'playerName',
-                rejectedPromise = Promise.reject();
-
-            clientApiMock.expects('requestPlayerName').twice().returns(Promise.resolve('playerName'));
-            clientApiMock.expects('requestSessionChoice').twice().returns(Promise.resolve({}));
-
-            jassSessionFactoryMock.expects('create').withArgs(uuidMatcher).once().returns(session);
-            sessionMock.expects('addPlayer').once().returns(Promise.resolve());
-            sessionMock.expects('addPlayer').once().returns(rejectedPromise);
-            sessionMock.expects('isComplete').exactly(4).returns(false);
-
-
-            sessionHandler.handleClientConnection(webSocket).then(() => {
-                expect(sessionHandler.sessions.length).to.equal(1);
-
-                return sessionHandler.handleClientConnection(webSocket).then(() => {
-                    return rejectedPromise.catch(() => {
-                        expect(sessionHandler.sessions.length).to.equal(0);
-                        clientApiMock.verify();
-                        jassSessionFactoryMock.verify();
-                        sessionMock.verify();
-                        done();
-                    });
                 });
             }).catch(done);
         });
