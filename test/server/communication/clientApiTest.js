@@ -1,18 +1,19 @@
 'use strict';
 
-let expect = require('chai').expect,
-    WebSocket = require('ws'),
-    WebSocketServer = require('ws').Server,
-    ClientApi = require('../../../server/communication/clientApi'),
-    GameType = require('../../../server/game/gameType'),
-    GameMode = require('../../../shared/game/gameMode'),
-    CardColor = require('../../../shared/deck/card').CardColor,
-    TestDataCreator = require('../../testDataCreator'),
-    CloseEventCode = require('../../../server/communication/closeEventCode'),
-    sinon = require('sinon'),
-    messages = require('../../../shared/messages/messages'),
-    MessageType = require('../../../shared/messages/messageType'),
-    SessionChoice = require('../../../shared/game/sessionChoice');
+import {expect} from 'chai';
+import WebSocket from 'ws';
+import ClientApi from '../../../server/communication/clientApi.js';
+import GameType from '../../../server/game/gameType.js';
+import GameMode from '../../../shared/game/gameMode.js';
+import {CardColor} from '../../../shared/deck/card.js';
+import TestDataCreator from '../../testDataCreator.js';
+import CloseEventCode from '../../../server/communication/closeEventCode.js';
+import sinon from 'sinon';
+import messages from '../../../shared/messages/messages.js';
+import MessageType from '../../../shared/messages/messageType.js';
+import SessionChoice from '../../../shared/session/sessionChoice.js';
+
+let WebSocketServer = WebSocket.Server;
 
 describe('Client API', () => {
 

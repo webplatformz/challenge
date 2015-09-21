@@ -1,12 +1,12 @@
 'use strict';
 
-let sinon = require('sinon');
-let expect = require('chai').expect;
-let ClientApi = require('../../../server/communication/clientApi');
-let JassSession = require('../../../server/game/session');
-let SessionChoice = require('../../../shared/game/sessionChoice');
-let sessionHandler = require('../../../server/game/sessionHandler');
-let CloseEventCode = require('../../../server/communication/closeEventCode');
+import sinon from 'sinon';
+import {expect} from 'chai';
+import ClientApi from '../../../server/communication/clientApi.js';
+import JassSession from '../../../server/session/session.js';
+import SessionChoice from '../../../shared/session/sessionChoice.js';
+import sessionHandler from '../../../server/session/sessionHandler.js';
+import CloseEventCode from '../../../server/communication/closeEventCode.js';
 
 let uuidMatcher = sinon.match((name) => {
     return name.length === 36;

@@ -1,30 +1,32 @@
 'use strict';
 
-let port = process.env.PORT || 3000;
+import express from 'express';
+import http from 'http';
+import {Server} from 'ws';
 
-let express = require('express');
+const port = process.env.PORT || 3000;
+
 let app = express();
-let server = require('http').createServer(app);
-let WebSocketServer = require('ws').Server;
-let wss = new WebSocketServer({
-    server
+let httpServer = http.createServer(app);
+let webSocketServer = new Server({
+    server: httpServer
 });
 
-let sessionHandler = require('./server/game/sessionHandler');
+let sessionHandler = require('./server/session/sessionHandler');
 
 app.use(express.static(__dirname + '/client'));
 
-wss.on('connection', (ws) => {
+webSocketServer.on('connection', (ws) => {
     sessionHandler.handleClientConnection(ws);
 });
 
-server.listen(port, () => {
-    console.info('Server listening on port:', server.address().port);
+httpServer.listen(port, () => {
+    console.info('Server listening on port:', httpServer.address().port);
 });
 
 module.exports = {
     close: function () {
         sessionHandler.resetInstance();
-        server.close();
+        httpServer.close();
     }
 };

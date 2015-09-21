@@ -1,10 +1,11 @@
 'use strict';
 
-let SessionChoice = require('../game/sessionChoice'),
-    GameMode = require('../game/gameMode'),
-    CardColor = require('../deck/card').CardColor;
+import SessionChoice from '../session/sessionChoice.js';
+import GameMode from '../game/gameMode.js';
+import {CardColor} from '../deck/card.js';
+import SessionType from '../session/sessionType.js';
 
-module.exports = {
+const MessageType = {
     REQUEST_PLAYER_NAME: {
         name: 'REQUEST_PLAYER_NAME'
     },
@@ -113,6 +114,11 @@ module.exports = {
                 length: {
                     minimum: 1
                 }
+            },
+            'data.sessionType': {
+                inclusion: {
+                    within: SessionType
+                }
             }
         }
     },
@@ -123,3 +129,5 @@ module.exports = {
         name: 'BAD_MESSAGE'
     }
 };
+
+module.exports = MessageType;

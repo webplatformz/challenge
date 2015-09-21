@@ -1,13 +1,13 @@
 'use strict';
 
-let expect = require('chai').expect;
-let Session = require('../../../server/game/session');
-let ClientApi = require('../../../server/communication/clientApi');
-let Game = require('../../../server/game/game');
-let TestDataCreator = require('../../testDataCreator');
-let sinon = require('sinon');
-let CloseEventCode = require('../../../server/communication/closeEventCode');
-let SessionType = require('../../../server/game/sessionType');
+import {expect} from 'chai';
+import sinon from 'sinon';
+import Session from '../../../server/session/session.js';
+import ClientApi from '../../../server/communication/clientApi.js';
+import Game from '../../../server/game/game.js';
+import TestDataCreator from '../../testDataCreator.js';
+import CloseEventCode from '../../../server/communication/closeEventCode.js';
+import SessionType from '../../../shared/session/sessionType.js';
 
 describe('Session', function () {
     let session,
@@ -74,13 +74,6 @@ describe('Session', function () {
             let sessionPlayer = {
                     id: 0,
                     name: 'name'
-                },
-                sessionBroadcast = {
-                    sessionName: session.name,
-                    player: sessionPlayer,
-                    playersInSession: [
-                        sessionPlayer
-                    ]
                 };
 
             clientApiMock.expects('broadcastSessionJoined').once().withArgs(session.name, sessionPlayer, [sessionPlayer]);

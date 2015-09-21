@@ -1,11 +1,11 @@
 'use strict';
 
-let ClientApi = require('../communication/clientApi');
-let Game = require('./game');
-let Player = require('./player/player');
-let Team = require('./player/team');
-let CloseEventCode = require('../communication/closeEventCode');
-let SessionType = require('./sessionType');
+import ClientApi from '../communication/clientApi.js';
+import Game from './../game/game.js';
+import Player from './../game/player/player.js';
+import Team from './../game/player/team.js';
+import CloseEventCode from '../communication/closeEventCode.js';
+import SessionType from './../../shared/session/sessionType.js';
 
 function createTeamsArrayForClient(session) {
     return session.teams.map((team) => {

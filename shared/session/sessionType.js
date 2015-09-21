@@ -5,6 +5,4 @@ const SessionType = {
     TOURNAMENT: 'TOURNAMENT'
 };
 
-Object.freeze(SessionType);
-
 module.exports = SessionType;

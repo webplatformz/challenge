@@ -1,17 +1,18 @@
 'use strict';
 
-let WebSocket = require('ws'),
-    WebSocketServer = require('ws').Server,
-    ClientApi = require('../../../server/communication/clientApi'),
-    GameType = require('../../../server/game/gameType'),
-    GameMode = require('../../../shared/game/gameMode'),
-    Card = require('../../../shared/deck/card'),
-    CardColor = Card.CardColor,
-    Validation = require('../../../server/game/validation/validation'),
-    messages = require('../../../shared/messages/messages'),
-    MessageType = require('../../../shared/messages/messageType'),
-    SessionChoice = require('../../../shared/game/sessionChoice'),
-    expect = require('chai').expect;
+import WebSocket from 'ws';
+import ClientApi from '../../../server/communication/clientApi';
+import GameType from '../../../server/game/gameType';
+import GameMode from '../../../shared/game/gameMode';
+import Card from '../../../shared/deck/card';
+import Validation from '../../../server/game/validation/validation';
+import messages from '../../../shared/messages/messages';
+import MessageType from '../../../shared/messages/messageType';
+import SessionChoice from '../../../shared/session/sessionChoice';
+import {expect} from 'chai';
+
+let WebSocketServer = WebSocket.Server,
+    {CardColor} = Card;
 
 let SimpleBot = {
     gameType: GameType.create(GameMode.TRUMPF, CardColor.SPADES),

@@ -1,9 +1,11 @@
 'use strict';
 
-let clientApi = require('../communication/clientApi').create();
-let JassSession = require('./session');
-let SessionChoice = require('../../shared/game/sessionChoice');
-let UUID = require('uuid');
+import ClientApi from '../communication/clientApi.js';
+import JassSession from './session.js';
+import SessionChoice from '../../shared/session/sessionChoice.js';
+import UUID from 'uuid';
+
+let clientApi = ClientApi.create();
 
 function findOrCreateSessionWithSpace(sessions) {
     let filteredSessions = sessions.filter((element) => {
@@ -20,7 +22,7 @@ function findOrCreateSessionWithSpace(sessions) {
 }
 
 function createSession(sessions, sessionChoiceResponse) {
-    let session = JassSession.create(sessionChoiceResponse.sessionName);
+    let session = JassSession.create(sessionChoiceResponse.sessionName, sessionChoiceResponse.sessionType);
     sessions.push(session);
     return session;
 }

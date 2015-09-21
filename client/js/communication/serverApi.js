@@ -1,13 +1,13 @@
 'use strict';
 
-const serverAddress = 'ws://' + window.location.host;
+import JassAppDispatcher from '../jassAppDispatcher.js';
+import JassAppConstants from '../jassAppConstants.js';
+import JassActions from '../jassActions.js';
+import messages from '../../../shared/messages/messages.js';
+import MessageType from '../../../shared/messages/messageType.js';
+import SessionChoice from '../../../shared/session/sessionChoice.js';
 
-let JassAppDispatcher = require('../jassAppDispatcher'),
-    JassAppConstants = require('../jassAppConstants'),
-    JassActions = require('../jassActions'),
-    messages = require('../../../shared/messages/messages'),
-    MessageType = require('../../../shared/messages/messageType'),
-    SessionChoice = require('../../../shared/game/sessionChoice');
+const serverAddress = 'ws://' + window.location.host;
 
 let webSocket;
 
