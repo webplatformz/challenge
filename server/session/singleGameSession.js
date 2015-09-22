@@ -29,6 +29,7 @@ let Session = {
     type: SessionType.SINGLE_GAME,
     gamePromise: undefined,
     finishGame: undefined,
+    started: false,
 
     addPlayer: function addPlayer(webSocket, playerName) {
         let team = this.teams[this.players.length % 2];
@@ -81,6 +82,7 @@ let Session = {
 
         this.gamePromise = new Promise((resolve) => {
             this.finishGame = resolve;
+            this.started = true;
 
             this.gameCycle().then((winningTeam) => {
                 this.close(CloseEventCode.NORMAL, 'Game Finished');
@@ -121,7 +123,9 @@ let Session = {
         })[0];
 
         this.clientApi.broadcastWinnerTeam(team);
-        this.finishGame(team);
+        if (this.started) {
+            this.finishGame(team);
+        }
         this.close(code, message);
     }
 };

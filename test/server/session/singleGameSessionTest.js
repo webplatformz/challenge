@@ -247,6 +247,7 @@ describe('Session', function () {
         it('should broadcast opposite team as winners', () => {
             let code = CloseEventCode.ABNORMAL,
                 message = 'message';
+            session.started = true;
             session.finishGame = sinon.spy();
 
             clientApiMock.expects('broadcastWinnerTeam').once().withArgs(fourPlayers[1].team);
