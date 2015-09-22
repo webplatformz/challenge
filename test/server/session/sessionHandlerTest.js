@@ -190,5 +190,4 @@ describe('sessionHandler', () => {
             }).catch(done);
         });
     });
-})
-;
+});

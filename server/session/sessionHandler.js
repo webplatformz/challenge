@@ -65,6 +65,7 @@ function keepSessionAlive(webSocket, intervall) {
     }
 }
 
+
 let SessionHandler = {
 
     sessions: [],
@@ -90,15 +91,19 @@ let SessionHandler = {
                     session.addPlayer(ws, playerName);
 
                     if (session.isComplete()) {
-                        session.start().then(() => {
-                            removeSession(this.sessions, session);
-                        }).catch((error) => {
-                            console.log(error);
-                            removeSession(this.sessions, session);
-                        });
+                        this.startSession(session);
                     }
                 }
             });
+        });
+    },
+
+    startSession: function startSession(session) {
+        session.start().then(() => {
+            removeSession(this.sessions, session);
+        }).catch((error) => {
+            console.log(error);
+            removeSession(this.sessions, session);
         });
     },
 
