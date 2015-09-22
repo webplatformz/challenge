@@ -45,7 +45,7 @@ let TournamentSession = {
     },
 
     close: function close(code, message) {
-
+        this.clientApi.closeAll(code, message);
     }
 };
 

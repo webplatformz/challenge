@@ -7,6 +7,18 @@ import CloseEventCode from '../../../server/communication/closeEventCode.js';
 
 describe('tournamentSession', () => {
 
+    let session,
+        clientApiMock;
+
+    beforeEach(() => {
+        session = TournamentSession.create('sessionName');
+        clientApiMock = sinon.mock(session.clientApi);
+    });
+
+    afterEach(() => {
+        clientApiMock.restore();
+    });
+
     describe('create', () => {
         it('should initialize name and players', () => {
             let sessionName = 'sessionName';
@@ -21,19 +33,8 @@ describe('tournamentSession', () => {
 
     describe('addPlayer', () => {
 
-        let session,
-            clientApiMock,
-            playerName = 'playerName',
+        let playerName = 'playerName',
             webSocket = 'webSocket';
-
-        beforeEach(() => {
-            session = TournamentSession.create('sessionName');
-            clientApiMock = sinon.mock(session.clientApi);
-        });
-
-        afterEach(() => {
-            clientApiMock.restore();
-        });
 
         it('should add player to clientApi and player array', () => {
             clientApiMock.expects('addClient').withArgs(webSocket).once();
@@ -82,19 +83,6 @@ describe('tournamentSession', () => {
     });
 
     describe('addSpectator', () => {
-
-        let session,
-            clientApiMock;
-
-        beforeEach(() => {
-            session = TournamentSession.create('sessionName');
-            clientApiMock = sinon.mock(session.clientApi);
-        });
-
-        afterEach(() => {
-            clientApiMock.restore();
-        });
-
         it('should add spectator to clientapi', () => {
             let webSocket = 'webSocket';
             clientApiMock.expects('addClient').withArgs(webSocket).once();
@@ -111,6 +99,20 @@ describe('tournamentSession', () => {
 
             expect(session.spectators).to.have.length(1);
             expect(session.spectators[0]).to.equal(webSocket);
+        });
+    });
+
+    describe('close', () => {
+        it('should call clientapi closeAll', () => {
+            let webSocket = 'webSocket',
+                message = 'message',
+                code = 'code';
+
+            clientApiMock.expects('closeAll').withArgs(code, message).once();
+
+            session.close(code, message);
+
+            clientApiMock.verify();
         });
     });
 });
