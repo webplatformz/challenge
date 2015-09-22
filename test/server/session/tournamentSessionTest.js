@@ -80,4 +80,37 @@ describe('tournamentSession', () => {
             clientApiMock.verify();
         });
     });
+
+    describe('addSpectator', () => {
+
+        let session,
+            clientApiMock;
+
+        beforeEach(() => {
+            session = TournamentSession.create('sessionName');
+            clientApiMock = sinon.mock(session.clientApi);
+        });
+
+        afterEach(() => {
+            clientApiMock.restore();
+        });
+
+        it('should add spectator to clientapi', () => {
+            let webSocket = 'webSocket';
+            clientApiMock.expects('addClient').withArgs(webSocket).once();
+
+            session.addSpectator(webSocket);
+
+            clientApiMock.verify();
+        });
+
+        it('should add spectator to spectator array', () => {
+            let webSocket = 'webSocket';
+
+            session.addSpectator(webSocket);
+
+            expect(session.spectators).to.have.length(1);
+            expect(session.spectators[0]).to.equal(webSocket);
+        });
+    });
 });

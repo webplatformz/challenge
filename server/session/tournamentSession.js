@@ -32,7 +32,8 @@ let TournamentSession = {
     },
 
     addSpectator: function (webSocket) {
-
+        this.clientApi.addClient(webSocket);
+        this.spectators.push(webSocket);
     },
 
     isComplete: function () {
