@@ -8,12 +8,19 @@ import {polyfill} from 'babel';
 let TournamentSession = {
     type: SessionType.TOURNAMENT,
 
-    addPlayer: function (webSocket, playerName) {
-        this.clientApi.addClient(webSocket);
+    handleLeavingClient: function (playerName) {
+        let player = this.getPlayer(playerName);
 
-        let player = this.players.find((actPlayer) => {
-            return actPlayer.playerName === playerName;
+        player.connected = false;
+        player.clients.forEach((actClient) => {
+            this.clientApi.removeClient(actClient, CloseEventCode.ABNORMAL, 'One of the clients of this player disconnected');
         });
+    },
+
+    addPlayer: function (webSocket, playerName) {
+        this.clientApi.addClient(webSocket).catch(this.handleLeavingClient.bind(this, playerName));
+
+        let player = this.getPlayer(playerName);
 
         if (player) {
             if (player.clients.length < 2) {
@@ -24,11 +31,18 @@ let TournamentSession = {
         } else {
             this.players.push({
                 playerName,
+                connected: true,
                 clients: [
                     webSocket
                 ]
             });
         }
+    },
+
+    getPlayer: function (playerName) {
+        return this.players.find((actPlayer) => {
+            return actPlayer.playerName === playerName;
+        });
     },
 
     addSpectator: function (webSocket) {

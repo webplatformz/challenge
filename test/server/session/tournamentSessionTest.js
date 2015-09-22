@@ -37,7 +37,7 @@ describe('tournamentSession', () => {
             webSocket = 'webSocket';
 
         it('should add player to clientApi and player array', () => {
-            clientApiMock.expects('addClient').withArgs(webSocket).once();
+            clientApiMock.expects('addClient').withArgs(webSocket).once().returns(Promise.resolve());
 
             session.addPlayer(webSocket, playerName);
 
@@ -49,6 +49,7 @@ describe('tournamentSession', () => {
 
             expect(session.players[0]).to.eql({
                 playerName,
+                connected: true,
                 clients: [
                     webSocket
                 ]
@@ -62,11 +63,28 @@ describe('tournamentSession', () => {
             expect(session.players).to.have.length(1);
             expect(session.players[0]).to.eql({
                 playerName,
+                connected: true,
                 clients: [
                     webSocket,
                     webSocket
                 ]
             });
+        });
+
+        it('should close connections and mark player offline when one of its clients disconnects', (done) => {
+            let rejectedPromise = Promise.reject();
+            clientApiMock.expects('addClient').withArgs(webSocket).once().returns(Promise.resolve());
+            clientApiMock.expects('addClient').withArgs(webSocket).once().returns(rejectedPromise);
+            clientApiMock.expects('removeClient').withArgs(webSocket, CloseEventCode.ABNORMAL, sinon.match.string).twice();
+
+            session.addPlayer(webSocket, playerName);
+            session.addPlayer(webSocket, playerName);
+
+            rejectedPromise.catch(() => {
+                expect(session.players[0].connected).to.equal(false);
+                clientApiMock.verify();
+                done();
+            }).catch(done);
         });
 
         it('should not add client to already existing playerName with two clients', () => {
