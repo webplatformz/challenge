@@ -4,7 +4,6 @@ import ClientApi from '../communication/clientApi.js';
 import Game from '../game/game.js';
 import Player from '../game/player/player.js';
 import Team from '../game/player/team.js';
-import CloseEventCode from '../communication/closeEventCode.js';
 import SessionType from '../../shared/session/sessionType.js';
 
 function createTeamsArrayForClient(session) {
@@ -29,6 +28,7 @@ let Session = {
     type: SessionType.SINGLE_GAME,
     gamePromise: undefined,
     finishGame: undefined,
+    cancelGame: undefined,
     started: false,
 
     addPlayer: function addPlayer(webSocket, playerName) {
@@ -80,12 +80,12 @@ let Session = {
 
         this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
 
-        this.gamePromise = new Promise((resolve) => {
+        this.gamePromise = new Promise((resolve, reject) => {
             this.finishGame = resolve;
+            this.cancelGame = reject;
             this.started = true;
 
             this.gameCycle().then((winningTeam) => {
-                this.close(CloseEventCode.NORMAL, 'Game Finished');
                 resolve(winningTeam);
             });
         });
@@ -105,10 +105,12 @@ let Session = {
                 this.clientApi.broadcastWinnerTeam(this.teams[0]);
                 return this.teams[0];
             }
+
             if (pointsTeamB > pointsTeamA && pointsTeamB >= this.maxPoints) {
                 this.clientApi.broadcastWinnerTeam(this.teams[1]);
                 return this.teams[1];
             }
+
             return this.gameCycle(this.getNextStartingPlayer());
         });
     },
@@ -118,15 +120,17 @@ let Session = {
     },
 
     handlePlayerLeft: function handlePlayerLeft(player, code, message) {
+        console.error('Player left. ' + code + ': ' + message);
+
         let team = this.teams.filter((team) => {
             return team.name !== player.team.name;
         })[0];
 
         this.clientApi.broadcastWinnerTeam(team);
+
         if (this.started) {
-            this.finishGame(team);
+            this.cancelGame(team);
         }
-        this.close(code, message);
     }
 };
 

@@ -217,7 +217,6 @@ describe('Session', function () {
 
             gameFactoryMock.expects('create').exactly(3).returns(game);
             clientApiMock.expects('broadcastWinnerTeam').once();
-            clientApiMock.expects('closeAll').once();
 
             session.players = fourPlayers;
 
@@ -248,15 +247,14 @@ describe('Session', function () {
             let code = CloseEventCode.ABNORMAL,
                 message = 'message';
             session.started = true;
-            session.finishGame = sinon.spy();
+            session.cancelGame = sinon.spy();
 
             clientApiMock.expects('broadcastWinnerTeam').once().withArgs(fourPlayers[1].team);
-            clientApiMock.expects('closeAll').once().withArgs(code, message);
 
             session.handlePlayerLeft(fourPlayers[0], code, message);
 
             clientApiMock.verify();
-            expect(session.finishGame.calledOnce).to.equal(true);
+            expect(session.cancelGame.calledOnce).to.equal(true);
         });
     });
 

@@ -5,6 +5,7 @@ import SessionFactory from './sessionFactory.js';
 import SessionChoice from '../../shared/session/sessionChoice.js';
 import SessionType from '../../shared/session/sessionType.js';
 import UUID from 'uuid';
+import CloseEventCode from '../communication/closeEventCode.js';
 
 let clientApi = ClientApi.create();
 
@@ -99,12 +100,14 @@ let SessionHandler = {
     },
 
     startSession: function startSession(session) {
-        session.start().then(() => {
-            removeSession(this.sessions, session);
-        }).catch((error) => {
-            console.log(error);
-            removeSession(this.sessions, session);
-        });
+        session.start().then(
+            this.finishSession.bind(this, session, CloseEventCode.NORMAL),
+            this.finishSession.bind(this, session, CloseEventCode.ABNORMAL));
+    },
+
+    finishSession: function finishSession(session, code) {
+        session.close(code, 'Game Finished');
+        removeSession(this.sessions, session);
     },
 
     resetInstance: function resetInstance() {

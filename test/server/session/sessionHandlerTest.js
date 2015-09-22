@@ -29,6 +29,7 @@ describe('sessionHandler', () => {
                 addPlayer: () => {},
                 isComplete: () => {},
                 start: () => {},
+                close: () => {},
                 handlePlayerLeft: () => {},
                 addSpectator: () => {}
             };
@@ -174,12 +175,13 @@ describe('sessionHandler', () => {
             sessionMock.expects('addPlayer').twice();
             sessionMock.expects('isComplete').once().returns(true);
             sessionMock.expects('start').once().returns(Promise.resolve({name: 'team'}));
+            sessionMock.expects('close').once();
 
             jassSessionFactoryMock.expects('create').withArgs(uuidMatcher).once().returns(session);
             sessionMock.expects('isComplete').once().returns(false);
 
             sessionHandler.handleClientConnection(webSocket).then(() => {
-                expect(sessionHandler.sessions.length).to.equal(0);
+                expect(sessionHandler.sessions).to.have.length(0);
 
                 return sessionHandler.handleClientConnection(webSocket).then(() => {
                     clientApiMock.verify();
