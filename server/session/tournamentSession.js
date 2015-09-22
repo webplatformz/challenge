@@ -27,6 +27,7 @@ module.exports = {
         let session = Object.create(TournamentSession);
         session.name = sessionName;
         session.players = [];
+        session.spectators = [];
         return session;
     }
 };

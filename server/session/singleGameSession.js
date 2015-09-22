@@ -27,6 +27,8 @@ let Session = {
     maxPoints: 2500,
     startingPlayer: 0,
     type: SessionType.SINGLE_GAME,
+    gamePromise: undefined,
+    finishGame: undefined,
 
     addPlayer: function addPlayer(webSocket, playerName) {
         let team = this.teams[this.players.length % 2];
@@ -77,10 +79,16 @@ let Session = {
 
         this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
 
-        return this.gameCycle().then((winningTeam) => {
-            this.close(CloseEventCode.NORMAL, 'Game Finished');
-            return winningTeam;
+        this.gamePromise = new Promise((resolve) => {
+            this.finishGame = resolve;
+
+            this.gameCycle().then((winningTeam) => {
+                this.close(CloseEventCode.NORMAL, 'Game Finished');
+                resolve(winningTeam);
+            });
         });
+
+        return this.gamePromise;
     },
 
     gameCycle: function gameCycle(nextStartingPlayer = this.getNextStartingPlayer()) {
@@ -113,6 +121,7 @@ let Session = {
         })[0];
 
         this.clientApi.broadcastWinnerTeam(team);
+        this.finishGame(team);
         this.close(code, message);
     }
 };

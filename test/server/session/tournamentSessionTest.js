@@ -12,6 +12,7 @@ describe('tournamentSession', () => {
 
             expect(session.name).to.equal(sessionName);
             expect(session.players).to.eql([]);
+            expect(session.spectators).to.eql([]);
         });
     });
 });
