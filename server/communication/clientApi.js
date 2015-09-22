@@ -4,6 +4,7 @@ import messages from '../../shared/messages/messages';
 import MessageType from '../../shared/messages/messageType';
 import clientCommunication from './clientCommunication';
 import validate from 'validate.js';
+import _ from 'lodash';
 
 function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {
     let messageObject = clientCommunication.fromJSON(message);
@@ -35,6 +36,14 @@ let ClientApi = {
                 });
                 reject({code, message});
             });
+        });
+    },
+
+    removeClient: function removeClient(client, code, message) {
+        client.close(code, message);
+
+        _.remove(this.clients, (actClient) => {
+            return actClient === client;
         });
     },
 

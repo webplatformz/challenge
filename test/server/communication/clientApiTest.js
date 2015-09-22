@@ -62,6 +62,39 @@ describe('Client API', () => {
         });
     });
 
+    describe('removeClient', () => {
+        it('should remove given client from clients array', () => {
+            let webSocket = {
+                    close: () => {}
+                },
+                webSocket2 = {
+                    close: () => {}
+                };
+
+            clientApi.addClient(webSocket);
+            clientApi.addClient(webSocket2);
+
+            clientApi.removeClient(webSocket);
+
+            expect(clientApi.clients).to.have.length(1);
+            expect(clientApi.clients[0]).to.equal(webSocket2);
+        });
+
+        it('should close connection with given code and message', () => {
+            let webSocket = {
+                    close: sinon.spy()
+                },
+                code = 0,
+                message = 'message';
+
+            clientApi.addClient(webSocket);
+
+            clientApi.removeClient(webSocket, code, message);
+
+            expect(webSocket.close.withArgs(code, message).calledOnce).to.equal(true);
+        });
+    });
+
     describe('requestPlayerName', () => {
         it('should wait for choosePlayerName', (done) => {
             let choosePlayerName = messages.create(MessageType.CHOOSE_PLAYER_NAME.name, 'Hans');
