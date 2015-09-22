@@ -93,7 +93,6 @@ describe('Session', function () {
             clientApiMock.expects('broadcastSessionJoined').once();
             clientApiMock.expects('addClient').once().returns(rejectedPromise);
             clientApiMock.expects('broadcastWinnerTeam').once();
-            clientApiMock.expects('closeAll').once();
 
             session.addPlayer('webSocket', 'playerName');
 
