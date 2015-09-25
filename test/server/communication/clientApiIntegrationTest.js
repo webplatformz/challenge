@@ -10,6 +10,7 @@ let expect = require('chai').expect,
 
 describe('Integration test', function() {
     let server;
+    this.timeout(10 * 1000);
 
     beforeEach(() => {
         server = require('../../../server');
@@ -21,8 +22,6 @@ describe('Integration test', function() {
 
     describe('Play a complete game', () => {
         it('should start the game after 4 players have been connected', (done) => {
-            this.timeout(10 * 1000);
-
             let emptyFunction = () => {};
             SimpleBot.create(1, "Client 1", done);
             setTimeout(() => {
