@@ -3,69 +3,69 @@
 import Card from '../deck/card';
 import MessageType from './messageType.js';
 
-function createRequestPlayerName () {
+function createRequestPlayerName() {
     return {
         type: MessageType.REQUEST_PLAYER_NAME.name
     };
 }
 
-function createChoosePlayerName (playerName) {
+function createChoosePlayerName(playerName) {
     return {
         type: MessageType.CHOOSE_PLAYER_NAME.name,
         data: playerName
     };
 }
 
-function createBroadcastTeams (teams) {
+function createBroadcastTeams(teams) {
     return {
         type: MessageType.BROADCAST_TEAMS.name,
         data: teams
     };
 }
 
-function createDealCards (cards) {
+function createDealCards(cards) {
     return {
         type: MessageType.DEAL_CARDS.name,
         data: cards
     };
 }
 
-function createRequestTrumpf (geschoben) {
+function createRequestTrumpf(geschoben) {
     return {
         type: MessageType.REQUEST_TRUMPF.name,
         data: geschoben
     };
 }
 
-function createRejectTrumpf (gameType) {
+function createRejectTrumpf(gameType) {
     return {
         type: MessageType.REJECT_TRUMPF.name,
         data: gameType
     };
 }
 
-function createChooseTrumpf (gameType) {
+function createChooseTrumpf(gameType) {
     return {
         type: MessageType.CHOOSE_TRUMPF.name,
         data: gameType
     };
 }
 
-function createBroadcastTrumpf (gameType) {
+function createBroadcastTrumpf(gameType) {
     return {
         type: MessageType.BROADCAST_TRUMPF.name,
         data: gameType
     };
 }
 
-function createBroadcastStich (winner) {
+function createBroadcastStich(winner) {
     return {
         type: MessageType.BROADCAST_STICH.name,
         data: winner
     };
 }
 
-function createBroadcastGameFinished (teams) {
+function createBroadcastGameFinished(teams) {
     return {
         type: MessageType.BROADCAST_GAME_FINISHED.name,
         data: teams
@@ -80,35 +80,35 @@ function createBroadcastWinnerTeam(team) {
     };
 }
 
-function createPlayedCards (playedCards) {
+function createPlayedCards(playedCards) {
     return {
         type: MessageType.PLAYED_CARDS.name,
         data: playedCards
     };
 }
 
-function createRequestCard (cards) {
+function createRequestCard(cards) {
     return {
         type: MessageType.REQUEST_CARD.name,
         data: cards
     };
 }
 
-function createChooseCard (card) {
+function createChooseCard(card) {
     return {
         type: MessageType.CHOOSE_CARD.name,
         data: Card.create(card.number, card.color)
     };
 }
 
-function createRejectCard (card) {
+function createRejectCard(card) {
     return {
         type: MessageType.REJECT_CARD.name,
         data: card
     };
 }
 
-function createRequestSessionChoice (availableSessions) {
+function createRequestSessionChoice(availableSessions) {
     return {
         type: MessageType.REQUEST_SESSION_CHOICE.name,
         data: availableSessions
@@ -140,6 +140,28 @@ function createBadMessage(message) {
     return {
         type: MessageType.BAD_MESSAGE.name,
         data: message
+    };
+}
+
+function createTournamentRankingTable(rank, playerName, connectedClients, player1, player2, result) {
+    return {
+        type: MessageType.TOURNAMENT_RANKING_TABLE.name,
+        data: {
+            ranking: [
+                {
+                    rank,
+                    playerName,
+                    connectedClients
+                }
+            ],
+            pairingResults: [
+                {
+                    player1,
+                    player2,
+                    result
+                }
+            ]
+        }
     };
 }
 
@@ -183,6 +205,8 @@ function create(messageType, ...data) {
             return createBroadcastSessionJoined(...data);
         case MessageType.BAD_MESSAGE.name:
             return createBadMessage(...data);
+        case MessageType.TOURNAMENT_RANKING_TABLE:
+            return createTournamentRankingTable(...data);
         default:
             throw 'Unknown message type ' + messageType;
     }
