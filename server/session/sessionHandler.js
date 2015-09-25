@@ -116,7 +116,7 @@ let SessionHandler = {
 
 };
 
-module.exports = SessionHandler;
+export default SessionHandler;
 
 
 
