@@ -1,0 +1,7 @@
+{
+	"name": "Jass Challenge Server",
+	"description": "Jass Challenge Server and UI",
+	"repository": "https://github.com/webplatformz/challenge",
+	"logo": "https://node-js-sample.herokuapp.com/node.svg",
+	"keywords": ["node", "express", "static"]
+}
