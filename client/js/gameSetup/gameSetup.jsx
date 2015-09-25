@@ -4,6 +4,7 @@ let React = require('react'),
     RequestPlayerName = require('./requestPlayerName.jsx'),
     Connecting = require('./connecting.jsx'),
     ChooseSession = require('./chooseSession.jsx'),
+    CreateTournament = require('./createTournament.jsx'),
     GameSetupStore = require('./gameSetupStore');
 
 function getSetupStateClassName(setupState) {
@@ -34,6 +35,7 @@ module.exports = React.createClass({
                 <Connecting setupState={this.state.status} />
                 <RequestPlayerName setupState={this.state.status} />
                 <ChooseSession setupState={this.state} />
+
             </div>
         );
     }
