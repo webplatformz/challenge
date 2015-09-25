@@ -9,9 +9,8 @@ let expect = require('chai').expect,
 
 
 describe('Integration test', function() {
-    this.timeout(5000);
-
     let server;
+    this.timeout(10 * 1000);
 
     beforeEach(() => {
         server = require('../../../server');
