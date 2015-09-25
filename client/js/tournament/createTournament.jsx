@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import GameSetupStore from './gameSetupStore';
+import GameSetupStore from './../gameSetup/gameSetupStore';
 import JassActions from '../jassActions';
 
 module.exports = React.createClass({

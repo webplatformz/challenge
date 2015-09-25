@@ -1,13 +1,10 @@
 'use strict';
 
 import React from 'react';
-import GameSetupStore from './gameSetupStore';
+import GameSetupStore from './../gameSetup/gameSetupStore';
 import JassActions from '../jassActions';
 
 module.exports = React.createClass({
-
-
-
     render: function () {
         return (
             <div id="tournamentTable">
@@ -18,12 +15,9 @@ module.exports = React.createClass({
                         <th>Player</th>
                         <th>Wins</th>
                     </tr>
-
-                    <tr>
-                        <td>1.</td>
-                        <td>Dummy</td>
-                        <td>3</td>
-                    </tr>
+                    {this.props.ratings.map(function(rating) {
+                        return (<tr><td>-</td><td>{rating.player}</td><td>{rating.wins}</td></tr>);
+                    })}
                 </table>
             </div>
         )
