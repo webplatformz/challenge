@@ -23,6 +23,8 @@ describe('Integration test', function() {
 
     describe('Play a complete game', () => {
         it('should start the game after 4 players have been connected', (done) => {
+            this.timeout(10 * 1000);
+
             let emptyFunction = () => {};
             SimpleBot.create(1, "Client 1", done);
             setTimeout(() => {
