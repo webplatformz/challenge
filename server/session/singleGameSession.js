@@ -146,7 +146,7 @@ let create = function create(name) {
     return session;
 };
 
-module.exports = {
+export default {
     create
 };
 

@@ -106,7 +106,7 @@ let TournamentSession = {
     }
 };
 
-module.exports = {
+export default {
     create(sessionName) {
         let session = Object.create(TournamentSession);
         session.name = sessionName;
