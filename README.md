@@ -3,6 +3,10 @@
 - Frontend displaying scores
 
 
+### Deployment
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 ###Wiki:
 https://github.com/webplatformz/challenge/wiki
 
