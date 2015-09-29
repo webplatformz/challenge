@@ -5,6 +5,7 @@ import sinon from 'sinon';
 import TournamentSession from '../../../server/session/tournamentSession.js';
 import CloseEventCode from '../../../server/communication/closeEventCode.js';
 import Ranking from '../../../server/game/ranking/ranking.js';
+import RankingTable from '../../../server/session/rankingTable.js';
 import SingleGameSession from '../../../server/session/singleGameSession.js';
 import SessionType from '../../../shared/session/sessionType.js';
 

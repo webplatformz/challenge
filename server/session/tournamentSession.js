@@ -4,6 +4,7 @@ import ClientApi from '../communication/clientApi.js';
 import SessionType from '../../shared/session/sessionType.js';
 import CloseEventCode from '../communication/closeEventCode.js';
 import Ranking from '../game/ranking/ranking.js';
+import RankingTable from './rankingTable.js';
 import SingleGameSession from './singleGameSession.js';
 import {polyfill} from 'babel';
 import _ from 'lodash';
@@ -31,6 +32,7 @@ let TournamentSession = {
                 player.clients.push(webSocket);
             } else {
                 this.clientApi.removeClient(webSocket, CloseEventCode.ABNORMAL, 'This Player already has two registered clients!');
+                return;
             }
         } else {
             this.players.push({
@@ -42,6 +44,8 @@ let TournamentSession = {
                 ]
             });
         }
+
+        this.rankingTable.addPlayer(playerName);
     },
 
     getPlayer(playerName) {
@@ -91,7 +95,7 @@ let TournamentSession = {
                 player1.isPlaying = true;
                 player2.isPlaying = true;
 
-                session.start().then((winningTeam) => {
+                session.start().then(() => {
                     console.log(session.teams);
                     player1.isPlaying = false;
                     player2.isPlaying = false;
@@ -116,6 +120,7 @@ export default {
         session.spectators = [];
         session.clientApi = ClientApi.create();
         session.pairings = [];
+        session.rankingTable = RankingTable.create();
         return session;
     }
 };

@@ -143,25 +143,10 @@ function createBadMessage(message) {
     };
 }
 
-function createTournamentRankingTable(rank, playerName, connectedClients, player1, player2, result) {
+function createTournamentRankingTable(rankingTable) {
     return {
-        type: MessageType.TOURNAMENT_RANKING_TABLE.name,
-        data: {
-            ranking: [
-                {
-                    rank,
-                    playerName,
-                    connectedClients
-                }
-            ],
-            pairingResults: [
-                {
-                    player1,
-                    player2,
-                    result
-                }
-            ]
-        }
+        type: MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name,
+        data: rankingTable
     };
 }
 
@@ -205,7 +190,7 @@ function create(messageType, ...data) {
             return createBroadcastSessionJoined(...data);
         case MessageType.BAD_MESSAGE.name:
             return createBadMessage(...data);
-        case MessageType.TOURNAMENT_RANKING_TABLE:
+        case MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name:
             return createTournamentRankingTable(...data);
         default:
             throw 'Unknown message type ' + messageType;
@@ -213,6 +198,5 @@ function create(messageType, ...data) {
 }
 
 module.exports = {
-    MessageType,
     create
 };

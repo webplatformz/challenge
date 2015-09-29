@@ -26,7 +26,7 @@ function resolveCorrectMessageOrReject(client, expectedMessageType, message, res
 }
 
 let ClientApi = {
-    addClient: function addClient(client) {
+    addClient(client) {
         this.clients.push(client);
 
         return new Promise((resolve, reject) => {
@@ -39,7 +39,7 @@ let ClientApi = {
         });
     },
 
-    removeClient: function removeClient(client, code, message) {
+    removeClient(client, code, message) {
         client.close(code, message);
 
         _.remove(this.clients, (actClient) => {
@@ -47,67 +47,71 @@ let ClientApi = {
         });
     },
 
-    requestPlayerName: function requestPlayerName(client) {
+    requestPlayerName(client) {
         return clientCommunication.request(client, MessageType.REQUEST_PLAYER_NAME.name,
             resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_PLAYER_NAME));
     },
 
-    broadcastTeams: function broadcastTeams(teams) {
+    broadcastTeams(teams) {
         clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TEAMS.name, teams);
     },
 
-    dealCards: function dealCards(client, cards) {
+    dealCards(client, cards) {
         clientCommunication.send(client, MessageType.DEAL_CARDS.name, cards);
     },
 
-    requestTrumpf: function requestTrumpf(client, pushed) {
+    requestTrumpf(client, pushed) {
         return clientCommunication.request(client, MessageType.REQUEST_TRUMPF.name,
             resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_TRUMPF),
             pushed);
     },
 
-    rejectTrumpf: function rejectTrumpf(client, gameType) {
+    rejectTrumpf(client, gameType) {
         clientCommunication.send(client, MessageType.REJECT_TRUMPF.name, gameType);
     },
 
-    broadcastTrumpf: function broadcastTrumpf(gameType) {
+    broadcastTrumpf(gameType) {
         clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TRUMPF.name, gameType);
     },
 
-    broadcastCardPlayed: function broadcastCardPlayed(playedCards) {
+    broadcastCardPlayed(playedCards) {
         clientCommunication.broadcast(this.clients, MessageType.PLAYED_CARDS.name, playedCards);
     },
 
-    broadcastStich: function broadcastStich(winner) {
+    broadcastStich(winner) {
         clientCommunication.broadcast(this.clients, MessageType.BROADCAST_STICH.name, winner);
     },
 
-    broadcastGameFinished: function broadcastStich(teams) {
+    broadcastGameFinished(teams) {
         clientCommunication.broadcast(this.clients, MessageType.BROADCAST_GAME_FINISHED.name, teams);
     },
 
-    broadcastWinnerTeam: function broadcastWinnerTeam(team) {
+    broadcastWinnerTeam(team) {
         clientCommunication.broadcast(this.clients, MessageType.BROADCAST_WINNER_TEAM.name, team);
     },
 
-    requestCard: function requestCard(client, cardsOnTable) {
+    requestCard(client, cardsOnTable) {
         return clientCommunication.request(client, MessageType.REQUEST_CARD.name,
             resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_CARD),
             cardsOnTable);
     },
 
-    rejectCard: function rejectCard(client, card, cardsOnTable) {
+    rejectCard(client, card, cardsOnTable) {
         clientCommunication.send(client, MessageType.REJECT_CARD.name, card, cardsOnTable);
     },
 
-    requestSessionChoice: function requestSessionChoice(client, availableSessions) {
+    requestSessionChoice(client, availableSessions) {
         return clientCommunication.request(client, MessageType.REQUEST_SESSION_CHOICE.name,
             resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_SESSION),
             availableSessions);
     },
 
-    broadcastSessionJoined: function broadcastSessionJoined(sessionName, player, playersInSession) {
+    broadcastSessionJoined(sessionName, player, playersInSession) {
         clientCommunication.broadcast(this.clients, MessageType.BROADCAST_SESSION_JOINED.name, sessionName, player, playersInSession);
+    },
+
+    broadcastTournamentRankingTable(rankingTable) {
+        clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name, rankingTable);
     },
 
     closeAll: function closeAll(code, message) {

@@ -581,4 +581,40 @@ describe('Client API', () => {
             }).catch(done);
         });
     });
+
+    describe('broadcastTournamentRankingTable', () => {
+        it('should send the sessionname, player already joined players to all client', (done) => {
+            let clients,
+                clientPromises = [],
+                sessionName = 'sessionName',
+                rankingTable = 'rankingTable';
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                if (clientApi.clients.length === clients.length) {
+                    clientApi.broadcastTournamentRankingTable(rankingTable);
+                }
+            });
+
+            clients = [new WebSocket('ws://localhost:10001'), new WebSocket('ws://localhost:10001')];
+
+            clients.forEach((client) => {
+                clientPromises.push(new Promise((resolve) => {
+                    client.on('message', (message) => {
+                        message = JSON.parse(message);
+
+                        expect(message.type).to.equal(MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name);
+                        expect(message.data).to.eql(rankingTable);
+
+                        resolve();
+                    });
+                }));
+            });
+
+            Promise.all(clientPromises).then(() => {
+                done();
+            }).catch(done);
+        });
+    });
 });

@@ -128,8 +128,8 @@ const MessageType = {
     BAD_MESSAGE: {
         name: 'BAD_MESSAGE'
     },
-    TOURNAMENT_RANKING_TABLE: {
-        name: 'TOURNAMENT_RANKING_TABLE'
+    BROADCAST_TOURNAMENT_RANKING_TABLE: {
+        name: 'BROADCAST_TOURNAMENT_RANKING_TABLE'
     }
 };
 
