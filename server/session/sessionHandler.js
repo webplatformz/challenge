@@ -9,15 +9,15 @@ import CloseEventCode from '../communication/closeEventCode.js';
 
 let clientApi = ClientApi.create();
 
-function findOrCreateSessionWithSpace(sessions) {
+function findOrCreateSessionWithSpace(sessions, sessionChoiceResponse) {
     let filteredSessions = sessions.filter((element) => {
         return !element.isComplete();
     });
 
     if (filteredSessions.length === 0) {
         return createSession(sessions, {
-            sessionName: UUID.v4(),
-            sessionType: SessionType.SINGLE_GAME
+            sessionName: sessionChoiceResponse.sessionName || UUID.v4(),
+            sessionType: sessionChoiceResponse.sessionType || SessionType.SINGLE_GAME
         });
     }
 
@@ -50,7 +50,7 @@ function createOrJoinSession(sessions, sessionChoiceResponse) {
         case SessionChoice.JOIN_EXISTING:
             return findSession(sessions, sessionChoiceResponse);
         default:
-            return findOrCreateSessionWithSpace(sessions);
+            return findOrCreateSessionWithSpace(sessions, sessionChoiceResponse);
     }
 }
 
