@@ -56,7 +56,9 @@ let TournamentSession = {
     },
 
     isComplete() {
-        return this.players.length === 4;
+        let numberOfConnectedWebsockets = _.flatten(this.players.map(player => player.clients)).length;
+        return numberOfConnectedWebsockets === 6;
+        // TODO how to really start a tournament?
     },
 
     start() {
@@ -72,7 +74,6 @@ let TournamentSession = {
                 };
             });
         }));
-
         this.startPairingSessions();
     },
 
@@ -83,14 +84,15 @@ let TournamentSession = {
                 let session = SingleGameSession.create(UUID.v4());
 
                 session.addPlayer(player1.clients[0], player1.playerName);
-                session.addPlayer(player2.clients[1], player2.playerName);
-                session.addPlayer(player1.clients[0], player1.playerName);
+                session.addPlayer(player2.clients[0], player2.playerName);
+                session.addPlayer(player1.clients[1], player1.playerName);
                 session.addPlayer(player2.clients[1], player2.playerName);
 
                 player1.isPlaying = true;
                 player2.isPlaying = true;
 
-                session.start().then(() => {
+                session.start().then((winningTeam) => {
+                    console.log(session.teams);
                     player1.isPlaying = false;
                     player2.isPlaying = false;
                     _.remove(this.pairings, pairing);

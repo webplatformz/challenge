@@ -33,6 +33,7 @@ let Session = {
 
     addPlayer: function addPlayer(webSocket, playerName) {
         let team = this.teams[this.players.length % 2];
+        team.name = team.name + " " + playerName;
         let player = Player.create(team, playerName, this.players.length, {
             dealCards: this.clientApi.dealCards.bind(this.clientApi, webSocket),
             requestTrumpf: this.clientApi.requestTrumpf.bind(this.clientApi, webSocket),
@@ -149,4 +150,3 @@ let create = function create(name) {
 export default {
     create
 };
-
