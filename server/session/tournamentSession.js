@@ -56,7 +56,7 @@ let TournamentSession = {
     },
 
     isComplete() {
-        return false;
+        return this.players.length === 4;
     },
 
     start() {
