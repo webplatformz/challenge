@@ -5,6 +5,7 @@ import JassAppStore from './jassAppStore.js';
 import ErrorToast from './error/errorToast.jsx';
 import GameSetup from './gameSetup/gameSetup.jsx';
 import JassTable from './game/jassTable.jsx';
+import TournamentTable from './tournament/tournamentTable.jsx';
 import serverApi from './communication/serverApi';
 
 let JassApp = React.createClass({
