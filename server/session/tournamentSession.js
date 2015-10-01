@@ -61,7 +61,7 @@ let TournamentSession = {
 
     isComplete() {
         let numberOfConnectedWebsockets = _.flatten(this.players.map(player => player.clients)).length;
-        return numberOfConnectedWebsockets === 6;
+        return numberOfConnectedWebsockets === 4;
         // TODO how to really start a tournament?
     },
 
