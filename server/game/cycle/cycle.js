@@ -35,7 +35,6 @@ let Cycle = {
 
             winnerTeam.points += actPoints;
             winnerTeam.currentRoundPoints += actPoints;
-            that.clientApi.broadcastStich(createStichMessage(winner));
 
             if(winner.cards.length === 0) {
                 let lastStichPoints = counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
@@ -48,9 +47,12 @@ let Cycle = {
                     winnerTeam.currentRoundPoints += matchPoints;
                 }
 
+                that.clientApi.broadcastStich(createStichMessage(winner));
                 that.clientApi.broadcastGameFinished([winnerTeam, looserTeam]);
                 winnerTeam.currentRoundPoints = 0;
                 looserTeam.currentRoundPoints = 0;
+            } else {
+                that.clientApi.broadcastStich(createStichMessage(winner));
             }
 
             return winner;
