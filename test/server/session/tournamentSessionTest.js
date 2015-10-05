@@ -13,19 +13,16 @@ describe('tournamentSession', () => {
 
     let session,
         clientApiMock,
-        rankingMock,
         singleGameSessionMock;
 
     beforeEach(() => {
         session = TournamentSession.create('sessionName');
         clientApiMock = sinon.mock(session.clientApi);
-        rankingMock = sinon.mock(Ranking);
         singleGameSessionMock = sinon.mock(SingleGameSession);
     });
 
     afterEach(() => {
         clientApiMock.restore();
-        rankingMock.restore();
         singleGameSessionMock.restore();
     });
 
@@ -160,9 +157,6 @@ describe('tournamentSession', () => {
                 }
             });
 
-            rankingMock.expects('addPlayer').withArgs(player1).once();
-            rankingMock.expects('addPlayer').withArgs(player2).once();
-
             session.addPlayer(webSocket, player1);
             session.addPlayer(webSocket, player1);
             session.addPlayer(webSocket, player2);
@@ -170,7 +164,7 @@ describe('tournamentSession', () => {
 
             session.start();
 
-            rankingMock.verify();
+            expect(session.ranking.ranking.getPlayers()).to.have.length(2);
         });
 
         it('should create pairings with round-robin', () => {
@@ -204,7 +198,9 @@ describe('tournamentSession', () => {
                 player2 = 'playerName2',
                 player3 = 'playerName3',
                 addPlayerSpy = sinon.spy(),
-                resolvedPromise = Promise.resolve();
+                resolvedPromise = Promise.resolve({
+                    name: player3
+                });
 
             session.addPlayer(webSocket, player1);
             session.addPlayer(webSocket, player1);

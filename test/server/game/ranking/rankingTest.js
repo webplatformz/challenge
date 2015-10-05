@@ -7,45 +7,40 @@ import Ranking from '../../../../server/game/ranking/ranking';
 
 describe('Ranking', function () {
 
-    let makePlayerSpy,
-        updateRatingsSpy;
+    let ranking;
 
     beforeEach(() => {
-        makePlayerSpy = sinon.stub(glicko2.Glicko2.prototype, 'makePlayer');
-        updateRatingsSpy = sinon.stub(glicko2.Glicko2.prototype, 'updateRatings');
+        ranking = Ranking.create();
     });
 
-    afterEach(() => {
-        glicko2.Glicko2.prototype.makePlayer.restore();
-        glicko2.Glicko2.prototype.updateRatings.restore();
-    });
+    describe('addPlayer', () => {
+        it('should add player to glicko2', () => {
+            let player1 = 'player1',
+                player2 = 'player2';
 
-    describe('addPlayer', function () {
-        it('should call makePlayer from glicko', function() {
-            let player = 'player';
+            ranking.addPlayer(player1);
+            ranking.addPlayer(player2);
 
-            Ranking.addPlayer(player);
-
-            expect(makePlayerSpy.calledOnce).to.equal(true);
+            expect(ranking.ranking.getPlayers()).to.have.length(2);
         });
     });
 
     describe('updateRatings', function() {
-        it('should call updateRatings witch match results saved by updateMatchResult', function() {
+        it('should call updateRatings with match results saved by updateMatchResult', function() {
             let player1 = 'player1',
                 player2 = 'player2';
-            Ranking.addPlayer(player1);
-            Ranking.addPlayer(player2);
 
-            Ranking.updateMatchResult({winner: player1, loser: player2});
-            Ranking.updateMatchResult({winner: player2, loser: player1});
+            ranking.addPlayer(player1);
+            ranking.addPlayer(player2);
 
-            Ranking.updateRatings();
+            ranking.updateMatchResult({winner: player1, loser: player2});
+            ranking.updateMatchResult({winner: player2, loser: player1});
 
-            expect(updateRatingsSpy.withArgs([
-                [sinon.match.object, sinon.match.object, 1],
-                [sinon.match.object, sinon.match.object, 1]
-            ]).calledOnce).to.equal(true);
+            ranking.updateRatings();
+
+            let players = ranking.ranking.getPlayers();
+            expect(players[0].outcomes).to.eql([1,0]);
+            expect(players[1].outcomes).to.eql([0,1]);
         });
     });
 });

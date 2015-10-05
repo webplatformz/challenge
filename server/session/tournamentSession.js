@@ -65,7 +65,7 @@ let TournamentSession = {
     },
 
     start() {
-        this.players.forEach(element => Ranking.addPlayer(element.playerName));
+        this.players.forEach(element => this.ranking.addPlayer(element.playerName));
 
         this.pairings = _.flatten(this.players.map((player, index) => {
             return this.players.filter((secondPlayer, secondIndex) => {
@@ -78,6 +78,7 @@ let TournamentSession = {
             });
         }));
         this.startPairingSessions();
+        this.ranking.updateRatings();
     },
 
     startPairingSessions() {
@@ -97,16 +98,15 @@ let TournamentSession = {
                 session.start().then((winningTeam) => {
                     console.log(session.teams);
                     if (winningTeam.name.indexOf(player1).name > -1) {
-                        Ranking.updateMatchResult({winner: player1.playerName, loser: player2.playerName});
+                        this.ranking.updateMatchResult({winner: player1.playerName, loser: player2.playerName});
                     } else {
-                        Ranking.updateMatchResult({winner: player2.playerName, loser: player1.playerName});
+                        this.ranking.updateMatchResult({winner: player2.playerName, loser: player1.playerName});
                     }
-                    Ranking.updateRatings();
 
                     player1.isPlaying = false;
                     player2.isPlaying = false;
                     _.remove(this.pairings, pairing);
-                    //clientapi broadcast message
+                    this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
                     this.startPairingSessions();
                 });
             }
@@ -126,6 +126,7 @@ export default {
         session.spectators = [];
         session.clientApi = ClientApi.create();
         session.pairings = [];
+        session.ranking = Ranking.create();
         session.rankingTable = RankingTable.create();
         return session;
     }
