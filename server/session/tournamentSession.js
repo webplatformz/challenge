@@ -97,11 +97,17 @@ let TournamentSession = {
 
                 session.start().then((winningTeam) => {
                     console.log(session.teams);
+                    let firstPlayerWon;
+
                     if (winningTeam.name.indexOf(player1).name > -1) {
                         this.ranking.updateMatchResult({winner: player1.playerName, loser: player2.playerName});
+                        firstPlayerWon = true;
                     } else {
                         this.ranking.updateMatchResult({winner: player2.playerName, loser: player1.playerName});
+                        firstPlayerWon = false;
                     }
+
+                    this.rankingTable.addPairingResult(player1.playerName, player2.playerName, firstPlayerWon);
 
                     player1.isPlaying = false;
                     player2.isPlaying = false;
