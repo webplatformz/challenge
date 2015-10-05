@@ -43,9 +43,8 @@ let TournamentSession = {
                     webSocket
                 ]
             });
+            this.rankingTable.addPlayer(playerName);
         }
-
-        this.rankingTable.addPlayer(playerName);
     },
 
     getPlayer(playerName) {
@@ -95,8 +94,15 @@ let TournamentSession = {
                 player1.isPlaying = true;
                 player2.isPlaying = true;
 
-                session.start().then(() => {
+                session.start().then((winningTeam) => {
                     console.log(session.teams);
+                    if (winningTeam.name.indexOf(player1).name > -1) {
+                        Ranking.updateMatchResult({winner: player1.playerName, loser: player2.playerName});
+                    } else {
+                        Ranking.updateMatchResult({winner: player2.playerName, loser: player1.playerName});
+                    }
+                    Ranking.updateRatings();
+
                     player1.isPlaying = false;
                     player2.isPlaying = false;
                     _.remove(this.pairings, pairing);

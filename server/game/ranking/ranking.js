@@ -35,8 +35,8 @@ let Ranking = {
 
     updateMatchResult: ({winner, loser}) => {
         matches.push([
-            getPlayer(winner),
-            getPlayer(loser),
+            getPlayer(winner).player,
+            getPlayer(loser).player,
             1
         ]);
     },
