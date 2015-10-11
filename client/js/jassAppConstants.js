@@ -25,5 +25,6 @@ module.exports = keyMirror({
     PLAYED_CARDS: null,
     BROADCAST_STICH: null,
     ADJUST_SPECTATOR_SPEED: null,
-    BROADCAST_TOURNAMENT_RANKING_TABLE: null
+    BROADCAST_TOURNAMENT_RANKING_TABLE: null,
+    START_TOURNAMENT: null
 });

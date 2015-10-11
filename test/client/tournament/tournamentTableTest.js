@@ -2,6 +2,7 @@
 
 import {expect} from 'chai';
 import React from 'react/addons';
+import JassActions from '../../../client/js/jassActions.js';
 
 const TestUtils = React.addons.TestUtils;
 
@@ -38,6 +39,15 @@ describe('Tournament table Component', () => {
 
         expect(actual.type).to.equal('div');
         expect(actual._store.props.id).to.equal('tournamentTable');
+    });
+
+    it('should render start button with click handler', () => {
+        shallowRenderer.render(React.createElement(TournamentTable, props));
+        let actual = shallowRenderer.getRenderOutput();
+
+        let button = actual._store.props.children[2];
+        expect(button.type).to.equal('button');
+        expect(button._store.props.onClick).to.equal(JassActions.startTournament);
     });
 
     it('should render table with rankings', () => {

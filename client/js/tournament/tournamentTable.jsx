@@ -31,6 +31,7 @@ module.exports = React.createClass({
                         })}
                     </tbody>
                 </table>
+                <button type="button" name="startTournament" onClick={JassActions.startTournament}>Start!</button>
             </div>
         )
     }

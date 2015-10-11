@@ -164,5 +164,11 @@ module.exports = {
             actionType: JassAppConstants.BROADCAST_TOURNAMENT_RANKING_TABLE,
             data: rankingTable
         });
+    },
+
+    startTournament: () => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.START_TOURNAMENT
+        });
     }
 };
