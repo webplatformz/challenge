@@ -16,7 +16,7 @@ module.exports = React.createClass({
                         <tr>
                             <th>Rank</th>
                             <th>Player</th>
-                            <th>Wins</th>
+                            <th>Connected Clients</th>
                         </tr>
                     </thead>
                     <tbody>
