@@ -6,18 +6,30 @@ import JassActions from '../jassActions';
 
 module.exports = React.createClass({
     render: function () {
+        let rankingTable = this.props.rankingTable;
+
         return (
             <div id="tournamentTable">
                 <h1 className="jumbotron">Current rankings</h1>
                 <table>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Wins</th>
-                    </tr>
-                    {this.props.ratings.map(function(rating) {
-                        return (<tr key="{rating.player}"><td>-</td><td>{rating.player}</td><td>{rating.wins}</td></tr>);
-                    })}
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Wins</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rankingTable.ranking.map(function (player) {
+                            return (
+                                <tr key="{player.playerName}">
+                                    <td>{player.rank}</td>
+                                    <td>{player.playerName}</td>
+                                    <td>{player.connectedClients}</td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
                 </table>
             </div>
         )

@@ -1,13 +1,15 @@
 'use strict';
 
-let EventEmitter = require('events').EventEmitter,
-    JassAppDispatcher = require('./jassAppDispatcher'),
-    JassAppConstants = require('./jassAppConstants');
+import {EventEmitter} from 'events';
+import JassAppDispatcher from './jassAppDispatcher.js';
+import JassAppConstants from './jassAppConstants.js';
+import SessionType from '../../shared/session/sessionType.js';
 
 let JassAppStore = Object.create(EventEmitter.prototype);
 
 JassAppStore.state = {
-    error: undefined
+    error: undefined,
+    sessionType: undefined
 };
 
 JassAppStore.emitChange = function() {
@@ -28,6 +30,15 @@ JassAppDispatcher.register(function (payload){
     switch(action.actionType) {
         case JassAppConstants.ERROR:
             JassAppStore.state.error = action.data;
+            JassAppStore.emitChange();
+            break;
+        case JassAppConstants.SESSION_JOINED:
+            JassAppStore.state.sessionType = SessionType.SINGLE_GAME;
+            JassAppStore.emitChange();
+            break;
+        case JassAppConstants.BROADCAST_TOURNAMENT_RANKING_TABLE:
+            JassAppStore.state.sessionType = SessionType.TOURNAMENT;
+            JassAppStore.state.rankingTable = action.data;
             JassAppStore.emitChange();
             break;
     }
