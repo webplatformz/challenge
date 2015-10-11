@@ -45,6 +45,8 @@ let TournamentSession = {
             });
             this.rankingTable.addPlayer(playerName);
         }
+
+        this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
     },
 
     getPlayer(playerName) {
