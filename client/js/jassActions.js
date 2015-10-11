@@ -157,5 +157,12 @@ module.exports = {
             actionType: JassAppConstants.ADJUST_SPECTATOR_SPEED,
             data: speedInMs
         });
+    },
+
+    broadcastTournamentRankingTable: (rankingTable) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.BROADCAST_TOURNAMENT_RANKING_TABLE,
+            data: rankingTable
+        });
     }
 };

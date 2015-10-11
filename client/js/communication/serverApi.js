@@ -56,6 +56,9 @@ let ServerApi = {
             case MessageType.BROADCAST_STICH.name:
                 JassActions.broadcastStich(message.data);
                 break;
+            case MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name:
+                JassActions.broadcastTournamentRankingTable(message.data);
+                break;
         }
     },
     handleActionsFromUi: (payload) => {
