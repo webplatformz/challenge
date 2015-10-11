@@ -6,6 +6,7 @@ import React from 'react/addons';
 import GameSetupStore from '../../../client/js/gameSetup/gameSetupStore';
 import JassActions from '../../../client/js/jassActions';
 import ExistingSessions from '../../../client/js/gameSetup/existingSessions.jsx';
+import SessionType from '../../../shared/session/sessionType.js';
 
 const TestUtils = React.addons.TestUtils;
 
@@ -44,6 +45,8 @@ describe('ChooseSession Component', () => {
         expect(children[2]._store.props.className).to.equal('session-choice');
         expect(children[3].type).to.equal('div');
         expect(children[3]._store.props.className).to.equal('session-choice');
+        expect(children[4].type).to.equal('div');
+        expect(children[4]._store.props.className).to.equal('session-choice');
     });
 
     it('should pass the sessions of GameSetupState to ExistingSessions', () => {
@@ -62,7 +65,9 @@ describe('ChooseSession Component', () => {
 
         let newSessionInput = actual._store.props.children[2]._store.props.children;
         expect(newSessionInput._store.props.onKeyPress.__reactBoundMethod).to.equal(ChooseSession.prototype.createNewSession);
-        let autojoinInput = actual._store.props.children[3]._store.props.children;
+        let newTournamentInput = actual._store.props.children[3]._store.props.children;
+        expect(newTournamentInput._store.props.onKeyPress.__reactBoundMethod).to.equal(ChooseSession.prototype.createNewSession);
+        let autojoinInput = actual._store.props.children[4]._store.props.children;
         expect(autojoinInput._store.props.onClick.__reactBoundMethod).to.equal(ChooseSession.prototype.autojoinSession);
     });
 
@@ -87,7 +92,7 @@ describe('ChooseSession Component', () => {
         it('should not start action with keypress which is not Enter', () => {
             eventDummy.charCode = 99;
 
-            createNewSession(eventDummy);
+            createNewSession(SessionType.SINGLE_GAME, eventDummy);
 
             expect(createNewSessionSpy.called).to.equal(false);
         });
@@ -97,7 +102,7 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 13;
             eventDummy.target.value = '';
 
-            createNewSession(eventDummy);
+            createNewSession(SessionType.SINGLE_GAME, eventDummy);
 
             expect(createNewSessionSpy.called).to.equal(false);
         });
@@ -106,7 +111,7 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 13;
             eventDummy.target.value = '   ';
 
-            createNewSession(eventDummy);
+            createNewSession(SessionType.SINGLE_GAME, eventDummy);
 
             expect(createNewSessionSpy.called).to.equal(false);
         });
@@ -115,9 +120,9 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 13;
             eventDummy.target.value = 'sessionName';
 
-            createNewSession(eventDummy);
+            createNewSession(SessionType.TOURNAMENT, eventDummy);
 
-            expect(createNewSessionSpy.withArgs(eventDummy.target.value).calledOnce).to.equal(true);
+            expect(createNewSessionSpy.withArgs(SessionType.TOURNAMENT, eventDummy.target.value).calledOnce).to.equal(true);
             expect(eventDummy.target.disabled).to.equal(true);
         });
     });

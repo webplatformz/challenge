@@ -35,10 +35,6 @@ describe('Tournament table Component', () => {
         let children = actual._store.props.children;
 
         let tableRows = children[1]._store.props.children;
-
-        console.log(tableRows.length);
-        console.log(tableRows);
-
     });
 
 });

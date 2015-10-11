@@ -46,10 +46,13 @@ module.exports = {
         });
     },
 
-    createNewSession: (sessionName) => {
+    createNewSession: (sessionType, sessionName) => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.CREATE_NEW_SESSION,
-            data: sessionName
+            data: {
+                sessionName,
+                sessionType
+            }
         });
     },
 

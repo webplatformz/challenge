@@ -16,7 +16,7 @@ module.exports = React.createClass({
                         <th>Wins</th>
                     </tr>
                     {this.props.ratings.map(function(rating) {
-                        return (<tr><td>-</td><td>{rating.player}</td><td>{rating.wins}</td></tr>);
+                        return (<tr key="{rating.player}"><td>-</td><td>{rating.player}</td><td>{rating.wins}</td></tr>);
                     })}
                 </table>
             </div>

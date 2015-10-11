@@ -115,12 +115,13 @@ function createRequestSessionChoice(availableSessions) {
     };
 }
 
-function createChooseSession(sessionChoice, sessionName) {
+function createChooseSession(sessionChoice, sessionName, sessionType) {
     return {
         type: MessageType.CHOOSE_SESSION.name,
         data: {
             sessionChoice,
-            sessionName
+            sessionName,
+            sessionType
         }
     };
 }
