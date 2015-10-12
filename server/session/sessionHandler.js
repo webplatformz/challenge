@@ -86,7 +86,7 @@ let SessionHandler = {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
                 let session = createOrJoinSession(this.sessions, sessionChoiceResponse);
 
-                if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR) {
+                if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR || sessionChoiceResponse.asSpectator) {
                     session.addSpectator(ws);
                 } else {
                     session.addPlayer(ws, playerName);

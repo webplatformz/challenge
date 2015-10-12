@@ -119,6 +119,9 @@ const MessageType = {
                 inclusion: {
                     within: SessionType
                 }
+            },
+            'data.asSpectator': {
+                presence: false
             }
         }
     },
