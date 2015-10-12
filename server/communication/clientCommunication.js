@@ -5,7 +5,7 @@ import MessageType from '../../shared/messages/messageType.js';
 import validate from 'validate.js';
 import Logger from './logger.js';
 
-export default {
+let ClientCommunication = {
     toJSON(object) {
         return JSON.stringify(object);
     },
@@ -20,19 +20,20 @@ export default {
 
     await(client, expectedMessageType) {
         return new Promise((resolve, reject) => {
-            client.on('message', (message) => {
-                let messageObject = this.fromJSON(message);
+            client.on('message', function handleMessage(message) {
+                let messageObject = ClientCommunication.fromJSON(message);
 
                 if (messageObject.type === expectedMessageType.name) {
                     let validationResult = validate(messageObject, expectedMessageType.constraints);
 
                     if (validationResult) {
-                        console.log(validationResult);
-                        this.send(client, MessageType.BAD_MESSAGE.name, validationResult);
+                        ClientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationResult);
                         reject(validationResult);
                     } else {
                         resolve(messageObject);
                     }
+
+                    client.removeListener('message', handleMessage);
                 }
             });
         });
@@ -66,3 +67,5 @@ export default {
         });
     }
 };
+
+export default ClientCommunication;

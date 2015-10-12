@@ -46,7 +46,8 @@ describe('clientCommunication', () => {
                 WebSocketStub = {
                     on: function (type, handlerFunction) {
                         messageHandler = handlerFunction;
-                    }
+                    },
+                    removeListener: sinon.spy()
                 };
 
             let client = Object.create(WebSocketStub);
@@ -59,6 +60,7 @@ describe('clientCommunication', () => {
             actual.then((message) => {
                 expect(message).not.to.eql(wrongMessage);
                 expect(message).to.eql(correctMessage);
+                expect(WebSocketStub.removeListener.withArgs('message', sinon.match.func).calledOnce).to.equal(true);
                 done();
             }).catch(done);
         });
@@ -72,7 +74,8 @@ describe('clientCommunication', () => {
                     on(type, handlerFunction) {
                         messageHandler = handlerFunction;
                     },
-                    send: sinon.spy()
+                    send: sinon.spy(),
+                    removeListener: sinon.spy()
                 };
 
             let client = Object.create(WebSocketStub);
@@ -84,6 +87,7 @@ describe('clientCommunication', () => {
             actual.then(() => done(new Error('Invalid message should be rejected!')), (validationResult) => {
                 expect(validationResult).to.have.property('data').that.is.an('array');
                 expect(WebSocketStub.send.calledOnce).to.equal(true);
+                expect(WebSocketStub.removeListener.withArgs('message', sinon.match.func).calledOnce).to.equal(true);
                 done();
             }).catch(done);
         });
