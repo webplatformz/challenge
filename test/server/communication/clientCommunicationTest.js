@@ -1,12 +1,12 @@
 'use strict';
 
-let clientCommunication = require('../../../server/communication/clientCommunication'),
-    WebSocket = require('ws'),
-    messages = require('../../../shared/messages/messages'),
-    MessageType = require('../../../shared/messages/messageType'),
-    CardColor = require('../../../shared/deck/card').CardColor,
-    expect = require('chai').expect,
-    sinon = require('sinon');
+import clientCommunication from '../../../server/communication/clientCommunication.js';
+import WebSocket from 'ws';
+import messages from '../../../shared/messages/messages.js';
+import MessageType from '../../../shared/messages/messageType.js';
+import {CardColor} from '../../../shared/deck/card.js';
+import {expect} from 'chai';
+import sinon from 'sinon';
 
 describe('clientCommunication', () => {
     describe('toJSON', () => {
