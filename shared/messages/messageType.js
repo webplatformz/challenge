@@ -133,6 +133,14 @@ const MessageType = {
     },
     BROADCAST_TOURNAMENT_RANKING_TABLE: {
         name: 'BROADCAST_TOURNAMENT_RANKING_TABLE'
+    },
+    START_TOURNAMENT: {
+        name: 'START_TOURNAMENT',
+        constraints: {
+            'type': {
+                presence: true
+            }
+        }
     }
 };
 

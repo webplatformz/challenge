@@ -88,6 +88,12 @@ let SessionHandler = {
 
                 if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR || sessionChoiceResponse.asSpectator) {
                     session.addSpectator(ws);
+
+                    if (sessionChoiceResponse.sessionType === SessionType.TOURNAMENT) {
+                        clientApi.waitForTournamentStart(ws).then(() => {
+                            this.startSession(session);
+                        });
+                    }
                 } else {
                     session.addPlayer(ws, playerName);
 
