@@ -47,6 +47,7 @@ describe('sessionHandler', () => {
         afterEach(() => {
             clientApiMock.restore();
             singleGameSessionMock.restore();
+            tournamentSessionMock.restore();
             sessionMock.restore();
             sessionHandler.resetInstance();
         });

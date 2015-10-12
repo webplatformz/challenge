@@ -77,6 +77,7 @@ describe('ChooseSession Component', () => {
                     value: ''
                 }
             },
+            asSpectator = true,
             createNewSessionSpy;
 
         let createNewSession = ChooseSession.prototype.createNewSession;
@@ -92,7 +93,7 @@ describe('ChooseSession Component', () => {
         it('should not start action with keypress which is not Enter', () => {
             eventDummy.charCode = 99;
 
-            createNewSession(SessionType.SINGLE_GAME, eventDummy);
+            createNewSession(SessionType.SINGLE_GAME, asSpectator, eventDummy);
 
             expect(createNewSessionSpy.called).to.equal(false);
         });
@@ -102,7 +103,7 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 13;
             eventDummy.target.value = '';
 
-            createNewSession(SessionType.SINGLE_GAME, eventDummy);
+            createNewSession(SessionType.SINGLE_GAME, asSpectator, eventDummy);
 
             expect(createNewSessionSpy.called).to.equal(false);
         });
@@ -111,7 +112,7 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 13;
             eventDummy.target.value = '   ';
 
-            createNewSession(SessionType.SINGLE_GAME, eventDummy);
+            createNewSession(SessionType.SINGLE_GAME, asSpectator, eventDummy);
 
             expect(createNewSessionSpy.called).to.equal(false);
         });
@@ -120,7 +121,7 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 13;
             eventDummy.target.value = 'sessionName';
 
-            createNewSession(SessionType.TOURNAMENT, eventDummy);
+            createNewSession(SessionType.TOURNAMENT, asSpectator, eventDummy);
 
             expect(createNewSessionSpy.withArgs(SessionType.TOURNAMENT, eventDummy.target.value).calledOnce).to.equal(true);
             expect(eventDummy.target.disabled).to.equal(true);
