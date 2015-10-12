@@ -8,13 +8,13 @@ import SessionType from '../../../shared/session/sessionType.js';
 
 module.exports = React.createClass({
 
-    createNewSession: function(sessionChoice, event) {
+    createNewSession: function(sessionType, asSpectator, event) {
         let inputElement = event.target,
             sessionName = inputElement.value;
 
         if (event.charCode === 13 && sessionName.trim()) {
             inputElement.disabled = true;
-            JassActions.createNewSession(sessionChoice, sessionName);
+            JassActions.createNewSession(sessionType, sessionName, asSpectator);
         }
     },
 
@@ -26,10 +26,10 @@ module.exports = React.createClass({
                 <h1 className="jumbotron">Choose Session</h1>
                 <ExistingSessions sessions={this.props.setupState.sessions}></ExistingSessions>
                 <div className="session-choice">
-                    <input type="text" name="createNewSession" placeholder="Session Name..." onKeyPress={this.createNewSession.bind(null, SessionType.SINGLE_GAME)}></input>
+                    <input type="text" name="createNewSession" placeholder="Session Name..." onKeyPress={this.createNewSession.bind(null, SessionType.SINGLE_GAME, false)}></input>
                 </div>
                 <div className="session-choice">
-                    <input type="text" name="createNewTournament" placeholder="Tournament Name..." onKeyPress={this.createNewSession.bind(null, SessionType.TOURNAMENT)}></input>
+                    <input type="text" name="createNewTournament" placeholder="Tournament Name..." onKeyPress={this.createNewSession.bind(null, SessionType.TOURNAMENT, true)}></input>
                 </div>
                 <div className="session-choice">
                     <button type="button" name="autoJoin" onClick={JassActions.autojoinSession}>Just Join!</button>

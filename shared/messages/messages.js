@@ -115,13 +115,14 @@ function createRequestSessionChoice(availableSessions) {
     };
 }
 
-function createChooseSession(sessionChoice, sessionName, sessionType) {
+function createChooseSession(sessionChoice, sessionName, sessionType, asSpectator) {
     return {
         type: MessageType.CHOOSE_SESSION.name,
         data: {
             sessionChoice,
             sessionName,
-            sessionType
+            sessionType,
+            asSpectator
         }
     };
 }
