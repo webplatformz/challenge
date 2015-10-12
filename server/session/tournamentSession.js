@@ -43,9 +43,9 @@ let TournamentSession = {
                     webSocket
                 ]
             });
-            this.rankingTable.addPlayer(playerName);
         }
 
+        this.rankingTable.addPlayer(playerName);
         this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
     },
 

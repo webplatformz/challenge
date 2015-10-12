@@ -45,12 +45,13 @@ describe('tournamentSession', () => {
 
         let playerName = 'playerName';
 
-        it('should add player to clientApi and broadcast rankingTable', () => {
+        it('should add player to clientApi, rankingTable and broadcast rankingTable', () => {
             clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(Promise.resolve());
             clientApiMock.expects('broadcastTournamentRankingTable').withArgs(session.rankingTable).once();
 
             session.addPlayer(webSocketDummy, playerName);
 
+            expect(session.rankingTable.ranking).to.have.length(1);
             clientApiMock.verify();
         });
 
