@@ -22,7 +22,7 @@ module.exports = React.createClass({
                     <tbody>
                         {rankingTable.ranking.map(function (player) {
                             return (
-                                <tr key="{player.playerName}">
+                                <tr key={player.playerName}>
                                     <td>{player.rank}</td>
                                     <td>{player.playerName}</td>
                                     <td>{player.connectedClients}</td>
