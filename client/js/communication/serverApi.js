@@ -87,6 +87,8 @@ let ServerApi = {
                 case JassAppConstants.CHOOSE_CARD:
                     sendJSONMessageToClient(MessageType.CHOOSE_CARD.name, action.data);
                     break;
+                case JassAppConstants.START_TOURNAMENT:
+                    sendJSONMessageToClient(MessageType.START_TOURNAMENT.name);
             }
         }
     },

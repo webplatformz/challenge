@@ -114,8 +114,12 @@ let ClientApi = {
         clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name, rankingTable);
     },
 
+    sendTournamentRankingTable(client, rankingTable) {
+        clientCommunication.send(client, MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name, rankingTable);
+    },
+
     waitForTournamentStart(client) {
-        return clientCommunication.await(client, MessageType.START_TOURNAMENT.name);
+        return clientCommunication.await(client, MessageType.START_TOURNAMENT);
     },
 
     closeAll: function closeAll(code, message) {

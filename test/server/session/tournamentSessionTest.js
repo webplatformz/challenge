@@ -116,6 +116,7 @@ describe('tournamentSession', () => {
     describe('addSpectator', () => {
         it('should add spectator to clientapi', () => {
             clientApiMock.expects('addClient').withArgs(webSocketDummy).once();
+            clientApiMock.expects('sendTournamentRankingTable').withArgs(webSocketDummy, session.rankingTable).once();
 
             session.addSpectator(webSocketDummy);
 

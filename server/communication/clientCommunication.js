@@ -24,6 +24,7 @@ let ClientCommunication = {
                 let messageObject = ClientCommunication.fromJSON(message);
 
                 if (messageObject.type === expectedMessageType.name) {
+                    Logger.debug('<-- Received Message: ' + message);
                     let validationResult = validate(messageObject, expectedMessageType.constraints);
 
                     if (validationResult) {

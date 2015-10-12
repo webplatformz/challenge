@@ -152,6 +152,12 @@ function createTournamentRankingTable(rankingTable) {
     };
 }
 
+function createStartTournament() {
+    return {
+        type: MessageType.START_TOURNAMENT.name
+    };
+}
+
 function create(messageType, ...data) {
     switch (messageType) {
         case MessageType.REQUEST_PLAYER_NAME.name:
@@ -194,6 +200,8 @@ function create(messageType, ...data) {
             return createBadMessage(...data);
         case MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name:
             return createTournamentRankingTable(...data);
+        case MessageType.START_TOURNAMENT.name:
+            return createStartTournament(...data);
         default:
             throw 'Unknown message type ' + messageType;
     }
