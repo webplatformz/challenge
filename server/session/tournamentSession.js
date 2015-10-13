@@ -81,7 +81,7 @@ let TournamentSession = {
 
         this.players.forEach(element => this.ranking.addPlayer(element.playerName));
 
-        this.pairings = _.flatten(this.players.map((player, index) => {
+        let pairings = _.flatten(this.players.map((player, index) => {
             return this.players.filter((secondPlayer, secondIndex) => {
                 return secondIndex > index;
             }).map((secondPlayer) => {
@@ -91,6 +91,10 @@ let TournamentSession = {
                 };
             });
         }));
+
+        for(let i = 0; i < this.rounds; i++) {
+            this.pairings = this.pairings.concat(pairings);
+        }
 
         this.startPairingSessions();
         this.ranking.updateRatings();
