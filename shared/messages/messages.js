@@ -160,7 +160,7 @@ function createStartTournament() {
 
 function createBroadcastTournamentStarted() {
     return {
-        type: MessageType.BROADCAST_TOURNAMENT_STARTED
+        type: MessageType.BROADCAST_TOURNAMENT_STARTED.name
     };
 }
 

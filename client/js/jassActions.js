@@ -1,9 +1,10 @@
 'use strict';
 
-let JassAppConstants = require('./jassAppConstants'),
-    JassAppDispatcher = require('./jassAppDispatcher');
 
-module.exports = {
+import JassAppConstants from './jassAppConstants.js';
+import JassAppDispatcher from './jassAppDispatcher.js';
+
+export default {
     throwError: (source, error) => {
         JassAppDispatcher.throwErrorAction({
             actionType: JassAppConstants.ERROR,
@@ -170,6 +171,12 @@ module.exports = {
     startTournament: () => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.START_TOURNAMENT
+        });
+    },
+
+    broadcastTournamentStarted: () => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.BROADCAST_TOURNAMENT_STARTED
         });
     }
 };

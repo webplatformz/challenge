@@ -31,7 +31,11 @@ module.exports = React.createClass({
                         })}
                     </tbody>
                 </table>
-                <button type="button" name="startTournament" onClick={JassActions.startTournament}>Start!</button>
+                {((component) => {
+                    if (!component.props.started) {
+                        return <button type="button" name="startTournament" onClick={JassActions.startTournament}>Start!</button>;
+                    }
+                })(this)}
             </div>
         )
     }

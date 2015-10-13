@@ -11,6 +11,9 @@ import TournamentTable from '../../../client/js/tournament/tournamentTable.jsx';
 describe('Tournament table Component', () => {
 
     let shallowRenderer = TestUtils.createRenderer(),
+        props;
+
+    beforeEach(() => {
         props = {
             rankingTable: {
                 ranking: [
@@ -30,8 +33,10 @@ describe('Tournament table Component', () => {
                         connectedClients: 1
                     }
                 ]
-            }
+            },
+            started: false
         };
+    });
 
     it('should render a div with id', () => {
         shallowRenderer.render(React.createElement(TournamentTable, props));
@@ -48,6 +53,15 @@ describe('Tournament table Component', () => {
         let button = actual._store.props.children[2];
         expect(button.type).to.equal('button');
         expect(button._store.props.onClick).to.equal(JassActions.startTournament);
+    });
+
+    it('should not render start button when tournament started', () => {
+        props.started = true;
+
+        shallowRenderer.render(React.createElement(TournamentTable, props));
+        let actual = shallowRenderer.getRenderOutput();
+
+        expect(actual._store.props.children[2]).to.equal(undefined);
     });
 
     it('should render table with rankings', () => {

@@ -36,7 +36,7 @@ let JassApp = React.createClass({
                         case SessionType.SINGLE_GAME:
                             return <JassTable />;
                         case SessionType.TOURNAMENT:
-                            return <TournamentTable rankingTable={this.state.rankingTable} />;
+                            return <TournamentTable rankingTable={this.state.rankingTable} started={this.state.tournamentStarted} />;
                     }
                 })()}
             </main>

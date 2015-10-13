@@ -59,6 +59,9 @@ let ServerApi = {
             case MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name:
                 JassActions.broadcastTournamentRankingTable(message.data);
                 break;
+            case MessageType.BROADCAST_TOURNAMENT_STARTED.name:
+                JassActions.broadcastTournamentStarted();
+                break;
         }
     },
     handleActionsFromUi: (payload) => {
