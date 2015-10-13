@@ -32,7 +32,7 @@ function createSession(sessions, sessionChoiceResponse) {
 
 function findSession(sessions, sessionChoiceResponse) {
     let filteredSessions = sessions.filter((session) => {
-        return !session.isComplete() && session.name === sessionChoiceResponse.sessionName;
+        return session.name === sessionChoiceResponse.sessionName;
     });
 
     if (filteredSessions.length === 0) {
@@ -87,7 +87,7 @@ let SessionHandler = {
         });
     },
 
-    handleClientConnection: function handleClientConnection(ws) {
+    handleClientConnection(ws) {
         keepSessionAlive(ws, 30000);
 
         return clientApi.requestPlayerName(ws).then((playerName) => {
@@ -111,18 +111,18 @@ let SessionHandler = {
         });
     },
 
-    startSession: function startSession(session) {
+    startSession(session) {
         session.start().then(
             this.finishSession.bind(this, session, CloseEventCode.NORMAL),
             this.finishSession.bind(this, session, CloseEventCode.ABNORMAL));
     },
 
-    finishSession: function finishSession(session, code) {
+    finishSession(session, code) {
         session.close(code, 'Game Finished');
         removeSession(this.sessions, session);
     },
 
-    resetInstance: function resetInstance() {
+    resetInstance() {
         this.sessions = [];
     }
 
