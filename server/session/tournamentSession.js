@@ -13,6 +13,15 @@ import UUID from 'uuid';
 let TournamentSession = {
     type: SessionType.TOURNAMENT,
     started: false,
+    rounds: 10,
+    gamesPlayed : 0,
+
+    calculateGameCount() {
+        let playerCount = this.players.length;
+        let gamesPerRound = playerCount/2 * (playerCount - 1);
+
+        return this.rounds * gamesPerRound;
+    },
 
     handleLeavingClient(playerName) {
         let player = this.getPlayer(playerName);
@@ -102,7 +111,6 @@ let TournamentSession = {
                 player2.isPlaying = true;
 
                 session.start().then((winningTeam) => {
-                    console.log(session.teams);
                     let firstPlayerWon;
 
                     if (winningTeam.name.indexOf(player1).name > -1) {
@@ -118,6 +126,7 @@ let TournamentSession = {
                     player1.isPlaying = false;
                     player2.isPlaying = false;
                     _.remove(this.pairings, pairing);
+
                     this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
                     this.startPairingSessions();
                 });

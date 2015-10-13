@@ -29,6 +29,26 @@ describe('tournamentSession', () => {
         singleGameSessionMock.restore();
     });
 
+    describe('calculateGameCount', () => {
+        it('should calculate number of games with one round', () => {
+            session.players = [1,2,3];
+            session.rounds = 1;
+
+            let actual = session.calculateGameCount();
+
+            expect(actual).to.equal(3);
+        });
+
+        it('should calculate number of games with 10 rounds', () => {
+            session.players = [1,2,3,4,5];
+            session.rounds = 10;
+
+            let actual = session.calculateGameCount();
+
+            expect(actual).to.equal(100);
+        });
+    });
+
     describe('create', () => {
         it('should initialize name and players', () => {
             let sessionName = 'sessionName';
