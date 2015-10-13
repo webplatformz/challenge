@@ -125,6 +125,8 @@ let TournamentSession = {
 
         return this.startPairingSessions().then(() => {
             this.ranking.updateRatings();
+            // TODO sort players according to rating
+            this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
         });
     },
 
