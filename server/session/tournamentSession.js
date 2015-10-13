@@ -63,7 +63,7 @@ let TournamentSession = {
     },
 
     isComplete() {
-        return false;
+        return this.players.every(player => player.clients.length === 2);
     },
 
     start() {

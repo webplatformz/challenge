@@ -131,6 +131,28 @@ describe('tournamentSession', () => {
         });
     });
 
+    describe('isComplete', () => {
+        let playerName1 = 'playerName1',
+            playerName2 = 'playerName2';
+
+        it('should return false if any players without 2 clients', () => {
+            session.addPlayer(webSocketDummy, playerName1);
+            session.addPlayer(webSocketDummy, playerName2);
+            session.addPlayer(webSocketDummy, playerName1);
+
+            expect(session.isComplete()).to.equal(false);
+        });
+
+        it('should return false if any players without 2 clients', () => {
+            session.addPlayer(webSocketDummy, playerName1);
+            session.addPlayer(webSocketDummy, playerName1);
+            session.addPlayer(webSocketDummy, playerName2);
+            session.addPlayer(webSocketDummy, playerName2);
+
+            expect(session.isComplete()).to.equal(true);
+        });
+    });
+
     describe('close', () => {
         it('should call clientapi closeAll', () => {
             let message = 'message',

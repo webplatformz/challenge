@@ -66,6 +66,14 @@ function keepSessionAlive(webSocket, intervall) {
     }
 }
 
+function handleTournamentStart(SessionHandler, webSocket, session) {
+    if (!session.started && session.isComplete()) {
+        SessionHandler.startSession(session);
+    } else {
+        clientApi.waitForTournamentStart(webSocket).then(handleTournamentStart);
+    }
+}
+
 
 let SessionHandler = {
 
@@ -90,16 +98,12 @@ let SessionHandler = {
                     session.addSpectator(ws);
 
                     if (sessionChoiceResponse.sessionType === SessionType.TOURNAMENT) {
-                        clientApi.waitForTournamentStart(ws).then(() => {
-                            if (!session.started) {
-                                this.startSession(session);
-                            }
-                        });
+                        clientApi.waitForTournamentStart(ws).then(handleTournamentStart.bind(null, this, ws, session));
                     }
                 } else {
                     session.addPlayer(ws, playerName);
 
-                    if (session.isComplete()) {
+                    if (session.type === SessionType.SINGLE_GAME && session.isComplete()) {
                         this.startSession(session);
                     }
                 }

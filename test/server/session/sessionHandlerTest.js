@@ -30,6 +30,7 @@ describe('sessionHandler', () => {
             singleGameSessionMock = sinon.mock(SingleGameSession);
             tournamentSessionMock = sinon.mock(TournamentSession);
             session = {
+                type: SessionType.SINGLE_GAME,
                 addPlayer: () => {},
                 isComplete: () => {},
                 start: () => {},
@@ -179,6 +180,7 @@ describe('sessionHandler', () => {
             clientApiMock.expects('waitForTournamentStart').withArgs(webSocket).once().returns(startPromise);
 
             session.name = sessionName;
+            session.type = SessionType.TOURNAMENT;
             tournamentSessionMock.expects('create').withArgs(sessionName).once().returns(session);
             sessionMock.expects('addSpectator').once();
             sessionMock.expects('addPlayer').never();
