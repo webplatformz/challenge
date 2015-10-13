@@ -10,15 +10,51 @@ import {polyfill} from 'babel';
 import _ from 'lodash';
 import UUID from 'uuid';
 
+function getPairingsPerRound(players) {
+    return _.flatten(players.map((player, index) => {
+        return players.filter((secondPlayer, secondIndex) => {
+            return secondIndex > index;
+        }).map((secondPlayer) => {
+            return {
+                player1: player,
+                player2: secondPlayer
+            };
+        });
+    }));
+}
+
+function createSessionWithPlayers(player1, player2) {
+    let session = SingleGameSession.create(UUID.v4());
+
+    session.addPlayer(player1.clients[0], player1.playerName);
+    session.addPlayer(player2.clients[0], player2.playerName);
+    session.addPlayer(player1.clients[1], player1.playerName);
+    session.addPlayer(player2.clients[1], player2.playerName);
+
+    player1.isPlaying = true;
+    player2.isPlaying = true;
+
+    return session;
+}
+
+function createResultObject(winningTeam, player1, player2) {
+    if (winningTeam.name.indexOf(player1).name > -1) {
+        return {winner: player1.playerName, loser: player2.playerName};
+    }
+
+    return {winner: player2.playerName, loser: player1.playerName};
+}
+
 let TournamentSession = {
     type: SessionType.TOURNAMENT,
     started: false,
     rounds: 10,
-    gamesPlayed : 0,
+    gamesToPlay: 0,
+    gamesPlayed: 0,
 
     calculateGameCount() {
         let playerCount = this.players.length;
-        let gamesPerRound = playerCount/2 * (playerCount - 1);
+        let gamesPerRound = playerCount / 2 * (playerCount - 1);
 
         return this.rounds * gamesPerRound;
     },
@@ -78,63 +114,47 @@ let TournamentSession = {
     start() {
         this.started = true;
         this.clientApi.broadcastTournamentStarted();
+        this.gamesToPlay = this.calculateGameCount();
 
         this.players.forEach(element => this.ranking.addPlayer(element.playerName));
 
-        let pairings = _.flatten(this.players.map((player, index) => {
-            return this.players.filter((secondPlayer, secondIndex) => {
-                return secondIndex > index;
-            }).map((secondPlayer) => {
-                return {
-                    player1: player,
-                    player2: secondPlayer
-                };
-            });
-        }));
-
-        for(let i = 0; i < this.rounds; i++) {
+        let pairings = getPairingsPerRound(this.players);
+        for (let i = 0; i < this.rounds; i++) {
             this.pairings = this.pairings.concat(pairings);
         }
 
-        this.startPairingSessions();
-        this.ranking.updateRatings();
+        return this.startPairingSessions().then(() => {
+            this.ranking.updateRatings();
+        });
     },
 
     startPairingSessions() {
-        this.pairings.forEach(pairing => {
-            let {player1, player2} = pairing;
-            if (!player1.isPlaying && !player2.isPlaying) {
-                let session = SingleGameSession.create(UUID.v4());
+        return new Promise(resolve => {
+            this.pairings.forEach(pairing => {
+                let {player1, player2} = pairing;
+                if (!player1.isPlaying && !player2.isPlaying) {
+                    let session = createSessionWithPlayers(player1, player2);
 
-                session.addPlayer(player1.clients[0], player1.playerName);
-                session.addPlayer(player2.clients[0], player2.playerName);
-                session.addPlayer(player1.clients[1], player1.playerName);
-                session.addPlayer(player2.clients[1], player2.playerName);
+                    session.start().then(winningTeam => {
+                        let result = createResultObject(winningTeam, player1, player2);
+                        this.ranking.updateMatchResult(result);
 
-                player1.isPlaying = true;
-                player2.isPlaying = true;
+                        this.rankingTable.addPairingResult(player1.playerName, player2.playerName, result.winner === player1.playerName);
 
-                session.start().then((winningTeam) => {
-                    let firstPlayerWon;
+                        player1.isPlaying = false;
+                        player2.isPlaying = false;
+                        _.remove(this.pairings, pairing);
 
-                    if (winningTeam.name.indexOf(player1).name > -1) {
-                        this.ranking.updateMatchResult({winner: player1.playerName, loser: player2.playerName});
-                        firstPlayerWon = true;
-                    } else {
-                        this.ranking.updateMatchResult({winner: player2.playerName, loser: player1.playerName});
-                        firstPlayerWon = false;
-                    }
+                        this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
 
-                    this.rankingTable.addPairingResult(player1.playerName, player2.playerName, firstPlayerWon);
-
-                    player1.isPlaying = false;
-                    player2.isPlaying = false;
-                    _.remove(this.pairings, pairing);
-
-                    this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
-                    this.startPairingSessions();
-                });
-            }
+                        if (++this.gamesPlayed === this.gamesToPlay) {
+                            resolve();
+                        } else {
+                            this.startPairingSessions();
+                        }
+                    });
+                }
+            });
         });
     },
 
