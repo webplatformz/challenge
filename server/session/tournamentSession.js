@@ -68,6 +68,8 @@ let TournamentSession = {
 
     start() {
         this.started = true;
+        this.clientApi.broadcastTournamentStarted();
+
         this.players.forEach(element => this.ranking.addPlayer(element.playerName));
 
         this.pairings = _.flatten(this.players.map((player, index) => {

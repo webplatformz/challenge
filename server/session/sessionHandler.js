@@ -81,7 +81,7 @@ let SessionHandler = {
 
     getAvailableSessionNames() {
         return this.sessions.filter((session) => {
-            return !session.isComplete();
+            return !session.started;
         }).map((session) => {
             return session.name;
         });

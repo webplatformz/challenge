@@ -168,7 +168,7 @@ describe('tournamentSession', () => {
 
     describe('start', () => {
 
-        it('should add players to ranking and set started to true', () => {
+        it('should add players to ranking, set started to true and broadcast', () => {
             let player1 = 'playerName1',
                 player2 = 'playerName2';
 
@@ -179,6 +179,8 @@ describe('tournamentSession', () => {
                 }
             });
 
+            clientApiMock.expects('broadcastTournamentStarted').once();
+
             session.addPlayer(webSocketDummy, player1);
             session.addPlayer(webSocketDummy, player1);
             session.addPlayer(webSocketDummy, player2);
@@ -188,6 +190,7 @@ describe('tournamentSession', () => {
 
             expect(session.ranking.ranking.getPlayers()).to.have.length(2);
             expect(session.started).to.equal(true);
+            clientApiMock.verify();
         });
 
         it('should create pairings with round-robin', () => {

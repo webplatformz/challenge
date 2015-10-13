@@ -141,6 +141,9 @@ const MessageType = {
                 presence: true
             }
         }
+    },
+    BROADCAST_TOURNAMENT_STARTED: {
+        name: 'BROADCAST_TOURNAMENT_STARTED'
     }
 };
 

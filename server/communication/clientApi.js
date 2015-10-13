@@ -122,6 +122,10 @@ let ClientApi = {
         return clientCommunication.await(client, MessageType.START_TOURNAMENT);
     },
 
+    broadcastTournamentStarted() {
+        clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TOURNAMENT_STARTED.name);
+    },
+
     closeAll: function closeAll(code, message) {
         this.clients.forEach((client) => {
             client.close(code, message);
