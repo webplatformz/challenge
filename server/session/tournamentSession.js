@@ -12,6 +12,7 @@ import UUID from 'uuid';
 
 let TournamentSession = {
     type: SessionType.TOURNAMENT,
+    started: false,
 
     handleLeavingClient(playerName) {
         let player = this.getPlayer(playerName);
@@ -66,6 +67,7 @@ let TournamentSession = {
     },
 
     start() {
+        this.started = true;
         this.players.forEach(element => this.ranking.addPlayer(element.playerName));
 
         this.pairings = _.flatten(this.players.map((player, index) => {
@@ -78,6 +80,7 @@ let TournamentSession = {
                 };
             });
         }));
+
         this.startPairingSessions();
         this.ranking.updateRatings();
     },

@@ -91,7 +91,9 @@ let SessionHandler = {
 
                     if (sessionChoiceResponse.sessionType === SessionType.TOURNAMENT) {
                         clientApi.waitForTournamentStart(ws).then(() => {
-                            this.startSession(session);
+                            if (!session.started) {
+                                this.startSession(session);
+                            }
                         });
                     }
                 } else {

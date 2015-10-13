@@ -146,7 +146,7 @@ describe('tournamentSession', () => {
 
     describe('start', () => {
 
-        it('should add players to ranking', () => {
+        it('should add players to ranking and set started to true', () => {
             let player1 = 'playerName1',
                 player2 = 'playerName2';
 
@@ -165,6 +165,7 @@ describe('tournamentSession', () => {
             session.start();
 
             expect(session.ranking.ranking.getPlayers()).to.have.length(2);
+            expect(session.started).to.equal(true);
         });
 
         it('should create pairings with round-robin', () => {
