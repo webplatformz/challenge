@@ -38,7 +38,7 @@ function createSessionWithPlayers(player1, player2) {
 }
 
 function createResultObject(winningTeam, player1, player2) {
-    if (winningTeam.name.indexOf(player1).name > -1) {
+    if (winningTeam.name.indexOf(player1.playerName) > -1) {
         return {winner: player1.playerName, loser: player2.playerName};
     }
 
