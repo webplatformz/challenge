@@ -21,7 +21,7 @@ let RankingTable = {
         this.pairingResults.push({
             player1,
             player2,
-            result: firstPlayerWon
+            firstPlayerWon: firstPlayerWon
         });
     }
 };

@@ -20,7 +20,7 @@ module.exports = React.createClass({
                         </tr>
                     </thead>
                     <tbody>
-                        {rankingTable.ranking.map(function (player) {
+                        {rankingTable.ranking.map((player) => {
                             return (
                                 <tr key={player.playerName}>
                                     <td>{player.rank}</td>
@@ -30,6 +30,31 @@ module.exports = React.createClass({
                             );
                         })}
                     </tbody>
+                </table>
+                <h1 className="jumbotron">Pairing Results</h1>
+                <table>
+                    {rankingTable.pairingResults.map((pairing, index) => {
+                        return (
+                            <tr key={index}>
+                                <td>
+                                    {((pairing) => {
+                                        if (pairing.firstPlayerWon) {
+                                            return <object className="winner" data="/images/star.svg" type="image/svg+xml"></object>;
+                                        }
+                                    })(pairing)}
+                                    {pairing.player1}
+                                </td>
+                                <td>
+                                    {((pairing) => {
+                                        if (!pairing.firstPlayerWon) {
+                                            return <object className="winner" data="/images/star.svg" type="image/svg+xml"></object>;
+                                        }
+                                    })(pairing)}
+                                    {pairing.player2}
+                                </td>
+                            </tr>
+                        );
+                    })}
                 </table>
                 {((component) => {
                     if (!component.props.started) {
