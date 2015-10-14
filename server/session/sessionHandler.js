@@ -10,8 +10,8 @@ import CloseEventCode from '../communication/closeEventCode.js';
 let clientApi = ClientApi.create();
 
 function findOrCreateSessionWithSpace(sessions, sessionChoiceResponse) {
-    let filteredSessions = sessions.filter((element) => {
-        return !element.isComplete();
+    let filteredSessions = sessions.filter((session) => {
+        return !session.started;
     });
 
     if (filteredSessions.length === 0) {
