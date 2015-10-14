@@ -1,6 +1,7 @@
 'use strict';
 
 import {polyfill} from 'babel';
+import _ from 'lodash';
 
 let RankingTable = {
     addPlayer(playerName) {
@@ -10,6 +11,7 @@ let RankingTable = {
             player.connectedClients++;
         } else {
             this.ranking.push({
+                rating: undefined,
                 rank: undefined,
                 playerName,
                 connectedClients: 1
@@ -23,6 +25,13 @@ let RankingTable = {
             player2,
             firstPlayerWon: firstPlayerWon
         });
+    },
+
+    updateRating(playerName, rating) {
+        let player = this.ranking.find(actPlayer => actPlayer.playerName === playerName);
+        player.rating = rating;
+        this.ranking = _.sortByOrder(this.ranking, ['rating'], ['desc']);
+        this.ranking = _.map(this.ranking, (elem, index) => { elem.rank = index+1; return elem; });
     }
 };
 

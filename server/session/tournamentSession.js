@@ -48,7 +48,7 @@ function createResultObject(winningTeam, player1, player2) {
 let TournamentSession = {
     type: SessionType.TOURNAMENT,
     started: false,
-    rounds: 10,
+    rounds: 1,
     gamesToPlay: 0,
     gamesPlayed: 0,
 
@@ -112,7 +112,6 @@ let TournamentSession = {
     },
 
     start() {
-        console.log("START TOURNAMENT");
         this.started = true;
         this.clientApi.broadcastTournamentStarted();
         this.gamesToPlay = this.calculateGameCount();
@@ -126,7 +125,11 @@ let TournamentSession = {
 
         return this.startPairingSessions().then(() => {
             this.ranking.updateRatings();
-            // TODO sort players according to rating
+
+            this.ranking.players.forEach(ranking => {
+              this.rankingTable.updateRating(ranking.name, ranking.player.getRating());
+            });
+
             this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
         });
     },

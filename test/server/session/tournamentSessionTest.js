@@ -234,7 +234,7 @@ describe('tournamentSession', () => {
 
             session.start();
 
-            expect(session.pairings).to.have.length(30);
+            expect(session.pairings).to.have.length(3);
         });
 
         it('should start session with players who are not playing', done => {
@@ -272,7 +272,7 @@ describe('tournamentSession', () => {
             resolvedPromise.then(() => {
                 expect(session.players[0].isPlaying).to.equal(false);
                 expect(session.players[2].isPlaying).to.equal(false);
-                expect(session.pairings).to.have.length(20);
+                expect(session.pairings).to.have.length(2);
 
                 done();
             }).catch(done);
