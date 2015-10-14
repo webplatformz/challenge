@@ -125,7 +125,6 @@ let TournamentSession = {
 
         return this.startPairingSessions().then(() => {
             this.ranking.updateRatings();
-
             this.ranking.players.forEach(ranking => {
               this.rankingTable.updateRating(ranking.name, ranking.player.getRating());
             });
@@ -152,11 +151,10 @@ let TournamentSession = {
                         _.remove(this.pairings, pairing);
 
                         this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
-
                         if (++this.gamesPlayed === this.gamesToPlay) {
                             resolve();
                         } else {
-                            this.startPairingSessions();
+                            this.startPairingSessions().then(() => resolve());
                         }
                     });
                 }
