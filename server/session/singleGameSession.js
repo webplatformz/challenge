@@ -144,6 +144,7 @@ let create = function create(name) {
         Team.create('Team 2')
     ];
     session.clientApi = ClientApi.create();
+    session.isTournament = false;
     return session;
 };
 

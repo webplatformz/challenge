@@ -112,6 +112,7 @@ let TournamentSession = {
     },
 
     start() {
+        console.log("START TOURNAMENT");
         this.started = true;
         this.clientApi.broadcastTournamentStarted();
         this.gamesToPlay = this.calculateGameCount();
@@ -175,6 +176,7 @@ export default {
         session.pairings = [];
         session.ranking = Ranking.create();
         session.rankingTable = RankingTable.create();
+        session.isTournament = true;
         return session;
     }
 };

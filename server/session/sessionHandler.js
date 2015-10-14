@@ -97,7 +97,7 @@ let SessionHandler = {
                 if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR || sessionChoiceResponse.asSpectator) {
                     session.addSpectator(ws);
 
-                    if (sessionChoiceResponse.sessionType === SessionType.TOURNAMENT) {
+                    if (session.isTournament) {
                         clientApi.waitForTournamentStart(ws).then(handleTournamentStart.bind(null, this, ws, session));
                     }
                 } else {
@@ -129,6 +129,3 @@ let SessionHandler = {
 };
 
 export default SessionHandler;
-
-
-
