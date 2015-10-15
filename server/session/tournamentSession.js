@@ -62,6 +62,7 @@ let TournamentSession = {
     handleLeavingClient(playerName) {
         let player = this.getPlayer(playerName);
 
+        player.isPlaying = false;
         player.connected = false;
         player.clients.forEach((actClient) => {
             this.clientApi.removeClient(actClient, CloseEventCode.ABNORMAL, 'One of the clients of player ' + playerName + ' disconnected');
