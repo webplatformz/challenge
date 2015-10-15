@@ -64,7 +64,7 @@ let TournamentSession = {
 
         player.connected = false;
         player.clients.forEach((actClient) => {
-            this.clientApi.removeClient(actClient, CloseEventCode.ABNORMAL, 'One of the clients of this player disconnected');
+            this.clientApi.removeClient(actClient, CloseEventCode.ABNORMAL, 'One of the clients of player ' + playerName + ' disconnected');
         });
     },
 
