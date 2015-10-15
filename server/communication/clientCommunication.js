@@ -41,9 +41,11 @@ let ClientCommunication = {
     },
 
     send(client, messageType, ...data) {
-        var messageToSend = this.toJSON(messages.create(messageType, ...data));
-        Logger.debug('<-- Send Message: ' + messageToSend);
-        client.send(messageToSend);
+        if (client.readyState === 1) {
+            var messageToSend = this.toJSON(messages.create(messageType, ...data));
+            Logger.debug('<-- Send Message: ' + messageToSend);
+            client.send(messageToSend);
+        }
     },
 
     broadcast(clients, messageType, ...data) {

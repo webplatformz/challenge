@@ -44,6 +44,7 @@ describe('clientCommunication', () => {
                     }
                 },
                 WebSocketStub = {
+                    readyState: 1,
                     on: function (type, handlerFunction) {
                         messageHandler = handlerFunction;
                     },
@@ -71,6 +72,7 @@ describe('clientCommunication', () => {
                     type: MessageType.CHOOSE_PLAYER_NAME.name
                 },
                 WebSocketStub = {
+                    readyState: 1,
                     on(type, handlerFunction) {
                         messageHandler = handlerFunction;
                     },
@@ -96,6 +98,7 @@ describe('clientCommunication', () => {
     describe('send', ()=> {
         it('should send message to given client', () => {
             let WebSocketStub = {
+                readyState: 1,
                 send: function () {
                 }
             };
@@ -109,11 +112,29 @@ describe('clientCommunication', () => {
 
             clientMock.verify();
         });
+
+        it('should not send message if readyState not 1', () => {
+            let WebSocketStub = {
+                readyState: 0,
+                send: function () {
+                }
+            };
+
+            let client = Object.create(WebSocketStub),
+                clientMock = sinon.mock(client);
+
+            clientMock.expects('send').never();
+
+            clientCommunication.send(client, MessageType.DEAL_CARDS.name, ['a', 'b', 'c']);
+
+            clientMock.verify();
+        });
     });
 
     describe('broadcast', () => {
         it('should broadcast message to all given clients', () => {
             let WebSocketStub = {
+                readyState: 1,
                 send: function () {
                 }
             };
@@ -136,6 +157,7 @@ describe('clientCommunication', () => {
     describe('request', () => {
         it('should send request message to given client and call given function on answer', (done) => {
             let client = {
+                    readyState: 1,
                     send: function () {
                     },
                     on: function (message, onMessage) {
