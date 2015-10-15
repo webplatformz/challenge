@@ -88,7 +88,7 @@ let SessionHandler = {
     },
 
     handleClientConnection(ws) {
-        keepSessionAlive(ws, 30000);
+        keepSessionAlive(ws, 10000);
 
         return clientApi.requestPlayerName(ws).then((playerName) => {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
