@@ -137,7 +137,6 @@ let TournamentSession = {
         let {player1, player2} = pairing;
 
         _.remove(this.pairings, pairing);
-        this.ranking.updateMatchResult(result);
         this.rankingTable.addPairingResult(player1.playerName, player2.playerName, result.winner === player1.playerName);
         this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
     },
@@ -145,6 +144,7 @@ let TournamentSession = {
     handleSessionFinish(pairing, winningTeam) {
         let {player1, player2} = pairing;
         let result = createResultObject(winningTeam, pairing);
+        this.ranking.updateMatchResult(result);
 
         player1.isPlaying = false;
         player2.isPlaying = false;
@@ -152,37 +152,21 @@ let TournamentSession = {
         this.rankPairing(pairing, result);
     },
 
-    handlePairingWithDisconnectedClients(pairing) {
-        let {player1, player2} = pairing;
-
-        if (player1.connected) {
-            this.rankPairing(pairing, {winner: player1, loser: player2});
-        } else {
-            this.rankPairing(pairing, {winner: player2, loser: player1});
-        }
-    },
-
     startPairingSessions() {
         return new Promise(resolve => {
             this.pairings.forEach(pairing => {
-                let {player1, player2} = pairing;
+                if (!pairing.player1.isPlaying && !pairing.player2.isPlaying) {
+                    let session = createSessionWithPlayers(pairing);
 
-                if (!player1.isPlaying && !player2.isPlaying) {
-                    if (!player1.connected || !player2.connected) {
-                        this.handlePairingWithDisconnectedClients(pairing);
-                    } else {
-                        let session = createSessionWithPlayers(pairing);
-
-                        session.start()
-                            .then(this.handleSessionFinish.bind(this, pairing))
-                            .then(() => {
-                                if (++this.gamesPlayed === this.gamesToPlay) {
-                                    resolve();
-                                } else {
-                                    this.startPairingSessions().then(() => resolve());
-                                }
-                            });
-                    }
+                    session.start()
+                        .then(this.handleSessionFinish.bind(this, pairing))
+                        .then(() => {
+                            if (++this.gamesPlayed === this.gamesToPlay) {
+                                resolve();
+                            } else {
+                                this.startPairingSessions().then(() => resolve());
+                            }
+                        });
                 }
             });
         });
