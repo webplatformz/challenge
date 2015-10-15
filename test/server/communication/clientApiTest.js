@@ -47,16 +47,25 @@ describe('Client API', () => {
 
         it('should reject promise and remove client on close event', (done) => {
             let disconnectMessage = 'message';
-            sinon.stub(webSocket, 'on').withArgs('close', sinon.match.func).callsArgWith(1, CloseEventCode.NORMAL, disconnectMessage);
+            let webSocket = new WebSocket('ws://localhost:10001');
+            let webSocket2 = new WebSocket('ws://localhost:10001');
+            let webSocket3 = new WebSocket('ws://localhost:10001');
 
             let promise = clientApi.addClient(webSocket);
+            clientApi.addClient(webSocket2);
+            clientApi.addClient(webSocket3);
+
+            webSocket3.on('open', () => webSocket.close(CloseEventCode.NORMAL, disconnectMessage));
 
             promise.then(() => {
-                done('This promise should never resolve');
+                done(new Error('This promise should never resolve'));
             }, ({code: code, message: message}) => {
                 expect(code).to.equal(CloseEventCode.NORMAL);
                 expect(message).to.equal(disconnectMessage);
-                expect(clientApi.clients).to.have.length(0);
+
+                expect(clientApi.clients).to.have.length(2);
+                expect(clientApi.clients[0]).to.equal(webSocket2);
+                expect(clientApi.clients[1]).to.equal(webSocket3);
                 done();
             }).catch(done);
         });
