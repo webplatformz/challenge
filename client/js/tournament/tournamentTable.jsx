@@ -32,7 +32,7 @@ module.exports = React.createClass({
                     </tbody>
                 </table>
                 <h1 className="jumbotron">Pairing Results</h1>
-                <table>
+                <table className="pairings">
                     {rankingTable.pairingResults.map((pairing, index) => {
                         return (
                             <tr key={index}>
