@@ -151,6 +151,8 @@ let TournamentSession = {
         player2.isPlaying = false;
 
         this.rankPairing(pairing, result);
+
+        return Promise.resolve();
     },
 
     handlePairingWithDisconnectedClients(pairing) {
@@ -175,7 +177,7 @@ let TournamentSession = {
                         let session = createSessionWithPlayers(pairing);
 
                         session.start()
-                            .then(this.handleSessionFinish.bind(this, pairing))
+                            .then(this.handleSessionFinish.bind(this, pairing), this.handleSessionFinish.bind(this, pairing))
                             .then(() => {
                                 if (++this.gamesPlayed === this.gamesToPlay) {
                                     resolve();
