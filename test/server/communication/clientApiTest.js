@@ -47,15 +47,15 @@ describe('Client API', () => {
 
         it('should reject promise and remove client on close event', (done) => {
             let disconnectMessage = 'message';
-            let webSocket = new WebSocket('ws://localhost:10001');
+            let webSocket1 = new WebSocket('ws://localhost:10001');
             let webSocket2 = new WebSocket('ws://localhost:10001');
             let webSocket3 = new WebSocket('ws://localhost:10001');
 
-            let promise = clientApi.addClient(webSocket);
-            clientApi.addClient(webSocket2);
+            clientApi.addClient(webSocket1);
+            let promise = clientApi.addClient(webSocket2);
             clientApi.addClient(webSocket3);
 
-            webSocket3.on('open', () => webSocket.close(CloseEventCode.NORMAL, disconnectMessage));
+            webSocket3.on('open', () => webSocket2.close(CloseEventCode.NORMAL, disconnectMessage));
 
             promise.then(() => {
                 done(new Error('This promise should never resolve'));
@@ -64,7 +64,7 @@ describe('Client API', () => {
                 expect(message).to.equal(disconnectMessage);
 
                 expect(clientApi.clients).to.have.length(2);
-                expect(clientApi.clients[0]).to.equal(webSocket2);
+                expect(clientApi.clients[0]).to.equal(webSocket1);
                 expect(clientApi.clients[1]).to.equal(webSocket3);
                 done();
             }).catch(done);
