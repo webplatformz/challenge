@@ -23,7 +23,7 @@ function createTeamsArrayForClient(session) {
 }
 
 let Session = {
-    maxPoints: 1250,
+    maxPoints: 2500,
     startingPlayer: 0,
     type: SessionType.SINGLE_GAME,
     gamePromise: undefined,
