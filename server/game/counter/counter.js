@@ -55,9 +55,9 @@ let undeufeCardValues = {
 
 let calculateMultiplicator = function calculateMultiplicator(mode, gameTrumpf) {
     if(mode === GameMode.OBEABE || mode === GameMode.UNDEUFE) {
-        return 1;
+        return 3;
     } else if (gameTrumpf === CardColor.CLUBS || gameTrumpf === CardColor.SPADES) {
-        return 1;
+        return 2;
     } else {
         return 1;
     }

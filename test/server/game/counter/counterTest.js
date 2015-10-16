@@ -20,7 +20,7 @@ describe('Counter', function() {
             Card.create(11, CardColor.HEARTS)];
 
         let value = Counter.count(mode, cardColor, cardSet);
-        assert.equal(52 / 2, value);
+        assert.equal(52, value);
     });
 
     it('should count simple array with double multiplicated Trumpf', function() {
@@ -35,7 +35,7 @@ describe('Counter', function() {
             Card.create(11, CardColor.SPADES)];
 
         let value = Counter.count(mode, cardColor, cardSet);
-        assert.equal(96 / 2, value);
+        assert.equal(96, value);
     });
 
     it('should count simple array with single multiplicated Trumpf', function() {
@@ -64,7 +64,7 @@ describe('Counter', function() {
             Card.create(11, CardColor.SPADES)];
 
         let value = Counter.count(mode, null, cardSet);
-        assert.equal(72 / 3, value, 'Cardset value matches');
+        assert.equal(72, value, 'Cardset value matches');
     });
 
     it('should count simple array with untenrauf', function() {
@@ -78,6 +78,6 @@ describe('Counter', function() {
             Card.create(11, CardColor.SPADES)];
 
         let value = Counter.count(mode, null, cardSet);
-        assert.equal(63 / 3, value, 'Cardset value matches');
+        assert.equal(63, value, 'Cardset value matches');
     });
 });
