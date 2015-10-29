@@ -5,6 +5,7 @@ import MessageType from '../../shared/messages/messageType';
 import clientCommunication from './clientCommunication';
 import validate from 'validate.js';
 import _ from 'lodash';
+import WebSocket from 'ws';
 
 function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {
     let messageObject = clientCommunication.fromJSON(message);
@@ -40,7 +41,9 @@ let ClientApi = {
     },
 
     removeClient(client, code, message) {
-        client.close(code, message);
+        if (client.readyState === WebSocket.OPEN) {
+            client.close(code, message);
+        }
 
         _.remove(this.clients, (actClient) => {
             return actClient === client;

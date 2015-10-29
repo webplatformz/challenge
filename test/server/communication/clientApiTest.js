@@ -89,9 +89,10 @@ describe('Client API', () => {
             expect(clientApi.clients[0]).to.equal(webSocket2);
         });
 
-        it('should close connection with given code and message', () => {
+        it('should close connection with given code and message if readyState OPEN', () => {
             let webSocket = {
-                    close: sinon.spy()
+                    close: sinon.spy(),
+                    readyState: 1
                 },
                 code = 0,
                 message = 'message';
@@ -101,6 +102,21 @@ describe('Client API', () => {
             clientApi.removeClient(webSocket, code, message);
 
             expect(webSocket.close.withArgs(code, message).calledOnce).to.equal(true);
+        });
+
+        it('should not close connection with given code and message when readyState not OPEN', () => {
+            let webSocket = {
+                    close: sinon.spy(),
+                    readyState: 2
+                },
+                code = 0,
+                message = 'message';
+
+            clientApi.addClient(webSocket);
+
+            clientApi.removeClient(webSocket, code, message);
+
+            expect(webSocket.close.callCount).to.equal(0);
         });
     });
 
