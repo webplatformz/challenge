@@ -156,10 +156,12 @@ let TournamentSession = {
     },
 
     handlePairingWithDisconnectedClients(pairing) {
+        let {player1, player2} = pairing;
+
         if (player1.connected) {
-            this.rankPairing(pairing, createResultObject(pairing.player1.playerName, pairing));
+            this.rankPairing(pairing, createResultObject(player1.playerName, pairing));
         } else {
-            this.rankPairing(pairing, createResultObject(pairing.player2.playerName, pairing));
+            this.rankPairing(pairing, createResultObject(player2.playerName, pairing));
         }
     },
 
