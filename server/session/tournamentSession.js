@@ -37,8 +37,8 @@ function createSessionWithPlayers({player1, player2}) {
     return session;
 }
 
-function createResultObject(winningTeam, {player1, player2}) {
-    if (winningTeam.name.indexOf(player1.playerName) > -1) {
+function createResultObject(winnerName, {player1, player2}) {
+    if (winnerName.indexOf(player1.playerName) > -1) {
         return {winner: player1.playerName, loser: player2.playerName};
     }
 
@@ -145,7 +145,7 @@ let TournamentSession = {
 
     handleSessionFinish(pairing, winningTeam) {
         let {player1, player2} = pairing;
-        let result = createResultObject(winningTeam, pairing);
+        let result = createResultObject(winningTeam.name, pairing);
 
         player1.isPlaying = false;
         player2.isPlaying = false;
@@ -156,12 +156,10 @@ let TournamentSession = {
     },
 
     handlePairingWithDisconnectedClients(pairing) {
-        let {player1, player2} = pairing;
-
         if (player1.connected) {
-            this.rankPairing(pairing, {winner: player1, loser: player2});
+            this.rankPairing(pairing, createResultObject(pairing.player1.playerName, pairing));
         } else {
-            this.rankPairing(pairing, {winner: player2, loser: player1});
+            this.rankPairing(pairing, createResultObject(pairing.player2.playerName, pairing));
         }
     },
 
