@@ -163,6 +163,8 @@ let TournamentSession = {
         } else {
             this.rankPairing(pairing, createResultObject(player2.playerName, pairing));
         }
+
+        return Promise.resolve();
     },
 
     startPairingSessions() {
@@ -171,21 +173,22 @@ let TournamentSession = {
                 let {player1, player2} = pairing;
 
                 if (!player1.isPlaying && !player2.isPlaying) {
-                    if (!player1.connected || !player2.connected) {
-                        this.handlePairingWithDisconnectedClients(pairing);
-                    } else {
-                        let session = createSessionWithPlayers(pairing);
+                    let sessionPromise;
 
-                        session.start()
-                            .then(this.handleSessionFinish.bind(this, pairing), this.handleSessionFinish.bind(this, pairing))
-                            .then(() => {
-                                if (++this.gamesPlayed === this.gamesToPlay) {
-                                    resolve();
-                                } else {
-                                    this.startPairingSessions().then(() => resolve());
-                                }
-                            });
+                    if (!player1.connected || !player2.connected) {
+                        sessionPromise = this.handlePairingWithDisconnectedClients(pairing);
+                    } else {
+                        sessionPromise = createSessionWithPlayers(pairing).start()
+                            .then(this.handleSessionFinish.bind(this, pairing), this.handleSessionFinish.bind(this, pairing));
                     }
+
+                    sessionPromise.then(() => {
+                        if (++this.gamesPlayed === this.gamesToPlay) {
+                            resolve();
+                        } else {
+                            this.startPairingSessions().then(() => resolve());
+                        }
+                    });
                 }
             });
         });
