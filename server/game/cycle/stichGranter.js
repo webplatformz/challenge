@@ -1,7 +1,6 @@
 'use strict';
 
-let GameMode = require('../../../shared/game/gameMode');
-let Card = require('../../../shared/deck/card');
+import GameMode from '../../../shared/game/gameMode.js';
 
 let StichGranter = {
     determineWinner: function (mode, trumpfColor, playedCards, players) {

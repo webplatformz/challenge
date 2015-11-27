@@ -1,7 +1,7 @@
 'use strict';
 
-let _ = require('lodash');
-let Card = require('./../../../shared/deck/card');
+import _ from 'lodash';
+import Card from './../../../shared/deck/card.js';
 
 let cards = _.map(_.range(36), function(element, index) {
     let cardStep = Math.floor(index / 4) + 6;

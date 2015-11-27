@@ -1,11 +1,10 @@
 'use strict';
-let _ = require('lodash');
-let GameMode = require('../../../shared/game/gameMode');
+import _ from 'lodash';
+import GameMode from '../../../shared/game/gameMode.js';
 
 let validationSuccess = {
     permitted: true
 };
-
 
 let AngebenValidator = {
     validate: function (validationParameter) {

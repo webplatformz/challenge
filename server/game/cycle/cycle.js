@@ -1,8 +1,8 @@
 "use strict";
 
-let Validation = require('../validation/validation');
-let stichGranter = require('./stichGranter');
-let counter = require('../counter/counter');
+import Validation from '../validation/validation.js';
+import stichGranter from './stichGranter.js';
+import counter from '../counter/counter.js';
 
 let Cycle = {
     iterate: function () {
