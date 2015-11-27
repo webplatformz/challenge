@@ -1,10 +1,10 @@
 'use strict';
 
-let GameMode = require('../../../shared/game/gameMode');
-let CardColor = require('../../../shared/deck/card').CardColor;
+import GameMode from '../../../shared/game/gameMode.js';
+import {CardColor} from '../../../shared/deck/card.js';
 
 
-let nonTrumpCardValues = {
+const nonTrumpCardValues = {
     6: 0,
     7: 0,
     8: 0,
@@ -16,7 +16,7 @@ let nonTrumpCardValues = {
     14: 11
 };
 
-let trumpCardValues = {
+const trumpCardValues = {
     6: 0,
     7: 0,
     8: 0,
@@ -28,7 +28,7 @@ let trumpCardValues = {
     14: 11
 };
 
-let obeabeCardValues = {
+const obeabeCardValues = {
     6: 0,
     7: 0,
     8: 8,
@@ -40,7 +40,7 @@ let obeabeCardValues = {
     14: 11
 };
 
-let undeufeCardValues = {
+const undeufeCardValues = {
     6: 11,
     7: 0,
     8: 8,
