@@ -12,8 +12,8 @@
     "debug": "./node_modules/grunt-cli/bin/grunt build; DEBUG=true node --debug-brk=5858 ./build/server.js"
   },
   "dependencies": {
-    "babel": "5.8.23",
-    "babelify": "6.3.0",
+    "babel": "5.8.34",
+    "babelify": "6.4.0",
     "chai": "3.3.0",
     "express": "4.13.3",
     "flux": "2.1.1",
