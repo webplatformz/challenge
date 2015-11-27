@@ -2,7 +2,6 @@
 
 let Deck = require('./deck/deck');
 let Cycle = require('./cycle/cycle');
-let Counter = require('./counter/counter');
 let GameMode = require('./../../shared/game/gameMode');
 
 function handleChooseTrumpf(game, gameType) {
@@ -61,20 +60,18 @@ let Game = {
     }
 };
 
-let create = function create(players, maxPoints, startPlayer, clientApi) {
-    let game = Object.create(Game);
-    game.deck = Deck.create();
-    players.forEach(player => {
-        game.deck.deal(player, 9);
-    });
+export default {
+    create(players, maxPoints, startPlayer, clientApi) {
+        let game = Object.create(Game);
+        game.deck = Deck.create();
+        players.forEach(player => {
+            game.deck.deal(player, 9);
+        });
 
-    game.players = players;
-    game.maxPoints = maxPoints;
-    game.startPlayer = startPlayer;
-    game.clientApi = clientApi;
-    return game;
-};
-
-module.exports = {
-    create
+        game.players = players;
+        game.maxPoints = maxPoints;
+        game.startPlayer = startPlayer;
+        game.clientApi = clientApi;
+        return game;
+    }
 };

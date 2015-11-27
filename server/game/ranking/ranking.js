@@ -4,20 +4,20 @@ import glicko2 from 'glicko2';
 import {polyfill} from 'babel';
 
 let Ranking = {
-    addPlayer(playerName) {
+    addPlayer (playerName) {
         this.players.push({
             name: playerName,
             player: this.ranking.makePlayer()
         });
     },
 
-    getPlayer(playerName) {
+    getPlayer (playerName) {
         return this.players.find((player) => {
             return player.name === playerName;
         });
     },
 
-    updateMatchResult({winner, loser}) {
+    updateMatchResult ({winner, loser}) {
         this.matches.push([
             this.getPlayer(winner).player,
             this.getPlayer(loser).player,
@@ -31,7 +31,7 @@ let Ranking = {
     }
 };
 
-module.exports = {
+export default {
     create() {
         let ranking = Object.create(Ranking);
         ranking.matches = [];

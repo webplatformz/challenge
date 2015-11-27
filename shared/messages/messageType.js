@@ -147,4 +147,4 @@ const MessageType = {
     }
 };
 
-module.exports = MessageType;
+export default MessageType;

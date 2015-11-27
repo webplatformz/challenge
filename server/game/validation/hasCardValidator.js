@@ -1,8 +1,8 @@
 'use strict';
-let _ = require('lodash');
+import _ from 'lodash';
 
 let HasCardValidator = {
-    validate: function (validationParameter) {
+    validate (validationParameter) {
         let cardToPlay = function(cardToPlay, handCard) {
             return handCard.equals(cardToPlay);
         };
@@ -21,4 +21,4 @@ let HasCardValidator = {
     }
 };
 
-module.exports = HasCardValidator;
+export default HasCardValidator;

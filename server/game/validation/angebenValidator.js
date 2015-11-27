@@ -53,4 +53,4 @@ let AngebenValidator = {
     }
 };
 
-module.exports = AngebenValidator;
+export default AngebenValidator;

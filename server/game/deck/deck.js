@@ -16,12 +16,10 @@ let Deck = {
     }
 };
 
-let create = function create() {
-    let deck = Object.create(Deck);
-    deck.cards = _.shuffle(cards);
-    return deck;
-};
-
-module.exports = {
-    create
+export default {
+    create () {
+        let deck = Object.create(Deck);
+        deck.cards = _.shuffle(cards);
+        return deck;
+    }
 };

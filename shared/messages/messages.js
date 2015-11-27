@@ -215,6 +215,6 @@ function create(messageType, ...data) {
     }
 }
 
-module.exports = {
+export default {
     create
 };

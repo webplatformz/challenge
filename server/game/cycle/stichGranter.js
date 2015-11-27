@@ -99,4 +99,4 @@ let StichGranter = {
 
 };
 
-module.exports = StichGranter;
+export default StichGranter;

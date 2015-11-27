@@ -7,4 +7,4 @@ const CloseEventCode = {
 
 Object.freeze(CloseEventCode);
 
-module.exports = CloseEventCode;
+export default CloseEventCode;

@@ -94,4 +94,4 @@ let Counter = {
 
 };
 
-module.exports = Counter;
+export default Counter;

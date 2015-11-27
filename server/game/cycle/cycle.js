@@ -100,19 +100,17 @@ function rotatePlayersToCurrentPlayer(players, currentPlayer) {
     }
 }
 
-let create = function (currentPlayer, players, clientApi, gameType) {
-    let cycle = Object.create(Cycle);
-    cycle.currentPlayer = currentPlayer;
+export default {
+    create (currentPlayer, players, clientApi, gameType) {
+        let cycle = Object.create(Cycle);
+        cycle.currentPlayer = currentPlayer;
 
-    rotatePlayersToCurrentPlayer(players, currentPlayer);
-    cycle.players = players;
-    cycle.gameType = gameType;
-    cycle.clientApi = clientApi;
-    cycle.validator = Validation.create(gameType.mode, gameType.trumpfColor);
-    cycle.playedCards = [];
-    return cycle;
-};
-
-module.exports = {
-    create
+        rotatePlayersToCurrentPlayer(players, currentPlayer);
+        cycle.players = players;
+        cycle.gameType = gameType;
+        cycle.clientApi = clientApi;
+        cycle.validator = Validation.create(gameType.mode, gameType.trumpfColor);
+        cycle.playedCards = [];
+        return cycle;
+    }
 };

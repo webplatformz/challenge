@@ -3,14 +3,15 @@
 let debug = Boolean(process.env.DEBUG) || false;
 
 const Logger = {
-    debug : function (messageToLog) {
+    debug (messageToLog) {
         if (debug){
             console.log(messageToLog);
         }
     },
-    error : function(messageToLog) {
+
+    error (messageToLog) {
         console.error(messageToLog);
     }
 };
 
-module.exports = Logger;
+export default Logger;

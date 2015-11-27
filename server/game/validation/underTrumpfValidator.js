@@ -1,13 +1,13 @@
 'use strict';
-let _ = require('lodash');
-let GameMode = require('../../../shared/game/gameMode');
+import _ from 'lodash';
+import GameMode from '../../../shared/game/gameMode.js';
 
 let validationSuccess = {
     permitted: true
 };
 
 let UnderTrumpfValidator = {    
-    validate: function (validationParameter) {
+    validate (validationParameter) {
         let trumpfQuantifier = [6,7,8,10,12,13,14,9,11]; 
         let trumpfColor = validationParameter.color;
         
@@ -54,4 +54,4 @@ let UnderTrumpfValidator = {
     }
 };
 
-module.exports = UnderTrumpfValidator;
+export default UnderTrumpfValidator;

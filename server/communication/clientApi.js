@@ -1,7 +1,7 @@
 'use strict';
 
-import messages from '../../shared/messages/messages';
-import MessageType from '../../shared/messages/messageType';
+import messages from '../../shared/messages/messages.js';
+import MessageType from '../../shared/messages/messageType.js';
 import clientCommunication from './clientCommunication';
 import validate from 'validate.js';
 import _ from 'lodash';
@@ -136,13 +136,10 @@ let ClientApi = {
     }
 };
 
-let create = function create() {
-    let clientApi = Object.create(ClientApi);
-    clientApi.clients = [];
-    return clientApi;
-};
-
-
-module.exports = {
-    create
+export default {
+    create() {
+        let clientApi = Object.create(ClientApi);
+        clientApi.clients = [];
+        return clientApi;
+    }
 };
