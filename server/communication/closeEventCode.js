@@ -5,6 +5,4 @@ const CloseEventCode = {
     ABNORMAL: 1006
 };
 
-Object.freeze(CloseEventCode);
-
 export default CloseEventCode;
