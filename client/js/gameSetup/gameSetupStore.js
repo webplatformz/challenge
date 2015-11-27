@@ -59,4 +59,4 @@ JassAppDispatcher.register(function (payload) {
     }
 });
 
-module.exports = GameSetupStore;
+export default GameSetupStore;

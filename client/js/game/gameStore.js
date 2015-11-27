@@ -192,4 +192,4 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 
 JassAppDispatcher.register(GameStore.handleAction.bind(GameStore));
 
-module.exports = GameStore;
+export default GameStore;

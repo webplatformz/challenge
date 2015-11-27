@@ -1,22 +1,22 @@
 'use strict';
 
-let React = require('react');
+import React from 'react';
 
-module.exports = React.createClass({
+export default React.createClass({
 
-    getInitialState: function () {
+    getInitialState() {
         return {
             shown: false
         };
     },
 
-    toggleShown: function() {
+    toggleShown() {
         this.setState({
             shown: !this.state.shown
         });
     },
 
-    render: function () {
+    render() {
         return (
             <div id="points" className={(this.state.shown) ? 'shown' : ''} onClick={this.toggleShown}>
                 {this.props.teams.map((team) => {

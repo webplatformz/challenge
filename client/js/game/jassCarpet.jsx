@@ -5,7 +5,7 @@ import PlayerNames from './playerNames.jsx';
 import TableCards from './tableCards.jsx';
 import Trumpf from './trumpf.jsx';
 
-module.exports = React.createClass({
+export default React.createClass({
 
     render: function () {
         let playerSeating = this.props.playerSeating,

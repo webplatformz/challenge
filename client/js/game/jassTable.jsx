@@ -10,7 +10,7 @@ import JassCarpet from './jassCarpet.jsx';
 import Points from './points.jsx';
 import SpectatorControls from './spectatorControls.jsx';
 
-module.exports = React.createClass({
+export default React.createClass({
 
     handleGameSetupState: function () {
         this.setState(GameStore.state);

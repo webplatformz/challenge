@@ -5,4 +5,4 @@ const SessionType = {
     TOURNAMENT: 'TOURNAMENT'
 };
 
-module.exports = SessionType;
+export default SessionType;

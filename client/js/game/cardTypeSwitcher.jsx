@@ -1,10 +1,10 @@
 'use strict';
 
 import React from 'react';
-import {CardType} from './gameStore';
-import JassActions from '../jassActions';
+import {CardType} from './gameStore.js';
+import JassActions from '../jassActions.js';
 
-module.exports = React.createClass({
+export default React.createClass({
 
     changeCardType: function(cardType) {
         JassActions.changeCardType(cardType);

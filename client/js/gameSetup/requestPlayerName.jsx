@@ -1,10 +1,10 @@
 'use strict';
 
-let React = require('react'),
-    JassActions = require('../jassActions'),
-    GameSetupStore = require('./gameSetupStore');
+import React from 'react';
+import JassActions from '../jassActions.js';
+import GameSetupStore from './gameSetupStore.js';
 
-module.exports = React.createClass({
+export default React.createClass({
     choosePlayerName: function (event) {
         let inputElement = event.target,
             playerName = inputElement.value;

@@ -107,4 +107,4 @@ let ServerApi = {
     }
 };
 
-module.exports = ServerApi;
+export default ServerApi;

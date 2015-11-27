@@ -44,4 +44,4 @@ let JassApp = React.createClass({
     }
 });
 
-module.exports = JassApp;
+export default JassApp;

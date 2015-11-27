@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
 const CardColor = {
-    HEARTS: "HEARTS",
-    DIAMONDS: "DIAMONDS",
-    CLUBS: "CLUBS",
-    SPADES: "SPADES"
+    HEARTS: 'HEARTS',
+    DIAMONDS: 'DIAMONDS',
+    CLUBS: 'CLUBS',
+    SPADES: 'SPADES'
 };
 
 let Card = {
@@ -13,14 +13,12 @@ let Card = {
     }
 };
 
-let create = function create(number, color) {
-    let card = Object.create(Card);
-    card.number = number;
-    card.color = color;
-    return card;
-};
-
-module.exports = {
+export default {
     CardColor: CardColor,
-    create
+    create(number, color) {
+        let card = Object.create(Card);
+        card.number = number;
+        card.color = color;
+        return card;
+    }
 };

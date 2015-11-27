@@ -32,4 +32,4 @@ let JassAppDispatcher = Object.assign(new Dispatcher(), {
     }
 });
 
-module.exports = JassAppDispatcher;
+export default JassAppDispatcher;

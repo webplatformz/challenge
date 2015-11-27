@@ -3,7 +3,7 @@
 import React from 'react';
 import JassActions from '../jassActions';
 
-module.exports = React.createClass({
+export default React.createClass({
 
     handlePlayingSpeed: function(event) {
         JassActions.adjustSpectatorSpeed(event.target.value);

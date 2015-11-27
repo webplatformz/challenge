@@ -3,7 +3,7 @@
 import React from 'react';
 import JassActions from '../jassActions';
 
-module.exports = React.createClass({
+export default React.createClass({
 
     hasSessions: function(sessions) {
         return sessions.length;

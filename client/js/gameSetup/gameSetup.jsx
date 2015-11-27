@@ -1,10 +1,10 @@
 'use strict';
 
-let React = require('react'),
-    RequestPlayerName = require('./requestPlayerName.jsx'),
-    Connecting = require('./connecting.jsx'),
-    ChooseSession = require('./chooseSession.jsx'),
-    GameSetupStore = require('./gameSetupStore');
+import React from 'react';
+import RequestPlayerName from './requestPlayerName.jsx';
+import Connecting from './connecting.jsx';
+import ChooseSession from './chooseSession.jsx';
+import GameSetupStore from './gameSetupStore';
 
 function getSetupStateClassName(setupState) {
     if (setupState.status === GameSetupStore.GameSetupState.FINISHED) {
@@ -12,7 +12,7 @@ function getSetupStateClassName(setupState) {
     }
 }
 
-module.exports = React.createClass({
+export default React.createClass({
 
     handleGameSetupState: function () {
         this.setState(GameSetupStore.state);

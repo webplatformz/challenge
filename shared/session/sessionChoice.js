@@ -7,4 +7,4 @@ const SessionChoice = {
     SPECTATOR: 'SPECTATOR'
 };
 
-module.exports = SessionChoice;
+export default SessionChoice;

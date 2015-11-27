@@ -1,11 +1,11 @@
 'use strict';
 
-let React = require('react'),
-    CardColor = require('../../../shared/deck/card').CardColor,
-    GameMode = require('../../../shared/game/gameMode'),
-    JassActions = require('../jassActions');
+import React from 'react';
+import {CardColor} from '../../../shared/deck/card.js';
+import GameMode from '../../../shared/game/gameMode.js';
+import JassActions from '../jassActions.js';
 
-module.exports = React.createClass({
+export default React.createClass({
 
     chooseTrumpf: function(mode, color) {
         JassActions.chooseTrumpf(mode, color);

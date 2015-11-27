@@ -49,4 +49,4 @@ JassAppDispatcher.register(function (payload){
     }
 });
 
-module.exports = JassAppStore;
+export default JassAppStore;

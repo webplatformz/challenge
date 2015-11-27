@@ -1,10 +1,10 @@
 'use strict';
 
 import React from 'react';
-import GameSetupStore from './../gameSetup/gameSetupStore';
-import JassActions from '../jassActions';
+import GameSetupStore from './../gameSetup/gameSetupStore.js';
+import JassActions from '../jassActions.js';
 
-module.exports = React.createClass({
+export default React.createClass({
     render: function () {
         let rankingTable = this.props.rankingTable;
 

@@ -1,9 +1,9 @@
 'use strict';
 
-let React = require('react'),
-    GameSetupStore = require('./gameSetupStore');
+import React from 'react';
+import GameSetupStore from './gameSetupStore.js';
 
-module.exports = React.createClass({
+export default React.createClass({
     render: function () {
         return (
             <div id="connecting" className={(this.props.setupState !== GameSetupStore.GameSetupState.CONNECTING ? 'hidden' : '')}>

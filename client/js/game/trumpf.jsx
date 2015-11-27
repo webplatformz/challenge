@@ -1,9 +1,9 @@
 'use strict';
 
-let React = require('react'),
-    GameMode = require('../../../shared/game/gameMode');
+import React from 'react';
+import GameMode from '../../../shared/game/gameMode.js';
 
-module.exports = React.createClass({
+export default React.createClass({
 
     render: function () {
         let mode = this.props.mode,

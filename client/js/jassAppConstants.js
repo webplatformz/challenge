@@ -2,7 +2,7 @@
 
 let keyMirror = require('react/lib/keyMirror');
 
-module.exports = keyMirror({
+export default keyMirror({
     ERROR: null,
     BAD_MESSAGE: null,
     REQUEST_PLAYER_NAME: null,

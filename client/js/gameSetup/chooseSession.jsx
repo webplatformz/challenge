@@ -6,7 +6,7 @@ import GameSetupStore from './gameSetupStore.js';
 import JassActions from '../jassActions.js';
 import SessionType from '../../../shared/session/sessionType.js';
 
-module.exports = React.createClass({
+export default React.createClass({
 
     createNewSession: function(sessionType, asSpectator, event) {
         let inputElement = event.target,

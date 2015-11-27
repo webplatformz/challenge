@@ -1,9 +1,9 @@
 'use strict';
 
-let React = require('react'),
-    CardColor = require('../../../shared/deck/card').CardColor,
-    GameState = require('./gameStore').GameState,
-    JassActions = require('../jassActions');
+import React from 'react';
+import {CardColor} from '../../../shared/deck/card.js';
+import {GameState} from './gameStore.js';
+import JassActions from '../jassActions.js';
 
 let colorIndices = {};
 
@@ -11,7 +11,7 @@ Object.getOwnPropertyNames(CardColor).forEach((color, index) => {
     colorIndices[color] = index;
 });
 
-module.exports = React.createClass({
+export default React.createClass({
 
     playCard: function (color, number) {
         JassActions.chooseCard(color, number);
