@@ -3,7 +3,7 @@
   "version": "0.7.0",
   "private": true,
   "engines": {
-    "node": "5.1.x"
+    "node": "4.2.x"
   },
   "scripts": {
     "test": "./node_modules/grunt-cli/bin/grunt test",
