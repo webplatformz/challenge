@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import GameStore from './gameStore';
+import {default as GameStore, GameState, PlayerType} from './gameStore';
 import CardTypeSwitcher from './cardTypeSwitcher.jsx';
 import PlayerCards from './playerCards.jsx';
 import RequestTrumpf from './requestTrumpf.jsx';
@@ -47,17 +47,17 @@ export default React.createClass({
                 </JassCarpet>
                 <Points teams={teams} />
                 {(() => {
-                    if (state.playerType === GameStore.PlayerType.PLAYER) {
+                    if (state.playerType === PlayerType.PLAYER) {
                         return <PlayerCards cards={playerCards} cardType={state.cardType} state={state.status}></PlayerCards>;
                     }
                 })()}
                 {(() => {
-                    if (state.status === GameStore.GameState.REQUESTING_TRUMPF) {
+                    if (state.status === GameState.REQUESTING_TRUMPF) {
                         return <RequestTrumpf isGeschoben={state.isGeschoben} cardType={state.cardType}></RequestTrumpf>;
                     }
                 })()}
                 {(() => {
-                    if (state.playerType === GameStore.PlayerType.SPECTATOR) {
+                    if (state.playerType === PlayerType.SPECTATOR) {
                         return <SpectatorControls></SpectatorControls>;
                     }
                 })()}

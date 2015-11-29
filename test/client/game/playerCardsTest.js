@@ -3,7 +3,7 @@
 import {expect} from 'chai';
 import React from 'react/addons';
 import sinon from 'sinon';
-import GameStore from '../../../client/js/game/gameStore';
+import {GameState, CardType} from '../../../client/js/game/gameStore';
 import CardColor from '../../../shared/deck/cardColor';
 import JassActions from '../../../client/js/jassActions';
 
@@ -36,7 +36,7 @@ describe('PlayerCards Component', () => {
 
     it('should add class onTurn when requesting card', () => {
         let props = {
-            state: GameStore.GameState.REQUESTING_CARD
+            state: GameState.REQUESTING_CARD
         };
 
         shallowRenderer.render(React.createElement(PlayerCards, props));
@@ -47,7 +47,7 @@ describe('PlayerCards Component', () => {
 
     it('should render cards sorted by color (according to Object Property order in CardColor) and number', () => {
         let props = {
-                cardType: GameStore.CardType.FRENCH,
+                cardType: CardType.FRENCH,
                 cards: [
                     {
                         color: CardColor.DIAMONDS,
@@ -70,7 +70,7 @@ describe('PlayerCards Component', () => {
                         number: 11
                     }
                 ],
-                state: GameStore.GameState.REQUESTING_CARD
+                state: GameState.REQUESTING_CARD
             },
             sortedCards = [
                 {
@@ -102,7 +102,7 @@ describe('PlayerCards Component', () => {
             let expectedCard = sortedCards[index];
 
             expect(actCard.key).to.equal(expectedCard.color + '-' + expectedCard.number);
-            expect(actCard._store.props.src).to.equal('/images/cards/' + GameStore.CardType.FRENCH + '/' + expectedCard.color.toLowerCase() + '_' + expectedCard.number + '.gif');
+            expect(actCard._store.props.src).to.equal('/images/cards/' + CardType.FRENCH + '/' + expectedCard.color.toLowerCase() + '_' + expectedCard.number + '.gif');
             expect(actCard._store.props.onClick.__reactBoundMethod).to.equal(PlayerCards.prototype.playCard);
         });
     });
@@ -139,7 +139,7 @@ describe('PlayerCards Component', () => {
                     }
                 ],
 
-                state: GameStore.GameState.REQUESTING_CARD
+                state: GameState.REQUESTING_CARD
             };
 
         shallowRenderer.render(React.createElement(PlayerCards, props));

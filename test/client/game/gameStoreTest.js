@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 import sinon from 'sinon';
-import GameStore from '../../../client/js/game/gameStore';
+import {default as GameStore, CardType, PlayerType, GameState} from '../../../client/js/game/gameStore';
 import JassAppConstants from '../../../client/js/jassAppConstants';
 import JassAppDispatcher from '../../../client/js/jassAppDispatcher';
 import CardColor from '../../../shared/deck/cardColor';
@@ -25,8 +25,8 @@ describe('GameStore', () => {
     it('should have initial state', () => {
         let state = GameStore.state;
 
-        expect(state.playerType).to.equal(GameStore.PlayerType.PLAYER);
-        expect(state.cardType).to.equal(GameStore.CardType.FRENCH);
+        expect(state.playerType).to.equal(PlayerType.PLAYER);
+        expect(state.cardType).to.equal(CardType.FRENCH);
         expect(state.players).to.eql([]);
         expect(state.teams).to.eql([]);
         expect(state.playerSeating).to.eql(['bottom', 'right', 'top', 'left']);
@@ -36,7 +36,7 @@ describe('GameStore', () => {
         expect(state.nextStartingPlayerIndex).to.equal(0);
         expect(state.roundPlayerIndex).to.equal(0);
         expect(state.cyclesMade).to.equal(0);
-        expect(state.status).to.equal(GameStore.GameState.WAITING);
+        expect(state.status).to.equal(GameState.WAITING);
     });
 
     it('should start spectator rendering when session joined as a spectator', () => {
@@ -45,7 +45,7 @@ describe('GameStore', () => {
                 actionType: JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR
             }
         };
-        GameStore.state.playerType = GameStore.PlayerType.SPECTATOR;
+        GameStore.state.playerType = PlayerType.SPECTATOR;
 
         GameStore.handleAction(dummyPayload);
 
@@ -203,7 +203,7 @@ describe('GameStore', () => {
 
         GameStore.handleAction(dummyPayload);
 
-        expect(GameStore.state.status).to.equal(GameStore.GameState.STICH);
+        expect(GameStore.state.status).to.equal(GameState.STICH);
         expect(GameStore.state.startingPlayerIndex).to.equal(0);
         expect(GameStore.state.nextStartingPlayerIndex).to.equal(1);
         expect(GameStore.state.teams[0].points).to.equal(dummyPayload.action.data.teams[1].points);
@@ -277,7 +277,7 @@ describe('GameStore', () => {
 
         GameStore.handleAction(dummyPayload);
 
-        expect(GameStore.state.status).to.equal(GameStore.GameState.STICH);
+        expect(GameStore.state.status).to.equal(GameState.STICH);
         expect(GameStore.state.roundPlayerIndex).to.equal(0);
         expect(GameStore.state.nextStartingPlayerIndex).to.equal(0);
     });

@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 import React from 'react/addons';
-import GameStore from '../../../client/js/game/gameStore';
+import {CardType} from '../../../client/js/game/gameStore';
 import PlayerNames from '../../../client/js/game/playerNames.jsx';
 import TableCards from '../../../client/js/game/tableCards.jsx';
 import Trumpf from '../../../client/js/game/trumpf.jsx';
@@ -54,7 +54,7 @@ describe('JassCarpet Component', () => {
 
     it('should pass correct props to TableCards', () => {
         let props = {
-            cardType: GameStore.CardType.FRENCH,
+            cardType: CardType.FRENCH,
             cards: ['card1'],
             startingPlayerIndex: 2,
             playerSeating: ['playerSeating']
@@ -72,7 +72,7 @@ describe('JassCarpet Component', () => {
 
     it('should pass correct props to Trumpf', () => {
         let props = {
-            cardType: GameStore.CardType.FRENCH,
+            cardType: CardType.FRENCH,
             mode: 'OBEABE',
             color: 'SPADES'
         };

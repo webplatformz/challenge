@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 import React from 'react/addons';
-import GameStore from '../../../client/js/game/gameStore';
+import {default as GameStore, CardType, GameState, PlayerType} from '../../../client/js/game/gameStore';
 import CardTypeSwitcher from '../../../client/js/game/cardTypeSwitcher.jsx';
 import JassCarpet from '../../../client/js/game/jassCarpet.jsx';
 import Points from '../../../client/js/game/points.jsx';
@@ -37,7 +37,7 @@ describe('JassTable Component', () => {
     });
 
     it('should render children when player', () => {
-        GameStore.state.playerType = GameStore.PlayerType.PLAYER;
+        GameStore.state.playerType = PlayerType.PLAYER;
 
         shallowRenderer.render(React.createElement(JassTable));
         let actual = shallowRenderer.getRenderOutput();
@@ -53,7 +53,7 @@ describe('JassTable Component', () => {
     });
 
     it('should render children when spectator', () => {
-        GameStore.state.playerType = GameStore.PlayerType.SPECTATOR;
+        GameStore.state.playerType = PlayerType.SPECTATOR;
 
         shallowRenderer.render(React.createElement(JassTable));
         let actual = shallowRenderer.getRenderOutput();
@@ -69,7 +69,7 @@ describe('JassTable Component', () => {
     });
 
     it('should pass correct properties to JassCarpet', () => {
-        GameStore.state.cardType = GameStore.CardType.GERMAN;
+        GameStore.state.cardType = CardType.GERMAN;
         GameStore.state.players = ['player1'];
         GameStore.state.playerSeating = ['playerSeating'];
         GameStore.state.tableCards = ['card'];
@@ -114,10 +114,10 @@ describe('JassTable Component', () => {
     });
 
     it('should pass correct properties to PlayerCards', () => {
-        GameStore.state.playerType = GameStore.PlayerType.PLAYER;
+        GameStore.state.playerType = PlayerType.PLAYER;
         GameStore.state.playerCards = ['card1', 'card2'];
-        GameStore.state.cardType = GameStore.CardType.FRENCH;
-        GameStore.state.status = GameStore.GameState.REQUESTING_CARD;
+        GameStore.state.cardType = CardType.FRENCH;
+        GameStore.state.status = GameState.REQUESTING_CARD;
 
         shallowRenderer.render(React.createElement(JassTable));
         let actual = shallowRenderer.getRenderOutput();
@@ -130,8 +130,8 @@ describe('JassTable Component', () => {
 
     it('should pass correct properties to RequestTrumpf', () => {
         GameStore.state.isGeschoben = true;
-        GameStore.state.cardType = GameStore.CardType.FRENCH;
-        GameStore.state.status = GameStore.GameState.REQUESTING_TRUMPF;
+        GameStore.state.cardType = CardType.FRENCH;
+        GameStore.state.status = GameState.REQUESTING_TRUMPF;
 
         shallowRenderer.render(React.createElement(JassTable));
         let actual = shallowRenderer.getRenderOutput();

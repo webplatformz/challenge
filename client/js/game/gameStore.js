@@ -4,7 +4,7 @@ import {EventEmitter} from 'events';
 import JassAppDispatcher from '../jassAppDispatcher';
 import JassAppConstants from '../jassAppConstants';
 
-const GameState = {
+export const GameState = {
     WAITING: 'WAITING',
     SESSION_STARTED: 'SESSION_STARTED',
     REQUESTING_TRUMPF: 'REQUESTING_TRUMPF',
@@ -15,12 +15,12 @@ const GameState = {
     STICH: 'STICH'
 };
 
-const CardType = {
+export const CardType = {
     FRENCH: 'french',
     GERMAN: 'german'
 };
 
-const PlayerType = {
+export const PlayerType = {
     PLAYER: 'PLAYER',
     SPECTATOR: 'SPECTATOR'
 };
@@ -30,10 +30,6 @@ let player,
     spectatorRenderingIntervall = 500;
 
 let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
-    GameState,
-    CardType,
-    PlayerType,
-
     state: {
         playerType: PlayerType.PLAYER,
         cardType: CardType.FRENCH,
