@@ -1,10 +1,10 @@
 "use strict";
 
-let assert      = require("assert"); // node.js core module
-let Card        = require('../../../../shared/deck/card');
-let CardColor   = require('../../../../shared/deck/cardColor');
-let UnderTrumpfValidator = require('../../../../server/game/validation/underTrumpfValidator');
-let GameMode = require('../../../../shared/game/gameMode');
+import assert from 'assert';
+import Card from '../../../../shared/deck/card';
+import CardColor from '../../../../shared/deck/cardColor';
+import UnderTrumpfValidator from '../../../../server/game/validation/underTrumpfValidator';
+import GameMode from '../../../../shared/game/gameMode';
 
 
 describe('UnderTrumpf Validator', function () {

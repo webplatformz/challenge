@@ -1,13 +1,10 @@
-"use strict";
+'use strict';
 
-let assert      = require("assert"); // node.js core module
-let Card        = require('../../../../shared/deck/card');
-let CardColor   = require('../../../../shared/deck/cardColor');
-let Validation  = require('../../../../server/game/validation/validation');
-let GameMode = require('../../../../shared/game/gameMode');
-
-//let player      = require('../../../server/game/player/player').create();
-//let sinon       = require('sinon');
+import assert from 'assert';
+import Card from '../../../../shared/deck/card';
+import CardColor from '../../../../shared/deck/cardColor';
+import Validation from '../../../../server/game/validation/validation';
+import GameMode from '../../../../shared/game/gameMode';
 
 describe('Validation', function () {
     //let playerMock;

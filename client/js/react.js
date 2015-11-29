@@ -2,8 +2,7 @@
 
 import './polyfills';
 import React from 'react';
-
-let JassApp = require('./jassApp.jsx');
+import JassApp from './jassApp.jsx';
 
 /*jshint ignore:start */
 React.render(<JassApp />, document.getElementsByTagName('body')[0]);

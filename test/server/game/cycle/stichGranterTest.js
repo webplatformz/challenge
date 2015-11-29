@@ -1,15 +1,16 @@
 "use strict";
 
-let assert = require("assert");
-let GameMode = require('../../../../shared/game/gameMode');
-let StichGranter = require('../../../../server/game/cycle/stichGranter');
-let CardColor = require('../../../../shared/deck/cardColor');
-let Card = require('../../../../shared/deck/card');
-let TestDataCreator = require('../../../testDataCreator');
-let clientApi = require('../../../../server/communication/clientApi').create();
+import assert from "assert";
+import GameMode from '../../../../shared/game/gameMode';
+import StichGranter from '../../../../server/game/cycle/stichGranter';
+import CardColor from '../../../../shared/deck/cardColor';
+import Card from '../../../../shared/deck/card';
+import TestDataCreator from '../../../testDataCreator';
+import ClientApi from '../../../../server/communication/clientApi';
 
 
 describe('StichGranter', function () {
+    let clientApi = ClientApi.create();
     let players;
 
     beforeEach(function () {

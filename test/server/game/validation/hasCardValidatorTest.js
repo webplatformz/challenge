@@ -1,10 +1,10 @@
 "use strict";
 
-let assert = require("assert"); // node.js core module
-let Card = require('../../../../shared/deck/card');
-let CardColor = require('../../../../shared/deck/cardColor');
-let HasCardValidator = require('../../../../server/game/validation/hasCardValidator');
-let GameMode = require('../../../../shared/game/gameMode');
+import assert from 'assert';
+import Card from '../../../../shared/deck/card';
+import CardColor from '../../../../shared/deck/cardColor';
+import HasCardValidator from '../../../../server/game/validation/hasCardValidator';
+import GameMode from '../../../../shared/game/gameMode';
 
 
 describe('Has card validator', function () {

@@ -2,11 +2,10 @@
 
 process.env.PORT = 10001;
 
-let expect = require('chai').expect,
-    WebSocket = require('ws'),
-    WebSocketServer = require('ws').Server,
-    SimpleBot = require('./SimpleBot');
-
+import {expect} from 'chai';
+import WebSocket from 'ws';
+import {Server as WebSocketServer} from 'ws';
+import SimpleBot from './SimpleBot';
 
 describe('Integration test', function() {
     let server;

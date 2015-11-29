@@ -1,7 +1,7 @@
 "use strict";
 
-let assert = require('assert'); // node.js core module
-let Deck = require('../../../../server/game/deck/deck');
+import assert from 'assert';
+import Deck from '../../../../server/game/deck/deck';
 
 describe('Deck', function() {
 

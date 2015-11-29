@@ -1,16 +1,17 @@
 "use strict";
 
-let assert = require("assert");
-let Game = require('../../../server/game/game');
-let GameMode = require('../../../shared/game/gameMode');
-let GameType = require('../../../server/game/gameType');
-let CardColor = require('../../../shared/deck/cardColor');
-let clientApi = require('../../../server/communication/clientApi').create();
-let Cycle = require('../../../server/game/cycle/cycle');
-let sinon = require('sinon');
-let TestDataCreator = require('../../testDataCreator');
+import assert from "assert";
+import Game from '../../../server/game/game';
+import GameMode from '../../../shared/game/gameMode';
+import GameType from '../../../server/game/gameType';
+import CardColor from '../../../shared/deck/cardColor';
+import ClientApi from '../../../server/communication/clientApi';
+import Cycle from '../../../server/game/cycle/cycle';
+import sinon from 'sinon';
+import TestDataCreator from '../../testDataCreator';
 
 describe('Game', function () {
+    let clientApi = ClientApi.create();
     let maxPoints = 2500;
     let game;
     let clientApiMock;

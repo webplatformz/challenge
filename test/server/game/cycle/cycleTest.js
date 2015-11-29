@@ -1,18 +1,19 @@
 "use strict";
 
-let assert = require("assert"); // node.js core module
-let expect = require('chai').expect;
-let Card = require('../../../../shared/deck/card');
-let CardColor = require('../../../../shared/deck/cardColor');
-let Cycle = require('../../../../server/game/cycle/cycle');
-let clientApi = require('../../../../server/communication/clientApi').create();
-let TestDataCreator = require('../../../testDataCreator');
-let sinon = require('sinon');
-let GameType = require('../../../../server/game/gameType');
-let GameMode = require('../../../../shared/game/gameMode');
-let Deck = require('../../../../server/game/deck/deck');
+import assert from 'assert';
+import {expect} from 'chai';
+import Card from '../../../../shared/deck/card';
+import CardColor from '../../../../shared/deck/cardColor';
+import Cycle from '../../../../server/game/cycle/cycle';
+import ClientApi from '../../../../server/communication/clientApi';
+import TestDataCreator from '../../../testDataCreator';
+import sinon from 'sinon';
+import GameType from '../../../../server/game/gameType';
+import GameMode from '../../../../shared/game/gameMode';
+import Deck from '../../../../server/game/deck/deck';
 
 describe('Cycle', function () {
+    let clientApi = ClientApi.create();
     let clientApiMock;
     let playerMock;
     let players;

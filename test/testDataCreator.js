@@ -1,8 +1,8 @@
 'use strict';
 
-let Deck = require('../server/game/deck/deck');
-let Player = require('../server/game/player/player');
-let Team = require('../server/game/player/team');
+import Deck from '../server/game/deck/deck';
+import Player from '../server/game/player/player';
+import Team from '../server/game/player/team';
 
 let createDummyPlayer = function (teamName, name, id, clientApiMock) {
     let team =  Team.create(teamName);
@@ -32,4 +32,4 @@ let TestDataCreator = {
     }
 };
 
-module.exports = TestDataCreator;
+export default TestDataCreator;

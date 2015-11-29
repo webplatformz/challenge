@@ -1,10 +1,9 @@
 "use strict";
 
-let assert = require('assert'); // node.js core module
-let expect = require('chai').expect;
-let Player = require('../../../../server/game/player/player');
-let Card = require('../../../../shared/deck/card');
-let CardColor = require('../../../../shared/deck/cardColor');
+import {expect} from 'chai';
+import Player from '../../../../server/game/player/player';
+import Card from '../../../../shared/deck/card';
+import CardColor from '../../../../shared/deck/cardColor';
 
 describe('Player', function() {
 
@@ -15,6 +14,6 @@ describe('Player', function() {
         player.removeCard(Card.create(2, CardColor.CLUBS));
 
         expect(player.cards.length).to.equal(1);
-        assert(Card.create(10, CardColor.CLUBS).equals(player.cards[0]));
+        expect(Card.create(10, CardColor.CLUBS)).to.eql(player.cards[0]);
     });
 });

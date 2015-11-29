@@ -75,7 +75,7 @@ let SimpleBot = {
     }
 };
 
-module.exports = {
+export default {
     create: function create(id, name, doneFunction) {
         let clientBot = Object.create(SimpleBot);
         clientBot.id = id;

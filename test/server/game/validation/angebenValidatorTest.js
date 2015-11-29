@@ -1,10 +1,10 @@
 "use strict";
 
-let assert      = require("assert"); // node.js core module
-let Card        = require('../../../../shared/deck/card');
-let CardColor   = require('../../../../shared/deck/cardColor');
-let AngebenValidator  = require('../../../../server/game/validation/angebenValidator');
-let GameMode = require('../../../../shared/game/gameMode');
+import assert from 'assert';
+import Card from '../../../../shared/deck/card';
+import CardColor from '../../../../shared/deck/cardColor';
+import AngebenValidator from '../../../../server/game/validation/angebenValidator';
+import GameMode from '../../../../shared/game/gameMode';
 
 
 describe('Angeben Validator', function () {

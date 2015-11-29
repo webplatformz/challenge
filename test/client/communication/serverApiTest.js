@@ -1,13 +1,12 @@
 'use strict';
 
-let expect = require('chai').expect,
-    sinon = require('sinon'),
-    JassAppDispatcher = require('../../../client/js/jassAppDispatcher');
+import {expect} from 'chai';
+import sinon from 'sinon';
+import JassAppDispatcher from '../../../client/js/jassAppDispatcher';
+
+import serverApi from '../../../client/js/communication/serverApi';
 
 describe('serverApi', () => {
-
-    let serverApi = require('../../../client/js/communication/serverApi');
-
     describe('connect', () => {
         it('should connect to Server and register handleMessage/handleActions functions', () => {
             let webSocketSpy = sinon.spy();

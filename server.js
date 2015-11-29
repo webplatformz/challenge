@@ -24,7 +24,7 @@ httpServer.listen(port, () => {
     console.info('Server listening on port:', httpServer.address().port);
 });
 
-module.exports = {
+export default {
     close: function () {
         sessionHandler.resetInstance();
         httpServer.close();

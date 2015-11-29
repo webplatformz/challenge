@@ -1,10 +1,10 @@
 "use strict";
 
-let assert = require("assert"); // node.js core module
-let GameMode = require('../../../../shared/game/gameMode');
-let Counter = require('../../../../server/game/counter/counter');
-let CardColor = require('../../../../shared/deck/cardColor');
-let Card = require('../../../../shared/deck/card');
+import assert from 'assert';
+import GameMode from '../../../../shared/game/gameMode';
+import Counter from '../../../../server/game/counter/counter';
+import CardColor from '../../../../shared/deck/cardColor';
+import Card from '../../../../shared/deck/card';
 
 
 describe('Counter', function() {
