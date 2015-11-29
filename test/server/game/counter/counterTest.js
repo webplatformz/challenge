@@ -3,7 +3,7 @@
 let assert = require("assert"); // node.js core module
 let GameMode = require('../../../../shared/game/gameMode');
 let Counter = require('../../../../server/game/counter/counter');
-let CardColor = require('../../../../shared/deck/card').CardColor;
+let CardColor = require('../../../../shared/deck/cardColor');
 let Card = require('../../../../shared/deck/card');
 
 

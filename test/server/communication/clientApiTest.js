@@ -5,7 +5,7 @@ import WebSocket from 'ws';
 import ClientApi from '../../../server/communication/clientApi.js';
 import GameType from '../../../server/game/gameType.js';
 import GameMode from '../../../shared/game/gameMode.js';
-import {CardColor} from '../../../shared/deck/card.js';
+import CardColor from '../../../shared/deck/cardColor';
 import TestDataCreator from '../../testDataCreator.js';
 import CloseEventCode from '../../../server/communication/closeEventCode.js';
 import sinon from 'sinon';

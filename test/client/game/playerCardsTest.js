@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import React from 'react/addons';
 import sinon from 'sinon';
 import GameStore from '../../../client/js/game/gameStore';
-import {CardColor} from '../../../shared/deck/card';
+import CardColor from '../../../shared/deck/cardColor';
 import JassActions from '../../../client/js/jassActions';
 
 const TestUtils = React.addons.TestUtils;

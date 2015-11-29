@@ -2,7 +2,6 @@
 
 let assert = require('assert'); // node.js core module
 let Deck = require('../../../../server/game/deck/deck');
-let CardColor = require('../../../../shared/deck/card').CardColor;
 
 describe('Deck', function() {
 

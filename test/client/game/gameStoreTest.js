@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import GameStore from '../../../client/js/game/gameStore';
 import JassAppConstants from '../../../client/js/jassAppConstants';
 import JassAppDispatcher from '../../../client/js/jassAppDispatcher';
-import {CardColor} from '../../../shared/deck/card';
+import CardColor from '../../../shared/deck/cardColor';
 
 describe('GameStore', () => {
 

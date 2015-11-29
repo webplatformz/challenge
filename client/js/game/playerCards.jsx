@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {CardColor} from '../../../shared/deck/card.js';
+import CardColor from '../../../shared/deck/cardColor';
 import {GameState} from './gameStore.js';
 import JassActions from '../jassActions.js';
 

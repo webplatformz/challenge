@@ -3,9 +3,9 @@
 let assert = require("assert"); // node.js core module
 let expect = require('chai').expect;
 let Card = require('../../../../shared/deck/card');
+let CardColor = require('../../../../shared/deck/cardColor');
 let Cycle = require('../../../../server/game/cycle/cycle');
 let clientApi = require('../../../../server/communication/clientApi').create();
-let Player = require('../../../../server/game/player/player');
 let TestDataCreator = require('../../../testDataCreator');
 let sinon = require('sinon');
 let GameType = require('../../../../server/game/gameType');
@@ -23,7 +23,7 @@ describe('Cycle', function () {
         clientApiMock = sinon.mock(clientApi);
         players = TestDataCreator.createPlayers(clientApiMock);
         playerMock = sinon.mock(players[0]);
-        gameType = GameType.create(GameMode.TRUMPF, Card.CardColor.DIAMONDS);
+        gameType = GameType.create(GameMode.TRUMPF, CardColor.DIAMONDS);
         cards = Deck.create().cards;
     });
 
@@ -48,10 +48,10 @@ describe('Cycle', function () {
     });
 
     it('should broadcast the correct message', (done) => {
-        let winnerCard = Card.create(11, Card.CardColor.DIAMONDS);
-        let card2 = Card.create(10, Card.CardColor.DIAMONDS);
-        let card3 = Card.create(6, Card.CardColor.DIAMONDS);
-        let card4 = Card.create(7, Card.CardColor.DIAMONDS);
+        let winnerCard = Card.create(11, CardColor.DIAMONDS);
+        let card2 = Card.create(10, CardColor.DIAMONDS);
+        let card3 = Card.create(6, CardColor.DIAMONDS);
+        let card4 = Card.create(7, CardColor.DIAMONDS);
 
         let expectedStichMessage = {
             "name": "hans",

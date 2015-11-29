@@ -2,6 +2,7 @@
 
 let assert      = require("assert"); // node.js core module
 let Card        = require('../../../../shared/deck/card');
+let CardColor   = require('../../../../shared/deck/cardColor');
 let Validation  = require('../../../../server/game/validation/validation');
 let GameMode = require('../../../../shared/game/gameMode');
 
@@ -16,18 +17,18 @@ describe('Validation', function () {
     });
 
     it('should validate "angeben" without Trumpf', () => {
-        let cardOne = Card.create(10, Card.CardColor.SPADES);
-        let handCardOne = Card.create(11, Card.CardColor.SPADES);
-        let handCardTwo = Card.create(11, Card.CardColor.HEARTS);
+        let cardOne = Card.create(10, CardColor.SPADES);
+        let handCardOne = Card.create(11, CardColor.SPADES);
+        let handCardTwo = Card.create(11, CardColor.HEARTS);
         let tableCards = [cardOne];
         let handCards = [handCardOne, handCardTwo];
-        let validation = Validation.create(GameMode.TRUMPF, Card.CardColor.CLUBS);
+        let validation = Validation.create(GameMode.TRUMPF, CardColor.CLUBS);
         assert(validation.validate(tableCards, handCards, handCardOne));
     });
     it('should validate "angeben" without obenabä', () => {
-        let cardOne = Card.create(10, Card.CardColor.SPADES);
-        let handCardOne = Card.create(11, Card.CardColor.SPADES);
-        let handCardTwo = Card.create(11, Card.CardColor.HEARTS);
+        let cardOne = Card.create(10, CardColor.SPADES);
+        let handCardOne = Card.create(11, CardColor.SPADES);
+        let handCardTwo = Card.create(11, CardColor.HEARTS);
         let tableCards = [cardOne];
         let handCards = [handCardOne, handCardTwo];
         let validation = Validation.create(GameMode.OBEABE);

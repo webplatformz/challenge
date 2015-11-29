@@ -84,6 +84,7 @@
 
     // Custom Globals
     "globals"       : {
-
+        "describe": false,
+        "it": false
     }
 }

@@ -1,6 +1,5 @@
 'use strict';
 
-
 import React from 'react';
 import GameStore from './gameStore';
 import CardTypeSwitcher from './cardTypeSwitcher.jsx';

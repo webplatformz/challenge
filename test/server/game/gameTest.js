@@ -4,8 +4,7 @@ let assert = require("assert");
 let Game = require('../../../server/game/game');
 let GameMode = require('../../../shared/game/gameMode');
 let GameType = require('../../../server/game/gameType');
-let Player = require('../../../server/game/player/player');
-let Card = require('../../../shared/deck/card');
+let CardColor = require('../../../shared/deck/cardColor');
 let clientApi = require('../../../server/communication/clientApi').create();
 let Cycle = require('../../../server/game/cycle/cycle');
 let sinon = require('sinon');
@@ -131,7 +130,7 @@ describe('Game', function () {
 
     it('should save and broadcast the trumpf when it has been chosen from the player', (done) => {
         let gameMode = GameMode.TRUMPF;
-        let cardColor = Card.CardColor.HEARTS;
+        let cardColor = CardColor.HEARTS;
         let gameType = GameType.create(gameMode, cardColor);
 
         let cycle = {
@@ -159,7 +158,7 @@ describe('Game', function () {
     });
 
     it('should start with player who won last cycle', (done) => {
-        let gameType = GameType.create(GameMode.TRUMPF, Card.CardColor.CLUBS);
+        let gameType = GameType.create(GameMode.TRUMPF, CardColor.CLUBS);
 
         let cycle = {
             iterate: () => {
