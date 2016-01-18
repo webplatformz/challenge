@@ -12,6 +12,7 @@
   },
   "scripts": {
     "clean": "rimraf build",
+    "build:css": "node_modules/less/bin/lessc client/styles/main.less build/client/styles/main.css",
     "test:frontend": "node_modules/karma/bin/karma start test/client/karma.conf.js",
     "test:backend": "node_modules/mocha/bin/mocha --compilers js:babel-core/register test/{server,shared}/**/*.js",
     "test": "npm run test:backend & npm run test:frontend",
@@ -47,6 +48,7 @@
     "karma-mocha": "0.2.1",
     "karma-mocha-reporter": "1.1.5",
     "karma-phantomjs-launcher": "0.2.3",
+    "less": "2.5.3",
     "load-grunt-tasks": "3.3.0",
     "lodash": "3.10.1",
     "mocha": "2.3.3",
