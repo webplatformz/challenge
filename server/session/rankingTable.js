@@ -1,6 +1,6 @@
 'use strict';
 
-import {polyfill} from 'babel';
+import 'babel-polyfill';
 import _ from 'lodash';
 
 let RankingTable = {

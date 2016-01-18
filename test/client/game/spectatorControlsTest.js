@@ -18,16 +18,16 @@ describe('SpectatorControls Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
-        expect(actual._store.props.id).to.equal('spectatorControls');
+        expect(actual.props.id).to.equal('spectatorControls');
     });
 
     it('should render a range slider with onChangeHandler', () => {
         shallowRenderer.render(React.createElement(SpectatorControls));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.children[1].type).to.equal('input');
-        expect(actual._store.props.children[1]._store.props.type).to.equal('range');
-        expect(actual._store.props.children[1]._store.props.onChange.__reactBoundMethod).to.equal(SpectatorControls.prototype.handlePlayingSpeed);
+        expect(actual.props.children[1].type).to.equal('input');
+        expect(actual.props.children[1].props.type).to.equal('range');
+        expect(actual.props.children[1].props.onChange.__reactBoundMethod).to.equal(SpectatorControls.prototype.handlePlayingSpeed);
     });
 
     describe('handlePlayingSpeed', () => {
@@ -52,7 +52,7 @@ describe('SpectatorControls Component', () => {
             shallowRenderer.render(React.createElement(SpectatorControls));
             let actual = shallowRenderer.getRenderOutput();
 
-            actual._store.props.children[1]._store.props.onChange(eventDummy);
+            actual.props.children[1].props.onChange(eventDummy);
             expect(adjustSpectatorSpeedSpy.withArgs(eventDummy.target.value).calledOnce).to.equal(true);
         });
     });

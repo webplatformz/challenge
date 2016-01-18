@@ -16,10 +16,10 @@ describe('ErrorToast Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
-        expect(actual._store.props.id).to.equal('errorToast');
-        expect(actual._store.props.className).to.equal('out');
-        expect(actual._store.props.children.type).to.equal('span');
-        expect(actual._store.props.children._store.props.children).to.equal('');
+        expect(actual.props.id).to.equal('errorToast');
+        expect(actual.props.className).to.equal('out');
+        expect(actual.props.children.type).to.equal('span');
+        expect(actual.props.children.props.children).to.equal('');
     });
 
     it('should render a div element with id and className with error and error message', () => {
@@ -28,9 +28,9 @@ describe('ErrorToast Component', () => {
         shallowRenderer.render(React.createElement(ErrorToast, { error: errorMessage }));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.className).to.equal('in');
-        expect(actual._store.props.children.type).to.equal('span');
-        expect(actual._store.props.children._store.props.children).to.equal(errorMessage);
+        expect(actual.props.className).to.equal('in');
+        expect(actual.props.children.type).to.equal('span');
+        expect(actual.props.children.props.children).to.equal(errorMessage);
     });
 
 });

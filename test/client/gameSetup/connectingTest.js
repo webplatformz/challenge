@@ -17,16 +17,16 @@ describe('Connecting Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
-        expect(actual._store.props.id).to.equal('connecting');
-        expect(actual._store.props.className).to.equal('hidden');
-        expect(actual._store.props.children.type).to.equal('h1');
+        expect(actual.props.id).to.equal('connecting');
+        expect(actual.props.className).to.equal('hidden');
+        expect(actual.props.children.type).to.equal('h1');
     });
 
     it('should remove className hidden when GameSetupState CONNECTING', () => {
         shallowRenderer.render(React.createElement(Connecting, { setupState: GameSetupStore.GameSetupState.CONNECTING }));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.className).to.equal('');
+        expect(actual.props.className).to.equal('');
     });
 
 });
