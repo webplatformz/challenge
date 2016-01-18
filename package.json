@@ -6,7 +6,7 @@
     "node": "5.4.x"
   },
   "scripts": {
-    "clean": "rimraf build/*",
+    "clean": "rimraf build && mkdir build",
     "prebuild": "npm run clean -s",
     "build:css": "node_modules/less/bin/lessc client/styles/main.less build/styles/main.css",
     "build:js:frontend": "node_modules/browserify/bin/cmd.js client/js/react.js -o build/client.js -t [ babelify ]",
