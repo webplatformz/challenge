@@ -1,6 +1,5 @@
 'use strict';
 
-
 import JassAppConstants from './jassAppConstants.js';
 import JassAppDispatcher from './jassAppDispatcher.js';
 
