@@ -59,7 +59,7 @@ describe('Client API', () => {
 
             promise.then(() => {
                 done(new Error('This promise should never resolve'));
-            }, ({code: code, message: message}) => {
+            }, ({code, message}) => {
                 expect(code).to.equal(CloseEventCode.NORMAL);
                 expect(message).to.equal(disconnectMessage);
 
