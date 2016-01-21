@@ -34,14 +34,19 @@ $ npm start
 ```
 
 ## Development
-While developing use grunt watch. It will automatically execute all unit tests on change.
-Grunt watch and livereload is defined as default target. 
-Start it with:
+While developing you might want to run the server with a watch task. You can either use:
+```sh
+npm run start:watch
+```
+
+This task will start all the other tasks in watch mode. You can also start them directly. E.g.:
 
 ```sh
-$ grunt
+npm run build:js:frontend:watch
 ```
-With this task you will also get a debug output on the server with every message sent/received like this:
+For more information check the package.json
+
+To get more debug output there is a 'debug' task too:
 ```
 <-- Start Broadcast: 
 <-- Send Message: {"type":"BROADCAST_WINNER_TEAM","data":{"name":"Team 2","points":0,"currentRoundPoints":0}}
@@ -63,7 +68,6 @@ $ npm start
 ## TechStack
 - ECMA Script 6
 - NodeJs
-- Grunt
 - Mocha
 - Karma
 - Express
