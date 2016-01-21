@@ -22,8 +22,8 @@ describe('JassApp Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('main');
-        expect(actual._store.props.children[0].type).to.equal(ErrorToast);
-        expect(actual._store.props.children[1].type).to.equal(GameSetup);
+        expect(actual.props.children[0].type).to.equal(ErrorToast);
+        expect(actual.props.children[1].type).to.equal(GameSetup);
     });
 
     it('should render JassTable if SessionType SINGLE_GAME', () => {
@@ -32,7 +32,7 @@ describe('JassApp Component', () => {
         shallowRenderer.render(React.createElement(JassApp));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.children[2].type).to.equal(JassTable);
+        expect(actual.props.children[2].type).to.equal(JassTable);
     });
 
     it('should render JassTable if SessionType TOURNAMENT', () => {
@@ -41,7 +41,7 @@ describe('JassApp Component', () => {
         shallowRenderer.render(React.createElement(JassApp));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.children[2].type).to.equal(TournamentTable);
+        expect(actual.props.children[2].type).to.equal(TournamentTable);
     });
 
     it('should pass error State to ErrorToast', () => {
@@ -50,7 +50,7 @@ describe('JassApp Component', () => {
         shallowRenderer.render(React.createElement(JassApp));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.children[0]._store.props.error).to.equal(JassAppStore.state.error);
+        expect(actual.props.children[0].props.error).to.equal(JassAppStore.state.error);
     });
 
 });

@@ -6,7 +6,7 @@ import CloseEventCode from '../communication/closeEventCode.js';
 import Ranking from '../game/ranking/ranking.js';
 import RankingTable from './rankingTable.js';
 import SingleGameSession from './singleGameSession.js';
-import {polyfill} from 'babel';
+import 'babel-polyfill';
 import _ from 'lodash';
 import UUID from 'uuid';
 
@@ -156,12 +156,12 @@ let TournamentSession = {
     },
 
     handlePairingWithDisconnectedClients(pairing) {
-        let {player1, player2} = pairing;
+        let {player1} = pairing;
 
         if (player1.connected) {
             this.rankPairing(pairing, createResultObject(player1.playerName, pairing));
         } else {
-            this.rankPairing(pairing, createResultObject(player2.playerName, pairing));
+            this.rankPairing(pairing, createResultObject(pairing.player2.playerName, pairing));
         }
 
         return Promise.resolve();

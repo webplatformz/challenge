@@ -18,7 +18,7 @@ module.exports = function (grunt) {
                     {
                         "expand": true,
                         "cwd": "./",
-                        "src": ["server.js"],
+                        "src": ["app.js"],
                         "dest": "./build/",
                         "ext": ".js"
                     },
@@ -89,32 +89,6 @@ module.exports = function (grunt) {
                 'test/**/*.js'
             ]
         },
-        simplemocha: {
-            options: {
-                globals: ['expect'],
-                timeout: 3000,
-                ignoreLeaks: false
-            },
-            all: {
-                src: [
-                    'build/test/**/*.js',
-                    '!build/test/client/**/*.js'
-                ]
-            }
-        },
-        karma: {
-            unit: {
-                configFile: 'test/client/karma.conf.js',
-                options: {
-                    files: [
-                        'build/client/js/polyfills.js',
-                        'build/test/client/**/*.js'
-                    ],
-                    exclude: ['build/test/client/karma.conf.js']
-                },
-                singleRun: true
-            }
-        },
         sync: {
             main: {
                 files: [{
@@ -151,7 +125,7 @@ module.exports = function (grunt) {
                 }
             },
             babel: {
-                files: ['./server/**/*.js', './shared/**/*.js', './test/**/*.js', './server.js'],
+                files: ['./server/**/*.js', './shared/**/*.js', './test/**/*.js', './app.js'],
                 tasks: ['jshint-jsx', 'babel']
             },
             browserify: {
@@ -160,28 +134,11 @@ module.exports = function (grunt) {
                 options: {
                     livereload: true
                 }
-            },
-            serverTests: {
-                files: [
-                    './server/**/*.js',
-                    './shared/**/*.js',
-                    './test/server/**/*.js'
-                ],
-                tasks: ['simplemocha']
-            },
-            frontendTests: {
-                files: [
-                    './client/**/*.js',
-                    './client/**/*.jsx',
-                    './shared/**/*.js',
-                    './test/client/**/*.js'
-                ],
-                tasks: ['karma']
             }
         },
         nodemon: {
             dev: {
-                script: './build/server.js',
+                script: './build/app.js',
                 options: {
                     env: {
                         DEBUG: 'true'

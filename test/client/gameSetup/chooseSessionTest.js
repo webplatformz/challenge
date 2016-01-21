@@ -21,8 +21,8 @@ describe('ChooseSession Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
-        expect(actual._store.props.id).to.equal('chooseSession');
-        expect(actual._store.props.className).to.equal('hidden');
+        expect(actual.props.id).to.equal('chooseSession');
+        expect(actual.props.className).to.equal('hidden');
     });
 
     it('should remove class hidden when GameState CHOOSE_SESSION', () => {
@@ -30,23 +30,23 @@ describe('ChooseSession Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
-        expect(actual._store.props.id).to.equal('chooseSession');
-        expect(actual._store.props.className).to.equal('');
+        expect(actual.props.id).to.equal('chooseSession');
+        expect(actual.props.className).to.equal('');
     });
 
     it('should have the right children', () => {
         shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupStore.GameSetupState.CHOOSE_SESSION }}));
         let actual = shallowRenderer.getRenderOutput();
 
-        let children = actual._store.props.children;
+        let children = actual.props.children;
         expect(children[0].type).to.equal('h1');
         expect(children[1].type).to.equal(ExistingSessions);
         expect(children[2].type).to.equal('div');
-        expect(children[2]._store.props.className).to.equal('session-choice');
+        expect(children[2].props.className).to.equal('session-choice');
         expect(children[3].type).to.equal('div');
-        expect(children[3]._store.props.className).to.equal('session-choice');
+        expect(children[3].props.className).to.equal('session-choice');
         expect(children[4].type).to.equal('div');
-        expect(children[4]._store.props.className).to.equal('session-choice');
+        expect(children[4].props.className).to.equal('session-choice');
     });
 
     it('should pass the sessions of GameSetupState to ExistingSessions', () => {
@@ -55,20 +55,20 @@ describe('ChooseSession Component', () => {
         shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupStore.GameSetupState.CHOOSE_SESSION, sessions }}));
         let actual = shallowRenderer.getRenderOutput();
 
-        let children = actual._store.props.children;
-        expect(children[1]._store.props.sessions).to.equal(sessions);
+        let children = actual.props.children;
+        expect(children[1].props.sessions).to.equal(sessions);
     });
 
     it('should add event listeners to children', () => {
         shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupStore.GameSetupState.CHOOSE_SESSION }}));
         let actual = shallowRenderer.getRenderOutput();
 
-        let newSessionInput = actual._store.props.children[2]._store.props.children;
-        expect(newSessionInput._store.props.onKeyPress.__reactBoundMethod).to.equal(ChooseSession.prototype.createNewSession);
-        let newTournamentInput = actual._store.props.children[3]._store.props.children;
-        expect(newTournamentInput._store.props.onKeyPress.__reactBoundMethod).to.equal(ChooseSession.prototype.createNewSession);
-        let autojoinInput = actual._store.props.children[4]._store.props.children;
-        expect(autojoinInput._store.props.onClick.__reactBoundMethod).to.equal(ChooseSession.prototype.autojoinSession);
+        let newSessionInput = actual.props.children[2].props.children;
+        expect(newSessionInput.props.onKeyPress.__reactBoundMethod).to.equal(ChooseSession.prototype.createNewSession);
+        let newTournamentInput = actual.props.children[3].props.children;
+        expect(newTournamentInput.props.onKeyPress.__reactBoundMethod).to.equal(ChooseSession.prototype.createNewSession);
+        let autojoinInput = actual.props.children[4].props.children;
+        expect(autojoinInput.props.onClick.__reactBoundMethod).to.equal(ChooseSession.prototype.autojoinSession);
     });
 
     describe('createNewSession', () => {

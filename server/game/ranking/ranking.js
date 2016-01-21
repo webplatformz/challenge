@@ -1,7 +1,7 @@
 'use strict';
 
 import glicko2 from 'glicko2';
-import {polyfill} from 'babel';
+import 'babel-polyfill';
 
 let Ranking = {
     addPlayer (playerName) {

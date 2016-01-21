@@ -19,8 +19,8 @@ describe('PlayerNames Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('img');
-        expect(actual._store.props.id).to.equal('trumpf');
-        expect(actual._store.props.className).to.equal('hidden');
+        expect(actual.props.id).to.equal('trumpf');
+        expect(actual.props.className).to.equal('hidden');
     });
 
     it('should render an img element without className hidden with given mode trumpf and color hearts', () => {
@@ -34,9 +34,9 @@ describe('PlayerNames Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('img');
-        expect(actual._store.props.id).to.equal('trumpf');
-        expect(actual._store.props.className).to.equal('');
-        expect(actual._store.props.src).to.equal('/images/trumpf/' + props.cardType + '/hearts.png');
+        expect(actual.props.id).to.equal('trumpf');
+        expect(actual.props.className).to.equal('');
+        expect(actual.props.src).to.equal('/images/trumpf/' + props.cardType + '/hearts.png');
     });
 
     it('should render an img element without className hidden with given mode trumpf and color diamonds', () => {
@@ -50,9 +50,9 @@ describe('PlayerNames Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('img');
-        expect(actual._store.props.id).to.equal('trumpf');
-        expect(actual._store.props.className).to.equal('');
-        expect(actual._store.props.src).to.equal('/images/trumpf/' + props.cardType + '/diamonds.png');
+        expect(actual.props.id).to.equal('trumpf');
+        expect(actual.props.className).to.equal('');
+        expect(actual.props.src).to.equal('/images/trumpf/' + props.cardType + '/diamonds.png');
     });
 
     it('should render an img element without className hidden with given mode trumpf and color clubs', () => {
@@ -66,9 +66,9 @@ describe('PlayerNames Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('img');
-        expect(actual._store.props.id).to.equal('trumpf');
-        expect(actual._store.props.className).to.equal('');
-        expect(actual._store.props.src).to.equal('/images/trumpf/' + props.cardType + '/clubs.png');
+        expect(actual.props.id).to.equal('trumpf');
+        expect(actual.props.className).to.equal('');
+        expect(actual.props.src).to.equal('/images/trumpf/' + props.cardType + '/clubs.png');
     });
 
     it('should render an img element without className hidden with given mode trumpf and color spades', () => {
@@ -82,9 +82,9 @@ describe('PlayerNames Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('img');
-        expect(actual._store.props.id).to.equal('trumpf');
-        expect(actual._store.props.className).to.equal('');
-        expect(actual._store.props.src).to.equal('/images/trumpf/' + props.cardType + '/spades.png');
+        expect(actual.props.id).to.equal('trumpf');
+        expect(actual.props.className).to.equal('');
+        expect(actual.props.src).to.equal('/images/trumpf/' + props.cardType + '/spades.png');
     });
 
     it('should render an img element without className hidden with given mode undeufe and no color', () => {
@@ -96,9 +96,9 @@ describe('PlayerNames Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('img');
-        expect(actual._store.props.id).to.equal('trumpf');
-        expect(actual._store.props.className).to.equal('');
-        expect(actual._store.props.src).to.equal('/images/trumpf/undeufe.jpg');
+        expect(actual.props.id).to.equal('trumpf');
+        expect(actual.props.className).to.equal('');
+        expect(actual.props.src).to.equal('/images/trumpf/undeufe.jpg');
     });
 
     it('should render an img element without className hidden with given mode obeabe and no color', () => {
@@ -110,9 +110,9 @@ describe('PlayerNames Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('img');
-        expect(actual._store.props.id).to.equal('trumpf');
-        expect(actual._store.props.className).to.equal('');
-        expect(actual._store.props.src).to.equal('/images/trumpf/obeabe.jpg');
+        expect(actual.props.id).to.equal('trumpf');
+        expect(actual.props.className).to.equal('');
+        expect(actual.props.src).to.equal('/images/trumpf/obeabe.jpg');
     });
 
     it('should render an img element without className hidden with given mode schiebe and no color', () => {
@@ -124,9 +124,9 @@ describe('PlayerNames Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('img');
-        expect(actual._store.props.id).to.equal('trumpf');
-        expect(actual._store.props.className).to.equal('');
-        expect(actual._store.props.src).to.equal('/images/trumpf/schiebe.jpg');
+        expect(actual.props.id).to.equal('trumpf');
+        expect(actual.props.className).to.equal('');
+        expect(actual.props.src).to.equal('/images/trumpf/schiebe.jpg');
     });
 
 });

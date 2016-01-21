@@ -20,14 +20,14 @@ describe('JassCarpet Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
-        expect(actual._store.props.id).to.equal('jassCarpet');
+        expect(actual.props.id).to.equal('jassCarpet');
     });
 
     it('should render children', () => {
         shallowRenderer.render(React.createElement(JassCarpet));
         let actual = shallowRenderer.getRenderOutput();
 
-        let children = actual._store.props.children;
+        let children = actual.props.children;
         expect(children.length).to.equal(3);
         expect(children[0].type).to.equal(PlayerNames);
         expect(children[1].type).to.equal(TableCards);
@@ -45,11 +45,11 @@ describe('JassCarpet Component', () => {
         shallowRenderer.render(React.createElement(JassCarpet, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let playerNames = actual._store.props.children[0];
-        expect(playerNames._store.props.players).to.eql(props.players);
-        expect(playerNames._store.props.playerSeating).to.eql(props.playerSeating);
-        expect(playerNames._store.props.nextStartingPlayerIndex).to.equal(props.nextStartingPlayerIndex);
-        expect(playerNames._store.props.roundPlayerIndex).to.equal(props.roundPlayerIndex);
+        let playerNames = actual.props.children[0];
+        expect(playerNames.props.players).to.eql(props.players);
+        expect(playerNames.props.playerSeating).to.eql(props.playerSeating);
+        expect(playerNames.props.nextStartingPlayerIndex).to.equal(props.nextStartingPlayerIndex);
+        expect(playerNames.props.roundPlayerIndex).to.equal(props.roundPlayerIndex);
     });
 
     it('should pass correct props to TableCards', () => {
@@ -63,11 +63,11 @@ describe('JassCarpet Component', () => {
         shallowRenderer.render(React.createElement(JassCarpet, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let tableCards = actual._store.props.children[1];
-        expect(tableCards._store.props.cardType).to.equal(props.cardType);
-        expect(tableCards._store.props.cards).to.eql(props.cards);
-        expect(tableCards._store.props.startingPlayerIndex).to.equal(props.startingPlayerIndex);
-        expect(tableCards._store.props.playerSeating).to.eql(props.playerSeating);
+        let tableCards = actual.props.children[1];
+        expect(tableCards.props.cardType).to.equal(props.cardType);
+        expect(tableCards.props.cards).to.eql(props.cards);
+        expect(tableCards.props.startingPlayerIndex).to.equal(props.startingPlayerIndex);
+        expect(tableCards.props.playerSeating).to.eql(props.playerSeating);
     });
 
     it('should pass correct props to Trumpf', () => {
@@ -80,9 +80,9 @@ describe('JassCarpet Component', () => {
         shallowRenderer.render(React.createElement(JassCarpet, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let trumpf = actual._store.props.children[2];
-        expect(trumpf._store.props.cardType).to.equal(props.cardType);
-        expect(trumpf._store.props.mode).to.equal(props.mode);
-        expect(trumpf._store.props.color).to.equal(props.color);
+        let trumpf = actual.props.children[2];
+        expect(trumpf.props.cardType).to.equal(props.cardType);
+        expect(trumpf.props.mode).to.equal(props.mode);
+        expect(trumpf.props.color).to.equal(props.color);
     });
 });

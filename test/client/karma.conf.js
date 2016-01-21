@@ -4,15 +4,40 @@ module.exports = function(config) {
     config.set({
         basePath: '../../',
 
-        frameworks: ['browserify', 'mocha'],
+        singleRun: true,
 
-        reporters: ['mocha'],
+        frameworks: [
+            'browserify',
+            'mocha'
+        ],
+
+        reporters: [
+            'mocha'
+        ],
 
         preprocessors: {
-            'build/test/client/**/*.js': ['browserify']
+            './test/client/**/*.js': ['browserify']
         },
 
-        browsers: ['PhantomJS'],
+        browserify: {
+            debug: true,
+            transform: [
+                ['babelify']
+            ]
+        },
+
+        browsers: [
+            'PhantomJS'
+        ],
+
+        files: [
+            './client/js/polyfills.js',
+            './test/client/**/*.js'
+        ],
+
+        exclude: [
+            './test/client/karma.conf.js'
+        ],
 
         plugins: [
             'karma-mocha',

@@ -19,24 +19,24 @@ describe('RequestPlayerName Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
-        expect(actual._store.props.id).to.equal('requestPlayerName');
-        expect(actual._store.props.className).to.equal('hidden');
+        expect(actual.props.id).to.equal('requestPlayerName');
+        expect(actual.props.className).to.equal('hidden');
     });
 
     it('should remove class hidden when setupState SET_PLAYER_NAME', () => {
         shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupStore.GameSetupState.SET_PLAYER_NAME }));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.className).to.equal('');
+        expect(actual.props.className).to.equal('');
     });
 
     it('should add function onKeyPress to input', () => {
         shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupStore.GameSetupState.SET_PLAYER_NAME }));
         let actual = shallowRenderer.getRenderOutput();
 
-        let input = actual._store.props.children;
+        let input = actual.props.children;
         expect(input.type).to.equal('input');
-        expect(input._store.props.onKeyPress.__reactBoundMethod).to.equal(RequestPlayerName.prototype.choosePlayerName);
+        expect(input.props.onKeyPress.__reactBoundMethod).to.equal(RequestPlayerName.prototype.choosePlayerName);
     });
 
     describe('choosePlayerName', () => {

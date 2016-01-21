@@ -1,22 +1,21 @@
 'use strict';
 
-process.env.PORT = 10001;
-
 import {expect} from 'chai';
 import WebSocket from 'ws';
 import {Server as WebSocketServer} from 'ws';
 import SimpleBot from './SimpleBot';
 
+import Server from '../../../server/server';
+
 describe('Integration test', function() {
-    let server;
     this.timeout(10 * 1000);
 
     beforeEach(() => {
-        server = require('../../../server');
+        Server.start(10001);
     });
 
     afterEach(() => {
-        server.close();
+        Server.stop();
     });
 
     describe('Play a complete game', () => {

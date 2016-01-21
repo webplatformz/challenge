@@ -30,8 +30,8 @@ describe('PlayerCards Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
-        expect(actual._store.props.id).to.equal('playerCards');
-        expect(actual._store.props.className).to.equal('');
+        expect(actual.props.id).to.equal('playerCards');
+        expect(actual.props.className).to.equal('');
     });
 
     it('should add class onTurn when requesting card', () => {
@@ -42,7 +42,7 @@ describe('PlayerCards Component', () => {
         shallowRenderer.render(React.createElement(PlayerCards, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.className).to.equal('onTurn');
+        expect(actual.props.className).to.equal('onTurn');
     });
 
     it('should render cards sorted by color (according to Object Property order in CardColor) and number', () => {
@@ -98,12 +98,12 @@ describe('PlayerCards Component', () => {
         shallowRenderer.render(React.createElement(PlayerCards, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        actual._store.props.children.forEach((actCard, index) => {
+        actual.props.children.forEach((actCard, index) => {
             let expectedCard = sortedCards[index];
 
             expect(actCard.key).to.equal(expectedCard.color + '-' + expectedCard.number);
-            expect(actCard._store.props.src).to.equal('/images/cards/' + CardType.FRENCH + '/' + expectedCard.color.toLowerCase() + '_' + expectedCard.number + '.gif');
-            expect(actCard._store.props.onClick.__reactBoundMethod).to.equal(PlayerCards.prototype.playCard);
+            expect(actCard.props.src).to.equal('/images/cards/' + CardType.FRENCH + '/' + expectedCard.color.toLowerCase() + '_' + expectedCard.number + '.gif');
+            expect(actCard.props.onClick.__reactBoundMethod).to.equal(PlayerCards.prototype.playCard);
         });
     });
 
@@ -124,7 +124,7 @@ describe('PlayerCards Component', () => {
         shallowRenderer.render(React.createElement(PlayerCards, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let cancelClickFunction = actual._store.props.children[0]._store.props.onClick;
+        let cancelClickFunction = actual.props.children[0].props.onClick;
         expect(cancelClickFunction.__reactBoundMethod).to.equal(PlayerCards.prototype.cancelClick);
         cancelClickFunction(eventDummy);
         expect(preventDefaultSpy.calledOnce).to.equal(true);
@@ -145,7 +145,7 @@ describe('PlayerCards Component', () => {
         shallowRenderer.render(React.createElement(PlayerCards, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let playCardFunction = actual._store.props.children[0]._store.props.onClick;
+        let playCardFunction = actual.props.children[0].props.onClick;
         expect(playCardFunction.__reactBoundMethod).to.equal(PlayerCards.prototype.playCard);
         playCardFunction();
         expect(chooseCardSpy.withArgs(props.cards[0].color, props.cards[0].number).calledOnce).to.equal(true);

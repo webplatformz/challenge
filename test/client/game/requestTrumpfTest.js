@@ -31,7 +31,7 @@ describe('RequestTrumpf Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
-        expect(actual._store.props.id).to.equal('requestTrumpf');
+        expect(actual.props.id).to.equal('requestTrumpf');
     });
 
     it('should render Tags for each trumpf choice not geschoben with onClick handler', () => {
@@ -42,15 +42,15 @@ describe('RequestTrumpf Component', () => {
         shallowRenderer.render(React.createElement(RequestTrumpf, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let children = actual._store.props.children;
+        let children = actual.props.children;
         expect(children).to.have.length(7);
-        expect(children[0]._store.props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[1]._store.props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[2]._store.props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[3]._store.props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[4]._store.props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[5]._store.props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[6]._store.props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
+        expect(children[0].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
+        expect(children[1].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
+        expect(children[2].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
+        expect(children[3].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
+        expect(children[4].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
+        expect(children[5].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
+        expect(children[6].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
     });
 
     it('should render on Tag less if geschoben', () => {
@@ -61,7 +61,7 @@ describe('RequestTrumpf Component', () => {
         shallowRenderer.render(React.createElement(RequestTrumpf, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let children = actual._store.props.children;
+        let children = actual.props.children;
         expect(children).to.have.length(7);
         expect(children[6]).to.equal(undefined);
     });
@@ -74,14 +74,14 @@ describe('RequestTrumpf Component', () => {
         shallowRenderer.render(React.createElement(RequestTrumpf, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.children[0]._store.props.src).to.contain(CardType.GERMAN);
+        expect(actual.props.children[0].props.src).to.contain(CardType.GERMAN);
 
         props.cardType = CardType.FRENCH;
 
         shallowRenderer.render(React.createElement(RequestTrumpf, props));
         actual = shallowRenderer.getRenderOutput();
 
-        expect(actual._store.props.children[0]._store.props.src).to.contain(CardType.FRENCH);
+        expect(actual.props.children[0].props.src).to.contain(CardType.FRENCH);
     });
 
     it('should bind the correct arguments to onClick handler', () => {
@@ -100,14 +100,14 @@ describe('RequestTrumpf Component', () => {
         shallowRenderer.render(React.createElement(RequestTrumpf, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let children = actual._store.props.children;
-        children[0]._store.props.onClick();
-        children[1]._store.props.onClick();
-        children[2]._store.props.onClick();
-        children[3]._store.props.onClick();
-        children[4]._store.props.onClick();
-        children[5]._store.props.onClick();
-        children[6]._store.props.onClick();
+        let children = actual.props.children;
+        children[0].props.onClick();
+        children[1].props.onClick();
+        children[2].props.onClick();
+        children[3].props.onClick();
+        children[4].props.onClick();
+        children[5].props.onClick();
+        children[6].props.onClick();
         expect(heartSpy.calledOnce).to.equal(true);
         expect(diamondsSpy.calledOnce).to.equal(true);
         expect(clubsSpy.calledOnce).to.equal(true);
