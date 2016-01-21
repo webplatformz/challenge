@@ -16,7 +16,7 @@
     "build:js:backend:watch": "watch 'npm run build:js:backend' server/ shared/",
     "build:resources": "copyfiles -u 1 client/index.html client/images/**/* build/",
     "build:resources:watch": "watch 'npm run build:resources' client/images",
-    "build": "npm run build:js:backend && npm run build:js:frontend && npm run build:css && npm run build:resources",
+    "build": "parallelshell 'npm run build:js:backend' 'npm run build:js:frontend' 'npm run build:css' 'npm run build:resources'",
     "build:watch": "parallelshell 'npm run build:css:watch' 'npm run build:js:frontend:watch' 'npm run build:backend:watch' 'npm run build:resources:watch'",
     "test:frontend": "karma start test/client/karma.conf.js",
     "test:frontend:watch": "npm run test:frontend -- --no-single-run",
