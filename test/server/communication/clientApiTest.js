@@ -532,7 +532,9 @@ describe('Client API', () => {
                 clientApi.addClient(client);
 
                 if (++connectedClients === 2) {
-                    clientApi.closeAll(CloseEventCode.NORMAL, disconnectMessage);
+                    setTimeout(() => {
+                        clientApi.closeAll(CloseEventCode.NORMAL, disconnectMessage);
+                    }, 10);
                 }
             });
 
