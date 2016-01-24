@@ -1,5 +1,4 @@
 'use strict';
-import _ from 'lodash';
 
 let HasCardValidator = {
     validate (validationParameter) {
