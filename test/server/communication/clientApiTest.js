@@ -55,7 +55,11 @@ describe('Client API', () => {
             let promise = clientApi.addClient(webSocket2);
             clientApi.addClient(webSocket3);
 
-            webSocket3.on('open', () => webSocket2.close(CloseEventCode.NORMAL, disconnectMessage));
+            webSocket3.on('open', () => {
+                setTimeout(() => {
+                    webSocket2.close(CloseEventCode.NORMAL, disconnectMessage);
+                }, 10);
+            });
 
             promise.then(() => {
                 done(new Error('This promise should never resolve'));
