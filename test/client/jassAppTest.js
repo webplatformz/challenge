@@ -17,11 +17,11 @@ describe('JassApp Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
 
-    it('should render a main element with children ErrorToast', () => {
+    it('should render a div element with children ErrorToast', () => {
         shallowRenderer.render(React.createElement(JassApp));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual.type).to.equal('main');
+        expect(actual.type).to.equal('div');
         expect(actual.props.children[0].type).to.equal(ErrorToast);
         expect(actual.props.children[1].type).to.equal(GameSetup);
     });

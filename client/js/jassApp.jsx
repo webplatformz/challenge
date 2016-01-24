@@ -28,8 +28,8 @@ let JassApp = React.createClass({
         this.state = this.state || JassAppStore.state;
 
         return (
-            <main>
-                <ErrorToast error={this.state.error}/>
+            <div>
+                <ErrorToast error={this.state.error} />
                 <GameSetup />
                 {(() => {
                     switch (this.state.sessionType) {
@@ -39,7 +39,7 @@ let JassApp = React.createClass({
                             return <TournamentTable rankingTable={this.state.rankingTable} started={this.state.tournamentStarted} />;
                     }
                 })()}
-            </main>
+            </div>
         );
     }
 });
