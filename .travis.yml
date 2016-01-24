@@ -9,6 +9,6 @@ addons:
     packages:
     - g++-4.8
 node_js:
-  - "5.4.1"
+  - "5.5.0"
 
 install: npm install

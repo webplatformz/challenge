@@ -3,7 +3,7 @@
   "version": "0.8.0",
   "private": true,
   "engines": {
-    "node": "5.4.x"
+    "node": "5.5.x"
   },
   "scripts": {
     "clean": "rimraf build && mkdir build",
