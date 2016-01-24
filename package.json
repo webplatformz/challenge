@@ -10,7 +10,7 @@
     "prebuild": "npm run clean",
     "build:css": "lessc client/styles/main.less build/styles/main.css",
     "build:css:watch": "watch 'npm run build:css' client/styles/",
-    "build:js:frontend": "browserify client/js/react.js -o build/client.js -t [ babelify ]",
+    "build:js:frontend": "browserify client/client.js -o build/client.js -t [ babelify ]",
     "build:js:frontend:watch": "watch 'npm run build:js:frontend' client/js shared/",
     "build:js:backend": "browserify app.js -o build/app.js -t [ babelify ] --node",
     "build:js:backend:watch": "watch 'npm run build:js:backend' server/ shared/",
