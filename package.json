@@ -2,6 +2,7 @@
   "name": "challenge",
   "version": "0.8.0",
   "private": true,
+  "main": "build/server/app.js",
   "engines": {
     "node": "5.5.x"
   },
@@ -27,7 +28,7 @@
     "prestart": "npm run build",
     "start": "node build/server/app.js",
     "start:watch": "nodemon --watch server --watch shared --watch client --exec 'npm run start'",
-    "debug": "npm run start:watch -- --debug"
+    "debug": "DEBUG=true npm run start:watch -- --debug --debug-brk=5858"
   },
   "devDependencies": {
     "chai": "3.4.1",
