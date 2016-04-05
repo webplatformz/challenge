@@ -17,7 +17,7 @@ https://github.com/RisingStack/node-style-guide
 https://travis-ci.org/webplatformz/challenge
 
 ## Installation
-You only need to have node.js and bower installed. 
+You only need to have node.js installed. 
 
 Installing node.js: 
 
