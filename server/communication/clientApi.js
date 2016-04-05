@@ -136,7 +136,6 @@ let ClientApi = {
     },
     
     close(client, message) {
-        console.error(arguments);
         try {
             client.close(CloseEventCode.NORMAL, message);
         } catch(e) {
