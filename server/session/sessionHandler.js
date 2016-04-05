@@ -5,7 +5,6 @@ import SessionFactory from './sessionFactory.js';
 import SessionChoice from '../../shared/session/sessionChoice.js';
 import SessionType from '../../shared/session/sessionType.js';
 import UUID from 'uuid';
-import CloseEventCode from '../communication/closeEventCode.js';
 
 let clientApi = ClientApi.create();
 
@@ -52,11 +51,6 @@ function createOrJoinSession(sessions, sessionChoiceResponse) {
         default:
             return findOrCreateSessionWithSpace(sessions, sessionChoiceResponse);
     }
-}
-
-function removeSession(sessions, session) {
-    let index = sessions.indexOf(session);
-    sessions.splice(index, 1);
 }
 
 function keepSessionAlive(webSocket, intervall) {
@@ -113,13 +107,18 @@ let SessionHandler = {
 
     startSession(session) {
         session.start().then(
-            this.finishSession.bind(this, session, CloseEventCode.NORMAL),
-            this.finishSession.bind(this, session, CloseEventCode.ABNORMAL));
+            this.finishSession.bind(this, session),
+            this.finishSession.bind(this, session));
     },
 
-    finishSession(session, code) {
-        session.close(code, 'Game Finished');
-        removeSession(this.sessions, session);
+    finishSession(session) {
+        session.close('Game Finished');
+        this.removeSession(session);
+    },
+    
+    removeSession(session) {
+        let index = this.sessions.indexOf(session);
+        this.sessions.splice(index, 1);
     },
 
     resetInstance() {

@@ -6,12 +6,12 @@ import ClientApi from '../../../server/communication/clientApi.js';
 import GameType from '../../../server/game/gameType.js';
 import GameMode from '../../../shared/game/gameMode.js';
 import CardColor from '../../../shared/deck/cardColor';
-import TestDataCreator from '../../testDataCreator.js';
 import CloseEventCode from '../../../server/communication/closeEventCode.js';
 import sinon from 'sinon';
 import messages from '../../../shared/messages/messages.js';
 import MessageType from '../../../shared/messages/messageType.js';
 import SessionChoice from '../../../shared/session/sessionChoice.js';
+import Logger from '../../../server/logger';
 
 let WebSocketServer = WebSocket.Server;
 
@@ -98,14 +98,13 @@ describe('Client API', () => {
                     close: sinon.spy(),
                     readyState: 1
                 },
-                code = 0,
                 message = 'message';
 
             clientApi.addClient(webSocket);
 
-            clientApi.removeClient(webSocket, code, message);
+            clientApi.removeClient(webSocket, message);
 
-            expect(webSocket.close.withArgs(code, message).calledOnce).to.equal(true);
+            expect(webSocket.close.withArgs(CloseEventCode.NORMAL, message).calledOnce).to.equal(true);
         });
 
         it('should not close connection with given code and message when readyState not OPEN', () => {
@@ -113,12 +112,11 @@ describe('Client API', () => {
                     close: sinon.spy(),
                     readyState: 2
                 },
-                code = 0,
                 message = 'message';
 
             clientApi.addClient(webSocket);
 
-            clientApi.removeClient(webSocket, code, message);
+            clientApi.removeClient(webSocket, message);
 
             expect(webSocket.close.callCount).to.equal(0);
         });
@@ -537,7 +535,7 @@ describe('Client API', () => {
 
                 if (++connectedClients === 2) {
                     setTimeout(() => {
-                        clientApi.closeAll(CloseEventCode.NORMAL, disconnectMessage);
+                        clientApi.closeAll(disconnectMessage);
                     }, 10);
                 }
             });
@@ -646,6 +644,31 @@ describe('Client API', () => {
             Promise.all(clientPromises).then(() => {
                 done();
             }).catch(done);
+        });
+    });
+
+    describe('close', () => {
+        it('should close websocket with given message', () => {
+            let webSocket = {
+                close: sinon.spy()
+            };
+
+            clientApi.close(webSocket, 'message');
+
+            expect(webSocket.close.callCount).to.equal(1);
+        });
+
+        it('should handle exception from websocket', () => {
+            let webSocket = {
+                close() {
+                    throw new Error('testError');
+                }
+            };
+            let errorSpy = sinon.spy(Logger, 'error');
+
+            clientApi.close(webSocket, 'message');
+
+            expect(errorSpy.callCount).to.equal(1);
         });
     });
 });

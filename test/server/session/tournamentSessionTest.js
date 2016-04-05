@@ -3,11 +3,7 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import TournamentSession from '../../../server/session/tournamentSession.js';
-import CloseEventCode from '../../../server/communication/closeEventCode.js';
-import Ranking from '../../../server/game/ranking/ranking.js';
-import RankingTable from '../../../server/session/rankingTable.js';
 import SingleGameSession from '../../../server/session/singleGameSession.js';
-import SessionType from '../../../shared/session/sessionType.js';
 
 describe('tournamentSession', () => {
 
@@ -108,7 +104,7 @@ describe('tournamentSession', () => {
             let rejectedPromise = Promise.reject();
             clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(Promise.resolve());
             clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(rejectedPromise);
-            clientApiMock.expects('removeClient').withArgs(webSocketDummy, CloseEventCode.ABNORMAL, sinon.match.string).twice();
+            clientApiMock.expects('removeClient').withArgs(webSocketDummy, sinon.match.string).twice();
 
             session.addPlayer(webSocketDummy, playerName);
             session.addPlayer(webSocketDummy, playerName);
@@ -121,7 +117,7 @@ describe('tournamentSession', () => {
         });
 
         it('should not add client to already existing playerName with two clients', () => {
-            clientApiMock.expects('removeClient').withArgs(webSocketDummy, CloseEventCode.ABNORMAL, sinon.match.string).once();
+            clientApiMock.expects('removeClient').withArgs(webSocketDummy, sinon.match.string).once();
 
             session.addPlayer(webSocketDummy, playerName);
             session.addPlayer(webSocketDummy, playerName);
@@ -178,9 +174,9 @@ describe('tournamentSession', () => {
             let message = 'message',
                 code = 'code';
 
-            clientApiMock.expects('closeAll').withArgs(code, message).once();
+            clientApiMock.expects('closeAll').withArgs(message).once();
 
-            session.close(code, message);
+            session.close(message);
 
             clientApiMock.verify();
         });

@@ -3,7 +3,7 @@
 import messages from '../../shared/messages/messages.js';
 import MessageType from '../../shared/messages/messageType.js';
 import validate from 'validate.js';
-import Logger from './logger.js';
+import Logger from './../logger.js';
 
 let ClientCommunication = {
     toJSON(object) {

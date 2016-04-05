@@ -5,6 +5,7 @@ import Game from '../game/game.js';
 import Player from '../game/player/player.js';
 import Team from '../game/player/team.js';
 import SessionType from '../../shared/session/sessionType.js';
+import SessionHandler from './sessionHandler';
 
 function createTeamsArrayForClient(session) {
     return session.teams.map((team) => {
@@ -116,11 +117,11 @@ let Session = {
         });
     },
 
-    close: function close(code, message) {
-        this.clientApi.closeAll(code, message);
+    close: function close(message) {
+        this.clientApi.closeAll(message);
     },
 
-    handlePlayerLeft: function handlePlayerLeft(player, code, message) {
+    handlePlayerLeft(player, code, message) {
         console.error('Player left. ' + code + ': ' + message);
 
         let team = this.teams.filter((team) => {
@@ -131,6 +132,9 @@ let Session = {
 
         if (this.started) {
             this.cancelGame(team);
+        } else {
+            this.close(message);
+            SessionHandler.removeSession(this);
         }
     }
 };

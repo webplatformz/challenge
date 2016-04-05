@@ -3,7 +3,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import SingleGameSession from '../../../server/session/singleGameSession.js';
-import ClientApi from '../../../server/communication/clientApi.js';
 import Game from '../../../server/game/game.js';
 import TestDataCreator from '../../testDataCreator.js';
 import CloseEventCode from '../../../server/communication/closeEventCode.js';
@@ -232,11 +231,10 @@ describe('Session', function () {
 
     describe('close', () => {
         it('should close all client connections', () => {
-            var code = CloseEventCode.NORMAL;
-            var message = 'Game Finished';
-            clientApiMock.expects('closeAll').once().withArgs(code, message);
+            let message = 'Game Finished';
+            clientApiMock.expects('closeAll').once().withArgs(message);
 
-            session.close(code, message);
+            session.close(message);
 
             clientApiMock.verify();
         });
@@ -244,7 +242,7 @@ describe('Session', function () {
 
     describe('handlePlayerLeft', () => {
         it('should broadcast opposite team as winners', () => {
-            let code = CloseEventCode.ABNORMAL,
+            let code = CloseEventCode.NORMAL,
                 message = 'message';
             session.started = true;
             session.cancelGame = sinon.spy();

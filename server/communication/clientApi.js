@@ -1,11 +1,13 @@
 'use strict';
 
-import messages from '../../shared/messages/messages.js';
 import MessageType from '../../shared/messages/messageType.js';
 import clientCommunication from './clientCommunication';
 import validate from 'validate.js';
 import _ from 'lodash';
 import WebSocket from 'ws';
+import Logger from '../logger.js';
+import CloseEventCode from './closeEventCode';
+
 
 function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {
     let messageObject = clientCommunication.fromJSON(message);
@@ -40,9 +42,9 @@ let ClientApi = {
         });
     },
 
-    removeClient(client, code, message) {
+    removeClient(client, message) {
         if (client.readyState === WebSocket.OPEN) {
-            client.close(code, message);
+            this.close(client, message);
         }
 
         _.remove(this.clients, (actClient) => {
@@ -129,10 +131,17 @@ let ClientApi = {
         clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TOURNAMENT_STARTED.name);
     },
 
-    closeAll: function closeAll(code, message) {
-        this.clients.forEach((client) => {
-            client.close(code, message);
-        });
+    closeAll: function closeAll(message) {
+        this.clients.forEach((client) => this.close(client, message));
+    },
+    
+    close(client, message) {
+        console.error(arguments);
+        try {
+            client.close(CloseEventCode.NORMAL, message);
+        } catch(e) {
+            Logger.error(e);
+        }
     }
 };
 

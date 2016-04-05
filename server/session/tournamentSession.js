@@ -2,7 +2,6 @@
 
 import ClientApi from '../communication/clientApi.js';
 import SessionType from '../../shared/session/sessionType.js';
-import CloseEventCode from '../communication/closeEventCode.js';
 import Ranking from '../game/ranking/ranking.js';
 import RankingTable from './rankingTable.js';
 import SingleGameSession from './singleGameSession.js';
@@ -65,7 +64,7 @@ let TournamentSession = {
         player.isPlaying = false;
         player.connected = false;
         player.clients.forEach((actClient) => {
-            this.clientApi.removeClient(actClient, CloseEventCode.ABNORMAL, 'One of the clients of player ' + playerName + ' disconnected');
+            this.clientApi.removeClient(actClient, 'One of the clients of player ' + playerName + ' disconnected');
         });
     },
 
@@ -78,7 +77,7 @@ let TournamentSession = {
             if (player.clients.length < 2) {
                 player.clients.push(webSocket);
             } else {
-                this.clientApi.removeClient(webSocket, CloseEventCode.ABNORMAL, 'This Player already has two registered clients!');
+                this.clientApi.removeClient(webSocket, 'This Player already has two registered clients!');
                 return;
             }
         } else {
@@ -194,8 +193,8 @@ let TournamentSession = {
         });
     },
 
-    close(code, message) {
-        this.clientApi.closeAll(code, message);
+    close(message) {
+        this.clientApi.closeAll(message);
     }
 };
 
