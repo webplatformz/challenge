@@ -6,11 +6,11 @@ import Ranking from '../game/ranking/ranking.js';
 import RankingTable from './rankingTable.js';
 import SingleGameSession from './singleGameSession.js';
 import 'babel-polyfill';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import UUID from 'uuid';
 
 function getPairingsPerRound(players) {
-    return _.flatten(players.map((player, index) => {
+    return _.flatMap(players, (player, index) => {
         return players.filter((secondPlayer, secondIndex) => {
             return secondIndex > index;
         }).map((secondPlayer) => {
@@ -19,7 +19,7 @@ function getPairingsPerRound(players) {
                 player2: secondPlayer
             };
         });
-    }));
+    });
 }
 
 function createSessionWithPlayers({player1, player2}) {

@@ -59,7 +59,7 @@
     "flux": "2.1.1",
     "glicko2": "0.8.4",
     "less": "2.5.3",
-    "lodash": "3.10.1",
+    "lodash": "4.8.2",
     "mkdir-p": "0.0.7",
     "parallelshell": "2.0.0",
     "react": "0.14.6",
