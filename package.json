@@ -7,17 +7,18 @@
     "node": "5.5.x"
   },
   "scripts": {
-    "clean": "rimraf build && mkdirp build/server && mkdirp build/client",
+    "clean": "rimraf build && mkdirp build/server && mkdirp build/client && mkdirp build/bot",
     "prebuild": "npm run clean",
     "build:css": "lessc client/styles/main.less build/client/styles/main.css",
     "build:css:watch": "watch \"npm run build:css\" client/styles/",
+    "build:js:bot": "browserify bot/Bot.js -o build/bot/Bot.js -t [ babelify ] --node",
     "build:js:frontend": "browserify client/client.js -o build/client/client.js -t [ babelify ]",
     "build:js:frontend:watch": "watch \"npm run build:js:frontend\" client/js shared/",
     "build:js:backend": "browserify app.js -o build/server/app.js -t [ babelify ] --node",
     "build:js:backend:watch": "watch \"npm run build:js:backend\" server/ shared/",
     "build:resources": "copyfiles -u 1 client/index.html \"client/images/**/*\" build/client",
     "build:resources:watch": "watch \"npm run build:resources\" client/images",
-    "build": "parallelshell \"npm run build:js:backend\" \"npm run build:js:frontend\" \"npm run build:css\" \"npm run build:resources\"",
+    "build": "parallelshell \"npm run build:js:backend\" \"npm run build:js:frontend\" \"npm run build:css\" \"npm run build:resources\" \"npm run build:js:bot\"",
     "build:watch": "parallelshell \"npm run build:css:watch\" \"npm run build:js:frontend:watch\" \"npm run build:backend:watch\" \"npm run build:resources:watch\"",
     "test:frontend": "karma start test/client/karma.conf.js",
     "test:frontend:watch": "npm run test:frontend -- --no-single-run",
@@ -28,6 +29,7 @@
     "prestart": "npm run build",
     "start": "node build/server/app.js",
     "start:watch": "nodemon --watch server --watch shared --watch client --exec \"npm run start\"",
+    "start:bot": "npm run build:js:bot; node build/bot/Bot.js",
     "debug": "DEBUG=true npm run start:watch -- --debug --debug-brk=5858"
   },
   "devDependencies": {
