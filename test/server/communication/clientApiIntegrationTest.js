@@ -5,7 +5,7 @@ import WebSocket from 'ws';
 import {Server as WebSocketServer} from 'ws';
 import SimpleBot from './SimpleBot';
 
-import Server from '../../../server/server';
+import * as Server from '../../../server/server';
 
 describe('Integration test', function() {
     this.timeout(10 * 1000);
