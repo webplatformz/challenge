@@ -13,7 +13,7 @@ import {SessionChoice} from '../shared/session/sessionChoice';
 let JassBot = {
     gameType: GameType.create(GameMode.TRUMPF, CardColor.SPADES),
 
-    onMessage : function (messageJson) {
+    onMessage: function (messageJson) {
         let message = JSON.parse(messageJson);
 
         if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
@@ -21,7 +21,7 @@ let JassBot = {
         }
 
         if (message.type === MessageType.REQUEST_SESSION_CHOICE.name) {
-                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN)));
+            this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN)));
         }
 
         if (message.type === MessageType.DEAL_CARDS.name) {
@@ -41,32 +41,30 @@ let JassBot = {
         }
     },
 
-    mapCardsFromJson : function(cards) {
+    mapCardsFromJson: function (cards) {
         return cards.map((element) => {
             return Card.create(element.number, element.color);
         });
     },
 
-    giveValidCardFromHand : function(tableCards, handCards) {
+    giveValidCardFromHand: function (tableCards, handCards) {
         let validation = Validation.create(this.gameType.mode, this.gameType.trumpfColor);
 
-        for(let i = 0; i < handCards.length; i++) {
+        for (let i = 0; i < handCards.length; i++) {
             let handCard = handCards[i];
 
-            if(validation.validate(tableCards, handCards, handCard)) {
+            if (validation.validate(tableCards, handCards, handCard)) {
                 return handCard;
             }
         }
     }
 };
 
-export default {
-    create: function create(name) {
-        let clientBot = Object.create(JassBot);
-        clientBot.handcards = [];
-        clientBot.client = new WebSocket('ws://localhost:3000');
-        clientBot.client.on('message', clientBot.onMessage.bind(clientBot));
-        clientBot.name = name;
-        return clientBot;
-    }
-};
+export function create (name) {
+    let clientBot = Object.create(JassBot);
+    clientBot.handcards = [];
+    clientBot.client = new WebSocket('ws://localhost:3000');
+    clientBot.client.on('message', clientBot.onMessage.bind(clientBot));
+    clientBot.name = name;
+    return clientBot;
+}

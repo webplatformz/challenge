@@ -1,5 +1,6 @@
-import JassBot from './JassBot.js';
+'use strict';
 
+import * as JassBot from './JassBot.js';
 
 let numberOfBotsToStartFromCommandLine = process.argv[2];
 let defaultNumberOfBotsToStartFromCommandLine = 4;
@@ -17,6 +18,6 @@ if(nameOfBotToStartFromCommandLine) {
 }
 
 for (let i = 1; i <= numberOfBotsToStart; i++){
-    let jassBot = JassBot.create(nameOfBot);
+    JassBot.create(nameOfBot);
 }
 
