@@ -1,17 +1,14 @@
 'use strict';
 
 import WebSocket from 'ws';
-import ClientApi from '../server/communication/clientApi';
 import GameType from '../server/game/gameType';
-import GameMode from '../shared/game/gameMode';
+import {GameMode} from '../shared/game/gameMode';
 import Card from '../shared/deck/card';
 import CardColor from '../shared/deck/cardColor';
 import Validation from '../server/game/validation/validation';
 import messages from '../shared/messages/messages';
 import MessageType from '../shared/messages/messageType';
 import SessionChoice from '../shared/session/sessionChoice';
-
-let WebSocketServer = WebSocket.Server;
 
 let JassBot = {
     gameType: GameType.create(GameMode.TRUMPF, CardColor.SPADES),

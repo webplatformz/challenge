@@ -2,7 +2,7 @@
 
 import React from 'react';
 import CardColor from '../../../shared/deck/cardColor';
-import GameMode from '../../../shared/game/gameMode.js';
+import {GameMode} from '../../../shared/game/gameMode.js';
 import JassActions from '../jassActions.js';
 
 export default React.createClass({

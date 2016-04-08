@@ -1,6 +1,6 @@
 'use strict';
 
-import GameMode from '../../../shared/game/gameMode';
+import {GameMode} from '../../../shared/game/gameMode';
 import CardColor from '../../../shared/deck/cardColor';
 
 
@@ -54,7 +54,7 @@ const undeufeCardValues = {
 
 
 let calculateMultiplicator = function calculateMultiplicator(mode, gameTrumpf) {
-    if(mode === GameMode.OBEABE || mode === GameMode.UNDEUFE) {
+    if (mode === GameMode.OBEABE || mode === GameMode.UNDEUFE) {
         return 3;
     } else if (gameTrumpf === CardColor.CLUBS || gameTrumpf === CardColor.SPADES) {
         return 2;
@@ -63,35 +63,29 @@ let calculateMultiplicator = function calculateMultiplicator(mode, gameTrumpf) {
     }
 };
 
-let Counter = {
-    count: function count(mode, cardColor, cardSet) {
-        let result = 0;
+export function count(mode, cardColor, cardSet) {
+    let result = 0;
 
-        cardSet.forEach(card => {
-            if(mode === GameMode.OBEABE) {
-                result += obeabeCardValues[card.number];
-            } else if(mode === GameMode.UNDEUFE) {
-                result += undeufeCardValues[card.number];
-            } else if (cardColor === card.color) {
-                result += trumpCardValues[card.number];
-            } else {
-                result += nonTrumpCardValues[card.number];
-            }
-        });
+    cardSet.forEach(card => {
+        if (mode === GameMode.OBEABE) {
+            result += obeabeCardValues[card.number];
+        } else if (mode === GameMode.UNDEUFE) {
+            result += undeufeCardValues[card.number];
+        } else if (cardColor === card.color) {
+            result += trumpCardValues[card.number];
+        } else {
+            result += nonTrumpCardValues[card.number];
+        }
+    });
 
-        result = calculateMultiplicator(mode, cardColor) * result;
-        return result;
-    },
+    result = calculateMultiplicator(mode, cardColor) * result;
+    return result;
+}
 
-    calculateMatchValues(mode, cardColor) {
-        return 100 * calculateMultiplicator(mode, cardColor);
-    },
+export function calculateMatchValues(mode, cardColor) {
+    return 100 * calculateMultiplicator(mode, cardColor);
+}
 
-    calculateLastStichValue(mode, cardColor) {
-        return 5 * calculateMultiplicator(mode, cardColor);
-
-    }
-
-};
-
-export default Counter;
+export function calculateLastStichValue(mode, cardColor) {
+    return 5 * calculateMultiplicator(mode, cardColor);
+}

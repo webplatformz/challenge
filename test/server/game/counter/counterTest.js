@@ -1,8 +1,8 @@
 "use strict";
 
 import assert from 'assert';
-import GameMode from '../../../../shared/game/gameMode';
-import Counter from '../../../../server/game/counter/counter';
+import {GameMode} from '../../../../shared/game/gameMode';
+import * as Counter from '../../../../server/game/counter/counter';
 import CardColor from '../../../../shared/deck/cardColor';
 import Card from '../../../../shared/deck/card';
 

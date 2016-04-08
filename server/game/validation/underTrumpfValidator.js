@@ -1,6 +1,6 @@
 'use strict';
-import _ from 'lodash';
-import GameMode from '../../../shared/game/gameMode.js';
+
+import {GameMode} from '../../../shared/game/gameMode.js';
 
 let validationSuccess = {
     permitted: true

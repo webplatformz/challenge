@@ -3,7 +3,7 @@
 import {expect} from 'chai';
 import React from 'react/addons';
 import {CardType} from '../../../client/js/game/gameStore';
-import GameMode from '../../../shared/game/gameMode';
+import {GameMode} from '../../../shared/game/gameMode';
 import CardColor from '../../../shared/deck/cardColor';
 
 const TestUtils = React.addons.TestUtils;

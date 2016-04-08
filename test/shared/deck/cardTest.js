@@ -3,7 +3,6 @@
 import {expect} from 'chai';
 import Card from '../../../shared/deck/card';
 import CardColor from '../../../shared/deck/cardColor';
-import GameMode from '../../../shared/game/gameMode';
 
 describe('Card', () => {
     it('should create cards', () => {

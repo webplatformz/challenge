@@ -1,9 +1,8 @@
 'use strict';
 
 import WebSocket from 'ws';
-import ClientApi from '../../../server/communication/clientApi';
 import GameType from '../../../server/game/gameType';
-import GameMode from '../../../shared/game/gameMode';
+import {GameMode} from '../../../shared/game/gameMode';
 import Card from '../../../shared/deck/card';
 import CardColor from '../../../shared/deck/cardColor';
 import Validation from '../../../server/game/validation/validation';
@@ -12,7 +11,6 @@ import MessageType from '../../../shared/messages/messageType';
 import SessionChoice from '../../../shared/session/sessionChoice';
 import {expect} from 'chai';
 
-let WebSocketServer = WebSocket.Server;
 
 let SimpleBot = {
     gameType: GameType.create(GameMode.TRUMPF, CardColor.SPADES),

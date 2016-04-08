@@ -2,7 +2,7 @@
 
 import Validation from '../validation/validation.js';
 import stichGranter from './stichGranter.js';
-import counter from '../counter/counter.js';
+import * as Counter from '../counter/counter.js';
 
 let Cycle = {
     iterate: function () {
@@ -31,18 +31,18 @@ let Cycle = {
             let looserTeam = that.players.filter((player) => {
                 return player.team !== winner.team;
             })[0].team;
-            let actPoints = counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
+            let actPoints = Counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
 
             winnerTeam.points += actPoints;
             winnerTeam.currentRoundPoints += actPoints;
 
             if(winner.cards.length === 0) {
-                let lastStichPoints = counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
+                let lastStichPoints = Counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
                 winnerTeam.points += lastStichPoints;
                 winnerTeam.currentRoundPoints += lastStichPoints;
 
                 if(looserTeam.currentRoundPoints === 0) {
-                    var matchPoints = counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
+                    var matchPoints = Counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
                     winnerTeam.points += matchPoints;
                     winnerTeam.currentRoundPoints += matchPoints;
                 }

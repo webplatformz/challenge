@@ -1,6 +1,6 @@
 'use strict';
-import _ from 'lodash';
-import GameMode from '../../../shared/game/gameMode.js';
+
+import {GameMode} from '../../../shared/game/gameMode.js';
 
 let validationSuccess = {
     permitted: true
@@ -17,10 +17,7 @@ let AngebenValidator = {
                 let trumpfCards = handCards.filter(function (card) {
                     return card.color === trumpfColor;
                 });
-                if(trumpfCards.length === 1 && trumpfCards[0].number === 11) {
-                    return true;
-                }
-                return false;
+                return trumpfCards.length === 1 && trumpfCards[0].number === 11;
             }
             return false;
         };

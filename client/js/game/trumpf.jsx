@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import GameMode from '../../../shared/game/gameMode.js';
+import {GameMode} from '../../../shared/game/gameMode.js';
 
 export default React.createClass({
 

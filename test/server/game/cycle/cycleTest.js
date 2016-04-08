@@ -1,6 +1,5 @@
 "use strict";
 
-import assert from 'assert';
 import {expect} from 'chai';
 import Card from '../../../../shared/deck/card';
 import CardColor from '../../../../shared/deck/cardColor';
@@ -9,7 +8,7 @@ import ClientApi from '../../../../server/communication/clientApi';
 import TestDataCreator from '../../../testDataCreator';
 import sinon from 'sinon';
 import GameType from '../../../../server/game/gameType';
-import GameMode from '../../../../shared/game/gameMode';
+import {GameMode} from '../../../../shared/game/gameMode';
 import Deck from '../../../../server/game/deck/deck';
 
 describe('Cycle', function () {
