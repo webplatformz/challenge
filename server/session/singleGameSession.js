@@ -4,7 +4,7 @@ import ClientApi from '../communication/clientApi.js';
 import Game from '../game/game.js';
 import Player from '../game/player/player.js';
 import Team from '../game/player/team.js';
-import SessionType from '../../shared/session/sessionType.js';
+import {SessionType} from '../../shared/session/sessionType.js';
 import SessionHandler from './sessionHandler';
 
 function createTeamsArrayForClient(session) {

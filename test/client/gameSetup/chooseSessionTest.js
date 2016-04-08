@@ -6,7 +6,7 @@ import React from 'react/addons';
 import GameSetupStore from '../../../client/js/gameSetup/gameSetupStore';
 import JassActions from '../../../client/js/jassActions';
 import ExistingSessions from '../../../client/js/gameSetup/existingSessions.jsx';
-import SessionType from '../../../shared/session/sessionType.js';
+import {SessionType} from '../../../shared/session/sessionType.js';
 
 const TestUtils = React.addons.TestUtils;
 

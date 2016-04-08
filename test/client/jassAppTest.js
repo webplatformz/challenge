@@ -7,7 +7,7 @@ import GameSetup from '../../client/js/gameSetup/gameSetup.jsx';
 import JassTable from '../../client/js/game/jassTable.jsx';
 import TournamentTable from '../../client/js/tournament/tournamentTable.jsx';
 import JassAppStore from '../../client/js/jassAppStore.js';
-import SessionType from '../../shared/session/sessionType.js';
+import {SessionType} from '../../shared/session/sessionType.js';
 
 const TestUtils = React.addons.TestUtils;
 

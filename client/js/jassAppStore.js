@@ -3,7 +3,7 @@
 import {EventEmitter} from 'events';
 import JassAppDispatcher from './jassAppDispatcher.js';
 import JassAppConstants from './jassAppConstants.js';
-import SessionType from '../../shared/session/sessionType.js';
+import {SessionType} from '../../shared/session/sessionType.js';
 
 let JassAppStore = Object.create(EventEmitter.prototype);
 

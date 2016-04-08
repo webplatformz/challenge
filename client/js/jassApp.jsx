@@ -6,7 +6,7 @@ import ErrorToast from './error/errorToast.jsx';
 import GameSetup from './gameSetup/gameSetup.jsx';
 import JassTable from './game/jassTable.jsx';
 import TournamentTable from './tournament/tournamentTable.jsx';
-import SessionType from '../../shared/session/sessionType.js';
+import {SessionType} from '../../shared/session/sessionType.js';
 import serverApi from './communication/serverApi';
 
 let JassApp = React.createClass({

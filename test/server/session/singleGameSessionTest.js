@@ -6,7 +6,7 @@ import SingleGameSession from '../../../server/session/singleGameSession.js';
 import Game from '../../../server/game/game.js';
 import TestDataCreator from '../../testDataCreator.js';
 import CloseEventCode from '../../../server/communication/closeEventCode.js';
-import SessionType from '../../../shared/session/sessionType.js';
+import {SessionType} from '../../../shared/session/sessionType.js';
 
 describe('Session', function () {
     let session,

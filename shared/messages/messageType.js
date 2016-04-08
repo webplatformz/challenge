@@ -3,7 +3,7 @@
 import SessionChoice from '../session/sessionChoice.js';
 import {GameMode} from '../game/gameMode.js';
 import CardColor from '../deck/cardColor';
-import SessionType from '../session/sessionType.js';
+import {SessionType} from '../session/sessionType.js';
 
 const MessageType = {
     REQUEST_PLAYER_NAME: {

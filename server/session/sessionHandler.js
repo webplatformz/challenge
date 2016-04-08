@@ -3,7 +3,7 @@
 import ClientApi from '../communication/clientApi.js';
 import SessionFactory from './sessionFactory.js';
 import SessionChoice from '../../shared/session/sessionChoice.js';
-import SessionType from '../../shared/session/sessionType.js';
+import {SessionType} from '../../shared/session/sessionType.js';
 import UUID from 'uuid';
 
 let clientApi = ClientApi.create();

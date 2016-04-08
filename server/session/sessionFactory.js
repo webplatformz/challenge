@@ -1,6 +1,6 @@
 'use strict';
 
-import SessionType from '../../shared/session/sessionType.js';
+import {SessionType} from '../../shared/session/sessionType.js';
 import SingleGameSession from './singleGameSession.js';
 import TournamentSession from './tournamentSession.js';
 
