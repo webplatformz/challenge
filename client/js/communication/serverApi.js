@@ -4,7 +4,7 @@ import JassAppDispatcher from '../jassAppDispatcher.js';
 import JassAppConstants from '../jassAppConstants.js';
 import JassActions from '../jassActions.js';
 import messages from '../../../shared/messages/messages.js';
-import MessageType from '../../../shared/messages/messageType.js';
+import {MessageType} from '../../../shared/messages/messageType.js';
 import {SessionChoice} from '../../../shared/session/sessionChoice.js';
 
 const serverAddress = 'ws://' + window.location.host;

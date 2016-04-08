@@ -5,7 +5,7 @@ import {GameMode} from '../game/gameMode.js';
 import CardColor from '../deck/cardColor';
 import {SessionType} from '../session/sessionType.js';
 
-const MessageType = {
+export const MessageType = {
     REQUEST_PLAYER_NAME: {
         name: 'REQUEST_PLAYER_NAME'
     },
@@ -146,5 +146,3 @@ const MessageType = {
         name: 'BROADCAST_TOURNAMENT_STARTED'
     }
 };
-
-export default MessageType;

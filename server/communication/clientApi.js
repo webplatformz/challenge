@@ -1,6 +1,6 @@
 'use strict';
 
-import MessageType from '../../shared/messages/messageType.js';
+import {MessageType} from '../../shared/messages/messageType.js';
 import clientCommunication from './clientCommunication';
 import validate from 'validate.js';
 import _ from 'lodash';

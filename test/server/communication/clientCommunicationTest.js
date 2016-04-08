@@ -1,9 +1,8 @@
 'use strict';
 
 import clientCommunication from '../../../server/communication/clientCommunication.js';
-import WebSocket from 'ws';
 import messages from '../../../shared/messages/messages.js';
-import MessageType from '../../../shared/messages/messageType.js';
+import {MessageType} from '../../../shared/messages/messageType.js';
 import CardColor from '../../../shared/deck/cardColor';
 import {expect} from 'chai';
 import sinon from 'sinon';

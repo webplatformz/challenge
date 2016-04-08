@@ -1,7 +1,7 @@
 'use strict';
 
 import messages from '../../shared/messages/messages.js';
-import MessageType from '../../shared/messages/messageType.js';
+import {MessageType} from '../../shared/messages/messageType.js';
 import validate from 'validate.js';
 import Logger from './../logger.js';
 
