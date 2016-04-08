@@ -5,7 +5,7 @@ import clientCommunication from './clientCommunication';
 import validate from 'validate.js';
 import _ from 'lodash';
 import WebSocket from 'ws';
-import Logger from '../logger.js';
+import {Logger} from '../logger.js';
 import CloseEventCode from './closeEventCode';
 
 

@@ -2,7 +2,7 @@
 
 let debug = Boolean(process.env.DEBUG) || false;
 
-const Logger = {
+export const Logger = {
     debug (messageToLog) {
         if (debug){
             console.log(messageToLog);
@@ -13,5 +13,3 @@ const Logger = {
         console.error(messageToLog);
     }
 };
-
-export default Logger;

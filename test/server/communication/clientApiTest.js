@@ -11,7 +11,7 @@ import sinon from 'sinon';
 import * as messages from '../../../shared/messages/messages.js';
 import {MessageType} from '../../../shared/messages/messageType.js';
 import {SessionChoice} from '../../../shared/session/sessionChoice.js';
-import Logger from '../../../server/logger';
+import {Logger} from '../../../server/logger';
 
 let WebSocketServer = WebSocket.Server;
 
