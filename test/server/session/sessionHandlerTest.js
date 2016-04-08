@@ -5,10 +5,9 @@ import {expect} from 'chai';
 import ClientApi from '../../../server/communication/clientApi.js';
 import SingleGameSession from '../../../server/session/singleGameSession.js';
 import TournamentSession from '../../../server/session/tournamentSession.js';
-import SessionChoice from '../../../shared/session/sessionChoice.js';
+import {SessionChoice} from '../../../shared/session/sessionChoice.js';
 import {SessionType} from '../../../shared/session/sessionType.js';
 import sessionHandler from '../../../server/session/sessionHandler.js';
-import CloseEventCode from '../../../server/communication/closeEventCode.js';
 
 let uuidMatcher = sinon.match((name) => {
     return name.length === 36;

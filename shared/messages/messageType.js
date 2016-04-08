@@ -1,6 +1,6 @@
 'use strict';
 
-import SessionChoice from '../session/sessionChoice.js';
+import {SessionChoice} from '../session/sessionChoice.js';
 import {GameMode} from '../game/gameMode.js';
 import CardColor from '../deck/cardColor';
 import {SessionType} from '../session/sessionType.js';
