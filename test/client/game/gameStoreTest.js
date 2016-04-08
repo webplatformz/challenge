@@ -4,8 +4,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {default as GameStore, CardType, PlayerType, GameState} from '../../../client/js/game/gameStore';
 import JassAppConstants from '../../../client/js/jassAppConstants';
-import JassAppDispatcher from '../../../client/js/jassAppDispatcher';
-import CardColor from '../../../shared/deck/cardColor';
+import {CardColor} from '../../../shared/deck/cardColor';
 
 describe('GameStore', () => {
 

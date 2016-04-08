@@ -2,7 +2,7 @@
 
 import assert from 'assert';
 import Card from '../../../../shared/deck/card';
-import CardColor from '../../../../shared/deck/cardColor';
+import {CardColor} from '../../../../shared/deck/cardColor';
 import Validation from '../../../../server/game/validation/validation';
 import {GameMode} from '../../../../shared/game/gameMode';
 

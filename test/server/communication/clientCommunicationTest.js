@@ -3,7 +3,7 @@
 import clientCommunication from '../../../server/communication/clientCommunication.js';
 import * as messages from '../../../shared/messages/messages.js';
 import {MessageType} from '../../../shared/messages/messageType.js';
-import CardColor from '../../../shared/deck/cardColor';
+import {CardColor} from '../../../shared/deck/cardColor';
 import {expect} from 'chai';
 import sinon from 'sinon';
 

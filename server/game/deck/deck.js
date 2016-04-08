@@ -1,7 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
-import CardColor from './../../../shared/deck/cardColor';
+import {CardColor} from './../../../shared/deck/cardColor';
 import Card from './../../../shared/deck/card';
 
 let cards = _.map(_.range(36), function(element, index) {

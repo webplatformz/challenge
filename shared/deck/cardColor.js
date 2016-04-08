@@ -1,10 +1,8 @@
 'use strict';
 
-const CardColor = {
+export const CardColor = {
     HEARTS: 'HEARTS',
     DIAMONDS: 'DIAMONDS',
     CLUBS: 'CLUBS',
     SPADES: 'SPADES'
 };
-
-export default CardColor;

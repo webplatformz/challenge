@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 import Card from '../../../../shared/deck/card';
-import CardColor from '../../../../shared/deck/cardColor';
+import {CardColor} from '../../../../shared/deck/cardColor';
 import Cycle from '../../../../server/game/cycle/cycle';
 import ClientApi from '../../../../server/communication/clientApi';
 import TestDataCreator from '../../../testDataCreator';
