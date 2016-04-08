@@ -1,7 +1,7 @@
 "use strict";
 
 import {expect} from 'chai';
-import Card from '../../../shared/deck/card';
+import * as Card from '../../../shared/deck/card';
 import {CardColor} from '../../../shared/deck/cardColor';
 
 describe('Card', () => {

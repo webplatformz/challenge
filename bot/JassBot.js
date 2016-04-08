@@ -3,7 +3,7 @@
 import WebSocket from 'ws';
 import GameType from '../server/game/gameType';
 import {GameMode} from '../shared/game/gameMode';
-import Card from '../shared/deck/card';
+import * as Card from '../shared/deck/card';
 import {CardColor} from '../shared/deck/cardColor';
 import Validation from '../server/game/validation/validation';
 import * as messages from '../shared/messages/messages';

@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 import Player from '../../../../server/game/player/player';
-import Card from '../../../../shared/deck/card';
+import * as Card from '../../../../shared/deck/card';
 import {CardColor} from '../../../../shared/deck/cardColor';
 
 describe('Player', function() {

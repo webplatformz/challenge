@@ -1,7 +1,7 @@
 "use strict";
 
 import assert from 'assert';
-import Card from '../../../../shared/deck/card';
+import * as Card from '../../../../shared/deck/card';
 import {CardColor} from '../../../../shared/deck/cardColor';
 import UnderTrumpfValidator from '../../../../server/game/validation/underTrumpfValidator';
 import {GameMode} from '../../../../shared/game/gameMode';

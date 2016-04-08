@@ -1,6 +1,6 @@
 'use strict';
 
-import Card from '../deck/card';
+import * as Card from '../deck/card';
 import {MessageType} from './messageType.js';
 
 function createRequestPlayerName() {
