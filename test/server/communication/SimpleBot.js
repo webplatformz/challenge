@@ -6,7 +6,7 @@ import {GameMode} from '../../../shared/game/gameMode';
 import Card from '../../../shared/deck/card';
 import CardColor from '../../../shared/deck/cardColor';
 import Validation from '../../../server/game/validation/validation';
-import messages from '../../../shared/messages/messages';
+import * as messages from '../../../shared/messages/messages';
 import {MessageType} from '../../../shared/messages/messageType';
 import {SessionChoice} from '../../../shared/session/sessionChoice';
 import {expect} from 'chai';

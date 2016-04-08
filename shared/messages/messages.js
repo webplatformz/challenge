@@ -164,7 +164,7 @@ function createBroadcastTournamentStarted() {
     };
 }
 
-function create(messageType, ...data) {
+export function create(messageType, ...data) {
     switch (messageType) {
         case MessageType.REQUEST_PLAYER_NAME.name:
             return createRequestPlayerName();
@@ -214,7 +214,3 @@ function create(messageType, ...data) {
             throw 'Unknown message type ' + messageType;
     }
 }
-
-export default {
-    create
-};

@@ -8,7 +8,7 @@ import {GameMode} from '../../../shared/game/gameMode.js';
 import CardColor from '../../../shared/deck/cardColor';
 import CloseEventCode from '../../../server/communication/closeEventCode.js';
 import sinon from 'sinon';
-import messages from '../../../shared/messages/messages.js';
+import * as messages from '../../../shared/messages/messages.js';
 import {MessageType} from '../../../shared/messages/messageType.js';
 import {SessionChoice} from '../../../shared/session/sessionChoice.js';
 import Logger from '../../../server/logger';
