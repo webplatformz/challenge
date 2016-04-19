@@ -558,6 +558,37 @@ describe('Client API', () => {
         });
     });
 
+    describe('sessionJoined', () => {
+        it('should send session joined to given client', (done) => {
+            let sessionName = 'sessionName',
+                player = 'player',
+                playersInSession = 'playersInSession';
+
+            wss.on('connection', (client) => {
+                clientApi.addClient(client);
+
+                clientApi.sessionJoined(sessionName, player, playersInSession, client);
+            });
+
+            let client = new WebSocket('ws://localhost:10001');
+
+            new Promise((resolve) => {
+                client.on('message', (message) => {
+                    message = JSON.parse(message);
+
+                    expect(message.type).to.equal(MessageType.SESSION_JOINED.name);
+                    expect(message.data).to.eql({
+                        sessionName,
+                        player,
+                        playersInSession
+                    });
+                    resolve();
+                });
+            }).then(done, done);
+        });
+    });
+
+
     describe('broadcastSessionJoined', () => {
         it('should send the sessionname, player already joined players to all client', (done) => {
             let clients,

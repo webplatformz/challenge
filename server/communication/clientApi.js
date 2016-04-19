@@ -111,6 +111,10 @@ let ClientApi = {
             availableSessions);
     },
 
+    sessionJoined(sessionName, player, playersInSession, client) {
+        clientCommunication.send(client, MessageType.SESSION_JOINED.name, sessionName, player, playersInSession);
+    },
+
     broadcastSessionJoined(sessionName, player, playersInSession) {
         clientCommunication.broadcast(this.clients, MessageType.BROADCAST_SESSION_JOINED.name, sessionName, player, playersInSession);
     },

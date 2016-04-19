@@ -127,6 +127,17 @@ function createChooseSession(sessionChoice, sessionName, sessionType, asSpectato
     };
 }
 
+function createSessionJoined(sessionName, player, playersInSession) {
+    return {
+        type: MessageType.SESSION_JOINED.name,
+        data: {
+            sessionName,
+            player,
+            playersInSession
+        }
+    };
+}
+
 function createBroadcastSessionJoined(sessionName, player, playersInSession) {
     return {
         type: MessageType.BROADCAST_SESSION_JOINED.name,
@@ -200,6 +211,8 @@ export function create(messageType, ...data) {
             return createRequestSessionChoice(...data);
         case MessageType.CHOOSE_SESSION.name:
             return createChooseSession(...data);
+        case MessageType.SESSION_JOINED.name:
+            return createSessionJoined(...data);
         case MessageType.BROADCAST_SESSION_JOINED.name:
             return createBroadcastSessionJoined(...data);
         case MessageType.BAD_MESSAGE.name:

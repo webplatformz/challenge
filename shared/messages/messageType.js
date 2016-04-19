@@ -125,6 +125,9 @@ export const MessageType = {
             }
         }
     },
+    SESSION_JOINED: {
+        name: 'SESSION_JOINED'
+    },
     BROADCAST_SESSION_JOINED: {
         name: 'BROADCAST_SESSION_JOINED'
     },
