@@ -567,7 +567,7 @@ describe('Client API', () => {
             wss.on('connection', (client) => {
                 clientApi.addClient(client);
 
-                clientApi.sessionJoined(sessionName, player, playersInSession, client);
+                clientApi.sessionJoined(client, sessionName, player, playersInSession);
             });
 
             let client = new WebSocket('ws://localhost:10001');

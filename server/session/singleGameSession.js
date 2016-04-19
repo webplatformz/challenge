@@ -48,23 +48,28 @@ let Session = {
         });
 
         this.players.push(player);
-        this.clientApi.broadcastSessionJoined(
-            this.name,
-            {
+        this.lastSessionJoin = {
+            player: {
                 id: player.id,
                 name: player.name
             },
-            this.players.map(function (player) {
+            playersInSession: this.players.map(function (player) {
                 return {
                     id: player.id,
                     name: player.name
                 };
             })
+        };
+        this.clientApi.broadcastSessionJoined(
+            this.name,
+            this.lastSessionJoin.player,
+            this.lastSessionJoin.playersInSession
         );
     },
 
     addSpectator: function addSpectator(webSocket) {
         this.clientApi.addClient(webSocket);
+        this.clientApi.sessionJoined(webSocket, this.name, this.lastSessionJoin.player, this.lastSessionJoin.playersInSession);
     },
 
     isComplete: function isComplete() {

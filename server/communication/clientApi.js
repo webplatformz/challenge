@@ -111,7 +111,7 @@ let ClientApi = {
             availableSessions);
     },
 
-    sessionJoined(sessionName, player, playersInSession, client) {
+    sessionJoined(client, sessionName, player, playersInSession) {
         clientCommunication.send(client, MessageType.SESSION_JOINED.name, sessionName, player, playersInSession);
     },
 

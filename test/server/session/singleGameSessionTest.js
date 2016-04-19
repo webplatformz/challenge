@@ -69,7 +69,7 @@ describe('Session', function () {
             clientApiMock.verify();
         });
 
-        it('should broadcast session joined', () => {
+        it('should broadcast session joined and save message for later use', () => {
             let sessionPlayer = {
                 id: 0,
                 name: 'name'
@@ -81,6 +81,10 @@ describe('Session', function () {
             session.addPlayer('webSocket', sessionPlayer.name);
 
             clientApiMock.verify();
+            expect(session.lastSessionJoin.player).to.eql(sessionPlayer);
+            expect(session.lastSessionJoin.playersInSession).to.eql([
+                sessionPlayer
+            ]);
         });
 
         it('should close session if player left', (done) => {
@@ -257,9 +261,19 @@ describe('Session', function () {
     });
 
     describe('addSpectator', () => {
-        it('should add Spectator to clients', () => {
+        it('should add Spectator to clients and send sessionJoined', () => {
             let webSocket = 'webSocket';
+
+            session.lastSessionJoin = {
+                player: 'player',
+                playersInSession: [
+                    'player'
+                ]
+            };
+
             clientApiMock.expects('addClient').once().withArgs(webSocket);
+            clientApiMock.expects('sessionJoined').once().withArgs(webSocket, session.name, session.lastSessionJoin.player, session.lastSessionJoin.playersInSession);
+
             session.addSpectator(webSocket);
 
             clientApiMock.verify();

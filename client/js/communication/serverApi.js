@@ -29,6 +29,7 @@ let ServerApi = {
             case MessageType.REQUEST_SESSION_CHOICE.name:
                 JassActions.requestSessionChoice(message.data);
                 break;
+            case MessageType.SESSION_JOINED.name:
             case MessageType.BROADCAST_SESSION_JOINED.name:
                 JassActions.sessionJoined(message.data);
                 break;
