@@ -5,7 +5,7 @@ import {GameMode} from '../../../../shared/game/gameMode';
 import StichGranter from '../../../../server/game/cycle/stichGranter';
 import {CardColor} from '../../../../shared/deck/cardColor';
 import * as Card from '../../../../shared/deck/card';
-import TestDataCreator from '../../../testDataCreator';
+import * as TestDataCreator from '../../../testDataCreator';
 import * as ClientApi from '../../../../server/communication/clientApi';
 
 

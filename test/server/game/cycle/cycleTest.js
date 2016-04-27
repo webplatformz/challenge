@@ -5,7 +5,7 @@ import * as Card from '../../../../shared/deck/card';
 import {CardColor} from '../../../../shared/deck/cardColor';
 import * as Cycle from '../../../../server/game/cycle/cycle';
 import * as ClientApi from '../../../../server/communication/clientApi';
-import TestDataCreator from '../../../testDataCreator';
+import * as TestDataCreator from '../../../testDataCreator';
 import sinon from 'sinon';
 import * as GameType from '../../../../server/game/gameType';
 import {GameMode} from '../../../../shared/game/gameMode';

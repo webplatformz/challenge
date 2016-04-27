@@ -4,9 +4,9 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import * as SingleGameSession from '../../../server/session/singleGameSession';
 import * as Game from '../../../server/game/game.js';
-import TestDataCreator from '../../testDataCreator.js';
-import CloseEventCode from '../../../server/communication/closeEventCode.js';
-import {SessionType} from '../../../shared/session/sessionType.js';
+import * as TestDataCreator from '../../testDataCreator';
+import CloseEventCode from '../../../server/communication/closeEventCode';
+import {SessionType} from '../../../shared/session/sessionType';
 
 describe('Session', function () {
     let session,
