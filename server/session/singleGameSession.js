@@ -1,7 +1,7 @@
 'use strict';
 
-import ClientApi from '../communication/clientApi.js';
-import Game from '../game/game.js';
+import * as ClientApi from '../communication/clientApi.js';
+import * as Game from '../game/game.js';
 import Player from '../game/player/player.js';
 import Team from '../game/player/team.js';
 import {SessionType} from '../../shared/session/sessionType.js';

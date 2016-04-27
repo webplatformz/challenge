@@ -1,11 +1,11 @@
 "use strict";
 
 import assert from "assert";
-import Game from '../../../server/game/game';
+import * as Game from '../../../server/game/game';
 import {GameMode} from '../../../shared/game/gameMode';
-import GameType from '../../../server/game/gameType';
+import * as GameType from '../../../server/game/gameType';
 import {CardColor} from '../../../shared/deck/cardColor';
-import ClientApi from '../../../server/communication/clientApi';
+import * as ClientApi from '../../../server/communication/clientApi';
 import Cycle from '../../../server/game/cycle/cycle';
 import sinon from 'sinon';
 import TestDataCreator from '../../testDataCreator';

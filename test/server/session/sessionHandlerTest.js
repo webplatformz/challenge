@@ -2,7 +2,7 @@
 
 import sinon from 'sinon';
 import {expect} from 'chai';
-import ClientApi from '../../../server/communication/clientApi.js';
+import * as ClientApi from '../../../server/communication/clientApi.js';
 import SingleGameSession from '../../../server/session/singleGameSession.js';
 import TournamentSession from '../../../server/session/tournamentSession.js';
 import {SessionChoice} from '../../../shared/session/sessionChoice.js';

@@ -28,7 +28,7 @@ function resolveCorrectMessageOrReject(client, expectedMessageType, message, res
     }
 }
 
-let ClientApi = {
+const ClientApi = {
     addClient(client) {
         this.clients.push(client);
 
@@ -135,23 +135,21 @@ let ClientApi = {
         clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TOURNAMENT_STARTED.name);
     },
 
-    closeAll: function closeAll(message) {
+    closeAll(message) {
         this.clients.forEach((client) => this.close(client, message));
     },
-    
+
     close(client, message) {
         try {
             client.close(CloseEventCode.NORMAL, message);
-        } catch(e) {
+        } catch (e) {
             Logger.error(e);
         }
     }
 };
 
-export default {
-    create() {
-        let clientApi = Object.create(ClientApi);
-        clientApi.clients = [];
-        return clientApi;
-    }
-};
+export function create() {
+    let clientApi = Object.create(ClientApi);
+    clientApi.clients = [];
+    return clientApi;
+}

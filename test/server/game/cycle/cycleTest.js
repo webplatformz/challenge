@@ -4,10 +4,10 @@ import {expect} from 'chai';
 import * as Card from '../../../../shared/deck/card';
 import {CardColor} from '../../../../shared/deck/cardColor';
 import Cycle from '../../../../server/game/cycle/cycle';
-import ClientApi from '../../../../server/communication/clientApi';
+import * as ClientApi from '../../../../server/communication/clientApi';
 import TestDataCreator from '../../../testDataCreator';
 import sinon from 'sinon';
-import GameType from '../../../../server/game/gameType';
+import * as GameType from '../../../../server/game/gameType';
 import {GameMode} from '../../../../shared/game/gameMode';
 import Deck from '../../../../server/game/deck/deck';
 

@@ -60,18 +60,16 @@ let Game = {
     }
 };
 
-export default {
-    create(players, maxPoints, startPlayer, clientApi) {
-        let game = Object.create(Game);
-        game.deck = Deck.create();
-        players.forEach(player => {
-            game.deck.deal(player, 9);
-        });
+export function create(players, maxPoints, startPlayer, clientApi) {
+    let game = Object.create(Game);
+    game.deck = Deck.create();
+    players.forEach(player => {
+        game.deck.deal(player, 9);
+    });
 
-        game.players = players;
-        game.maxPoints = maxPoints;
-        game.startPlayer = startPlayer;
-        game.clientApi = clientApi;
-        return game;
-    }
-};
+    game.players = players;
+    game.maxPoints = maxPoints;
+    game.startPlayer = startPlayer;
+    game.clientApi = clientApi;
+    return game;
+}

@@ -5,7 +5,7 @@ import {MessageType} from '../../shared/messages/messageType.js';
 import validate from 'validate.js';
 import {Logger} from './../logger.js';
 
-let ClientCommunication = {
+const ClientCommunication = {
     toJSON(object) {
         return JSON.stringify(object);
     },

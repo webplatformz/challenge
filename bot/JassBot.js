@@ -1,7 +1,7 @@
 'use strict';
 
 import WebSocket from 'ws';
-import GameType from '../server/game/gameType';
+import * as GameType from '../server/game/gameType';
 import {GameMode} from '../shared/game/gameMode';
 import * as Card from '../shared/deck/card';
 import {CardColor} from '../shared/deck/cardColor';

@@ -1,6 +1,6 @@
 'use strict';
 
-let Card = {
+const Card = {
     equals: function (otherCard) {
         return this.number === otherCard.number && this.color === otherCard.color;
     }

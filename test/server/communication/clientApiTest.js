@@ -2,8 +2,8 @@
 
 import {expect} from 'chai';
 import WebSocket from 'ws';
-import ClientApi from '../../../server/communication/clientApi.js';
-import GameType from '../../../server/game/gameType.js';
+import * as ClientApi from '../../../server/communication/clientApi.js';
+import * as GameType from '../../../server/game/gameType.js';
 import {GameMode} from '../../../shared/game/gameMode.js';
 import {CardColor} from '../../../shared/deck/cardColor';
 import CloseEventCode from '../../../server/communication/closeEventCode.js';

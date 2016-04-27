@@ -6,7 +6,7 @@ import StichGranter from '../../../../server/game/cycle/stichGranter';
 import {CardColor} from '../../../../shared/deck/cardColor';
 import * as Card from '../../../../shared/deck/card';
 import TestDataCreator from '../../../testDataCreator';
-import ClientApi from '../../../../server/communication/clientApi';
+import * as ClientApi from '../../../../server/communication/clientApi';
 
 
 describe('StichGranter', function () {
