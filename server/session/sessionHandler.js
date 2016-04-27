@@ -1,7 +1,7 @@
 'use strict';
 
 import * as ClientApi from '../communication/clientApi.js';
-import SessionFactory from './sessionFactory.js';
+import * as SessionFactory from './sessionFactory';
 import {SessionChoice} from '../../shared/session/sessionChoice.js';
 import {SessionType} from '../../shared/session/sessionType.js';
 import UUID from 'uuid';
@@ -69,7 +69,7 @@ function handleTournamentStart(SessionHandler, webSocket, session) {
 }
 
 
-let SessionHandler = {
+const SessionHandler = {
 
     sessions: [],
 

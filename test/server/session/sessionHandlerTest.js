@@ -2,12 +2,12 @@
 
 import sinon from 'sinon';
 import {expect} from 'chai';
-import * as ClientApi from '../../../server/communication/clientApi.js';
-import SingleGameSession from '../../../server/session/singleGameSession.js';
-import TournamentSession from '../../../server/session/tournamentSession.js';
-import {SessionChoice} from '../../../shared/session/sessionChoice.js';
-import {SessionType} from '../../../shared/session/sessionType.js';
-import sessionHandler from '../../../server/session/sessionHandler.js';
+import * as ClientApi from '../../../server/communication/clientApi';
+import * as SingleGameSession from '../../../server/session/singleGameSession';
+import * as TournamentSession from '../../../server/session/tournamentSession';
+import {SessionChoice} from '../../../shared/session/sessionChoice';
+import {SessionType} from '../../../shared/session/sessionType';
+import sessionHandler from '../../../server/session/sessionHandler';
 
 let uuidMatcher = sinon.match((name) => {
     return name.length === 36;

@@ -3,8 +3,8 @@
 import * as ClientApi from '../communication/clientApi';
 import {SessionType} from '../../shared/session/sessionType';
 import * as Ranking from '../game/ranking/ranking';
-import RankingTable from './rankingTable';
-import SingleGameSession from './singleGameSession';
+import * as RankingTable from './rankingTable';
+import * as SingleGameSession from './singleGameSession';
 import 'babel-polyfill';
 import * as _ from 'lodash';
 import UUID from 'uuid';
@@ -44,7 +44,7 @@ function createResultObject(winnerName, {player1, player2}) {
     return {winner: player2.playerName, loser: player1.playerName};
 }
 
-let TournamentSession = {
+const TournamentSession = {
     type: SessionType.TOURNAMENT,
     started: false,
     rounds: 1,
@@ -198,17 +198,15 @@ let TournamentSession = {
     }
 };
 
-export default {
-    create(sessionName) {
-        let session = Object.create(TournamentSession);
-        session.name = sessionName;
-        session.players = [];
-        session.spectators = [];
-        session.clientApi = ClientApi.create();
-        session.pairings = [];
-        session.ranking = Ranking.create();
-        session.rankingTable = RankingTable.create();
-        session.isTournament = true;
-        return session;
-    }
-};
+export function create(sessionName) {
+    let session = Object.create(TournamentSession);
+    session.name = sessionName;
+    session.players = [];
+    session.spectators = [];
+    session.clientApi = ClientApi.create();
+    session.pairings = [];
+    session.ranking = Ranking.create();
+    session.rankingTable = RankingTable.create();
+    session.isTournament = true;
+    return session;
+}

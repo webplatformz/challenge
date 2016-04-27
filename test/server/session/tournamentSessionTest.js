@@ -2,8 +2,8 @@
 
 import {expect} from 'chai';
 import sinon from 'sinon';
-import TournamentSession from '../../../server/session/tournamentSession.js';
-import SingleGameSession from '../../../server/session/singleGameSession.js';
+import * as TournamentSession from '../../../server/session/tournamentSession';
+import * as SingleGameSession from '../../../server/session/singleGameSession';
 
 describe('tournamentSession', () => {
 

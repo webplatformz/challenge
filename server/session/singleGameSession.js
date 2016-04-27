@@ -23,7 +23,7 @@ function createTeamsArrayForClient(session) {
     });
 }
 
-let Session = {
+const Session = {
     maxPoints: 2500,
     startingPlayer: 0,
     type: SessionType.SINGLE_GAME,
@@ -144,7 +144,7 @@ let Session = {
     }
 };
 
-let create = function create(name) {
+export function create(name) {
     let session = Object.create(Session);
     session.players = [];
     session.name = name;
@@ -155,8 +155,4 @@ let create = function create(name) {
     session.clientApi = ClientApi.create();
     session.isTournament = false;
     return session;
-};
-
-export default {
-    create
-};
+}

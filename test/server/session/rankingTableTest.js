@@ -1,7 +1,7 @@
 'use strict';
 
 import {expect} from 'chai';
-import RankingTable from '../../../server/session/rankingTable.js';
+import * as RankingTable from '../../../server/session/rankingTable';
 
 
 describe('rankingTable', () => {

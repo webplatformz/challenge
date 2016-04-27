@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 import sinon from 'sinon';
-import SingleGameSession from '../../../server/session/singleGameSession.js';
+import * as SingleGameSession from '../../../server/session/singleGameSession';
 import * as Game from '../../../server/game/game.js';
 import TestDataCreator from '../../testDataCreator.js';
 import CloseEventCode from '../../../server/communication/closeEventCode.js';

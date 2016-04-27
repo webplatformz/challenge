@@ -3,7 +3,7 @@
 import 'babel-polyfill';
 import _ from 'lodash';
 
-let RankingTable = {
+const RankingTable = {
     addPlayer(playerName) {
         let player = this.ranking.find(actPlayer => actPlayer.playerName === playerName);
 
@@ -31,16 +31,17 @@ let RankingTable = {
         let player = this.ranking.find(actPlayer => actPlayer.playerName === playerName);
         player.rating = rating;
         this.ranking = _.sortByOrder(this.ranking, ['rating'], ['desc']);
-        this.ranking = _.map(this.ranking, (elem, index) => { elem.rank = index+1; return elem; });
+        this.ranking = _.map(this.ranking, (elem, index) => {
+            elem.rank = index + 1;
+            return elem;
+        });
     }
 };
 
 
-export default {
-    create() {
-        let rankingTable = Object.create(RankingTable);
-        rankingTable.ranking = [];
-        rankingTable.pairingResults = [];
-        return rankingTable;
-    }
-};
+export function create() {
+    let rankingTable = Object.create(RankingTable);
+    rankingTable.ranking = [];
+    rankingTable.pairingResults = [];
+    return rankingTable;
+}
