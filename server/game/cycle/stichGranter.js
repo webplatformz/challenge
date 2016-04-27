@@ -2,7 +2,7 @@
 
 import {GameMode} from '../../../shared/game/gameMode.js';
 
-let StichGranter = {
+const StichGranter = {
     determineWinner: function (mode, trumpfColor, playedCards, players) {
         let winnerIndex = 0;
         let winnerCard;

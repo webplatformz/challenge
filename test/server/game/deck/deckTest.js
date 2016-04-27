@@ -1,7 +1,7 @@
 "use strict";
 
 import assert from 'assert';
-import Deck from '../../../../server/game/deck/deck';
+import * as Deck from '../../../../server/game/deck/deck';
 
 describe('Deck', function() {
 
@@ -11,6 +11,7 @@ describe('Deck', function() {
             foundNotIdenticalCard;
 
         assert(deck.cards !== deck2.cards, 'Cards array are the same in two instances');
+        assert(deck.cards.length === 36, 'There are 36 cards in the array');
         for(let i = 0; i < deck.cards.length; i++) {
             let card = deck.cards[i],
                 card2 = deck2.cards[i];

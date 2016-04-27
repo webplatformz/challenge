@@ -4,7 +4,7 @@ import Validation from '../validation/validation.js';
 import stichGranter from './stichGranter.js';
 import * as Counter from '../counter/counter.js';
 
-let Cycle = {
+const Cycle = {
     iterate: function () {
         let that = this;
 
@@ -36,12 +36,12 @@ let Cycle = {
             winnerTeam.points += actPoints;
             winnerTeam.currentRoundPoints += actPoints;
 
-            if(winner.cards.length === 0) {
+            if (winner.cards.length === 0) {
                 let lastStichPoints = Counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
                 winnerTeam.points += lastStichPoints;
                 winnerTeam.currentRoundPoints += lastStichPoints;
 
-                if(looserTeam.currentRoundPoints === 0) {
+                if (looserTeam.currentRoundPoints === 0) {
                     var matchPoints = Counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
                     winnerTeam.points += matchPoints;
                     winnerTeam.currentRoundPoints += matchPoints;
@@ -100,17 +100,15 @@ function rotatePlayersToCurrentPlayer(players, currentPlayer) {
     }
 }
 
-export default {
-    create (currentPlayer, players, clientApi, gameType) {
-        let cycle = Object.create(Cycle);
-        cycle.currentPlayer = currentPlayer;
+export function create(currentPlayer, players, clientApi, gameType) {
+    let cycle = Object.create(Cycle);
+    cycle.currentPlayer = currentPlayer;
 
-        rotatePlayersToCurrentPlayer(players, currentPlayer);
-        cycle.players = players;
-        cycle.gameType = gameType;
-        cycle.clientApi = clientApi;
-        cycle.validator = Validation.create(gameType.mode, gameType.trumpfColor);
-        cycle.playedCards = [];
-        return cycle;
-    }
-};
+    rotatePlayersToCurrentPlayer(players, currentPlayer);
+    cycle.players = players;
+    cycle.gameType = gameType;
+    cycle.clientApi = clientApi;
+    cycle.validator = Validation.create(gameType.mode, gameType.trumpfColor);
+    cycle.playedCards = [];
+    return cycle;
+}

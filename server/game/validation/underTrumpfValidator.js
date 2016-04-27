@@ -6,7 +6,7 @@ let validationSuccess = {
     permitted: true
 };
 
-let UnderTrumpfValidator = {    
+const UnderTrumpfValidator = {
     validate (validationParameter) {
         let trumpfQuantifier = [6,7,8,10,12,13,14,9,11]; 
         let trumpfColor = validationParameter.color;

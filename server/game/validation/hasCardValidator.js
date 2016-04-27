@@ -1,6 +1,6 @@
 'use strict';
 
-let HasCardValidator = {
+const HasCardValidator = {
     validate (validationParameter) {
         let cardToPlay = function(cardToPlay, handCard) {
             return handCard.equals(cardToPlay);

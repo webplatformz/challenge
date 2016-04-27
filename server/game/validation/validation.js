@@ -1,5 +1,5 @@
 'use strict';
-import _ from 'lodash';
+
 import HandCardValidator from './hasCardValidator.js';
 import AngebenValidator from './angebenValidator.js';
 import UnderTrumpfValidator from './underTrumpfValidator.js';

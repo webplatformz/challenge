@@ -1,6 +1,6 @@
 'use strict';
 
-let Player = {
+const Player = {
     dealCards (cards) {
         this.cards = cards;
         return this.clientApi.dealCards(cards);
@@ -29,13 +29,11 @@ let Player = {
     }
 };
 
-export default {
-    create (team, name, id, clientApi) {
-        let player = Object.create(Player);
-        player.id = id;
-        player.name = name;
-        player.team = team;
-        player.clientApi = clientApi;
-        return player;
-    }
-};
+export function create(team, name, id, clientApi) {
+    let player = Object.create(Player);
+    player.id = id;
+    player.name = name;
+    player.team = team;
+    player.clientApi = clientApi;
+    return player;
+}

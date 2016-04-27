@@ -1,10 +1,10 @@
 'use strict';
 
-import * as ClientApi from '../communication/clientApi.js';
+import * as ClientApi from '../communication/clientApi';
 import * as Game from '../game/game.js';
-import Player from '../game/player/player.js';
-import Team from '../game/player/team.js';
-import {SessionType} from '../../shared/session/sessionType.js';
+import * as Player from '../game/player/player';
+import * as Team from '../game/player/team';
+import {SessionType} from '../../shared/session/sessionType';
 import SessionHandler from './sessionHandler';
 
 function createTeamsArrayForClient(session) {

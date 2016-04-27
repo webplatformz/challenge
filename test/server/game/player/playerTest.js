@@ -1,7 +1,7 @@
 "use strict";
 
 import {expect} from 'chai';
-import Player from '../../../../server/game/player/player';
+import * as Player from '../../../../server/game/player/player';
 import * as Card from '../../../../shared/deck/card';
 import {CardColor} from '../../../../shared/deck/cardColor';
 

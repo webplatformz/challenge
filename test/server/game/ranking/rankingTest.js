@@ -1,9 +1,7 @@
 'use strict';
 
 import {expect} from 'chai';
-import sinon from 'sinon';
-import glicko2 from 'glicko2';
-import Ranking from '../../../../server/game/ranking/ranking';
+import * as Ranking from '../../../../server/game/ranking/ranking';
 
 describe('Ranking', function () {
 

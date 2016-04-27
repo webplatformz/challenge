@@ -6,7 +6,7 @@ import {GameMode} from '../../../shared/game/gameMode';
 import * as GameType from '../../../server/game/gameType';
 import {CardColor} from '../../../shared/deck/cardColor';
 import * as ClientApi from '../../../server/communication/clientApi';
-import Cycle from '../../../server/game/cycle/cycle';
+import * as Cycle from '../../../server/game/cycle/cycle';
 import sinon from 'sinon';
 import TestDataCreator from '../../testDataCreator';
 

@@ -1,10 +1,10 @@
 'use strict';
 
-import * as ClientApi from '../communication/clientApi.js';
-import {SessionType} from '../../shared/session/sessionType.js';
-import Ranking from '../game/ranking/ranking.js';
-import RankingTable from './rankingTable.js';
-import SingleGameSession from './singleGameSession.js';
+import * as ClientApi from '../communication/clientApi';
+import {SessionType} from '../../shared/session/sessionType';
+import * as Ranking from '../game/ranking/ranking';
+import RankingTable from './rankingTable';
+import SingleGameSession from './singleGameSession';
 import 'babel-polyfill';
 import * as _ from 'lodash';
 import UUID from 'uuid';

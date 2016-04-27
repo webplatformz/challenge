@@ -7,7 +7,7 @@ import {CardColor} from '../../../shared/deck/cardColor';
 import {expect} from 'chai';
 import sinon from 'sinon';
 
-describe('clientCommunication', () => {
+describe('ClientCommunication', () => {
     describe('toJSON', () => {
         it('should convert message to JSON string', () => {
             let message = messages.create(MessageType.REQUEST_TRUMPF.name, false);

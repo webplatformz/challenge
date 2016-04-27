@@ -1,8 +1,8 @@
 'use strict';
 
-import Deck from './deck/deck.js';
-import Cycle from './cycle/cycle.js';
-import {GameMode} from './../../shared/game/gameMode.js';
+import * as Deck from './deck/deck';
+import * as Cycle from './cycle/cycle';
+import {GameMode} from './../../shared/game/gameMode';
 
 function handleChooseTrumpf(game, gameType) {
     game.gameType = gameType;

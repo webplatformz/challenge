@@ -6,7 +6,7 @@ let validationSuccess = {
     permitted: true
 };
 
-let AngebenValidator = {
+const AngebenValidator = {
     validate: function (validationParameter) {
         if (validationParameter.tableCards.length === 0) {
             return validationSuccess;

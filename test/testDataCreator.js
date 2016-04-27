@@ -1,8 +1,8 @@
 'use strict';
 
-import Deck from '../server/game/deck/deck';
-import Player from '../server/game/player/player';
-import Team from '../server/game/player/team';
+import * as Deck from '../server/game/deck/deck';
+import * as Player from '../server/game/player/player';
+import * as Team from '../server/game/player/team';
 
 let createDummyPlayer = function (teamName, name, id, clientApiMock) {
     let team =  Team.create(teamName);
