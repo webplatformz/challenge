@@ -1,7 +1,7 @@
 'use strict';
 
 import {expect} from 'chai';
-import React from 'react/addons';
+import React from 'react';
 import ErrorToast from '../../client/js/error/errorToast.jsx';
 import GameSetup from '../../client/js/gameSetup/gameSetup.jsx';
 import JassTable from '../../client/js/game/jassTable.jsx';
@@ -9,7 +9,7 @@ import TournamentTable from '../../client/js/tournament/tournamentTable.jsx';
 import JassAppStore from '../../client/js/jassAppStore.js';
 import {SessionType} from '../../shared/session/sessionType.js';
 
-const TestUtils = React.addons.TestUtils;
+import TestUtils from 'react-addons-test-utils';
 
 import JassApp from '../../client/js/jassApp.jsx';
 

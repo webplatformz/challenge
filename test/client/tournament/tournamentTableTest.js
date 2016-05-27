@@ -1,10 +1,10 @@
 'use strict';
 
 import {expect} from 'chai';
-import React from 'react/addons';
+import React from 'react';
 import JassActions from '../../../client/js/jassActions.js';
 
-const TestUtils = React.addons.TestUtils;
+import TestUtils from 'react-addons-test-utils';
 
 import TournamentTable from '../../../client/js/tournament/tournamentTable.jsx';
 

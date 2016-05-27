@@ -1,14 +1,14 @@
 'use strict';
 
 import {expect} from 'chai';
-import React from 'react/addons';
+import React from 'react';
 import sinon from 'sinon';
 import {CardType} from '../../../client/js/game/gameStore';
 import JassActions from '../../../client/js/jassActions';
 import {GameMode} from '../../../shared/game/gameMode';
 import {CardColor} from '../../../shared/deck/cardColor';
 
-const TestUtils = React.addons.TestUtils;
+import TestUtils from 'react-addons-test-utils';
 
 import RequestTrumpf from '../../../client/js/game/requestTrumpf.jsx';
 

@@ -1,12 +1,12 @@
 'use strict';
 
 import {expect} from 'chai';
-import React from 'react/addons';
+import React from 'react';
 import {CardType} from '../../../client/js/game/gameStore';
 import JassActions from '../../../client/js/jassActions';
 import sinon from 'sinon';
 
-const TestUtils = React.addons.TestUtils;
+import TestUtils from 'react-addons-test-utils';
 
 import CardTypeSwitcher from '../../../client/js/game/cardTypeSwitcher.jsx';
 

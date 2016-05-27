@@ -2,13 +2,13 @@
 
 import {expect} from 'chai';
 import sinon from 'sinon';
-import React from 'react/addons';
+import React from 'react';
 import GameSetupStore from '../../../client/js/gameSetup/gameSetupStore';
 import JassActions from '../../../client/js/jassActions';
 import ExistingSessions from '../../../client/js/gameSetup/existingSessions.jsx';
 import {SessionType} from '../../../shared/session/sessionType.js';
 
-const TestUtils = React.addons.TestUtils;
+import TestUtils from 'react-addons-test-utils';
 
 import ChooseSession from '../../../client/js/gameSetup/chooseSession.jsx';
 

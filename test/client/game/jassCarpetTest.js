@@ -1,13 +1,13 @@
 'use strict';
 
 import {expect} from 'chai';
-import React from 'react/addons';
+import React from 'react';
 import {CardType} from '../../../client/js/game/gameStore';
 import PlayerNames from '../../../client/js/game/playerNames.jsx';
 import TableCards from '../../../client/js/game/tableCards.jsx';
 import Trumpf from '../../../client/js/game/trumpf.jsx';
 
-const TestUtils = React.addons.TestUtils;
+import TestUtils from 'react-addons-test-utils';
 
 import JassCarpet from '../../../client/js/game/jassCarpet.jsx';
 

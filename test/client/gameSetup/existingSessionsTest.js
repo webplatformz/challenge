@@ -1,9 +1,9 @@
 'use strict';
 
 import {expect} from 'chai';
-import React from 'react/addons';
+import React from 'react';
 
-const TestUtils = React.addons.TestUtils;
+import TestUtils from 'react-addons-test-utils';
 
 import ExistingSessions from '../../../client/js/gameSetup/existingSessions.jsx';
 

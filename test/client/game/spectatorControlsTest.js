@@ -1,11 +1,11 @@
 'use strict';
 
 import {expect} from 'chai';
-import React from 'react/addons';
+import React from 'react';
 import sinon from 'sinon';
 import JassActions from '../../../client/js/jassActions';
 
-const TestUtils = React.addons.TestUtils;
+import TestUtils from 'react-addons-test-utils';
 
 import SpectatorControls from '../../../client/js/game/spectatorControls.jsx';
 

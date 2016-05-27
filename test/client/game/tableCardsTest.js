@@ -1,11 +1,11 @@
 'use strict';
 
 import {expect} from 'chai';
-import React from 'react/addons';
+import React from 'react';
 import {CardType} from '../../../client/js/game/gameStore';
 import {CardColor} from '../../../shared/deck/cardColor';
 
-const TestUtils = React.addons.TestUtils;
+import TestUtils from 'react-addons-test-utils';
 
 import TableCards from '../../../client/js/game/tableCards.jsx';
 

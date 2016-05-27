@@ -1,13 +1,13 @@
 'use strict';
 
 import {expect} from 'chai';
-import React from 'react/addons';
+import React from 'react';
 import Connecting from '../../../client/js/gameSetup/connecting.jsx';
 import RequestPlayerName from '../../../client/js/gameSetup/requestPlayerName.jsx';
 import ChooseSession from '../../../client/js/gameSetup/chooseSession.jsx';
 import GameSetupStore from '../../../client/js/gameSetup/gameSetupStore';
 
-const TestUtils = React.addons.TestUtils;
+import TestUtils from 'react-addons-test-utils';
 
 import GameSetup from '../../../client/js/gameSetup/gameSetup.jsx';
 
