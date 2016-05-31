@@ -42,7 +42,7 @@
     "mocha": "2.5.3",
     "nodemon": "1.9.2",
     "phantomjs-prebuilt": "2.1.7",
-    "react-addons-test-utils": "^15.1.0",
+    "react-addons-test-utils": "15.1.0",
     "sinon": "1.17.4",
     "socket.io-client": "1.4.6",
     "watch": "0.18.0"
