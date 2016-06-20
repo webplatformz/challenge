@@ -108,13 +108,13 @@ describe('RequestTrumpf Component', () => {
         children[4].props.onClick();
         children[5].props.onClick();
         children[6].props.onClick();
-        expect(heartSpy.calledOnce).to.equal(true);
-        expect(diamondsSpy.calledOnce).to.equal(true);
-        expect(clubsSpy.calledOnce).to.equal(true);
-        expect(spadesSpy.calledOnce).to.equal(true);
-        expect(undeufeSpy.calledOnce).to.equal(true);
-        expect(obeabeSpy.calledOnce).to.equal(true);
-        expect(schiebeSpy.calledOnce).to.equal(true);
+        sinon.assert.calledOnce(heartSpy);
+        sinon.assert.calledOnce(diamondsSpy);
+        sinon.assert.calledOnce(clubsSpy);
+        sinon.assert.calledOnce(spadesSpy);
+        sinon.assert.calledOnce(undeufeSpy);
+        sinon.assert.calledOnce(obeabeSpy);
+        sinon.assert.calledOnce(schiebeSpy);
         sinon.assert.callOrder(heartSpy, diamondsSpy, clubsSpy, spadesSpy, undeufeSpy, obeabeSpy, schiebeSpy);
     });
 

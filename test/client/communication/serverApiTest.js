@@ -15,9 +15,8 @@ describe('serverApi', () => {
 
             serverApi.connect();
 
-            expect(webSocketSpy.calledWithNew()).to.equal(true);
-            expect(webSocketSpy.calledWith('ws://' + window.location.host)).to.equal(true);
-            expect(registerSpy.calledWith(serverApi.handleActionsFromUi)).to.equal(true);
+            sinon.assert.calledWith(webSocketSpy, `ws://${window.location.host}`);
+            sinon.assert.calledWith(registerSpy, serverApi.handleActionsFromUi);
         });
     });
 });

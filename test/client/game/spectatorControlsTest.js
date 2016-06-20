@@ -53,7 +53,8 @@ describe('SpectatorControls Component', () => {
             let actual = shallowRenderer.getRenderOutput();
 
             actual.props.children[1].props.onChange(eventDummy);
-            expect(adjustSpectatorSpeedSpy.withArgs(eventDummy.target.value).calledOnce).to.equal(true);
+            sinon.assert.calledOnce(adjustSpectatorSpeedSpy);
+            sinon.assert.calledWith(adjustSpectatorSpeedSpy, eventDummy.target.value);
         });
     });
 

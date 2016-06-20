@@ -117,7 +117,8 @@ describe('PlayerCards Component', () => {
                 ]
             },
             eventDummy = {
-                preventDefault: function() {}
+                preventDefault: function () {
+                }
             },
             preventDefaultSpy = sinon.spy(eventDummy, 'preventDefault');
 
@@ -127,20 +128,20 @@ describe('PlayerCards Component', () => {
         let cancelClickFunction = actual.props.children[0].props.onClick;
         expect(cancelClickFunction.__reactBoundMethod).to.equal(PlayerCards.prototype.cancelClick);
         cancelClickFunction(eventDummy);
-        expect(preventDefaultSpy.calledOnce).to.equal(true);
+        sinon.assert.callCount(preventDefaultSpy, 1);
     });
 
     it('should append playCard handler to cards when requesting card', () => {
         let props = {
-                cards: [
-                    {
-                        color: CardColor.HEARTS,
-                        number: 8
-                    }
-                ],
+            cards: [
+                {
+                    color: CardColor.HEARTS,
+                    number: 8
+                }
+            ],
 
-                state: GameState.REQUESTING_CARD
-            };
+            state: GameState.REQUESTING_CARD
+        };
 
         shallowRenderer.render(React.createElement(PlayerCards, props));
         let actual = shallowRenderer.getRenderOutput();
@@ -148,7 +149,7 @@ describe('PlayerCards Component', () => {
         let playCardFunction = actual.props.children[0].props.onClick;
         expect(playCardFunction.__reactBoundMethod).to.equal(PlayerCards.prototype.playCard);
         playCardFunction();
-        expect(chooseCardSpy.withArgs(props.cards[0].color, props.cards[0].number).calledOnce).to.equal(true);
+        sinon.assert.calledWith(chooseCardSpy, props.cards[0].color, props.cards[0].number);
     });
 
 });

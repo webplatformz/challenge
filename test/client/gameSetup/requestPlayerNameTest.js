@@ -62,7 +62,7 @@ describe('RequestPlayerName Component', () => {
 
             choosePlayerName(eventDummy);
 
-            expect(choosePlayerNameSpy.called).to.equal(false);
+            sinon.assert.callCount(choosePlayerNameSpy, 0);
         });
 
 
@@ -72,7 +72,7 @@ describe('RequestPlayerName Component', () => {
 
             choosePlayerName(eventDummy);
 
-            expect(choosePlayerNameSpy.called).to.equal(false);
+            sinon.assert.callCount(choosePlayerNameSpy, 0);
         });
 
         it('should not start action with whitespace username', () => {
@@ -81,7 +81,7 @@ describe('RequestPlayerName Component', () => {
 
             choosePlayerName(eventDummy);
 
-            expect(choosePlayerNameSpy.called).to.equal(false);
+            sinon.assert.callCount(choosePlayerNameSpy, 0);
         });
 
         it('should start action and disable input with valid playername and enter key pressed', () => {
@@ -90,7 +90,9 @@ describe('RequestPlayerName Component', () => {
 
             choosePlayerName(eventDummy);
 
-            expect(choosePlayerNameSpy.withArgs(eventDummy.target.value).calledOnce).to.equal(true);
+            sinon.assert.calledWith(choosePlayerNameSpy, eventDummy.target.value);
+            sinon.assert.callCount(choosePlayerNameSpy, 1);
+
             expect(eventDummy.target.disabled).to.equal(true);
         });
     });
