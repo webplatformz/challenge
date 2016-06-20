@@ -45,7 +45,7 @@ export default React.createClass({
                     return (
                         <img key={card.color + '-' + card.number}
                              src={'/images/cards/' + this.props.cardType + '/' + card.color.toLowerCase() + '_' + card.number + '.gif'}
-                             onClick={(isValid)?cardClick.bind(null, card.color, card.number):undefined}
+                             onClick={cardClick.bind(null, card.color, card.number)}
                              className={(isValid)? '' : 'invalid'}/>);
                 })}
             </div>

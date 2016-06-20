@@ -149,7 +149,9 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
             case JassAppConstants.PLAYED_CARDS:
                 this.state.startingPlayerIndex = this.state.nextStartingPlayerIndex;
                 this.state.status = GameState.REQUESTING_CARDS_FROM_OTHER_PLAYERS;
-                this.state.tableCards = (action.data||[]).map(Card.createFromObject);
+                if (action.data) {
+                    this.state.tableCards = action.data.map(Card.createFromObject);
+                }
                 this.emit('change');
                 break;
             case JassAppConstants.BROADCAST_STICH:
