@@ -3,6 +3,7 @@
 import {EventEmitter} from 'events';
 import JassAppDispatcher from '../jassAppDispatcher';
 import JassAppConstants from '../jassAppConstants';
+import * as Card from '../../../shared/deck/card';
 
 export const GameState = {
     WAITING: 'WAITING',
@@ -105,7 +106,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 this.emit('change');
                 break;
             case JassAppConstants.DEAL_CARDS:
-                this.state.playerCards = action.data;
+                this.state.playerCards = action.data.map((card) => Card.create(card.number, card.color));
                 this.emit('change');
                 break;
             case JassAppConstants.REQUEST_TRUMPF:
@@ -140,7 +141,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 this.emit('change');
                 break;
             case JassAppConstants.REJECT_CARD:
-                let rejectedCard = action.data;
+                let rejectedCard = Card.create(action.data.number, action.data.color);
                 this.state.status = GameState.REJECTED_CARD;
                 this.state.playerCards.push(rejectedCard);
                 this.emit('change');

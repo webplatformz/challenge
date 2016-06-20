@@ -5,11 +5,13 @@ import React from 'react';
 import sinon from 'sinon';
 import {GameState, CardType} from '../../../client/js/game/gameStore';
 import {CardColor} from '../../../shared/deck/cardColor';
+import * as Card from '../../../shared/deck/card';
 import JassActions from '../../../client/js/jassActions';
 
 import TestUtils from 'react-addons-test-utils';
 
 import PlayerCards from '../../../client/js/game/playerCards.jsx';
+import {GameMode} from "../../../shared/game/gameMode";
 
 describe('PlayerCards Component', () => {
 
@@ -49,26 +51,11 @@ describe('PlayerCards Component', () => {
         let props = {
                 cardType: CardType.FRENCH,
                 cards: [
-                    {
-                        color: CardColor.DIAMONDS,
-                        number: 9
-                    },
-                    {
-                        color: CardColor.HEARTS,
-                        number: 7
-                    },
-                    {
-                        color: CardColor.SPADES,
-                        number: 14
-                    },
-                    {
-                        color: CardColor.HEARTS,
-                        number: 6
-                    },
-                    {
-                        color: CardColor.CLUBS,
-                        number: 11
-                    }
+                    Card.create(9, CardColor.DIAMONDS),
+                    Card.create(7, CardColor.HEARTS),
+                    Card.create(14, CardColor.SPADES),
+                    Card.create(6, CardColor.HEARTS),
+                    Card.create(11, CardColor.CLUBS)
                 ],
                 state: GameState.REQUESTING_CARD
             },
@@ -110,10 +97,7 @@ describe('PlayerCards Component', () => {
     it('should append cancelClick handler to cards when not requesting card', () => {
         let props = {
                 cards: [
-                    {
-                        color: CardColor.DIAMONDS,
-                        number: 9
-                    }
+                    Card.create(9, CardColor.DIAMONDS)
                 ]
             },
             eventDummy = {
@@ -134,10 +118,7 @@ describe('PlayerCards Component', () => {
     it('should append playCard handler to cards when requesting card', () => {
         let props = {
             cards: [
-                {
-                    color: CardColor.HEARTS,
-                    number: 8
-                }
+                Card.create(8,CardColor.HEARTS )
             ],
 
             state: GameState.REQUESTING_CARD
@@ -150,6 +131,27 @@ describe('PlayerCards Component', () => {
         expect(playCardFunction.__reactBoundMethod).to.equal(PlayerCards.prototype.playCard);
         playCardFunction();
         sinon.assert.calledWith(chooseCardSpy, props.cards[0].color, props.cards[0].number);
+    });
+
+    it('should set invalid class when card is not playable', () => {
+        let props = {
+            cards: [
+                Card.create(8, CardColor.HEARTS),
+                Card.create(8, CardColor.DIAMONDS)
+            ],
+            mode: GameMode.TRUMPF,
+            color: CardColor.HEARTS,
+            tableCards: [
+                Card.create(9, CardColor.HEARTS)
+            ],
+            state: GameState.REQUESTING_CARD
+        };
+
+        shallowRenderer.render(React.createElement(PlayerCards, props));
+        let actual = shallowRenderer.getRenderOutput();
+
+        expect(actual.props.children[0].props.className).to.equal('');
+        expect(actual.props.children[1].props.className).to.equal('invalid');
     });
 
 });
