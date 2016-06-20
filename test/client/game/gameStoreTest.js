@@ -8,17 +8,14 @@ import {CardColor} from '../../../shared/deck/cardColor';
 
 describe('GameStore', () => {
 
-    let setTimeoutStub,
-        initialGameState;
+    let initialGameState;
 
     beforeEach(() => {
-        setTimeoutStub = sinon.stub(window, 'setTimeout');
         initialGameState = GameStore.state;
     });
 
     afterEach(() => {
-        window.setTimeout.restore();
-        GameStore.state = initialGameState;
+       GameStore.state = initialGameState;
     });
 
     it('should have initial state', () => {
@@ -38,17 +35,40 @@ describe('GameStore', () => {
         expect(state.status).to.equal(GameState.WAITING);
     });
 
-    it('should start spectator rendering when session joined as a spectator', () => {
-        let dummyPayload = {
+    it('should emit events in the right order with given timeout for spectator', (done) => {
+        const handlePayloadSpy = sinon.spy(GameStore, 'handlePayload');
+        const gameFinishedBroadcast = {
+            action: {
+                actionType: JassAppConstants.BROADCAST_GAME_FINISHED
+            },
+            source: 'SERVER_ACTION'
+        };
+        const adjustSpectatorSpeed = {
+            action: {
+                actionType: JassAppConstants.ADJUST_SPECTATOR_SPEED,
+                data: 0
+            }
+        };
+        const payload = {
             action: {
                 actionType: JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR
             }
         };
-        GameStore.state.playerType = PlayerType.SPECTATOR;
 
-        GameStore.handleAction(dummyPayload);
+        GameStore.handleAction(adjustSpectatorSpeed);
+        GameStore.handleAction(payload);
+        GameStore.handleAction(gameFinishedBroadcast);
 
-        expect(setTimeoutStub.withArgs(sinon.match.func, 500).calledOnce).to.equal(true);
+        sinon.assert.calledWith(handlePayloadSpy.secondCall, payload);
+        sinon.assert.calledTwice(handlePayloadSpy);
+
+        setTimeout(function () {
+            sinon.assert.calledThrice(handlePayloadSpy);
+            sinon.assert.calledWith(handlePayloadSpy.secondCall, payload);
+            sinon.assert.calledWith(handlePayloadSpy.thirdCall, gameFinishedBroadcast);
+            done();
+        }, 0);
+
     });
 
     it('should intialize and add more player with each SESSION_JOINED', () => {
@@ -155,19 +175,19 @@ describe('GameStore', () => {
             action: {
                 actionType: JassAppConstants.BROADCAST_STICH,
                 data: {
-                    "name" : "Player 1",
-                    "id" : 1,
-                    "playedCards" : [],
-                    "teams" : [
+                    "name": "Player 1",
+                    "id": 1,
+                    "playedCards": [],
+                    "teams": [
                         {
-                            "name" : "Team 2",
-                            "points" : 157,
-                            "currentRoundPoints" : 0
+                            "name": "Team 2",
+                            "points": 157,
+                            "currentRoundPoints": 0
                         },
                         {
-                            "name" : "Team 1",
-                            "points" : 0,
-                            "currentRoundPoints" : 42
+                            "name": "Team 1",
+                            "points": 0,
+                            "currentRoundPoints": 42
                         }
                     ]
                 }
@@ -227,19 +247,19 @@ describe('GameStore', () => {
             action: {
                 actionType: JassAppConstants.BROADCAST_STICH,
                 data: {
-                    "name" : "Player 1",
-                    "id" : 1,
-                    "playedCards" : [],
-                    "teams" : [
+                    "name": "Player 1",
+                    "id": 1,
+                    "playedCards": [],
+                    "teams": [
                         {
-                            "name" : "Team 2",
-                            "points" : 157,
-                            "currentRoundPoints" : 0
+                            "name": "Team 2",
+                            "points": 157,
+                            "currentRoundPoints": 0
                         },
                         {
-                            "name" : "Team 1",
-                            "points" : 0,
-                            "currentRoundPoints" : 42
+                            "name": "Team 1",
+                            "points": 0,
+                            "currentRoundPoints": 42
                         }
                     ]
                 }
