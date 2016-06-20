@@ -49,8 +49,8 @@ describe('CardTypeSwitcher Component', () => {
         let children = actual.props.children;
         children[0].props.children.props.onClick();
         children[1].props.children.props.onClick();
-        expect(changeCardTypeStub.withArgs('french').calledOnce).to.equal(true);
-        expect(changeCardTypeStub.withArgs('german').calledOnce).to.equal(true);
+        sinon.assert.calledWith(changeCardTypeStub, 'french');
+        sinon.assert.calledWith(changeCardTypeStub, 'german');
     });
 
 });

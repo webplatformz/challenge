@@ -94,8 +94,7 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 99;
 
             createNewSession(SessionType.SINGLE_GAME, asSpectator, eventDummy);
-
-            expect(createNewSessionSpy.called).to.equal(false);
+            sinon.assert.callCount(createNewSessionSpy, 0);
         });
 
 
@@ -105,7 +104,7 @@ describe('ChooseSession Component', () => {
 
             createNewSession(SessionType.SINGLE_GAME, asSpectator, eventDummy);
 
-            expect(createNewSessionSpy.called).to.equal(false);
+            sinon.assert.callCount(createNewSessionSpy, 0);
         });
 
         it('should not start action with whitespace username', () => {
@@ -114,7 +113,7 @@ describe('ChooseSession Component', () => {
 
             createNewSession(SessionType.SINGLE_GAME, asSpectator, eventDummy);
 
-            expect(createNewSessionSpy.called).to.equal(false);
+            sinon.assert.callCount(createNewSessionSpy, 0);
         });
 
         it('should start action and disable input with valid playername and enter key pressed', () => {
@@ -123,7 +122,9 @@ describe('ChooseSession Component', () => {
 
             createNewSession(SessionType.TOURNAMENT, asSpectator, eventDummy);
 
-            expect(createNewSessionSpy.withArgs(SessionType.TOURNAMENT, eventDummy.target.value).calledOnce).to.equal(true);
+            sinon.assert.calledWith(createNewSessionSpy, SessionType.TOURNAMENT, eventDummy.target.value);
+            sinon.assert.callCount(createNewSessionSpy, 1);
+
             expect(eventDummy.target.disabled).to.equal(true);
         });
     });
