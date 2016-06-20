@@ -45,7 +45,8 @@
     "react-addons-test-utils": "15.1.0",
     "sinon": "1.17.4",
     "socket.io-client": "1.4.6",
-    "watch": "0.18.0"
+    "watch": "0.18.0",
+    "watchify": "3.7.0"
   },
   "dependencies": {
     "babel-core": "6.9.0",
