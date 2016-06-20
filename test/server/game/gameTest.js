@@ -1,6 +1,6 @@
 "use strict";
 
-import assert from "assert";
+import {expect} from 'chai';
 import * as Game from '../../../server/game/game';
 import {GameMode} from '../../../shared/game/gameMode';
 import * as GameType from '../../../server/game/gameType';
@@ -28,14 +28,14 @@ describe('Game', function () {
     it('should properly deal cards to each player', () => {
         game = Game.create(players, maxPoints, players[0], clientApi);
 
-        assert.notEqual(undefined, game.deck);
-        assert.notEqual(undefined, game.players);
-        assert.equal(maxPoints, game.maxPoints);
-        assert.notEqual(undefined, game.startPlayer);
+        expect(game.deck).to.be.defined;
+        expect(game.players).to.be.defined;
+        expect(game.maxPoints).to.equal(maxPoints);
+        expect(game.startPlayer).to.be.defined;
         players.forEach(player => {
-            assert.equal(9, player.cards.length);
+            expect(player.cards.length).to.equal(9);
             player.cards.forEach(card => {
-                assert.notEqual(undefined, card);
+                expect(card).not.to.be.undefined;
             });
         });
     });
@@ -45,14 +45,14 @@ describe('Game', function () {
             .withArgs(false).returns(Promise.resolve());
 
         let playerWhoSchiebs = players[0];
-        assert(playerWhoSchiebs.name === 'hans');
+        expect(playerWhoSchiebs.name).to.equal('hans');
         let hansSpy = sinon.spy(playerWhoSchiebs, 'requestTrumpf');
 
         game = Game.create(players, maxPoints, players[0], clientApi);
         game.start();
 
         clientApiMock.verify();
-        assert(hansSpy.calledOnce);
+        sinon.assert.calledOnce(hansSpy);
     });
 
     it('should request the trumpf from the correct player when the player schiebs', (done) => {
@@ -149,8 +149,8 @@ describe('Game', function () {
         game = Game.create(players, maxPoints, players[0], clientApi);
 
         game.start().then(function () {
-            assert.equal(cardColor, game.gameType.trumpfColor);
-            assert.equal(gameMode, game.gameType.mode);
+            expect(game.gameType.trumpfColor).to.equal(cardColor);
+            expect(game.gameType.mode).to.equal(gameMode);
             clientApiMock.verify();
             cycleFactoryMock.verify();
             cycleMock.verify();

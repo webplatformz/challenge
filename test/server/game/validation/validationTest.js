@@ -7,11 +7,6 @@ import Validation from '../../../../server/game/validation/validation';
 import {GameMode} from '../../../../shared/game/gameMode';
 
 describe('Validation', function () {
-    //let playerMock;
-
-    beforeEach(function () {
-        //playerMock = sinon.mock(player);
-    });
 
     it('should validate "angeben" without Trumpf', () => {
         let cardOne = Card.create(10, CardColor.SPADES);

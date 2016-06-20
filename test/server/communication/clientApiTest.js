@@ -104,7 +104,8 @@ describe('Client API', () => {
 
             clientApi.removeClient(webSocket, message);
 
-            expect(webSocket.close.withArgs(CloseEventCode.NORMAL, message).calledOnce).to.equal(true);
+            sinon.assert.calledOnce(webSocket.close);
+            sinon.assert.calledWith(webSocket.close, CloseEventCode.NORMAL, message);
         });
 
         it('should not close connection with given code and message when readyState not OPEN', () => {
@@ -118,7 +119,7 @@ describe('Client API', () => {
 
             clientApi.removeClient(webSocket, message);
 
-            expect(webSocket.close.callCount).to.equal(0);
+            sinon.assert.callCount(webSocket.close, 0);
         });
     });
 
