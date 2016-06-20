@@ -3,7 +3,7 @@
 import assert from 'assert';
 import * as Card from '../../../../shared/deck/card';
 import {CardColor} from '../../../../shared/deck/cardColor';
-import AngebenValidator from '../../../../server/game/validation/angebenValidator';
+import AngebenValidator from '../../../../shared/game/validation/angebenValidator';
 import {GameMode} from '../../../../shared/game/gameMode';
 
 

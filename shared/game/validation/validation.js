@@ -4,7 +4,7 @@ import HandCardValidator from './hasCardValidator.js';
 import AngebenValidator from './angebenValidator.js';
 import UnderTrumpfValidator from './underTrumpfValidator.js';
 
-let Validation = {
+const Validation = {
     validate (tableCards, handCards, cardToPlay) {
         let success = true;
         this.validationParameters.tableCards = tableCards;
