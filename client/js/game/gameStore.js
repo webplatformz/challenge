@@ -106,7 +106,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 this.emit('change');
                 break;
             case JassAppConstants.DEAL_CARDS:
-                this.state.playerCards = action.data.map((card) => Card.create(card.number, card.color));
+                this.state.playerCards = action.data.map(Card.createFromObject);
                 this.emit('change');
                 break;
             case JassAppConstants.REQUEST_TRUMPF:
@@ -134,14 +134,14 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 this.emit('change');
                 break;
             case JassAppConstants.CHOOSE_CARD:
-                let chosenCard = action.data;
+                let chosenCard = Card.createFromObject(action.data);
                 this.state.playerCards = this.state.playerCards.filter((card) => {
                     return chosenCard.color !== card.color || chosenCard.number !== card.number;
                 });
                 this.emit('change');
                 break;
             case JassAppConstants.REJECT_CARD:
-                let rejectedCard = Card.create(action.data.number, action.data.color);
+                let rejectedCard = Card.createFromObject(action.data);
                 this.state.status = GameState.REJECTED_CARD;
                 this.state.playerCards.push(rejectedCard);
                 this.emit('change');
@@ -149,7 +149,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
             case JassAppConstants.PLAYED_CARDS:
                 this.state.startingPlayerIndex = this.state.nextStartingPlayerIndex;
                 this.state.status = GameState.REQUESTING_CARDS_FROM_OTHER_PLAYERS;
-                this.state.tableCards = action.data;
+                this.state.tableCards = (action.data||[]).map(Card.createFromObject);
                 this.emit('change');
                 break;
             case JassAppConstants.BROADCAST_STICH:

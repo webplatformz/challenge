@@ -12,3 +12,7 @@ export function create(number, color) {
     card.color = color;
     return card;
 }
+
+export function createFromObject(card) {
+    return create(card.number, card.color);
+}
