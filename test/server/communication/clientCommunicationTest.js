@@ -60,7 +60,8 @@ describe('ClientCommunication', () => {
             actual.then((message) => {
                 expect(message).not.to.eql(wrongMessage);
                 expect(message).to.eql(correctMessage);
-                expect(WebSocketStub.removeListener.withArgs('message', sinon.match.func).calledOnce).to.equal(true);
+                sinon.assert.calledWith(WebSocketStub.removeListener, 'message', sinon.match.func);
+                sinon.assert.calledOnce(WebSocketStub.removeListener);
                 done();
             }).catch(done);
         });
@@ -87,8 +88,9 @@ describe('ClientCommunication', () => {
 
             actual.then(() => done(new Error('Invalid message should be rejected!')), (validationResult) => {
                 expect(validationResult).to.have.property('data').that.is.an('array');
-                expect(WebSocketStub.send.calledOnce).to.equal(true);
-                expect(WebSocketStub.removeListener.withArgs('message', sinon.match.func).calledOnce).to.equal(true);
+                sinon.assert.calledOnce(WebSocketStub.send);
+                sinon.assert.calledOnce(WebSocketStub.removeListener);
+                sinon.assert.calledWith(WebSocketStub.removeListener, 'message', sinon.match.func);
                 done();
             }).catch(done);
         });

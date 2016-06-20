@@ -256,7 +256,7 @@ describe('Session', function () {
             session.handlePlayerLeft(fourPlayers[0], code, message);
 
             clientApiMock.verify();
-            expect(session.cancelGame.calledOnce).to.equal(true);
+            sinon.assert.calledOnce(session.cancelGame);
         });
     });
 

@@ -64,7 +64,7 @@ describe('sessionHandler', () => {
 
             let promise = sessionHandler.handleClientConnection(webSocket);
 
-            expect(pingSpy.calledOnce).to.equal(true);
+            sinon.assert.calledOnce(pingSpy);
 
             promise.then(() => {
                 clientApiMock.verify();
