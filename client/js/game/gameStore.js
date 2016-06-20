@@ -45,14 +45,6 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         status: GameState.WAITING
     },
 
-    emitChange: function (source) {
-        if (source === JassAppDispatcher.Source.SERVER_ACTION && this.state.playerType === PlayerType.SPECTATOR) {
-            spectatorEventQueue.push('change');
-        } else {
-            this.emit('change');
-        }
-    },
-
     addChangeListener: function (callback) {
         this.on('change', callback);
     },
@@ -61,22 +53,30 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         this.removeListener('change', callback);
     },
 
-    spectatorRendering: function () {
-        var event = spectatorEventQueue.pop();
-        if (event) {
-            this.emit(event);
+    spectatorRendering() {
+        var payload = spectatorEventQueue.shift();
+        if (payload) {
+            this.handlePayload(payload);
+            if(payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED){
+                return;
+            }
         }
-        setTimeout(this.spectatorRendering.bind(GameStore), spectatorRenderingIntervall);
+        setTimeout(this.spectatorRendering.bind(this), spectatorRenderingIntervall);
     },
-
-    handleAction: function (payload) {
+    handleAction(payload) {
+        if (payload.source === JassAppDispatcher.Source.SERVER_ACTION && this.state.playerType === PlayerType.SPECTATOR) {
+            spectatorEventQueue.push(payload);
+        } else {
+            this.handlePayload(payload);
+        }
+    },
+    handlePayload(payload) {
         let action = payload.action;
-
         switch (action.actionType) {
             case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
                 this.state.playerType = PlayerType.SPECTATOR;
                 this.spectatorRendering();
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.ADJUST_SPECTATOR_SPEED:
                 spectatorRenderingIntervall = action.data;
@@ -97,59 +97,59 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 }
 
                 this.state.playerSeating = playerSeating.concat(playerSeating.splice(0, 4 - playerIndex));
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.BROADCAST_TEAMS:
                 this.state.status = GameState.SESSION_STARTED;
                 this.state.teams = action.data;
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.DEAL_CARDS:
                 this.state.playerCards = action.data;
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.REQUEST_TRUMPF:
                 this.state.status = GameState.REQUESTING_TRUMPF;
                 this.state.isGeschoben = action.data;
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.CHOOSE_TRUMPF:
                 this.state.status = GameState.TRUMPF_CHOSEN;
                 this.state.tableCards = [];
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.BROADCAST_TRUMPF:
                 this.state.status = GameState.TRUMPF_CHOSEN;
                 this.state.mode = action.data.mode;
                 this.state.color = action.data.trumpfColor;
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.CHANGE_CARD_TYPE:
                 this.state.cardType = action.data;
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.REQUEST_CARD:
                 this.state.status = GameState.REQUESTING_CARD;
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.CHOOSE_CARD:
                 let chosenCard = action.data;
                 this.state.playerCards = this.state.playerCards.filter((card) => {
                     return chosenCard.color !== card.color || chosenCard.number !== card.number;
                 });
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.REJECT_CARD:
                 let rejectedCard = action.data;
                 this.state.status = GameState.REJECTED_CARD;
                 this.state.playerCards.push(rejectedCard);
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.PLAYED_CARDS:
                 this.state.startingPlayerIndex = this.state.nextStartingPlayerIndex;
                 this.state.status = GameState.REQUESTING_CARDS_FROM_OTHER_PLAYERS;
                 this.state.tableCards = action.data;
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
             case JassAppConstants.BROADCAST_STICH:
                 let playerId = action.data.id,
@@ -180,10 +180,11 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                         }
                     });
                 });
-                this.emitChange(payload.source);
+                this.emit('change');
                 break;
         }
     }
+
 });
 
 JassAppDispatcher.register(GameStore.handleAction.bind(GameStore));
