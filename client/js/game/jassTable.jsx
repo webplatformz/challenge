@@ -48,7 +48,7 @@ export default React.createClass({
                 <Points teams={teams} />
                 {(() => {
                     if (state.playerType === PlayerType.PLAYER) {
-                        return <PlayerCards cards={playerCards} cardType={state.cardType} state={state.status}></PlayerCards>;
+                        return <PlayerCards cards={playerCards} cardType={state.cardType} state={state.status} tableCards={state.tableCards}></PlayerCards>;
                     }
                 })()}
                 {(() => {

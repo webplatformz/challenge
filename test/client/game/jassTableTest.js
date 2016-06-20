@@ -117,6 +117,7 @@ describe('JassTable Component', () => {
         GameStore.state.playerCards = ['card1', 'card2'];
         GameStore.state.cardType = CardType.FRENCH;
         GameStore.state.status = GameState.REQUESTING_CARD;
+        GameStore.state.tableCards = ['tablecard1', 'tablecard2'];
 
         shallowRenderer.render(React.createElement(JassTable));
         let actual = shallowRenderer.getRenderOutput();
@@ -125,6 +126,7 @@ describe('JassTable Component', () => {
         expect(playerCards.props.cards).to.eql(GameStore.state.playerCards);
         expect(playerCards.props.cardType).to.equal(GameStore.state.cardType);
         expect(playerCards.props.state).to.equal(GameStore.state.status);
+        expect(playerCards.props.tableCards).to.equal(GameStore.state.tableCards);
     });
 
     it('should pass correct properties to RequestTrumpf', () => {
