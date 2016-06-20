@@ -1,6 +1,6 @@
 'use strict';
 
-import {GameMode} from '../../../shared/game/gameMode.js';
+import {GameMode} from '../gameMode.js';
 
 let validationSuccess = {
     permitted: true
