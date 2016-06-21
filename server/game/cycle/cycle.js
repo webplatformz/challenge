@@ -1,6 +1,6 @@
 "use strict";
 
-import Validation from '../validation/validation.js';
+import Validation from '../../../shared/game/validation/validation.js';
 import stichGranter from './stichGranter.js';
 import * as Counter from '../counter/counter.js';
 

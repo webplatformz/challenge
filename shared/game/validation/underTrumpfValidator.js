@@ -1,6 +1,6 @@
 'use strict';
 
-import {GameMode} from '../../../shared/game/gameMode.js';
+import {GameMode} from '../gameMode.js';
 
 let validationSuccess = {
     permitted: true
@@ -24,13 +24,8 @@ const UnderTrumpfValidator = {
             return validationSuccess;
         }
         
-        let hasOtherThanTrumpf = false;        
-        validationParameter.handCards.forEach(card => {
-            if (card.color !== trumpfColor){
-                hasOtherThanTrumpf = true;
-            }            
-        });
-        
+        let hasOtherThanTrumpf = validationParameter.handCards.some(card => card.color !== trumpfColor);
+
         if (!hasOtherThanTrumpf){
             return validationSuccess;
         }

@@ -8,10 +8,12 @@ import JassCarpet from '../../../client/js/game/jassCarpet.jsx';
 import Points from '../../../client/js/game/points.jsx';
 import PlayerCards from '../../../client/js/game/playerCards.jsx';
 import SpectatorControls from '../../../client/js/game/spectatorControls.jsx';
+import * as Card from '../../../shared/deck/card';
 
 import TestUtils from 'react-addons-test-utils';
 
 import JassTable from '../../../client/js/game/jassTable.jsx';
+import {CardColor} from '../../../shared/deck/cardColor';
 
 describe('JassTable Component', () => {
 
@@ -114,9 +116,12 @@ describe('JassTable Component', () => {
 
     it('should pass correct properties to PlayerCards', () => {
         GameStore.state.playerType = PlayerType.PLAYER;
-        GameStore.state.playerCards = ['card1', 'card2'];
+        GameStore.state.playerCards = [Card.create(9,CardColor.CLUBS), Card.create(10,CardColor.CLUBS)];
         GameStore.state.cardType = CardType.FRENCH;
         GameStore.state.status = GameState.REQUESTING_CARD;
+        GameStore.state.tableCards = [Card.create(7,CardColor.CLUBS), Card.create(8,CardColor.CLUBS)];
+        GameStore.state.mode = 'mode';
+        GameStore.state.color = 'color';
 
         shallowRenderer.render(React.createElement(JassTable));
         let actual = shallowRenderer.getRenderOutput();
@@ -125,6 +130,9 @@ describe('JassTable Component', () => {
         expect(playerCards.props.cards).to.eql(GameStore.state.playerCards);
         expect(playerCards.props.cardType).to.equal(GameStore.state.cardType);
         expect(playerCards.props.state).to.equal(GameStore.state.status);
+        expect(playerCards.props.tableCards).to.equal(GameStore.state.tableCards);
+        expect(playerCards.props.mode).to.equal(GameStore.state.mode);
+        expect(playerCards.props.color).to.equal(GameStore.state.color);
     });
 
     it('should pass correct properties to RequestTrumpf', () => {

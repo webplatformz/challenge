@@ -4,6 +4,7 @@ import React from 'react';
 import {CardColor} from '../../../shared/deck/cardColor';
 import {GameState} from './gameStore.js';
 import JassActions from '../jassActions.js';
+import Validation from '../../../shared/game/validation/validation';
 
 let colorIndices = {};
 
@@ -22,9 +23,14 @@ export default React.createClass({
     },
 
     render: function () {
-        let cards = this.props.cards || [],
+        const cards = this.props.cards || [],
             isRequestingCard = this.props.state === GameState.REQUESTING_CARD,
+            tableCards = this.props.tableCards || [],
+            mode = this.props.mode,
+            color = this.props.color,
             cardClick = (isRequestingCard) ? this.playCard : this.cancelClick;
+
+        const validator = Validation.create(mode, color);
 
         return (
             <div id="playerCards" className={(isRequestingCard) ? 'onTurn' : ''}>
@@ -35,9 +41,12 @@ export default React.createClass({
 
                     return colorIndices[a.color] - colorIndices[b.color] + a.number - b.number;
                 }).map((card) => {
+                    const isValid = isRequestingCard ? validator.validate(tableCards, cards, card) : true;
                     return (
-                        <img key={card.color + '-' + card.number} src={'/images/cards/' + this.props.cardType + '/' + card.color.toLowerCase() + '_' + card.number + '.gif'}
-                            onClick={cardClick.bind(null, card.color, card.number)} />);
+                        <img key={card.color + '-' + card.number}
+                             src={'/images/cards/' + this.props.cardType + '/' + card.color.toLowerCase() + '_' + card.number + '.gif'}
+                             onClick={cardClick.bind(null, card.color, card.number)}
+                             className={(isValid)? '' : 'invalid'}/>);
                 })}
             </div>
         );
