@@ -11,7 +11,8 @@ addons:
 node_js:
   - "6.2.0"
 branches:
-  except:
-    - /feature\/.*/
+  only:
+    - develop
+    - master
 
 install: npm install
