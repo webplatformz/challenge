@@ -136,7 +136,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
             case JassAppConstants.CHOOSE_CARD:
                 let chosenCard = Card.createFromObject(action.data);
                 this.state.playerCards = this.state.playerCards.filter((card) => {
-                    return chosenCard.color !== card.color || chosenCard.number !== card.number;
+                    return !card.equals(chosenCard);
                 });
                 this.emit('change');
                 break;
