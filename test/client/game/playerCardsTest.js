@@ -154,4 +154,25 @@ describe('PlayerCards Component', () => {
         expect(actual.props.children[1].props.className).to.equal('invalid');
     });
 
+    it('should not set invalid class when state not REQUESTING_CARD', () => {
+        let props = {
+            cards: [
+                Card.create(8, CardColor.HEARTS),
+                Card.create(8, CardColor.DIAMONDS)
+            ],
+            mode: GameMode.TRUMPF,
+            color: CardColor.HEARTS,
+            tableCards: [
+                Card.create(9, CardColor.HEARTS)
+            ],
+            state: GameState.REQUESTING_TRUMPF
+        };
+
+        shallowRenderer.render(React.createElement(PlayerCards, props));
+        let actual = shallowRenderer.getRenderOutput();
+
+        expect(actual.props.children[0].props.className).to.equal('');
+        expect(actual.props.children[1].props.className).to.equal('');
+    });
+
 });
