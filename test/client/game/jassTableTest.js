@@ -13,7 +13,7 @@ import * as Card from '../../../shared/deck/card';
 import TestUtils from 'react-addons-test-utils';
 
 import JassTable from '../../../client/js/game/jassTable.jsx';
-import {CardColor} from "../../../shared/deck/cardColor";
+import {CardColor} from '../../../shared/deck/cardColor';
 
 describe('JassTable Component', () => {
 
