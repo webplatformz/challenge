@@ -9,6 +9,7 @@ import TestUtils from 'react-addons-test-utils';
 
 import TableCards from '../../../client/js/game/tableCards.jsx';
 import sinon from 'sinon';
+import {GameState} from "../../../client/js/game/gameStore";
 
 describe('PlayerNames Component', () => {
 
@@ -51,7 +52,7 @@ describe('PlayerNames Component', () => {
         shallowRenderer.render(React.createElement(TableCards, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let children = actual.props.children;
+        let children = actual.props.children[1];
         expect(children).to.have.length(3);
         children.forEach((actCard, index) => {
             let expectedCard = props.cards[index];
@@ -77,6 +78,16 @@ describe('PlayerNames Component', () => {
         props.collectStich = true;
         shallowRenderer.render(React.createElement(TableCards, props));
         sinon.assert.callCount(renderSpy, 2);
+    });
+
+    it('should render CollectStichHint when state is Stich', () => {
+        let props = {
+            state: GameState.STICH
+        };
+
+        let actual = shallowRenderer.render(React.createElement(TableCards, props));
+        expect(actual.props.children.length).to.equal(2);
+        expect(actual.props.children[1].length).to.equal(0);
     });
 
 });

@@ -10,7 +10,9 @@ export default React.createClass({
     render: function () {
         let playerSeating = this.props.playerSeating,
             cardType = this.props.cardType,
-            collectStich = this.props.collectStich;
+            collectStich = this.props.collectStich,
+            state = this.props.state;
+
 
         return (
             <div id="jassCarpet">
@@ -22,7 +24,8 @@ export default React.createClass({
                             cards={this.props.cards}
                             startingPlayerIndex={this.props.startingPlayerIndex}
                             playerSeating={playerSeating}
-                            collectStich={collectStich}/>
+                            collectStich={collectStich}
+                            state={state}/>
                 <Trumpf mode={this.props.mode} color={this.props.color} cardType={cardType}/>
             </div>
         );

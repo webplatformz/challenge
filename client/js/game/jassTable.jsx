@@ -44,7 +44,8 @@ export default React.createClass({
                     mode={state.mode}
                     color={state.color}
                     roundPlayerIndex={state.roundPlayerIndex}
-                    collectStich={state.collectStich}/>
+                    collectStich={state.collectStich}
+                    state={state.status}/>
                 <Points teams={teams} />
                 {(() => {
                     if (state.playerType === PlayerType.PLAYER) {
