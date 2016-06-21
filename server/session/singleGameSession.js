@@ -27,20 +27,35 @@ function getPlayersInTeam(session, team) {
     return session.players.filter(player => player.team.name === team.name);
 }
 
+function getFirstAvailableTeamIndex(session) {
+    const firstFreePlayerIndex = session.players.findIndex((player, index) => player.id !== index);
+    if (firstFreePlayerIndex !== -1) {
+        return firstFreePlayerIndex % 2;
+    }
+    else {
+        return session.players.length % 2;
+    }
+}
+
+function assignTeamIndex(session, chosenTeamIndex = getFirstAvailableTeamIndex(session)) {
+    let teamIndex = chosenTeamIndex;
+    let playersInTeam = getPlayersInTeam(session, session.teams[teamIndex]).length;
+    if (playersInTeam === 2) {
+        // can not assign to this team, use other team.
+        teamIndex = (teamIndex === 0) ? 1 : 0;
+    }
+    return teamIndex;
+}
+
 /**
  * @param chosenTeamIndex index of the team the player would like to join (optional, otherwise the next free place is assigned)
  */
 function createPlayer(session, webSocket, playerName, chosenTeamIndex) {
 
     // Calculate team and player index (depending on chosen team or assign one)
-    let teamIndex = chosenTeamIndex ? chosenTeamIndex % 2 : session.players.length % 2;
-    let playersInTeam = getPlayersInTeam(session, session.teams[teamIndex]).length;
-    if (playersInTeam === 2) {
-        // can not assign to this team, use other team.
-        teamIndex = (teamIndex === 0) ? 1 : 0;
-        playersInTeam = getPlayersInTeam(session, session.teams[teamIndex]).length;
-    }
-    let playerId = (playersInTeam * 2) + teamIndex;
+    const teamIndex = assignTeamIndex(session, chosenTeamIndex);
+    const playersInTeam = getPlayersInTeam(session, session.teams[teamIndex]).length;
+    const playerId = (playersInTeam * 2) + teamIndex;
 
     // Adjust player's team name
     let team = session.teams[teamIndex];
