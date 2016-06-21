@@ -5,6 +5,7 @@ import sinon from 'sinon';
 import {default as GameStore, CardType, PlayerType, GameState} from '../../../client/js/game/gameStore';
 import JassAppConstants from '../../../client/js/jassAppConstants';
 import {CardColor} from '../../../shared/deck/cardColor';
+import * as Card from '../../../shared/deck/card';
 
 describe('GameStore', () => {
 
@@ -142,31 +143,16 @@ describe('GameStore', () => {
             }
         };
         GameStore.state.playerCards = [
-            {
-                color: CardColor.DIAMONDS,
-                number: 6
-            },
-            {
-                color: CardColor.HEARTS,
-                number: 9
-            },
-            {
-                color: CardColor.HEARTS,
-                number: 14
-            }
+            Card.create(6, CardColor.DIAMONDS),
+            Card.create(9, CardColor.HEARTS),
+            Card.create(14, CardColor.HEARTS)
         ];
 
         GameStore.handleAction(dummyPayload);
 
         expect(GameStore.state.playerCards).to.eql([
-            {
-                color: CardColor.DIAMONDS,
-                number: 6
-            },
-            {
-                color: CardColor.HEARTS,
-                number: 14
-            }
+            Card.create(6, CardColor.DIAMONDS),
+            Card.create(14, CardColor.HEARTS)
         ]);
     });
 

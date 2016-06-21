@@ -14,13 +14,7 @@ const Validation = {
         this.validationParameters.handCards = handCards;
         this.validationParameters.cardToPlay = cardToPlay;
 
-        for (let i = 0; i < this.validators.length; i++) {
-            let validity = this.validators[i].validate(this.validationParameters);
-            if (!validity.permitted) {
-                return false;
-            }
-        }
-        return success;
+        return this.validators.every(validator => validator.validate(this.validationParameters).permitted);
     }
 };
 

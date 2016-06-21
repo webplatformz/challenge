@@ -118,7 +118,7 @@ describe('PlayerCards Component', () => {
     it('should append playCard handler to cards when requesting card', () => {
         let props = {
             cards: [
-                Card.create(8,CardColor.HEARTS )
+                Card.create(8, CardColor.HEARTS)
             ],
 
             state: GameState.REQUESTING_CARD
