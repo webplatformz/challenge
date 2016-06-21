@@ -95,8 +95,7 @@ const SessionHandler = {
                         clientApi.waitForTournamentStart(ws).then(handleTournamentStart.bind(null, this, ws, session));
                     }
                 } else {
-                    session.addPlayer(ws, playerName);
-
+                    session.addPlayer(ws, playerName, sessionChoiceResponse.chosenTeamIndex);
                     if (session.type === SessionType.SINGLE_GAME && session.isComplete()) {
                         this.startSession(session);
                     }

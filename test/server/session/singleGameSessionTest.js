@@ -43,7 +43,7 @@ describe('Session', function () {
 
     describe('addPlayer', () => {
 
-        it('should add alternating team to player and ask for player name', () => {
+        it('should add player to alternating teams', () => {
             var playerName0 = 'Peter';
             var playerName1 = 'Hans';
             var playerName2 = 'Homer';
@@ -65,6 +65,35 @@ describe('Session', function () {
             expect(session.players[2].name).to.equal(playerName2);
             expect(session.players[3].team).to.equal(session.teams[1]);
             expect(session.players[3].name).to.equal(playerName3);
+
+            clientApiMock.verify();
+        });
+
+        it('should add players to chosen teams', () => {
+
+            var playerName0 = 'Peter';
+            var playerName1 = 'Hans';
+            var playerName2 = 'Homer';
+            var playerName3 = 'Luke';
+            var chosenTeam1 = 0;
+            var chosenTeam2 = 1;
+
+            clientApiMock.expects('broadcastSessionJoined').exactly(4);
+            clientApiMock.expects('addClient').exactly(4).returns(Promise.resolve());
+
+            session.addPlayer('webSocket', playerName0, chosenTeam2);
+            session.addPlayer('webSocket', playerName1, chosenTeam2);
+            session.addPlayer('webSocket', playerName2, chosenTeam1);
+            session.addPlayer('webSocket', playerName3);
+
+            expect(session.players[0].team).to.equal(session.teams[0]);
+            expect(session.players[0].name).to.equal(playerName2);
+            expect(session.players[1].team).to.equal(session.teams[1]);
+            expect(session.players[1].name).to.equal(playerName0);
+            expect(session.players[2].team).to.equal(session.teams[0]);
+            expect(session.players[2].name).to.equal(playerName3);
+            expect(session.players[3].team).to.equal(session.teams[1]);
+            expect(session.players[3].name).to.equal(playerName1);
 
             clientApiMock.verify();
         });
