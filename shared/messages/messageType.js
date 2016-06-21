@@ -120,6 +120,11 @@ export const MessageType = {
                     within: SessionType
                 }
             },
+            'data.chosenTeamIndex': {
+                inclusion: {
+                    within: [0, 1]
+                }
+            },
             'data.asSpectator': {
                 presence: false
             }
