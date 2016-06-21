@@ -43,12 +43,12 @@ describe('Session', function () {
 
     describe('addPlayer', () => {
 
-        var playerName0 = 'Peter';
-        var playerName1 = 'Hans';
-        var playerName2 = 'Homer';
-        var playerName3 = 'Luke';
-        var team1 = 0;
-        var team2 = 1;
+        const playerName0 = 'Peter';
+        const playerName1 = 'Hans';
+        const playerName2 = 'Homer';
+        const playerName3 = 'Luke';
+        const team1 = 0;
+        const team2 = 1;
 
         function expectClientApiMockToAdd4Players() {
             clientApiMock.expects('broadcastSessionJoined').exactly(4);
