@@ -44,7 +44,7 @@ function createPlayer(session, webSocket, playerName, chosenTeamIndex) {
 
     // Adjust player's team name
     let team = session.teams[teamIndex];
-    team.name = team.name + " " + playerName;
+    team.name = `${team.name} ${playerName}`;
 
     // Create player
     let player = Player.create(team, playerName, playerId, {
