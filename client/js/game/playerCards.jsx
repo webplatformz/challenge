@@ -41,7 +41,7 @@ export default React.createClass({
 
                     return colorIndices[a.color] - colorIndices[b.color] + a.number - b.number;
                 }).map((card) => {
-                    const isValid = validator.validate(tableCards, cards, card);
+                    const isValid = isRequestingCard ? validator.validate(tableCards, cards, card) : true;
                     return (
                         <img key={card.color + '-' + card.number}
                              src={'/images/cards/' + this.props.cardType + '/' + card.color.toLowerCase() + '_' + card.number + '.gif'}
