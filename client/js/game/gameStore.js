@@ -43,7 +43,8 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         nextStartingPlayerIndex: 0,
         roundPlayerIndex: 0,
         cyclesMade: 0,
-        status: GameState.WAITING
+        status: GameState.WAITING,
+        collectStich: true
     },
 
     addChangeListener: function (callback) {
@@ -183,6 +184,12 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                         }
                     });
                 });
+
+                this.emit('change');
+                this.state.collectStich = false;
+                break;
+            case JassAppConstants.COLLECT_STICH:
+                this.state.collectStich = true;
                 this.emit('change');
                 break;
         }

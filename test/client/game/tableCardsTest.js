@@ -8,6 +8,7 @@ import {CardColor} from '../../../shared/deck/cardColor';
 import TestUtils from 'react-addons-test-utils';
 
 import TableCards from '../../../client/js/game/tableCards.jsx';
+import sinon from 'sinon';
 
 describe('PlayerNames Component', () => {
 
@@ -58,6 +59,24 @@ describe('PlayerNames Component', () => {
             expect(actCard.props.className).to.equal('card-' + props.playerSeating[(props.startingPlayerIndex + index) % 4]);
             expect(actCard.props.src).to.equal('/images/cards/' + props.cardType + '/' + expectedCard.color.toLowerCase() + '_' + expectedCard.number + '.gif');
         });
+    });
+
+    it('should not update when stich is not yet collected', () => {
+        let props = {
+            collectStich: true
+        };
+
+        const renderSpy = sinon.spy(TableCards.prototype, 'render');
+        shallowRenderer.render(React.createElement(TableCards, props));
+        sinon.assert.callCount(renderSpy, 1); // shouldComponentUpdate will not be called on first render
+
+        props.collectStich = false;
+        shallowRenderer.render(React.createElement(TableCards, props));
+        sinon.assert.callCount(renderSpy, 1);
+
+        props.collectStich = true;
+        shallowRenderer.render(React.createElement(TableCards, props));
+        sinon.assert.callCount(renderSpy, 2);
     });
 
 });

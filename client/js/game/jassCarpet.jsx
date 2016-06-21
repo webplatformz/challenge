@@ -9,13 +9,21 @@ export default React.createClass({
 
     render: function () {
         let playerSeating = this.props.playerSeating,
-            cardType = this.props.cardType;
+            cardType = this.props.cardType,
+            collectStich = this.props.collectStich;
 
         return (
             <div id="jassCarpet">
-                <PlayerNames players={this.props.players} playerSeating={playerSeating} nextStartingPlayerIndex={this.props.nextStartingPlayerIndex} roundPlayerIndex={this.props.roundPlayerIndex}></PlayerNames>
-                <TableCards cardType={cardType} cards={this.props.cards} startingPlayerIndex={this.props.startingPlayerIndex} playerSeating={playerSeating}></TableCards>
-                <Trumpf mode={this.props.mode} color={this.props.color} cardType={cardType}></Trumpf>
+                <PlayerNames players={this.props.players}
+                             playerSeating={playerSeating}
+                             nextStartingPlayerIndex={this.props.nextStartingPlayerIndex}
+                             roundPlayerIndex={this.props.roundPlayerIndex}/>
+                <TableCards cardType={cardType}
+                            cards={this.props.cards}
+                            startingPlayerIndex={this.props.startingPlayerIndex}
+                            playerSeating={playerSeating}
+                            collectStich={collectStich}/>
+                <Trumpf mode={this.props.mode} color={this.props.color} cardType={cardType}/>
             </div>
         );
     }
