@@ -14,5 +14,6 @@ branches:
   only:
     - develop
     - master
+    - /hotfix\/.*/
 
 install: npm install
