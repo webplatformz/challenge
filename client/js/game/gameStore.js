@@ -187,6 +187,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 
                 this.emit('change');
                 this.state.collectStich = false;
+                this.state.tableCards = [];
                 break;
             case JassAppConstants.COLLECT_STICH:
                 this.state.collectStich = true;
