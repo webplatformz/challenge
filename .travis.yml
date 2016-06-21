@@ -10,5 +10,8 @@ addons:
     - g++-4.8
 node_js:
   - "6.2.0"
+branches:
+  except:
+    - /feature\/.*/
 
 install: npm install
