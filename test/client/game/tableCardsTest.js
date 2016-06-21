@@ -6,6 +6,7 @@ import {CardType} from '../../../client/js/game/gameStore';
 import {CardColor} from '../../../shared/deck/cardColor';
 
 import TestUtils from 'react-addons-test-utils';
+import CollectStichHint from '../../../client/js/game/collectStichHint.jsx';
 
 import TableCards from '../../../client/js/game/tableCards.jsx';
 import sinon from 'sinon';
@@ -86,8 +87,16 @@ describe('PlayerNames Component', () => {
         };
 
         let actual = shallowRenderer.render(React.createElement(TableCards, props));
-        expect(actual.props.children.length).to.equal(2);
-        expect(actual.props.children[1].length).to.equal(0);
+        expect(actual.props.children[0].type).to.equal(CollectStichHint);
+    });
+
+    it('should not render CollectStichHint when state is other than Stich', () => {
+        let props = {
+            state: "EverythingElseThanGameStateStich"
+        };
+
+        let actual = shallowRenderer.render(React.createElement(TableCards, props));
+        expect(actual.props.children[0]).to.equal(undefined);
     });
 
 });
