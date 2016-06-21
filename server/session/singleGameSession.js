@@ -23,6 +23,92 @@ function createTeamsArrayForClient(session) {
     });
 }
 
+function getPlayersInTeam(session, team) {
+    return session.players.filter(player => player.team.name === team.name);
+}
+
+/**
+ * @param chosenTeamIndex index of the team the player would like to join (optional, otherwise the next free place is assigned)
+ */
+function createPlayer(session, webSocket, playerName, chosenTeamIndex) {
+
+    // Calculate team and player index (depending on chosen team or assign one)
+    let teamIndex = chosenTeamIndex ? chosenTeamIndex % 2 : session.players.length % 2;
+    let playersInTeam = getPlayersInTeam(session, session.teams[teamIndex]).length;
+    if (playersInTeam === 2) {
+        // can not assign to this team, use other team.
+        teamIndex = (teamIndex === 0) ? 1 : 0;
+        playersInTeam = getPlayersInTeam(session, session.teams[teamIndex]).length;
+    }
+    let playerId = (playersInTeam * 2) + teamIndex;
+
+    // Adjust player's team name
+    let team = session.teams[teamIndex];
+    team.name = team.name + " " + playerName;
+
+    // Create player
+    let player = Player.create(team, playerName, playerId, {
+        dealCards: session.clientApi.dealCards.bind(session.clientApi, webSocket),
+        requestTrumpf: session.clientApi.requestTrumpf.bind(session.clientApi, webSocket),
+        requestCard: session.clientApi.requestCard.bind(session.clientApi, webSocket),
+        rejectCard: session.clientApi.rejectCard.bind(session.clientApi, webSocket),
+        rejectTrumpf: session.clientApi.rejectTrumpf.bind(session.clientApi, webSocket)
+    });
+
+    session.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
+        session.handlePlayerLeft(player, code, message);
+    });
+
+    return player;
+}
+
+function insertPlayer(session, player) {
+    if (player.id > session.players.length) {
+        session.players.push(player);
+    }
+    else {
+        session.players.splice(player.id, 0, player);
+    }
+}
+
+/**
+ * Only broadcast the session joined event for all players that have been placed in the right table position,
+ * for lastPlayerJoined and players behind.
+ * @param session the session to broadcast for
+ * @param lastPlayerJoined the last player joined
+ */
+function broadcastSessionJoinedForCorrectPlacedPlayers(session, lastPlayerJoined) {
+    for (let index = lastPlayerJoined.id; index < session.players.length; index++) {
+        let player = session.players[index];
+        // is in correct position?
+        if (player.id === index) {
+            broadcastSessionJoined(session, player);
+        }
+    }
+}
+
+function broadcastSessionJoined(session, player) {
+    session.lastSessionJoin = {
+        player: {
+            id: player.id,
+            name: player.name
+        },
+        playersInSession: session.players
+            .filter((player, index) => player.id === index)
+            .map(player => {
+                return {
+                    id: player.id,
+                    name: player.name
+                };
+            })
+    };
+    session.clientApi.broadcastSessionJoined(
+        session.name,
+        session.lastSessionJoin.player,
+        session.lastSessionJoin.playersInSession
+    );
+}
+
 const Session = {
     maxPoints: 2500,
     startingPlayer: 0,
@@ -32,39 +118,13 @@ const Session = {
     cancelGame: undefined,
     started: false,
 
-    addPlayer: function addPlayer(webSocket, playerName) {
-        let team = this.teams[this.players.length % 2];
-        team.name = team.name + " " + playerName;
-        let player = Player.create(team, playerName, this.players.length, {
-            dealCards: this.clientApi.dealCards.bind(this.clientApi, webSocket),
-            requestTrumpf: this.clientApi.requestTrumpf.bind(this.clientApi, webSocket),
-            requestCard: this.clientApi.requestCard.bind(this.clientApi, webSocket),
-            rejectCard: this.clientApi.rejectCard.bind(this.clientApi, webSocket),
-            rejectTrumpf: this.clientApi.rejectTrumpf.bind(this.clientApi, webSocket)
-        });
-
-        this.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
-            this.handlePlayerLeft(player, code, message);
-        });
-
-        this.players.push(player);
-        this.lastSessionJoin = {
-            player: {
-                id: player.id,
-                name: player.name
-            },
-            playersInSession: this.players.map(function (player) {
-                return {
-                    id: player.id,
-                    name: player.name
-                };
-            })
-        };
-        this.clientApi.broadcastSessionJoined(
-            this.name,
-            this.lastSessionJoin.player,
-            this.lastSessionJoin.playersInSession
-        );
+    /**
+     * @param chosenTeamIndex index of the team the player would like to join (optional, otherwise the next free place is assigned)
+     */
+    addPlayer(webSocket, playerName, chosenTeamIndex) {
+        const player = createPlayer(this, webSocket, playerName, chosenTeamIndex);
+        insertPlayer(this, player);
+        broadcastSessionJoinedForCorrectPlacedPlayers(this, player);
     },
 
     addSpectator: function addSpectator(webSocket) {
