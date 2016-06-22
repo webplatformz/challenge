@@ -57,6 +57,7 @@
     "browserify": "13.0.1",
     "bufferutil": "1.2.1",
     "copyfiles": "0.2.1",
+    "docker-namesgenerator": "0.0.1",
     "express": "4.13.4",
     "flux": "2.1.1",
     "glicko2": "0.8.4",
