@@ -177,5 +177,12 @@ export default {
         JassAppDispatcher.handleServerAction({
             actionType: JassAppConstants.BROADCAST_TOURNAMENT_STARTED
         });
+    },
+    
+    collectStich() {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.COLLECT_STICH
+        });
     }
+    
 };
