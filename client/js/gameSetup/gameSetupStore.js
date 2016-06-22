@@ -8,6 +8,7 @@ const GameSetupState = {
     CONNECTING: 'CONNECTING',
     SET_PLAYER_NAME: 'SET_PLAYER_NAME',
     CHOOSE_SESSION: 'CHOOSE_SESSION',
+    CHOOSE_TEAM: 'CHOOSE_TEAM',
     FINISHED: 'FINISHED'
 };
 
@@ -42,6 +43,11 @@ JassAppDispatcher.register(function (payload) {
         case JassAppConstants.REQUEST_SESSION_CHOICE:
             GameSetupStore.state.status = GameSetupState.CHOOSE_SESSION;
             GameSetupStore.state.sessions = action.data;
+            GameSetupStore.emitChange();
+            break;
+        case JassAppConstants.CHOOSE_SESSION_PARTIAL:
+            GameSetupStore.state.status = GameSetupState.CHOOSE_TEAM;
+            GameSetupStore.state.chosenSession = action.data;
             GameSetupStore.emitChange();
             break;
         case JassAppConstants.SESSION_JOINED:
