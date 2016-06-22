@@ -7,7 +7,7 @@ import * as RankingTable from './rankingTable';
 import * as SingleGameSession from './singleGameSession';
 import 'babel-polyfill';
 import * as _ from 'lodash';
-import UUID from 'uuid';
+import nameGenerator from 'docker-namesgenerator';
 
 function getPairingsPerRound(players) {
     return _.flatMap(players, (player, index) => {
@@ -23,7 +23,7 @@ function getPairingsPerRound(players) {
 }
 
 function createSessionWithPlayers({player1, player2}) {
-    let session = SingleGameSession.create(UUID.v4());
+    let session = SingleGameSession.create(nameGenerator());
 
     session.addPlayer(player1.clients[0], player1.playerName);
     session.addPlayer(player2.clients[0], player2.playerName);

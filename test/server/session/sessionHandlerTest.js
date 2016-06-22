@@ -9,10 +9,6 @@ import {SessionChoice} from '../../../shared/session/sessionChoice';
 import {SessionType} from '../../../shared/session/sessionType';
 import sessionHandler from '../../../server/session/sessionHandler';
 
-let uuidMatcher = sinon.match((name) => {
-    return name.length === 36;
-});
-
 describe('sessionHandler', () => {
     describe('handleClientConnection', () => {
 
@@ -58,7 +54,7 @@ describe('sessionHandler', () => {
             clientApiMock.expects('requestPlayerName').once().returns(Promise.resolve('playerName'));
             clientApiMock.expects('requestSessionChoice').once().withArgs(webSocket, []).returns(Promise.resolve({}));
 
-            singleGameSessionMock.expects('create').withArgs(uuidMatcher).once().returns(session);
+            singleGameSessionMock.expects('create').withArgs(sinon.match.string).once().returns(session);
             sessionMock.expects('addPlayer').once();
             sessionMock.expects('isComplete').once().returns(false);
 
@@ -207,7 +203,7 @@ describe('sessionHandler', () => {
             sessionMock.expects('start').once().returns(Promise.resolve({name: 'team'}));
             sessionMock.expects('close').once();
 
-            singleGameSessionMock.expects('create').withArgs(uuidMatcher).once().returns(session);
+            singleGameSessionMock.expects('create').withArgs(sinon.match.string).once().returns(session);
             sessionMock.expects('isComplete').once().returns(false);
 
             sessionHandler.handleClientConnection(webSocket).then(() => {
