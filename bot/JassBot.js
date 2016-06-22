@@ -60,10 +60,10 @@ let JassBot = {
     }
 };
 
-export function create (name) {
+export function create (name, url = 'ws://localhost:3000') {
     let clientBot = Object.create(JassBot);
     clientBot.handcards = [];
-    clientBot.client = new WebSocket('ws://localhost:3000');
+    clientBot.client = new WebSocket(url);
     clientBot.client.on('message', clientBot.onMessage.bind(clientBot));
     clientBot.name = name;
     return clientBot;
