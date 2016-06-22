@@ -4,7 +4,7 @@ import * as ClientApi from '../communication/clientApi.js';
 import * as SessionFactory from './sessionFactory';
 import {SessionChoice} from '../../shared/session/sessionChoice.js';
 import {SessionType} from '../../shared/session/sessionType.js';
-import UUID from 'uuid';
+import nameGenerator from 'docker-namesgenerator';
 
 let clientApi = ClientApi.create();
 
@@ -15,7 +15,7 @@ function findOrCreateSessionWithSpace(sessions, sessionChoiceResponse) {
 
     if (filteredSessions.length === 0) {
         return createSession(sessions, {
-            sessionName: sessionChoiceResponse.sessionName || UUID.v4(),
+            sessionName: sessionChoiceResponse.sessionName || nameGenerator(),
             sessionType: sessionChoiceResponse.sessionType || SessionType.SINGLE_GAME
         });
     }

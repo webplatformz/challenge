@@ -33,7 +33,7 @@ export default React.createClass({
 
         return (
             <div id="jassTable">
-                <CardTypeSwitcher cardType={state.cardType}></CardTypeSwitcher>
+                <CardTypeSwitcher cardType={state.cardType}/>
                 <JassCarpet
                     cardType={state.cardType}
                     players={players}
@@ -43,8 +43,9 @@ export default React.createClass({
                     nextStartingPlayerIndex={state.nextStartingPlayerIndex}
                     mode={state.mode}
                     color={state.color}
-                    roundPlayerIndex={state.roundPlayerIndex}>
-                </JassCarpet>
+                    roundPlayerIndex={state.roundPlayerIndex}
+                    collectStich={state.collectStich}
+                    state={state.status}/>
                 <Points teams={teams} />
                 {(() => {
                     if (state.playerType === PlayerType.PLAYER) {
@@ -53,17 +54,17 @@ export default React.createClass({
                                             state={state.status}
                                             tableCards={state.tableCards}
                                             mode={state.mode}
-                                            color={state.color}></PlayerCards>;
+                                            color={state.color}/>;
                     }
                 })()}
                 {(() => {
                     if (state.status === GameState.REQUESTING_TRUMPF) {
-                        return <RequestTrumpf isGeschoben={state.isGeschoben} cardType={state.cardType}></RequestTrumpf>;
+                        return <RequestTrumpf isGeschoben={state.isGeschoben} cardType={state.cardType}/>;
                     }
                 })()}
                 {(() => {
                     if (state.playerType === PlayerType.SPECTATOR) {
-                        return <SpectatorControls></SpectatorControls>;
+                        return <SpectatorControls/>;
                     }
                 })()}
             </div>
