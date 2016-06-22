@@ -58,6 +58,7 @@
     "bufferutil": "1.2.1",
     "copyfiles": "0.2.1",
     "cross-env": "1.0.8",
+    "docker-namesgenerator": "0.0.1",
     "express": "4.13.4",
     "flux": "2.1.1",
     "glicko2": "0.8.4",
@@ -69,7 +70,6 @@
     "react-dom": "15.1.0",
     "rimraf": "2.5.2",
     "utf-8-validate": "1.2.1",
-    "uuid": "2.0.2",
     "validate.js": "0.10.0",
     "ws": "1.1.0"
   }
