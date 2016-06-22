@@ -13,7 +13,7 @@ import {SessionChoice} from '../shared/session/sessionChoice';
 let JassBot = {
     gameType: GameType.create(GameMode.TRUMPF, CardColor.SPADES),
 
-    onMessage: function (messageJson) {
+    onMessage(messageJson) {
         let message = JSON.parse(messageJson);
 
         if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
@@ -41,13 +41,13 @@ let JassBot = {
         }
     },
 
-    mapCardsFromJson: function (cards) {
+    mapCardsFromJson(cards) {
         return cards.map((element) => {
             return Card.create(element.number, element.color);
         });
     },
 
-    giveValidCardFromHand: function (tableCards, handCards) {
+    giveValidCardFromHand(tableCards, handCards) {
         let validation = Validation.create(this.gameType.mode, this.gameType.trumpfColor);
 
         for (let i = 0; i < handCards.length; i++) {
