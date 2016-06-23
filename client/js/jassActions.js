@@ -54,7 +54,7 @@ export default {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR,
             data: {
-                sessionName: sessionName
+                sessionName
             }
         });
     },
