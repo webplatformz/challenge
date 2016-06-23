@@ -96,7 +96,7 @@ function registerPlayerAsClient(session, webSocket, player) {
  */
 function registerClientAndBroadcastSessionJoinedForCorrectPlacedPlayers(session, webSocket, lastPlayerJoined) {
 
-    // Prpare player registration finalization (tobe called later, when player is placed on table)
+    // Prepare player registration finalization (tobe called later, when player is placed on table)
     session.finalizeRegistrationForPlayerFunctions[lastPlayerJoined.id] = () => registerClientAndBroadcastSessionJoined(session, webSocket, lastPlayerJoined);
 
     // Finalize registration for all players that have been placed now correctly.
