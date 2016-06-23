@@ -21,7 +21,17 @@ let JassBot = {
         }
 
         if (message.type === MessageType.REQUEST_SESSION_CHOICE.name) {
-            this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN)));
+            if (this.sessionName) {
+                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, {
+                    sessionChoice: SessionChoice.JOIN_EXISTING,
+                    sessionName: this.sessionName,
+                    chosenTeamIndex: this.teamToJoin
+                })));
+            } else {
+                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, {
+                    sessionChoice: SessionChoice.AUTOJOIN
+                })));
+            }
         }
 
         if (message.type === MessageType.DEAL_CARDS.name) {
@@ -60,11 +70,13 @@ let JassBot = {
     }
 };
 
-export function create (name, url = 'ws://localhost:3000') {
+export function create(name, url = 'ws://localhost:3000', sessionName, teamToJoin) {
     let clientBot = Object.create(JassBot);
     clientBot.handcards = [];
     clientBot.client = new WebSocket(url);
     clientBot.client.on('message', clientBot.onMessage.bind(clientBot));
     clientBot.name = name;
+    clientBot.sessionName = sessionName;
+    clientBot.teamToJoin = teamToJoin;
     return clientBot;
 }
