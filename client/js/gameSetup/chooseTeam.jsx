@@ -12,7 +12,7 @@ export default React.createClass({
         return (
             <div id="chooseTeam" className={(status !== GameSetupStore.GameSetupState.CHOOSE_TEAM ? 'hidden' : '')}>
                 <h1 className="jumbotron">Joining Session {chosenSession.sessionName}</h1>
-                <h2> Choose Your Preferred Team</h2>
+                <h2>Choose your preferred team</h2>
                 <div className="team-choice">
                     <button type="button" onClick={() => chosenSession.joinSession(0)}>Team 1</button>
                     <button type="button" onClick={() => chosenSession.joinSession(1)}>Team 2</button>
