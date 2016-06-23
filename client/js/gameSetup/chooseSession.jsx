@@ -24,12 +24,12 @@ export default React.createClass({
         return (
             <div id="chooseSession" className={(status !== GameSetupStore.GameSetupState.CHOOSE_SESSION ? 'hidden' : '')}>
                 <h1 className="jumbotron">Choose Session</h1>
-                <ExistingSessions sessions={this.props.setupState.sessions}></ExistingSessions>
+                <ExistingSessions sessions={this.props.setupState.sessions} />
                 <div className="session-choice">
-                    <input type="text" name="createNewSession" placeholder="Session Name..." onKeyPress={this.createNewSession.bind(null, SessionType.SINGLE_GAME, false)}></input>
+                    <input type="text" name="createNewSession" placeholder="Session Name..." onKeyPress={() => this.createNewSession(SessionType.SINGLE_GAME, false)} />
                 </div>
                 <div className="session-choice">
-                    <input type="text" name="createNewTournament" placeholder="Tournament Name..." onKeyPress={this.createNewSession.bind(null, SessionType.TOURNAMENT, true)}></input>
+                    <input type="text" name="createNewTournament" placeholder="Tournament Name..." onKeyPress={() => this.createNewSession(SessionType.TOURNAMENT, true)} />
                 </div>
                 <div className="session-choice">
                     <button type="button" name="autoJoin" onClick={JassActions.autojoinSession}>Just Join!</button>
