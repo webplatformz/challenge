@@ -1,10 +1,7 @@
 'use strict';
 
 import React from 'react';
-import ExistingSessions from './existingSessions.jsx';
 import GameSetupStore from './gameSetupStore.js';
-import JassActions from '../jassActions.js';
-import {SessionType} from '../../../shared/session/sessionType.js';
 
 export default React.createClass({
 
