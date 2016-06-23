@@ -90,7 +90,8 @@ describe('PlayerCards Component', () => {
 
             expect(actCard.key).to.equal(expectedCard.color + '-' + expectedCard.number);
             expect(actCard.props.src).to.equal('/images/cards/' + CardType.FRENCH + '/' + expectedCard.color.toLowerCase() + '_' + expectedCard.number + '.gif');
-            expect(actCard.props.onClick.__reactBoundMethod).to.equal(PlayerCards.prototype.playCard);
+            actCard.props.onClick();
+            sinon.assert.calledWith(chooseCardSpy, expectedCard.color, expectedCard.number);
         });
     });
 
@@ -101,36 +102,15 @@ describe('PlayerCards Component', () => {
                 ]
             },
             eventDummy = {
-                preventDefault: function () {
-                }
-            },
-            preventDefaultSpy = sinon.spy(eventDummy, 'preventDefault');
+                preventDefault: sinon.spy()
+            };
 
         shallowRenderer.render(React.createElement(PlayerCards, props));
         let actual = shallowRenderer.getRenderOutput();
 
         let cancelClickFunction = actual.props.children[0].props.onClick;
-        expect(cancelClickFunction.__reactBoundMethod).to.equal(PlayerCards.prototype.cancelClick);
         cancelClickFunction(eventDummy);
-        sinon.assert.callCount(preventDefaultSpy, 1);
-    });
-
-    it('should append playCard handler to cards when requesting card', () => {
-        let props = {
-            cards: [
-                Card.create(8, CardColor.HEARTS)
-            ],
-
-            state: GameState.REQUESTING_CARD
-        };
-
-        shallowRenderer.render(React.createElement(PlayerCards, props));
-        let actual = shallowRenderer.getRenderOutput();
-
-        let playCardFunction = actual.props.children[0].props.onClick;
-        expect(playCardFunction.__reactBoundMethod).to.equal(PlayerCards.prototype.playCard);
-        playCardFunction();
-        sinon.assert.calledWith(chooseCardSpy, props.cards[0].color, props.cards[0].number);
+        sinon.assert.calledOnce(eventDummy.preventDefault, 1);
     });
 
     it('should set invalid class when card is not playable', () => {
