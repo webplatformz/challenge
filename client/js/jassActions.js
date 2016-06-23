@@ -34,6 +34,7 @@ export default {
 
     joinExistingSession: (sessionName) => {
         let chosenSessionPartial = {
+            sessionName,
             joinSession: (chosenTeamIndex) => {
                 JassAppDispatcher.handleViewAction({
                     actionType: JassAppConstants.CHOOSE_EXISTING_SESSION,
@@ -61,6 +62,7 @@ export default {
 
     createNewSession: (sessionType, sessionName, asSpectator) => {
         let chosenSessionPartial = {
+            sessionName,
             joinSession: (chosenTeamIndex) => {
                 JassAppDispatcher.handleViewAction({
                     actionType: JassAppConstants.CREATE_NEW_SESSION,
