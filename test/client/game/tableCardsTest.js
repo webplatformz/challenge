@@ -3,14 +3,13 @@
 import {expect} from 'chai';
 import React from 'react';
 import {CardType} from '../../../client/js/game/gameStore';
+import * as Card from '../../../shared/deck/card';
 import {CardColor} from '../../../shared/deck/cardColor';
 
 import TestUtils from 'react-addons-test-utils';
 import CollectStichHint from '../../../client/js/game/collectStichHint.jsx';
 
 import TableCards from '../../../client/js/game/tableCards.jsx';
-import sinon from 'sinon';
-import {GameState} from "../../../client/js/game/gameStore";
 
 describe('PlayerNames Component', () => {
 
@@ -65,35 +64,36 @@ describe('PlayerNames Component', () => {
 
     it('should not update when stich is not yet collected', () => {
         let props = {
-            collectStich: true
+            collectStich: true,
+            cards : [Card.create(9, CardColor.CLUBS), Card.create(10, CardColor.CLUBS),Card.create(11, CardColor.CLUBS),Card.create(12, CardColor.CLUBS)],
+            startingPlayerIndex:0,
+            playerSeating: ['a','b','c','d']
         };
 
-        const renderSpy = sinon.spy(TableCards.prototype, 'render');
-        shallowRenderer.render(React.createElement(TableCards, props));
-        sinon.assert.callCount(renderSpy, 1); // shouldComponentUpdate will not be called on first render
+        let renderedElement = shallowRenderer.render(React.createElement(TableCards, props));
+        expect(renderedElement.props.children[1].length).to.equal(4);
 
         props.collectStich = false;
-        shallowRenderer.render(React.createElement(TableCards, props));
-        sinon.assert.callCount(renderSpy, 1);
+        props.cards = [];
+        renderedElement = shallowRenderer.render(React.createElement(TableCards, props));
+        expect(renderedElement.props.children[1].length).to.equal(4);
 
         props.collectStich = true;
-        shallowRenderer.render(React.createElement(TableCards, props));
-        sinon.assert.callCount(renderSpy, 2);
+        renderedElement = shallowRenderer.render(React.createElement(TableCards, props));
+        expect(renderedElement.props.children[1].length).to.equal(0);
     });
 
-    it('should render CollectStichHint when state is Stich', () => {
+    it('should render CollectStichHint when collectStich is false', () => {
         let props = {
-            state: GameState.STICH
+            collectStich: false
         };
 
         let actual = shallowRenderer.render(React.createElement(TableCards, props));
         expect(actual.props.children[0].type).to.equal(CollectStichHint);
     });
 
-    it('should not render CollectStichHint when state is other than Stich', () => {
-        let props = {
-            state: "EverythingElseThanGameStateStich"
-        };
+    it('should not render CollectStichHint when collectStich is not equal false', () => {
+        let props = {};
 
         let actual = shallowRenderer.render(React.createElement(TableCards, props));
         expect(actual.props.children[0]).to.equal(undefined);
