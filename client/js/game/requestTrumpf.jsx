@@ -25,7 +25,7 @@ export default React.createClass({
                 <img onClick={() => this.chooseTrumpf(GameMode.OBEABE)} src={imagePath + 'obeabe.jpg'} />
                 {((component) => {
                     if (!component.props.isGeschoben) {
-                        return <img onClick={component.chooseTrumpf.bind(null, GameMode.SCHIEBE, undefined)} src={imagePath + 'schiebe.jpg'} />;
+                        return <img onClick={() => component.chooseTrumpf(GameMode.SCHIEBE)} src={imagePath + 'schiebe.jpg'} />;
                     }
                 })(this)}
             </div>
