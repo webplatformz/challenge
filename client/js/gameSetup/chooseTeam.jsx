@@ -22,7 +22,6 @@ export default React.createClass({
                         <br/>
                         <br/>
                         <button type="button" name="teamAny" onClick={chosenSession.joinSession.bind(null, undefined)}>Join Any Team</button>
-
                     </div>
                 </div>
             );
