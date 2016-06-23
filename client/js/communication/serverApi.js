@@ -83,7 +83,7 @@ let ServerApi = {
                     sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, action.data);
                     break;
                 case JassAppConstants.AUTOJOIN_SESSION:
-                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN, {});
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN);
                     break;
                 case JassAppConstants.CHOOSE_TRUMPF:
                     sendJSONMessageToClient(MessageType.CHOOSE_TRUMPF.name, action.data);
