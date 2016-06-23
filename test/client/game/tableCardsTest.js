@@ -16,6 +16,16 @@ describe('PlayerNames Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
 
+    let renderSpy;
+
+    beforeEach(() => {
+        renderSpy = sinon.spy(TableCards.prototype, 'render');
+    });
+
+    afterEach(() => {
+        TableCards.prototype.render.restore();
+    });
+
     it('should render a div element with id', () => {
         shallowRenderer.render(React.createElement(TableCards));
         let actual = shallowRenderer.getRenderOutput();
@@ -68,7 +78,6 @@ describe('PlayerNames Component', () => {
             collectStich: true
         };
 
-        const renderSpy = sinon.spy(TableCards.prototype, 'render');
         shallowRenderer.render(React.createElement(TableCards, props));
         sinon.assert.callCount(renderSpy, 1); // shouldComponentUpdate will not be called on first render
 
