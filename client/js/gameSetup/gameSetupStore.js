@@ -64,8 +64,11 @@ JassAppDispatcher.register(function (payload) {
         case JassAppConstants.SESSION_JOINED:
             if (action.data.playersInSession.length === 4) {
                 GameSetupStore.state.status = GameSetupState.FINISHED;
-                GameSetupStore.emitChange();
             }
+            else {
+                GameSetupStore.state.status = GameSetupState.WAIT_FOR_PLAYERS;
+            }
+            GameSetupStore.emitChange();
             break;
         case JassAppConstants.BROADCAST_TOURNAMENT_RANKING_TABLE:
             GameSetupStore.state.status = GameSetupState.FINISHED;
