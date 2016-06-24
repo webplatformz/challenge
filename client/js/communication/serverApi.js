@@ -80,7 +80,7 @@ let ServerApi = {
                     sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.SPECTATOR, action.data);
                     break;
                 case JassAppConstants.CREATE_NEW_SESSION:
-                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, action.data.sessionName, action.data.sessionType, action.data.asSpectator);
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, action.data);
                     break;
                 case JassAppConstants.AUTOJOIN_SESSION:
                     sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN);

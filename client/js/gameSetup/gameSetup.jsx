@@ -4,6 +4,8 @@ import React from 'react';
 import RequestPlayerName from './requestPlayerName.jsx';
 import Connecting from './connecting.jsx';
 import ChooseSession from './chooseSession.jsx';
+import ChooseTeam from './chooseTeam.jsx';
+import WaitForPlayers from './waitForPlayers.jsx';
 import GameSetupStore from './gameSetupStore';
 
 function getSetupStateClassName(setupState) {
@@ -34,6 +36,8 @@ export default React.createClass({
                 <Connecting setupState={this.state.status} />
                 <RequestPlayerName setupState={this.state.status} />
                 <ChooseSession setupState={this.state} />
+                <ChooseTeam setupState={this.state} />
+                <WaitForPlayers setupState={this.state} />
             </div>
         );
     }

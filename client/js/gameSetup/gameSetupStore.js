@@ -8,6 +8,8 @@ export const GameSetupState = {
     CONNECTING: 'CONNECTING',
     SET_PLAYER_NAME: 'SET_PLAYER_NAME',
     CHOOSE_SESSION: 'CHOOSE_SESSION',
+    CHOOSE_TEAM: 'CHOOSE_TEAM',
+    WAIT_FOR_PLAYERS: 'WAIT_FOR_PLAYERS',
     FINISHED: 'FINISHED'
 };
 
@@ -42,6 +44,21 @@ JassAppDispatcher.register(function (payload) {
         case JassAppConstants.REQUEST_SESSION_CHOICE:
             GameSetupStore.state.status = GameSetupState.CHOOSE_SESSION;
             GameSetupStore.state.sessions = action.data;
+            GameSetupStore.emitChange();
+            break;
+        case JassAppConstants.CHOOSE_SESSION_PARTIAL:
+            GameSetupStore.state.status = GameSetupState.CHOOSE_TEAM;
+            GameSetupStore.state.chosenSession = action.data;
+            GameSetupStore.emitChange();
+            break;
+        case JassAppConstants.CREATE_NEW_SESSION:
+            GameSetupStore.state.status = GameSetupState.WAIT_FOR_PLAYERS;
+            GameSetupStore.state.chosenSession = action.data;
+            GameSetupStore.emitChange();
+            break;
+        case JassAppConstants.CHOOSE_EXISTING_SESSION:
+            GameSetupStore.state.status = GameSetupState.WAIT_FOR_PLAYERS;
+            GameSetupStore.state.chosenSession = action.data;
             GameSetupStore.emitChange();
             break;
         case JassAppConstants.SESSION_JOINED:
