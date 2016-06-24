@@ -2,14 +2,29 @@
 
 import {expect} from 'chai';
 import React from 'react';
-
 import TestUtils from 'react-addons-test-utils';
+import sinon from 'sinon';
 
 import ExistingSessions from '../../../client/js/gameSetup/existingSessions.jsx';
+import JassActions from '../../../client/js/jassActions';
+
 
 describe('ExistingSessions Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
+
+    let joinExistingSessionSpy,
+        joinExistingSessionAsSepctatorSpy;
+
+    beforeEach(() => {
+        joinExistingSessionSpy = sinon.spy(JassActions, 'joinExistingSession');
+        joinExistingSessionAsSepctatorSpy = sinon.spy(JassActions, 'joinExistingSessionAsSpectator');
+    });
+
+    afterEach(() => {
+        JassActions.joinExistingSession.restore();
+        JassActions.joinExistingSessionAsSpectator.restore();
+    });
 
     it('should render a div element with className and hidden list', () => {
         shallowRenderer.render(React.createElement(ExistingSessions));
@@ -40,9 +55,14 @@ describe('ExistingSessions Component', () => {
         let playerJoin = secondSession.props.children[0];
         let spectatorJoin = secondSession.props.children[1];
         expect(playerJoin.props.children).to.equal('sessionName2');
-        expect(playerJoin.props.onClick.__reactBoundMethod).to.equal(ExistingSessions.prototype.joinExistingSession);
+
+        playerJoin.props.onClick();
+        const spyWithArgs = joinExistingSessionSpy.withArgs('sessionName2');
+        sinon.assert.calledOnce(spyWithArgs);
         expect(spectatorJoin.props.children).to.equal('S');
-        expect(spectatorJoin.props.onClick.__reactBoundMethod).to.equal(ExistingSessions.prototype.joinExistingSessionAsSpectator);
+
+        spectatorJoin.props.onClick();
+        sinon.assert.calledOnce(joinExistingSessionAsSepctatorSpy);
     });
 
 });

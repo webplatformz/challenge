@@ -17,15 +17,15 @@ export default React.createClass({
 
         return (
             <div id="requestTrumpf">
-                <img onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.HEARTS)} src={cardTypeImagePath + 'hearts.png'} />
-                <img onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.DIAMONDS)} src={cardTypeImagePath + 'diamonds.png'} />
-                <img onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.CLUBS)} src={cardTypeImagePath + 'clubs.png'} />
-                <img onClick={this.chooseTrumpf.bind(null, GameMode.TRUMPF, CardColor.SPADES)} src={cardTypeImagePath + 'spades.png'} />
-                <img onClick={this.chooseTrumpf.bind(null, GameMode.UNDEUFE, undefined)} src={imagePath + 'undeufe.jpg'} />
-                <img onClick={this.chooseTrumpf.bind(null, GameMode.OBEABE, undefined)} src={imagePath + 'obeabe.jpg'} />
+                <img onClick={() => this.chooseTrumpf(GameMode.TRUMPF, CardColor.HEARTS)} src={cardTypeImagePath + 'hearts.png'} />
+                <img onClick={() => this.chooseTrumpf(GameMode.TRUMPF, CardColor.DIAMONDS)} src={cardTypeImagePath + 'diamonds.png'} />
+                <img onClick={() => this.chooseTrumpf(GameMode.TRUMPF, CardColor.CLUBS)} src={cardTypeImagePath + 'clubs.png'} />
+                <img onClick={() => this.chooseTrumpf(GameMode.TRUMPF, CardColor.SPADES)} src={cardTypeImagePath + 'spades.png'} />
+                <img onClick={() => this.chooseTrumpf(GameMode.UNDEUFE)} src={imagePath + 'undeufe.jpg'} />
+                <img onClick={() => this.chooseTrumpf(GameMode.OBEABE)} src={imagePath + 'obeabe.jpg'} />
                 {((component) => {
                     if (!component.props.isGeschoben) {
-                        return <img onClick={component.chooseTrumpf.bind(null, GameMode.SCHIEBE, undefined)} src={imagePath + 'schiebe.jpg'} />;
+                        return <img onClick={() => component.chooseTrumpf(GameMode.SCHIEBE)} src={imagePath + 'schiebe.jpg'} />;
                     }
                 })(this)}
             </div>

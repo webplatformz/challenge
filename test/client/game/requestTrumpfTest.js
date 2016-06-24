@@ -44,13 +44,21 @@ describe('RequestTrumpf Component', () => {
 
         let children = actual.props.children;
         expect(children).to.have.length(7);
-        expect(children[0].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[1].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[2].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[3].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[4].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[5].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
-        expect(children[6].props.onClick.__reactBoundMethod).to.equal(RequestTrumpf.prototype.chooseTrumpf);
+        children[0].props.onClick();
+        sinon.assert.calledWith(chooseTrumpfSpy, GameMode.TRUMPF, CardColor.HEARTS);
+        children[1].props.onClick();
+        sinon.assert.calledWith(chooseTrumpfSpy, GameMode.TRUMPF, CardColor.DIAMONDS);
+        children[2].props.onClick();
+        sinon.assert.calledWith(chooseTrumpfSpy, GameMode.TRUMPF, CardColor.CLUBS);
+        children[3].props.onClick();
+        sinon.assert.calledWith(chooseTrumpfSpy, GameMode.TRUMPF, CardColor.SPADES);
+        children[4].props.onClick();
+        sinon.assert.calledWith(chooseTrumpfSpy, GameMode.UNDEUFE);
+        children[5].props.onClick();
+        sinon.assert.calledWith(chooseTrumpfSpy, GameMode.OBEABE);
+        children[6].props.onClick();
+        sinon.assert.calledWith(chooseTrumpfSpy, GameMode.SCHIEBE);
+        sinon.assert.callCount(chooseTrumpfSpy, 7);
     });
 
     it('should render on Tag less if geschoben', () => {

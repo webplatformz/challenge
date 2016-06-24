@@ -9,14 +9,17 @@ import * as Card from '../../../shared/deck/card';
 
 describe('GameStore', () => {
 
-    let initialGameState;
+    let initialGameState,
+        handlePayloadSpy;
 
     beforeEach(() => {
         initialGameState = GameStore.state;
+        handlePayloadSpy = sinon.spy(GameStore, 'handlePayload');
     });
 
     afterEach(() => {
-       GameStore.state = initialGameState;
+        GameStore.state = initialGameState;
+        GameStore.handlePayload.restore();
     });
 
     it('should have initial state', () => {
@@ -37,7 +40,6 @@ describe('GameStore', () => {
     });
 
     it('should emit events in the right order with given timeout for spectator', (done) => {
-        const handlePayloadSpy = sinon.spy(GameStore, 'handlePayload');
         const gameFinishedBroadcast = {
             action: {
                 actionType: JassAppConstants.BROADCAST_GAME_FINISHED
