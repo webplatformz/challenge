@@ -6,9 +6,6 @@ import GameSetupStore from './gameSetupStore.js';
 export default React.createClass({
 
     render: function () {
-
-        console.log(this.props.setupState);
-
         const status = this.props.setupState.status;
         const chosenSession = this.props.setupState.chosenSession || {};
 
