@@ -5,7 +5,7 @@ import React from 'react';
 import Connecting from '../../../client/js/gameSetup/connecting.jsx';
 import RequestPlayerName from '../../../client/js/gameSetup/requestPlayerName.jsx';
 import ChooseSession from '../../../client/js/gameSetup/chooseSession.jsx';
-import GameSetupStore from '../../../client/js/gameSetup/gameSetupStore';
+import {default as GameSetupStore, GameSetupState} from '../../../client/js/gameSetup/gameSetupStore';
 
 import TestUtils from 'react-addons-test-utils';
 
@@ -33,16 +33,18 @@ describe('GameSetup Component', () => {
     });
 
     it('should pass the correct properties to its children', () => {
+        GameSetupStore.state.status = GameSetupState.CONNECTING;
+
         shallowRenderer.render(React.createElement(GameSetup));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual.props.children[0].props.setupState).to.equal(GameSetupStore.GameSetupState.CONNECTING);
-        expect(actual.props.children[1].props.setupState).to.equal(GameSetupStore.GameSetupState.CONNECTING);
+        expect(actual.props.children[0].props.setupState).to.equal(GameSetupState.CONNECTING);
+        expect(actual.props.children[1].props.setupState).to.equal(GameSetupState.CONNECTING);
         expect(actual.props.children[2].props.setupState).to.eql(GameSetupStore.state);
     });
 
     it('should change className when finished', () => {
-        GameSetupStore.state.status = GameSetupStore.GameSetupState.FINISHED;
+        GameSetupStore.state.status = GameSetupState.FINISHED;
 
         shallowRenderer.render(React.createElement(GameSetup));
         let actual = shallowRenderer.getRenderOutput();

@@ -64,11 +64,11 @@ describe('ChooseSession Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         let newSessionInput = actual.props.children[2].props.children;
-        expect(newSessionInput.props.onKeyPress.__reactBoundMethod).to.equal(ChooseSession.prototype.createNewSession);
+        expect(newSessionInput.props.onKeyPress).to.be.a('function');
         let newTournamentInput = actual.props.children[3].props.children;
-        expect(newTournamentInput.props.onKeyPress.__reactBoundMethod).to.equal(ChooseSession.prototype.createNewSession);
+        expect(newTournamentInput.props.onKeyPress).to.be.a('function');
         let autojoinInput = actual.props.children[4].props.children;
-        expect(autojoinInput.props.onClick.__reactBoundMethod).to.equal(ChooseSession.prototype.autojoinSession);
+        expect(autojoinInput.props.onClick).to.equal(JassActions.autojoinSession);
     });
 
     describe('createNewSession', () => {

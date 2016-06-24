@@ -23,13 +23,13 @@ export default React.createClass({
         return (
             <div className="session-choice">
                 <ul className={(!this.hasSessions(sessions)) ? 'hidden' : ''}>
-                    {sessions.map(function(session) {
+                    {sessions.map((session) => {
                         return (
                             <li key={session}>
-                                <div onClick={this.joinExistingSession.bind(null, session)}>{session}</div>
-                                <div onClick={this.joinExistingSessionAsSpectator.bind(null, session)}>S</div>
+                                <div onClick={() => this.joinExistingSession(session)}>{session}</div>
+                                <div onClick={() => this.joinExistingSessionAsSpectator(session)}>S</div>
                             </li>);
-                    }.bind(this))}
+                    })}
                 </ul>
             </div>
         )
