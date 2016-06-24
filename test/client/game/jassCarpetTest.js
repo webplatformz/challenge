@@ -28,7 +28,7 @@ describe('JassCarpet Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         let children = actual.props.children;
-        expect(children.length).to.equal(3);
+        expect(children.length).to.equal(4);
         expect(children[0].type).to.equal(PlayerNames);
         expect(children[1].type).to.equal(TableCards);
         expect(children[2].type).to.equal(Trumpf);
