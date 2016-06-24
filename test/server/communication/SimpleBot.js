@@ -24,12 +24,15 @@ let SimpleBot = {
 
         if (message.type === MessageType.REQUEST_SESSION_CHOICE.name) {
             let sessionName = 'Session 1';
+            let sessionConfig = {
+                sessionName
+            }
 
             if (this.id === 1) {
                 expect(message.data.length).to.equal(0);
-                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, sessionName)));
+                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, sessionConfig)));
             } else {
-                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, sessionName)));
+                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, sessionConfig)));
             }
         }
 

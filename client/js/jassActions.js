@@ -32,28 +32,52 @@ export default {
         });
     },
 
-    joinExistingSession: (sessionChoice) => {
+    joinExistingSession: (sessionName) => {
+        let chosenSessionPartial = {
+            sessionName,
+            joinSession: (chosenTeamIndex) => {
+                JassAppDispatcher.handleViewAction({
+                    actionType: JassAppConstants.CHOOSE_EXISTING_SESSION,
+                    data: {
+                        sessionName,
+                        chosenTeamIndex
+                    }
+                });
+            }
+        };
         JassAppDispatcher.handleViewAction({
-            actionType: JassAppConstants.CHOOSE_EXISTING_SESSION,
-            data: sessionChoice
+            actionType: JassAppConstants.CHOOSE_SESSION_PARTIAL,
+            data: chosenSessionPartial
         });
     },
 
-    joinExistingSessionAsSpectator: (sessionChoice) => {
+    joinExistingSessionAsSpectator: (sessionName) => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR,
-            data: sessionChoice
+            data: {
+                sessionName
+            }
         });
     },
 
     createNewSession: (sessionType, sessionName, asSpectator) => {
-        JassAppDispatcher.handleViewAction({
-            actionType: JassAppConstants.CREATE_NEW_SESSION,
-            data: {
-                sessionName,
-                sessionType,
-                asSpectator
+        let chosenSessionPartial = {
+            sessionName,
+            joinSession: (chosenTeamIndex) => {
+                JassAppDispatcher.handleViewAction({
+                    actionType: JassAppConstants.CREATE_NEW_SESSION,
+                    data: {
+                        sessionName,
+                        sessionType,
+                        asSpectator,
+                        chosenTeamIndex
+                    }
+                });
             }
+        };
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.CHOOSE_SESSION_PARTIAL,
+            data: chosenSessionPartial
         });
     },
 

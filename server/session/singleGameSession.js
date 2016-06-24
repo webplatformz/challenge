@@ -70,10 +70,6 @@ function createPlayer(session, webSocket, playerName, chosenTeamIndex) {
         rejectTrumpf: session.clientApi.rejectTrumpf.bind(session.clientApi, webSocket)
     });
 
-    session.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
-        session.handlePlayerLeft(player, code, message);
-    });
-
     return player;
 }
 
@@ -86,30 +82,44 @@ function insertPlayer(session, player) {
     }
 }
 
+function registerPlayerAsClient(session, webSocket, player) {
+    session.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
+        session.handlePlayerLeft(player, code, message);
+    });
+}
+
 /**
  * Only broadcast the session joined event for all players that have been placed in the right table position,
  * for lastPlayerJoined and players behind.
  * @param session the session to broadcast for
  * @param lastPlayerJoined the last player joined
  */
-function broadcastSessionJoinedForCorrectPlacedPlayers(session, lastPlayerJoined) {
+function registerClientAndBroadcastSessionJoinedForCorrectPlacedPlayers(session, webSocket, lastPlayerJoined) {
+
+    // Prepare player registration finalization (tobe called later, when player is placed on table)
+    session.finalizeRegistrationForPlayerFunctions[lastPlayerJoined.id] = () => registerClientAndBroadcastSessionJoined(session, webSocket, lastPlayerJoined);
+
+    // Finalize registration for all players that have been placed now correctly.
     for (let index = lastPlayerJoined.id; index < session.players.length; index++) {
         let player = session.players[index];
         // is in correct position?
         if (player.id === index) {
-            broadcastSessionJoined(session, player);
+            session.finalizeRegistrationForPlayerFunctions[index]();
         }
     }
 }
 
-function broadcastSessionJoined(session, player) {
+function registerClientAndBroadcastSessionJoined(session, webSocket, playerJoined) {
+
+    registerPlayerAsClient(session, webSocket, playerJoined);
+
     session.lastSessionJoin = {
         player: {
-            id: player.id,
-            name: player.name
+            id: playerJoined.id,
+            name: playerJoined.name
         },
         playersInSession: session.players
-            .filter((player, index) => player.id === index)
+            .filter((player, index) => index <= playerJoined.id)
             .map(player => {
                 return {
                     id: player.id,
@@ -139,7 +149,7 @@ const Session = {
     addPlayer(webSocket, playerName, chosenTeamIndex) {
         const player = createPlayer(this, webSocket, playerName, chosenTeamIndex);
         insertPlayer(this, player);
-        broadcastSessionJoinedForCorrectPlacedPlayers(this, player);
+        registerClientAndBroadcastSessionJoinedForCorrectPlacedPlayers(this, webSocket, player);
     },
 
     addSpectator: function addSpectator(webSocket) {
@@ -229,5 +239,6 @@ export function create(name) {
     ];
     session.clientApi = ClientApi.create();
     session.isTournament = false;
+    session.finalizeRegistrationForPlayerFunctions = {};
     return session;
 }
