@@ -59,7 +59,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         var payload = spectatorEventQueue.shift();
         if (payload) {
             this.handlePayload(payload);
-            if(payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED){
+            if (payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED) {
                 return;
             }
         }
