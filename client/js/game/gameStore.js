@@ -59,7 +59,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         var payload = spectatorEventQueue.shift();
         if (payload) {
             this.handlePayload(payload);
-            if(payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED){
+            if (payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED) {
                 return;
             }
         }
@@ -84,24 +84,22 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 spectatorRenderingIntervall = action.data;
                 break;
             case JassAppConstants.SESSION_JOINED:
-                if (action.data.playersInSession.length === 4) {
-                    let playerSeating = this.state.playerSeating,
-                        playerIndex;
+                let playerSeating = this.state.playerSeating,
+                    playerIndex;
 
-                    if (!player) {
-                        player = action.data.player;
-                        this.state.players = action.data.playersInSession;
+                if (!player) {
+                    player = action.data.player;
+                    this.state.players = action.data.playersInSession;
 
-                        playerIndex = this.state.players.findIndex((element) => {
-                            return element.id === player.id;
-                        });
-                    } else {
-                        this.state.players.push(action.data.player);
-                    }
-
-                    this.state.playerSeating = playerSeating.concat(playerSeating.splice(0, 4 - playerIndex));
-                    this.emit('change');
+                    playerIndex = this.state.players.findIndex((element) => {
+                        return element.id === player.id;
+                    });
+                } else {
+                    this.state.players.push(action.data.player);
                 }
+
+                this.state.playerSeating = playerSeating.concat(playerSeating.splice(0, 4 - playerIndex));
+                this.emit('change');
                 break;
             case JassAppConstants.BROADCAST_TEAMS:
                 this.state.status = GameState.SESSION_STARTED;
