@@ -45,14 +45,14 @@
 
 .card-horizontal {
   position: absolute;
-  margin-left: 50%;
+  left: 50%;
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
 }
 
 .card-vertical {
   position: absolute;
-  margin-top: 50%;
+  top: 50%;
   transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
 }
@@ -318,6 +318,49 @@
 
       &:hover {
         box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+
+  #lastStich {
+
+    >img {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      cursor: pointer;
+    }
+    >div{
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-75%);
+      -webkit-transform: translateX(-75%);
+      text-align: center;
+      padding: 20px;
+      z-index: 1;
+      color: white;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.8);
+      width: 250px;
+      height: 250px;
+
+      img {
+        max-width: 60px;
+      }
+
+      #closeButton {
+        top: 10px;
+        right: 0;
+        position: absolute;
+        width: 80px;
+        height: 40px;
+        filter: invert(100%);
+        -webkit-filter: invert(100%);
+        cursor: pointer;
       }
     }
   }

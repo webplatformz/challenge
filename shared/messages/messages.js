@@ -176,6 +176,16 @@ function createBroadcastTournamentStarted() {
     };
 }
 
+function createJoinBot(sessionName, chosenTeamIndex) {
+    return {
+        type: MessageType.JOIN_BOT.name,
+        data: {
+            sessionName,
+            chosenTeamIndex
+        }
+    }
+}
+
 export function create(messageType, ...data) {
     switch (messageType) {
         case MessageType.REQUEST_PLAYER_NAME.name:
@@ -224,6 +234,8 @@ export function create(messageType, ...data) {
             return createStartTournament(...data);
         case MessageType.BROADCAST_TOURNAMENT_STARTED.name:
             return createBroadcastTournamentStarted(...data);
+        case MessageType.JOIN_BOT.name:
+            return createJoinBot(...data);
         default:
             throw 'Unknown message type ' + messageType;
     }

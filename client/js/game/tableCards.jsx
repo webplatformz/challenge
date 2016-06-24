@@ -4,20 +4,19 @@ import React from 'react';
 import CollectStichHint from './collectStichHint.jsx';
 import {GameState} from './gameStore';
 
-
+let cards =[];
 export default React.createClass({
 
-    shouldComponentUpdate(nextProps){
-       return nextProps.collectStich !== false;
-    },
     render() {
-        let cards = this.props.cards || [],
-            startingPlayerIndex = this.props.startingPlayerIndex,
+        if(this.props.collectStich !== false){
+            cards = this.props.cards || [];
+        }
+        let startingPlayerIndex = this.props.startingPlayerIndex,
             playerSeating = this.props.playerSeating,
             imagePath = '/images/cards/' + this.props.cardType + '/';
         return (
             <div id="tableCards">
-                {(this.props.state === GameState.STICH) ? <CollectStichHint /> : undefined}
+                {(this.props.collectStich === false) ? <CollectStichHint /> : undefined}
                 {cards.map((card, index) => {
                     let actPlayerIndex = (startingPlayerIndex + index) % 4;
                     return (

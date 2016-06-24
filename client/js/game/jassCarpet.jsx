@@ -3,6 +3,7 @@
 import React from 'react';
 import PlayerNames from './playerNames.jsx';
 import TableCards from './tableCards.jsx';
+import LastStich from './lastStich.jsx';
 import Trumpf from './trumpf.jsx';
 
 export default React.createClass({
@@ -27,6 +28,11 @@ export default React.createClass({
                             collectStich={collectStich}
                             state={state}/>
                 <Trumpf mode={this.props.mode} color={this.props.color} cardType={cardType}/>
+                <LastStich cards={this.props.cards}
+                           state={this.props.state}
+                           cardType={cardType}
+                           playerSeating={playerSeating}
+                           startingPlayerIndex={this.props.startingPlayerIndex}/>
             </div>
         );
     }
