@@ -163,7 +163,6 @@ export const MessageType = {
                 presence: true
             },
             'data.chosenTeamIndex': {
-                presence: true,
                 inclusion: {
                     within: [0, 1]
                 }
