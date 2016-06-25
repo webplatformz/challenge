@@ -145,6 +145,10 @@ const ClientApi = {
         } catch (e) {
             Logger.error(e);
         }
+    },
+
+    subscribeMessage(client, messageType, messageHandler) {
+        ClientCommunication.on(client, messageType, messageHandler);
     }
 };
 
