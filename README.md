@@ -23,6 +23,8 @@ Installing node.js:
 
 See http://nodejs.org/download/
 
+**Windows** users need to have python installed: http://stackoverflow.com/questions/35293117/npm-install-that-requires-node-gyp-fails-on-windows
+
 Install node modules:
 ```sh
 $ npm install
