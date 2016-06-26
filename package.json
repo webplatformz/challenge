@@ -1,6 +1,6 @@
 {
   "name": "challenge",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "private": true,
   "main": "build/server/app.js",
   "engines": {
@@ -70,6 +70,6 @@
     "utf-8-validate": "1.2.1",
     "uuid": "2.0.2",
     "validate.js": "0.10.0",
-    "ws": "1.1.0"
+    "ws": "1.1.1"
   }
 }
