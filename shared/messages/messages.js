@@ -176,13 +176,10 @@ function createBroadcastTournamentStarted() {
     };
 }
 
-function createJoinBot(sessionName, chosenTeamIndex) {
+function createJoinBot(data) {
     return {
         type: MessageType.JOIN_BOT.name,
-        data: {
-            sessionName,
-            chosenTeamIndex
-        }
+        data
     }
 }
 
