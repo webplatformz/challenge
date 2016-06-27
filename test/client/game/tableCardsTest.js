@@ -3,15 +3,11 @@
 import {expect} from 'chai';
 import React from 'react';
 import {CardType} from '../../../client/js/game/gameStore';
-import * as Card from '../../../shared/deck/card';
 import {CardColor} from '../../../shared/deck/cardColor';
-
 import TestUtils from 'react-addons-test-utils';
-import CollectStichHint from '../../../client/js/game/collectStichHint.jsx';
-
 import TableCards from '../../../client/js/game/tableCards.jsx';
 
-describe.only('PlayerNames Component', () => {
+describe('PlayerNames Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
 
@@ -53,7 +49,7 @@ describe.only('PlayerNames Component', () => {
         shallowRenderer.render(React.createElement(TableCards, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let children = actual.props.children[1];
+        let children = actual.props.children.props.children;
         expect(children).to.have.length(3);
         children.forEach((actCard, index) => {
             let expectedCard = props.cards[index];
@@ -61,43 +57,6 @@ describe.only('PlayerNames Component', () => {
             expect(actCard.props.className).to.equal('card-' + props.playerSeating[(props.startingPlayerIndex + index) % 4]);
             expect(actCard.props.src).to.equal('/images/cards/' + props.cardType + '/' + expectedCard.color.toLowerCase() + '_' + expectedCard.number + '.gif');
         });
-    });
-
-    it('should not update when stich is not yet collected', () => {
-        let props = {
-            collectStich: true,
-            cards : [Card.create(9, CardColor.CLUBS), Card.create(10, CardColor.CLUBS),Card.create(11, CardColor.CLUBS),Card.create(12, CardColor.CLUBS)],
-            startingPlayerIndex:0,
-            playerSeating: ['a','b','c','d']
-        };
-
-        let renderedElement = shallowRenderer.render(React.createElement(TableCards, props));
-        expect(renderedElement.props.children[1].length).to.equal(4);
-
-        props.collectStich = false;
-        props.cards = [];
-        renderedElement = shallowRenderer.render(React.createElement(TableCards, props));
-        expect(renderedElement.props.children[1].length).to.equal(4);
-
-        props.collectStich = true;
-        renderedElement = shallowRenderer.render(React.createElement(TableCards, props));
-        expect(renderedElement.props.children[1].length).to.equal(0);
-    });
-
-    it('should render CollectStichHint when collectStich is false', () => {
-        let props = {
-            collectStich: false
-        };
-
-        let actual = shallowRenderer.render(React.createElement(TableCards, props));
-        expect(actual.props.children[0].type).to.equal(CollectStichHint);
-    });
-
-    it('should not render CollectStichHint when collectStich is not equal false', () => {
-        let props = {};
-
-        let actual = shallowRenderer.render(React.createElement(TableCards, props));
-        expect(actual.props.children[0]).to.equal(undefined);
     });
 
 });
