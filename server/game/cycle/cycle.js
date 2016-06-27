@@ -28,7 +28,7 @@ const Cycle = {
         function broadcastAndReturnWinner(playedCards) {
             let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
             let winnerTeam = winner.team;
-            let looserTeam = that.players.filter((player) => {
+            let loserTeam = that.players.filter((player) => {
                 return player.team !== winner.team;
             })[0].team;
             let actPoints = Counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
@@ -41,16 +41,16 @@ const Cycle = {
                 winnerTeam.points += lastStichPoints;
                 winnerTeam.currentRoundPoints += lastStichPoints;
 
-                if (looserTeam.currentRoundPoints === 0) {
+                if (loserTeam.currentRoundPoints === 0) {
                     var matchPoints = Counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
                     winnerTeam.points += matchPoints;
                     winnerTeam.currentRoundPoints += matchPoints;
                 }
 
                 that.clientApi.broadcastStich(createStichMessage(winner));
-                that.clientApi.broadcastGameFinished([winnerTeam, looserTeam]);
+                that.clientApi.broadcastGameFinished([winnerTeam, loserTeam]);
                 winnerTeam.currentRoundPoints = 0;
-                looserTeam.currentRoundPoints = 0;
+                loserTeam.currentRoundPoints = 0;
             } else {
                 that.clientApi.broadcastStich(createStichMessage(winner));
             }
