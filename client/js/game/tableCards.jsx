@@ -36,7 +36,7 @@ export default React.createClass({
                     transitionAppear={true}
                     transitionName="cards"
                     transitionEnterTimeout={200}
-                    transitionLeaveTimeout={500}>
+                    transitionLeaveTimeout={2500}>
                 {mappedCards}
                 </ReactCSSTransitionGroup>
             </div>
