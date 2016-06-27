@@ -16,6 +16,7 @@ export default React.createClass({
                 <div className="team-choice">
                     <button type="button" onClick={() => chosenSession.joinSession(0)}>Team 1</button>
                     <button type="button" onClick={() => chosenSession.joinSession(1)}>Team 2</button>
+                    <button type="button" onClick={() => chosenSession.joinSession()}>Join any team</button>
                 </div>
             </div>
         );

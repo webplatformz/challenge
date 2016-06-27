@@ -73,6 +73,12 @@ describe('ChooseTeam Component', () => {
             sinon.assert.calledOnce(chooseTeam2Spy);
         });
 
+        it('should call joinSession for undefined team when team any button is pressed', () => {
+            teamButtons[2].props.onClick();
+            sinon.assert.calledOnce(joinSessionSpy);
+            sinon.assert.calledWithExactly(joinSessionSpy);
+        });
+
     });
 
 });
