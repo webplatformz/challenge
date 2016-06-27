@@ -196,6 +196,33 @@
       left: @cardSpacer;
     }
 
+    .cards-enter {
+      opacity: 0.01;
+    }
+
+    .cards-enter.cards-enter-active {
+      opacity: 1;
+      transition: opacity 500ms ease-in;
+    }
+
+    .cards-leave {
+      opacity: 1;
+    }
+
+    .cards-leave.cards-leave-active {
+      opacity: 0.1;
+      transition: opacity 300ms ease-in, transform 300ms ease-in;
+    }
+
+    .cards-appear {
+      opacity: 0.01;
+    }
+
+    .cards-appear.cards-appear-active {
+      opacity: 1;
+      transition: opacity .5s ease-in;
+    }
+
     img {
       max-width: 120px;
     }
