@@ -11,7 +11,6 @@ import {MessageType} from '../shared/messages/messageType';
 import {SessionChoice} from '../shared/session/sessionChoice';
 
 let JassBot = {
-    gameType: GameType.create(GameMode.TRUMPF, CardColor.SPADES),
 
     onMessage(messageJson) {
         let message = JSON.parse(messageJson);
@@ -22,15 +21,16 @@ let JassBot = {
 
         if (message.type === MessageType.REQUEST_SESSION_CHOICE.name) {
             if (this.sessionName) {
-                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, {
-                    sessionChoice: SessionChoice.JOIN_EXISTING,
-                    sessionName: this.sessionName,
-                    chosenTeamIndex: this.teamToJoin
-                })));
+                this.client.send(JSON.stringify(messages.create(
+                    MessageType.CHOOSE_SESSION.name,
+                    SessionChoice.JOIN_EXISTING,
+                    {
+                        sessionName: this.sessionName,
+                        chosenTeamIndex: this.teamToJoin
+                    }
+                )));
             } else {
-                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, {
-                    sessionChoice: SessionChoice.AUTOJOIN
-                })));
+                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN)));
             }
         }
 
@@ -48,6 +48,16 @@ let JassBot = {
         if (message.type === MessageType.REQUEST_TRUMPF.name) {
             let chooseTrumpfResponse = messages.create(MessageType.CHOOSE_TRUMPF.name, this.gameType);
             this.client.send(JSON.stringify(chooseTrumpfResponse));
+        }
+
+        if (message.type === MessageType.REJECT_CARD.name) {
+            throw new Error(`Played invalid card: ${JSON.stringify(message.data)}.\nAvailbable cards: ${JSON.stringify(this.handcards)}`);
+        }
+
+        if (message.type === MessageType.BROADCAST_TRUMPF.name) {
+            if (message.data.mode !== GameMode.SCHIEBE) {
+                this.gameType = GameType.create(message.data.mode, message.data.trumpfColor);
+            }
         }
     },
 
@@ -78,5 +88,6 @@ export function create(name, url = 'ws://localhost:3000', sessionName, teamToJoi
     clientBot.name = name;
     clientBot.sessionName = sessionName;
     clientBot.teamToJoin = teamToJoin;
+    clientBot.gameType = GameType.create(GameMode.TRUMPF, CardColor.SPADES);
     return clientBot;
 }
