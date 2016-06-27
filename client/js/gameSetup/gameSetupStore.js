@@ -62,19 +62,18 @@ JassAppDispatcher.register(function (payload) {
             GameSetupStore.emitChange();
             break;
         case JassAppConstants.SESSION_JOINED:
-            if (action.data.playersInSession.length === 4) {
-                GameSetupStore.state.status = GameSetupState.FINISHED;
+            if (GameSetupStore.state.status !== GameSetupState.FINISHED) {
+                if (action.data.playersInSession.length === 4) {
+                    GameSetupStore.state.status = GameSetupState.FINISHED;
+                } else {
+                    GameSetupStore.state.status = GameSetupState.WAIT_FOR_PLAYERS;
+                }
+                GameSetupStore.emitChange();
             }
-            else {
-                GameSetupStore.state.status = GameSetupState.WAIT_FOR_PLAYERS;
-            }
-            GameSetupStore.emitChange();
             break;
         case JassAppConstants.BROADCAST_TOURNAMENT_RANKING_TABLE:
-            GameSetupStore.state.status = GameSetupState.FINISHED;
-            GameSetupStore.emitChange();
-            break;
         case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
+        case JassAppConstants.AUTOJOIN_SESSION:
             GameSetupStore.state.status = GameSetupState.FINISHED;
             GameSetupStore.emitChange();
             break;
