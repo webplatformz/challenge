@@ -7,6 +7,7 @@ import * as Game from '../../../server/game/game.js';
 import * as TestDataCreator from '../../testDataCreator';
 import CloseEventCode from '../../../server/communication/closeEventCode';
 import {SessionType} from '../../../shared/session/sessionType';
+import {MessageType} from "../../../shared/messages/messageType";
 
 describe('Session', function () {
     let session,
@@ -66,7 +67,6 @@ describe('Session', function () {
         }
 
         it('should add players in order to alternating teams', () => {
-
             expectClientApiMockToAdd4Players();
 
             session.addPlayer(webSocketDummy, playerName0);
@@ -83,7 +83,6 @@ describe('Session', function () {
         });
 
         it('should add players to chosen teams', () => {
-
             expectClientApiMockToAdd4Players();
 
             session.addPlayer(webSocketDummy, playerName0, team2);
@@ -99,8 +98,7 @@ describe('Session', function () {
             clientApiMock.verify();
         });
 
-        it('player choosing an allready full team should get assigned to a free team slot', () => {
-
+        it('should assign first free team slot to player choosing full team', () => {
             expectClientApiMockToAdd4Players();
 
             session.addPlayer(webSocketDummy, playerName0, team2);
@@ -114,11 +112,9 @@ describe('Session', function () {
             expectPlayerInTeam(3, playerName2, team2);
 
             clientApiMock.verify();
-
         });
 
-        it('player choosing no team should get assigned to first free team slot', () => {
-
+        it('should assign first free team slot to player when no team chosen', () => {
             expectClientApiMockToAdd4Players();
 
             session.addPlayer(webSocketDummy, playerName0, team2);
@@ -132,7 +128,6 @@ describe('Session', function () {
             expectPlayerInTeam(3, playerName3, team2);
 
             clientApiMock.verify();
-
         });
 
 
@@ -170,6 +165,21 @@ describe('Session', function () {
                 clientApiMock.verify();
                 done();
             }, 1);
+        });
+
+        it('should assign first free team slot to player when no team chosen', () => {
+            expectClientApiMockToAdd4Players();
+
+            clientApiMock.expects('subscribeMessage').exactly(4).withExactArgs(webSocketDummy, MessageType.JOIN_BOT, sinon.match.func);
+
+            session.addPlayer(webSocketDummy, playerName0);
+            session.addPlayer(webSocketDummy, playerName1);
+            session.addPlayer(webSocketDummy, playerName2);
+            session.addPlayer(webSocketDummy, playerName3);
+
+            expect(session.joinBotListeners.length).to.equal(4);
+
+            clientApiMock.verify();
         });
     });
 
@@ -275,6 +285,24 @@ describe('Session', function () {
                 done();
             }).catch(done);
         });
+
+        it('should unbind all joinBotListeners', () => {
+            const game = {
+                start: function () {
+                    return Promise.resolve();
+                }
+            };
+            const unbindSpy = sinon.spy();
+
+            gameFactoryMock.expects('create').returns(game);
+            session.joinBotListeners.push(unbindSpy);
+            session.players = fourPlayers;
+
+            session.start();
+
+            sinon.assert.calledOnce(unbindSpy);
+        });
+
 
         it('should finish a game and check better team wins', (done) => {
             let game = {

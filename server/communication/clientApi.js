@@ -148,7 +148,7 @@ const ClientApi = {
     },
 
     subscribeMessage(client, messageType, messageHandler) {
-        ClientCommunication.on(client, messageType, messageHandler);
+        return ClientCommunication.on(client, messageType, messageHandler);
     }
 };
 
