@@ -1,8 +1,9 @@
 'use strict';
 
 import React from 'react';
-import CollectStichHint from './collectStichHint.jsx';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {GameState} from "./gameStore";
+import JassActions from "../jassActions";
 
 let cards =[],
     startingPlayerIndex,
@@ -15,6 +16,10 @@ export default React.createClass({
             cards = this.props.cards || [];
             startingPlayerIndex = this.props.startingPlayerIndex;
             playerSeating = this.props.playerSeating;
+        }
+
+        if(this.props.state === GameState.STICH) {
+            setTimeout(() => JassActions.collectStich(), 2000);
         }
 
         let imagePath = '/images/cards/' + this.props.cardType + '/';
@@ -31,12 +36,10 @@ export default React.createClass({
 
         return (
             <div id="tableCards">
-                {(this.props.collectStich === false) ? <CollectStichHint /> : undefined}
                 <ReactCSSTransitionGroup
-                    transitionAppear={true}
                     transitionName="cards"
-                    transitionEnterTimeout={200}
-                    transitionLeaveTimeout={2500}>
+                    transitionEnterTimeout={150}
+                    transitionLeaveTimeout={500}>
                 {mappedCards}
                 </ReactCSSTransitionGroup>
             </div>
