@@ -15,6 +15,14 @@ import ChooseSession from '../../../client/js/gameSetup/chooseSession.jsx';
 describe('ChooseSession Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
+    let createNewSessionSpy; 
+    beforeEach(() => {
+        createNewSessionSpy = sinon.spy(JassActions, 'createNewSession');
+    });
+
+    afterEach(() => {
+        JassActions.createNewSession.restore();
+    })
 
     it('should render a div element with id chooseSession and class hidden', () => {
         shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupStore.GameSetupState.CONNECTING }}));
@@ -64,9 +72,13 @@ describe('ChooseSession Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         let newSessionInput = actual.props.children[2].props.children;
-        expect(newSessionInput.props.onKeyPress).to.be.a('function');
-        let newTournamentInput = actual.props.children[3].props.children;
-        expect(newTournamentInput.props.onKeyPress).to.be.a('function');
+        newSessionInput.props.onKeyPress({target:{value:'testSingle'}, charCode:13});
+        sinon.assert.calledWith(createNewSessionSpy, SessionType.SINGLE_GAME, 'testSingle', false);
+
+        let newTournamentInput = actual.props.children[3].props.children;       
+        newTournamentInput.props.onKeyPress({target:{value:'testTournament'}, charCode:13});
+        sinon.assert.calledWith(createNewSessionSpy, SessionType.TOURNAMENT, 'testTournament', true);
+
         let autojoinInput = actual.props.children[4].props.children;
         expect(autojoinInput.props.onClick).to.equal(JassActions.autojoinSession);
     });
@@ -77,18 +89,9 @@ describe('ChooseSession Component', () => {
                     value: ''
                 }
             },
-            asSpectator = true,
-            createNewSessionSpy;
+            asSpectator = true;
 
         let createNewSession = ChooseSession.prototype.createNewSession;
-
-        beforeEach(() => {
-            createNewSessionSpy = sinon.stub(JassActions, 'createNewSession');
-        });
-
-        afterEach(() => {
-            JassActions.createNewSession.restore();
-        });
 
         it('should not start action with keypress which is not Enter', () => {
             eventDummy.charCode = 99;
