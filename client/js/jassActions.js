@@ -50,6 +50,16 @@ export default {
             data: chosenSessionPartial
         });
     },
+    
+    joinBot: (sessionName, chosenTeamIndex) => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.JOIN_BOT,
+            data: {
+                sessionName,
+                chosenTeamIndex
+            }
+        })
+    },
 
     joinExistingSessionAsSpectator: (sessionName) => {
         JassAppDispatcher.handleViewAction({

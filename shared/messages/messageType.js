@@ -152,5 +152,21 @@ export const MessageType = {
     },
     BROADCAST_TOURNAMENT_STARTED: {
         name: 'BROADCAST_TOURNAMENT_STARTED'
+    },
+    JOIN_BOT: {
+        name: 'JOIN_BOT',
+        constraints: {
+            'type': {
+                presence: true
+            },
+            'data.sessionName': {
+                presence: true
+            },
+            'data.chosenTeamIndex': {
+                inclusion: {
+                    within: [0, 1]
+                }
+            }
+        }
     }
 };

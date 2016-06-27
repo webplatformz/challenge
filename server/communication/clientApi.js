@@ -54,7 +54,7 @@ const ClientApi = {
 
     requestPlayerName(client) {
         return ClientCommunication.request(client, MessageType.REQUEST_PLAYER_NAME.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_PLAYER_NAME));
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_PLAYER_NAME, message, resolve, reject));
     },
 
     broadcastTeams(teams) {
@@ -67,7 +67,7 @@ const ClientApi = {
 
     requestTrumpf(client, pushed) {
         return ClientCommunication.request(client, MessageType.REQUEST_TRUMPF.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_TRUMPF),
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_TRUMPF, message, resolve, reject),
             pushed);
     },
 
@@ -97,7 +97,7 @@ const ClientApi = {
 
     requestCard(client, cardsOnTable) {
         return ClientCommunication.request(client, MessageType.REQUEST_CARD.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_CARD),
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_CARD, message, resolve, reject),
             cardsOnTable);
     },
 
@@ -107,7 +107,7 @@ const ClientApi = {
 
     requestSessionChoice(client, availableSessions) {
         return ClientCommunication.request(client, MessageType.REQUEST_SESSION_CHOICE.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_SESSION),
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_SESSION, message, resolve, reject),
             availableSessions);
     },
 
@@ -145,6 +145,10 @@ const ClientApi = {
         } catch (e) {
             Logger.error(e);
         }
+    },
+
+    subscribeMessage(client, messageType, messageHandler) {
+        return ClientCommunication.on(client, messageType, messageHandler);
     }
 };
 

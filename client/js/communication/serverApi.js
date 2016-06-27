@@ -93,6 +93,8 @@ let ServerApi = {
                     break;
                 case JassAppConstants.START_TOURNAMENT:
                     sendJSONMessageToClient(MessageType.START_TOURNAMENT.name);
+                case JassAppConstants.JOIN_BOT:
+                    sendJSONMessageToClient(MessageType.JOIN_BOT.name, action.data);
             }
         }
     },

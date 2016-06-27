@@ -18,6 +18,27 @@ const ClientCommunication = {
         }
     },
 
+    on(client, messageType, messageHandler) {
+        function handleMessage(message) {
+            let messageObject = ClientCommunication.fromJSON(message);
+
+            if (messageObject.type === messageType.name) {
+                Logger.debug('<-- Received Message: ' + message);
+
+                const validationResult = validate(messageObject, messageType.constraints);
+                if (validationResult) {
+                    ClientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationResult);
+                } else {
+                    messageHandler(messageObject);
+                }
+            }
+        }
+
+        client.on('message', handleMessage);
+
+        return () => client.removeListener('message', handleMessage);
+    },
+
     await(client, expectedMessageType) {
         return new Promise((resolve, reject) => {
             client.on('message', function handleMessage(message) {
@@ -25,15 +46,14 @@ const ClientCommunication = {
 
                 if (messageObject.type === expectedMessageType.name) {
                     Logger.debug('<-- Received Message: ' + message);
-                    let validationResult = validate(messageObject, expectedMessageType.constraints);
 
+                    const validationResult = validate(messageObject, expectedMessageType.constraints);
                     if (validationResult) {
                         ClientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationResult);
                         reject(validationResult);
                     } else {
                         resolve(messageObject);
                     }
-
                     client.removeListener('message', handleMessage);
                 }
             });

@@ -6,6 +6,8 @@ import * as Player from '../game/player/player';
 import * as Team from '../game/player/team';
 import {SessionType} from '../../shared/session/sessionType';
 import SessionHandler from './sessionHandler';
+import {MessageType} from '../../shared/messages/messageType';
+import {startRandomBot} from "../bot/botStarter";
 
 function createTeamsArrayForClient(session) {
     return session.teams.map((team) => {
@@ -62,15 +64,13 @@ function createPlayer(session, webSocket, playerName, chosenTeamIndex) {
     team.name = `${team.name} ${playerName}`;
 
     // Create player
-    let player = Player.create(team, playerName, playerId, {
+    return Player.create(team, playerName, playerId, {
         dealCards: session.clientApi.dealCards.bind(session.clientApi, webSocket),
         requestTrumpf: session.clientApi.requestTrumpf.bind(session.clientApi, webSocket),
         requestCard: session.clientApi.requestCard.bind(session.clientApi, webSocket),
         rejectCard: session.clientApi.rejectCard.bind(session.clientApi, webSocket),
         rejectTrumpf: session.clientApi.rejectTrumpf.bind(session.clientApi, webSocket)
     });
-
-    return player;
 }
 
 function insertPlayer(session, player) {
@@ -150,25 +150,32 @@ const Session = {
         const player = createPlayer(this, webSocket, playerName, chosenTeamIndex);
         insertPlayer(this, player);
         registerClientAndBroadcastSessionJoinedForCorrectPlacedPlayers(this, webSocket, player);
+
+        this.joinBotListeners.push(this.clientApi.subscribeMessage(webSocket, MessageType.JOIN_BOT, (message) => {
+            message.data.url = `ws://localhost:${process.env.PORT || 3000}`;
+            startRandomBot(message.data);
+        }));
     },
 
-    addSpectator: function addSpectator(webSocket) {
+    addSpectator(webSocket) {
         this.clientApi.addClient(webSocket);
         this.clientApi.sessionJoined(webSocket, this.name, this.lastSessionJoin.player, this.lastSessionJoin.playersInSession);
     },
 
-    isComplete: function isComplete() {
+    isComplete() {
         return this.players.length === 4;
     },
 
-    getNextStartingPlayer: function getNextStartingPlayer() {
+    getNextStartingPlayer() {
         return this.startingPlayer++ % 4;
     },
 
-    start: function start() {
+    start() {
         if (!this.isComplete()) {
             throw 'Not enough players to start game!';
         }
+
+        this.joinBotListeners.forEach(joinBotListener => joinBotListener());
 
         this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
 
@@ -185,7 +192,7 @@ const Session = {
         return this.gamePromise;
     },
 
-    gameCycle: function gameCycle(nextStartingPlayer = this.getNextStartingPlayer()) {
+    gameCycle(nextStartingPlayer = this.getNextStartingPlayer()) {
         let players = this.players.slice();
         let game = Game.create(players, this.maxPoints, this.players[nextStartingPlayer], this.clientApi);
 
@@ -207,7 +214,7 @@ const Session = {
         });
     },
 
-    close: function close(message) {
+    close(message) {
         this.clientApi.closeAll(message);
     },
 
@@ -240,5 +247,6 @@ export function create(name) {
     session.clientApi = ClientApi.create();
     session.isTournament = false;
     session.finalizeRegistrationForPlayerFunctions = {};
+    session.joinBotListeners = [];
     return session;
 }
