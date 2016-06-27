@@ -4,30 +4,41 @@ import React from 'react';
 import CollectStichHint from './collectStichHint.jsx';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import {GameState} from './gameStore';
+let cards =[],
+    startingPlayerIndex,
+    playerSeating;
 
-let cards =[];
 export default React.createClass({
 
     render() {
         if(this.props.collectStich !== false){
             cards = this.props.cards || [];
+            startingPlayerIndex = this.props.startingPlayerIndex;
+            playerSeating = this.props.playerSeating;
         }
-        let startingPlayerIndex = this.props.startingPlayerIndex,
-            playerSeating = this.props.playerSeating,
-            imagePath = '/images/cards/' + this.props.cardType + '/';
+
+        let imagePath = '/images/cards/' + this.props.cardType + '/';
+
+
+        const mappedCards = cards.map((card, index) => {
+            let actPlayerIndex = (startingPlayerIndex + index) % 4;
+            return (
+                <img key={card.color + '_' + card.number}
+                     className={'card-' + playerSeating[actPlayerIndex]}
+                     src={imagePath + card.color.toLowerCase() + '_' + card.number + '.gif'} />
+            );
+        });
+
         return (
             <div id="tableCards">
                 {(this.props.collectStich === false) ? <CollectStichHint /> : undefined}
-                <ReactCSSTransitionGroup transitionName="cards" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-                {cards.map((card, index) => {
-                    let actPlayerIndex = (startingPlayerIndex + index) % 4;
-                    return (
-                        <img key={card.color + '_' + card.number} className={'card-' + playerSeating[actPlayerIndex]} src={imagePath + card.color.toLowerCase() + '_' + card.number + '.gif'} />
-                    );
-                })}
+                <ReactCSSTransitionGroup
+                    transitionAppear={true}
+                    transitionName="cards"
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={500}>
+                {mappedCards}
                 </ReactCSSTransitionGroup>
-
             </div>
         );
     }

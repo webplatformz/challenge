@@ -11,7 +11,7 @@ import CollectStichHint from '../../../client/js/game/collectStichHint.jsx';
 
 import TableCards from '../../../client/js/game/tableCards.jsx';
 
-describe('PlayerNames Component', () => {
+describe.only('PlayerNames Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
 
@@ -46,7 +46,8 @@ describe('PlayerNames Component', () => {
                 'bottom',
                 'left'
             ],
-            cardType: CardType.GERMAN
+            cardType: CardType.GERMAN,
+            collectStich: true
         };
 
         shallowRenderer.render(React.createElement(TableCards, props));
