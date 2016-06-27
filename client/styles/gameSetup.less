@@ -113,6 +113,20 @@
     }
   }
 
+  #waitForPlayers {
+    .addBots {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: stretch;
+      max-width: 500px;
+      margin: 0 auto;
+
+      button {
+        flex-grow: 1;
+      }
+    }
+  }
+
   &.finished {
     transform: translateY(-100%);
     -webkit-transform: translateY(-100%);

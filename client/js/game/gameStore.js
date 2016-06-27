@@ -33,7 +33,7 @@ let player,
 let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
     state: {
         playerType: PlayerType.PLAYER,
-        cardType: CardType.FRENCH,
+        cardType: localStorage.getItem('cardType') || CardType.FRENCH,
         players: [],
         teams: [],
         playerSeating: ['bottom', 'right', 'top', 'left'],
@@ -59,7 +59,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         var payload = spectatorEventQueue.shift();
         if (payload) {
             this.handlePayload(payload);
-            if(payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED){
+            if (payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED) {
                 return;
             }
         }
@@ -128,6 +128,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 break;
             case JassAppConstants.CHANGE_CARD_TYPE:
                 this.state.cardType = action.data;
+                localStorage.setItem('cardType', action.data);
                 this.emit('change');
                 break;
             case JassAppConstants.REQUEST_CARD:
