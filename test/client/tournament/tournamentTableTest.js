@@ -62,7 +62,7 @@ describe('Tournament table Component', () => {
         shallowRenderer.render(React.createElement(TournamentTable, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let button = actual.props.children[4];
+        let button = actual.props.children[5];
         expect(button.type).to.equal('button');
         expect(button.props.onClick).to.equal(JassActions.startTournament);
     });
@@ -73,14 +73,14 @@ describe('Tournament table Component', () => {
         shallowRenderer.render(React.createElement(TournamentTable, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        expect(actual.props.children[4]).to.equal(undefined);
+        expect(actual.props.children[5]).to.equal(undefined);
     });
 
     it('should render table with rankings', () => {
         shallowRenderer.render(React.createElement(TournamentTable, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let rankingRows = actual.props.children[1].props.children[1].props.children;
+        let rankingRows = actual.props.children[2].props.children[1].props.children;
         rankingRows.forEach((rankingRow, index) => {
             let ranking = props.rankingTable.ranking[index];
 
@@ -94,7 +94,7 @@ describe('Tournament table Component', () => {
         shallowRenderer.render(React.createElement(TournamentTable, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let pairingRows = actual.props.children[3].props.children;
+        let pairingRows = actual.props.children[4].props.children;
         pairingRows.forEach((rankingRow, index) => {
             let pairing = props.rankingTable.pairingResults[index];
 

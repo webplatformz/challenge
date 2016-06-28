@@ -36,7 +36,8 @@ describe('sessionHandler', () => {
             sessionMock = sinon.mock(session);
             webSocket = {
                 ping: () => {
-                }
+                },
+                on:() => {}
             };
         });
 
