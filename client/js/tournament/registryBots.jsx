@@ -1,11 +1,12 @@
 'use strict';
 
 import React from 'react';
+import JassActions from '../jassActions.js';
 
 export default React.createClass({
 
     addBotFromRegistry(bot) {
-        console.log('add bot');
+        JassActions.addBotFromRegistry(bot);
     },
 
     render() {

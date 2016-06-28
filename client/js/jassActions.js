@@ -219,6 +219,13 @@ export default {
             data: registryBots
         });
     },
+    
+    addBotFromRegistry: (bot) => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.ADD_BOT_FROM_REGISTRY,
+            data: bot
+        });
+    },
 
     broadcastTournamentStarted: () => {
         JassAppDispatcher.handleServerAction({

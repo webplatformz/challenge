@@ -172,6 +172,9 @@ export const MessageType = {
     REQUEST_REGISTRY_BOTS: {
         name: 'REQUEST_REGISTRY_BOTS'
     },
+    ADD_BOT_FROM_REGISTRY: {
+        name: 'ADD_BOT_FROM_REGISTRY'
+    },
     SEND_REGISTRY_BOTS: {
         name: 'SEND_REGISTRY_BOTS'
     }
