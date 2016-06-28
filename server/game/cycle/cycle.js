@@ -62,6 +62,7 @@ const Cycle = {
             return {
                 name: winner.name,
                 id: winner.id,
+                seatId: winner.seatId,
                 playedCards: that.playedCards,
                 teams: [
                     winner.team,

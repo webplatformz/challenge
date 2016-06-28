@@ -57,20 +57,33 @@ function createPlayer(session, webSocket, playerName, chosenTeamIndex) {
     // Calculate team and player index (depending on chosen team or assign one)
     const teamIndex = assignTeamIndex(session, chosenTeamIndex);
     const playersInTeam = getPlayersInTeam(session, session.teams[teamIndex]).length;
-    const playerId = (playersInTeam * 2) + teamIndex;
+    const seatId = (playersInTeam * 2) + teamIndex;
+    const playerId = seatId;
 
     // Adjust player's team name
     let team = session.teams[teamIndex];
     team.name = `${team.name} ${playerName}`;
 
     // Create player
-    return Player.create(team, playerName, playerId, {
+    return Player.create(team, playerName, playerId, seatId, {
         dealCards: session.clientApi.dealCards.bind(session.clientApi, webSocket),
         requestTrumpf: session.clientApi.requestTrumpf.bind(session.clientApi, webSocket),
         requestCard: session.clientApi.requestCard.bind(session.clientApi, webSocket),
         rejectCard: session.clientApi.rejectCard.bind(session.clientApi, webSocket),
         rejectTrumpf: session.clientApi.rejectTrumpf.bind(session.clientApi, webSocket)
     });
+}
+
+// from http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+function generateUuid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
 }
 
 function insertPlayer(session, player) {
