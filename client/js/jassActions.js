@@ -50,7 +50,7 @@ export default {
             data: chosenSessionPartial
         });
     },
-    
+
     joinBot: (sessionName, chosenTeamIndex) => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.JOIN_BOT,
@@ -207,16 +207,29 @@ export default {
         });
     },
 
+    requestRegistryBots: () => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.REQUEST_REGISTRY_BOTS
+        });
+    },
+
+    sendRegistryBots: (registryBots) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.SEND_REGISTRY_BOTS,
+            data: registryBots
+        });
+    },
+
     broadcastTournamentStarted: () => {
         JassAppDispatcher.handleServerAction({
             actionType: JassAppConstants.BROADCAST_TOURNAMENT_STARTED
         });
     },
-    
+
     collectStich() {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.COLLECT_STICH
         });
     }
-    
+
 };

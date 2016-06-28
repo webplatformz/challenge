@@ -31,7 +31,6 @@ function resolveCorrectMessageOrReject(client, expectedMessageType, message, res
 const ClientApi = {
     addClient(client) {
         this.clients.push(client);
-
         return new Promise((resolve, reject) => {
             client.on('close', (code, message) => {
                 this.clients = this.clients.filter((actClient) => {
@@ -126,7 +125,9 @@ const ClientApi = {
     sendTournamentRankingTable(client, rankingTable) {
         ClientCommunication.send(client, MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name, rankingTable);
     },
-
+    sendRegistryBots(client, registryBots){
+        ClientCommunication.send(client, MessageType.SEND_REGISTRY_BOTS.name, registryBots);
+    },
     waitForTournamentStart(client) {
         return ClientCommunication.await(client, MessageType.START_TOURNAMENT);
     },

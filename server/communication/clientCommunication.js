@@ -31,6 +31,8 @@ const ClientCommunication = {
                 } else {
                     messageHandler(messageObject);
                 }
+            } else {
+                Logger.debug('in else case omg');
             }
         }
 

@@ -46,6 +46,10 @@ JassAppDispatcher.register(function (payload){
             JassAppStore.state.tournamentStarted = true;
             JassAppStore.emitChange();
             break;
+        case JassAppConstants.SEND_REGISTRY_BOTS:
+            JassAppStore.state.registryBots = action.data;
+            JassAppStore.emitChange();
+            break;
     }
 });
 

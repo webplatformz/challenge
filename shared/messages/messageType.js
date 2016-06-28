@@ -168,5 +168,11 @@ export const MessageType = {
                 }
             }
         }
+    },
+    REQUEST_REGISTRY_BOTS: {
+        name: 'REQUEST_REGISTRY_BOTS'
+    },
+    SEND_REGISTRY_BOTS: {
+        name: 'SEND_REGISTRY_BOTS'
     }
 };

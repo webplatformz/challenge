@@ -5,6 +5,8 @@ import * as SessionFactory from './sessionFactory';
 import {SessionChoice} from '../../shared/session/sessionChoice.js';
 import {SessionType} from '../../shared/session/sessionType.js';
 import nameGenerator from 'docker-namesgenerator';
+import {MessageType} from "../../shared/messages/messageType";
+import {Logger} from "../logger";
 
 let clientApi = ClientApi.create();
 
@@ -90,7 +92,9 @@ const SessionHandler = {
 
                 if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR || sessionChoiceResponse.asSpectator) {
                     session.addSpectator(ws);
-
+                    clientApi.subscribeMessage(ws, MessageType.REQUEST_REGISTRY_BOTS, (message) => {
+                        clientApi.sendRegistryBots(ws, ['a','b','c','d']);
+                    });
                     if (session.type === SessionType.TOURNAMENT) {
                         clientApi.waitForTournamentStart(ws).then(handleTournamentStart.bind(null, this, ws, session));
                     }
@@ -114,7 +118,7 @@ const SessionHandler = {
         session.close('Game Finished');
         this.removeSession(session);
     },
-    
+
     removeSession(session) {
         let index = this.sessions.indexOf(session);
         this.sessions.splice(index, 1);
