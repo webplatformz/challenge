@@ -26,6 +26,16 @@ export const PlayerType = {
     SPECTATOR: 'SPECTATOR'
 };
 
+function emptyPlayer (emptyPlayerId) {
+    return {
+        id: emptyPlayerId + '',
+        seatId: emptyPlayerId,
+        name: "Waiting for player..."
+    };
+};
+
+const emptyPlayersTable = [emptyPlayer(0), emptyPlayer(1), emptyPlayer(2), emptyPlayer(3)];
+
 let player,
     spectatorEventQueue = [],
     spectatorRenderingIntervall = 500;
@@ -92,12 +102,9 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                     playerIndex = player.seatId;
                 }
 
-                var playersFromBroadcast = action.data.playersInSession;
-                var allSeats = [emptyPlayer(), emptyPlayer(), emptyPlayer(), emptyPlayer()];
-                playersFromBroadcast.forEach(player => {
-                   allSeats[player.seatId] = player;
+                this.state.players = emptyPlayersTable.map(player => {
+                    return action.data.playersInSession.find(p => p.seatId === player.seatId) || player;
                 });
-                this.state.players = allSeats;
 
                 this.state.playerSeating = playerSeating.concat(playerSeating.splice(0, 4 - playerIndex));
                 this.emit('change');
@@ -203,11 +210,3 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 JassAppDispatcher.register(GameStore.handleAction.bind(GameStore));
 
 export default GameStore;
-
-var emptyPlayer = function () {
-    var emptyPlayer = {
-        id: (Math.random() * 100000),
-        name: "Waiting for player..."
-    };
-    return emptyPlayer;
-};
