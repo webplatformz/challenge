@@ -22,6 +22,11 @@ describe('GameStore', () => {
         GameStore.handlePayload.restore();
     });
 
+    const filterEmptyPlayer = function(gamestoreState) {
+        return gamestoreState.players.filter(player => player.name != 'Waiting for player...');
+    };
+
+
     it('should have initial state', () => {
         let state = GameStore.state;
 
@@ -81,16 +86,19 @@ describe('GameStore', () => {
                 data: {
                     player: {
                         name: 'Player 1',
-                        id: 1
+                        seatId: 1,
+                        id: "1"
                     },
                     playersInSession: [
                         {
                             name: 'Player 0',
-                            id: 0
+                            id: "0",
+                            seatId: 0
                         },
                         {
                             name: 'Player 1',
-                            id: 1
+                            id: "1",
+                            seatId: 1
                         }
                     ]
                 }
@@ -99,7 +107,7 @@ describe('GameStore', () => {
 
         GameStore.handleAction(dummyPayload);
 
-        expect(GameStore.state.players).to.eql(dummyPayload.action.data.playersInSession);
+        expect(filterEmptyPlayer(GameStore.state)).to.eql(dummyPayload.action.data.playersInSession);
         expect(GameStore.state.playerSeating).to.eql(['left', 'bottom', 'right', 'top']);
 
         let dummyPayload2 = {
@@ -108,20 +116,24 @@ describe('GameStore', () => {
                 data: {
                     player: {
                         name: 'Player 2',
-                        id: 2
+                        id: "2",
+                        seatId: 2
                     },
                     playersInSession: [
                         {
                             name: 'Player 0',
-                            id: 0
+                            id: "0",
+                            seatId: 0
                         },
                         {
                             name: 'Player 1',
-                            id: 1
+                            id: "1",
+                            seatId: 1
                         },
                         {
                             name: 'Player 2',
-                            id: 2
+                            id: "2",
+                            seatId: 2
                         }
                     ]
                 }
@@ -130,7 +142,7 @@ describe('GameStore', () => {
 
         GameStore.handleAction(dummyPayload2);
 
-        expect(GameStore.state.players).to.eql(dummyPayload2.action.data.playersInSession);
+        expect(filterEmptyPlayer(GameStore.state)).to.eql(dummyPayload2.action.data.playersInSession);
         expect(GameStore.state.playerSeating).to.eql(['left', 'bottom', 'right', 'top']);
     });
 
