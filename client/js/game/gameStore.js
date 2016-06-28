@@ -28,7 +28,7 @@ export const PlayerType = {
 
 function emptyPlayer (emptyPlayerId) {
     return {
-        id: emptyPlayerId + '',
+        id: emptyPlayerId,
         seatId: emptyPlayerId,
         name: "Waiting for player..."
     };
