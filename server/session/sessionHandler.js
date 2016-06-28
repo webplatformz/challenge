@@ -86,7 +86,7 @@ const SessionHandler = {
 
         return clientApi.requestPlayerName(ws).then((playerName) => {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
-                let session = createAndReturnSession(this.sessions, sessionChoiceResponse);
+                const session = createAndReturnSession(this.sessions, sessionChoiceResponse);
 
                 // TODO danielsuter why are there 2 possibilities?
                 if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR || sessionChoiceResponse.asSpectator) {
