@@ -69,6 +69,7 @@
     "parallelshell": "2.0.0",
     "react": "15.1.0",
     "react-dom": "15.1.0",
+    "request": "^2.72.0",
     "rimraf": "2.5.2",
     "utf-8-validate": "1.2.1",
     "validate.js": "0.10.0",
