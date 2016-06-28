@@ -1,16 +1,13 @@
 'use strict';
 
 import React from 'react';
-import GameSetupStore from './../gameSetup/gameSetupStore.js';
 import JassActions from '../jassActions.js';
 
 export default React.createClass({
     render: function () {
         let rankingTable = this.props.rankingTable,
             registryBots = this.props.registryBots;
-        console.log(registryBots);
         return (
-
             <div id="tournamentTable">
                 <button type="button" name="requestRegistryBots" onClick={JassActions.requestRegistryBots}>get registry bots!</button>
                 <h1 className="jumbotron">Current rankings</h1>
