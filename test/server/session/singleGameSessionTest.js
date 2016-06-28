@@ -62,7 +62,7 @@ describe('Session', function () {
         }
 
         function expectPlayerInTeam(playerIndex, playerName, teamIndex) {
-            let player = session.players.find(player => player.name === playerName);
+            const player = session.players.find(player => player.name === playerName);
             expect(player.team).to.equal(session.teams[teamIndex]);
         }
 
