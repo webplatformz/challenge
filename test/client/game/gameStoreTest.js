@@ -87,17 +87,17 @@ describe('GameStore', () => {
                     player: {
                         name: 'Player 1',
                         seatId: 1,
-                        id: "1"
+                        id: "A1"
                     },
                     playersInSession: [
                         {
                             name: 'Player 0',
-                            id: "0",
+                            id: "A0",
                             seatId: 0
                         },
                         {
                             name: 'Player 1',
-                            id: "1",
+                            id: "A1",
                             seatId: 1
                         }
                     ]
