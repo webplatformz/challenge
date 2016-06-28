@@ -1,10 +1,15 @@
 'use strict';
 
 import React from 'react';
+import JassActions from "../jassActions";
 
 export default React.createClass({
+    addBot(sessionName, chosenTeamIndex) {
+        //JassActions.joinBot(sessionName, chosenTeamIndex);
+        console.log("sessionName " + sessionName + " teamIndex " + chosenTeamIndex)
+    },
 
-    render: function () {
+    render() {
         let players = this.props.players || [],
             playerSeating = this.props.playerSeating,
             nextStartingPlayerIndex = this.props.nextStartingPlayerIndex,
@@ -12,7 +17,7 @@ export default React.createClass({
 
         return (
             <div id="playerNames">
-                {players.map(function(player, index) {
+                {players.map((player, index) => {
                     let classes = [];
 
                     if (nextStartingPlayerIndex === index) {
@@ -25,6 +30,7 @@ export default React.createClass({
 
                     return (
                         <div key={player.id} id={'player-' + playerSeating[index]} className={classes.join(' ')}>
+                            <span onClick={() => this.addBot("todoSession", player.seatId)}>(+) </span>
                             {player.name}<object data="/images/startingPlayer.svg" type="image/svg+xml"></object>
                         </div>);
                 })}

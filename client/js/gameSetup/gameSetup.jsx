@@ -5,11 +5,11 @@ import RequestPlayerName from './requestPlayerName.jsx';
 import Connecting from './connecting.jsx';
 import ChooseSession from './chooseSession.jsx';
 import ChooseTeam from './chooseTeam.jsx';
-import WaitForPlayers from './waitForPlayers.jsx';
 import GameSetupStore from './gameSetupStore';
 
 function getSetupStateClassName(setupState) {
-    if (setupState.status === GameSetupStore.GameSetupState.FINISHED) {
+    if (setupState.status === GameSetupStore.GameSetupState.FINISHED
+        || setupState.status === GameSetupStore.GameSetupState.WAIT_FOR_PLAYERS) {
         return 'finished';
     }
 }
@@ -37,7 +37,6 @@ export default React.createClass({
                 <RequestPlayerName setupState={this.state.status} />
                 <ChooseSession setupState={this.state} />
                 <ChooseTeam setupState={this.state} />
-                <WaitForPlayers setupState={this.state} />
             </div>
         );
     }

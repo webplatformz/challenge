@@ -19,7 +19,7 @@ describe('PlayerNames Component', () => {
         expect(actual.props.id).to.equal('playerNames');
     });
 
-    it('should render a player div for each given player with the id where he sits, no class and an image', () => {
+    it.only('should render a player div for each given player with the id where he sits, no class and an image', () => {
         let props = {
                 players: [
                     {
