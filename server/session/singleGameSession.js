@@ -112,7 +112,6 @@ function registerClientAndBroadcastSessionJoined(session, webSocket, playerJoine
             name: playerJoined.name
         },
         playersInSession: session.players
-            .filter((player, index) => index <= playerJoined.seatId)
             .map(player => {
                 return {
                     id: player.id,
