@@ -89,14 +89,15 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 
                 if (!player) {
                     player = action.data.player;
-                    this.state.players = action.data.playersInSession;
-
-                    playerIndex = this.state.players.findIndex((element) => {
-                        return element.id === player.id;
-                    });
-                } else {
-                    this.state.players.push(action.data.player);
+                    playerIndex = player.seatId;
                 }
+
+                var playersFromBroadcast = action.data.playersInSession;
+                var allSeats = [emptyPlayer(), emptyPlayer(), emptyPlayer(), emptyPlayer()];
+                playersFromBroadcast.forEach(player => {
+                   allSeats[player.seatId] = player;
+                });
+                this.state.players = allSeats;
 
                 this.state.playerSeating = playerSeating.concat(playerSeating.splice(0, 4 - playerIndex));
                 this.emit('change');
@@ -202,3 +203,11 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 JassAppDispatcher.register(GameStore.handleAction.bind(GameStore));
 
 export default GameStore;
+
+var emptyPlayer = function () {
+    var emptyPlayer = {
+        id: (Math.random() * 100000),
+        name: "Waiting for player..."
+    };
+    return emptyPlayer;
+};
