@@ -31,7 +31,7 @@ module.exports = function(config) {
         ],
 
         files: [
-            './client/js/polyfills.js',
+            './node_modules/babel-polyfill/dist/polyfill.js',
             './test/client/**/*.js'
         ],
 

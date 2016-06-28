@@ -26,6 +26,16 @@ export const PlayerType = {
     SPECTATOR: 'SPECTATOR'
 };
 
+function emptyPlayer (emptyPlayerId) {
+    return {
+        id: emptyPlayerId,
+        seatId: emptyPlayerId,
+        name: "Waiting for player..."
+    };
+};
+
+const emptyPlayersTable = [emptyPlayer(0), emptyPlayer(1), emptyPlayer(2), emptyPlayer(3)];
+
 let player,
     spectatorEventQueue = [],
     spectatorRenderingIntervall = 500;
@@ -89,14 +99,12 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 
                 if (!player) {
                     player = action.data.player;
-                    this.state.players = action.data.playersInSession;
-
-                    playerIndex = this.state.players.findIndex((element) => {
-                        return element.id === player.id;
-                    });
-                } else {
-                    this.state.players.push(action.data.player);
+                    playerIndex = player.seatId;
                 }
+
+                this.state.players = emptyPlayersTable.map(player => {
+                    return action.data.playersInSession.find(p => p.seatId === player.seatId) || player;
+                });
 
                 this.state.playerSeating = playerSeating.concat(playerSeating.splice(0, 4 - playerIndex));
                 this.emit('change');
