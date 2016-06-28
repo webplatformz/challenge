@@ -2,14 +2,23 @@
 
 import React from 'react';
 import JassActions from '../jassActions.js';
+import RegistryBots from './registryBots.jsx';
 
 export default React.createClass({
-    render: function () {
+
+    componentWillMount() {
+        setTimeout(() => {
+            JassActions.requestRegistryBots();
+        });
+    },
+    
+    render() {
         let rankingTable = this.props.rankingTable,
             registryBots = this.props.registryBots;
         return (
             <div id="tournamentTable">
                 <button type="button" name="requestRegistryBots" onClick={JassActions.requestRegistryBots}>get registry bots!</button>
+                {(registryBots)?<RegistryBots bots={ registryBots }/> : undefined}
                 <h1 className="jumbotron">Current rankings</h1>
                 <table>
                     <thead>

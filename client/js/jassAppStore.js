@@ -47,7 +47,7 @@ JassAppDispatcher.register(function (payload){
             JassAppStore.emitChange();
             break;
         case JassAppConstants.SEND_REGISTRY_BOTS:
-            JassAppStore.state.registryBots = action.data;
+            JassAppStore.state.registryBots = JSON.parse(action.data);
             JassAppStore.emitChange();
             break;
     }
