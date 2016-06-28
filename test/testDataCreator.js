@@ -4,7 +4,7 @@ import * as Deck from '../server/game/deck/deck';
 import * as Player from '../server/game/player/player';
 import * as Team from '../server/game/player/team';
 
-let createDummyPlayer = function (teamName, name, id, seatId, clientApiMock) {
+function createDummyPlayer (teamName, name, id, seatId, clientApiMock) {
     let team = Team.create(teamName);
     let player = Player.create(team, name, id, seatId, clientApiMock);
     player.requestCard = function () {

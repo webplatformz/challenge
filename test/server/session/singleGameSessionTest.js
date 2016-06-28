@@ -138,7 +138,7 @@ describe('Session', function () {
                 name: 'name'
             };
 
-            var playerMatcher = sinon.match(function (actualPlayer) {
+            let playerMatcher = sinon.match(function (actualPlayer) {
                 return actualPlayer.seatId === sessionPlayer.seatId &&
                     actualPlayer.name === sessionPlayer.name
             });

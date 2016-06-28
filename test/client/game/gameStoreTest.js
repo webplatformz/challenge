@@ -23,7 +23,7 @@ describe('GameStore', () => {
     });
 
     const filterEmptyPlayer = function(gamestoreState) {
-        return gamestoreState.players.filter(player => player.name != 'Waiting for player...');
+        return gamestoreState.players.filter(player => player.name !== 'Waiting for player...');
     };
 
 
