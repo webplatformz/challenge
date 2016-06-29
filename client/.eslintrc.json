@@ -1,8 +1,10 @@
 {
   "extends": "../.eslintrc.json",
   "rules": {
+    "react/jsx-pascal-case": 2,
     "react/jsx-uses-react": 2,
-    "react/jsx-uses-vars": 2
+    "react/jsx-uses-vars": 2,
+    "react/prefer-stateless-function": 2
   },
   "plugins": [
     "react"
