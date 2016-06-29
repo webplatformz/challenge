@@ -13,7 +13,7 @@ export default React.createClass({
 
     handleGameSetupState: function () {
         this.setState(GameStore.state);
-    },
+      },
 
     componentDidMount: function () {
         GameStore.addChangeListener(this.handleGameSetupState);
@@ -45,7 +45,7 @@ export default React.createClass({
                     color={state.color}
                     roundPlayerIndex={state.roundPlayerIndex}
                     collectStich={state.collectStich}
-                    state={state.status}/>
+                    state={state}/>
                 <Points teams={teams} />
                 {(() => {
                     if (state.playerType === PlayerType.PLAYER) {

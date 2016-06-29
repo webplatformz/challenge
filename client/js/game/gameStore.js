@@ -28,7 +28,7 @@ export const PlayerType = {
 
 function emptyPlayer (emptyPlayerId) {
     return {
-        id: emptyPlayerId,
+        id: emptyPlayerId.toString(),
         seatId: emptyPlayerId,
         name: "Waiting for player..."
     };
@@ -101,6 +101,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                     player = action.data.player;
                     playerIndex = player.seatId;
                 }
+                this.state.chosenSession = action.data.sessionName;
 
                 this.state.players = emptyPlayersTable.map(player => {
                     return action.data.playersInSession.find(p => p.seatId === player.seatId) || player;

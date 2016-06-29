@@ -13,23 +13,22 @@ export default React.createClass({
             cardType = this.props.cardType,
             collectStich = this.props.collectStich,
             state = this.props.state;
-
-
         return (
             <div id="jassCarpet">
                 <PlayerNames players={this.props.players}
                              playerSeating={playerSeating}
                              nextStartingPlayerIndex={this.props.nextStartingPlayerIndex}
-                             roundPlayerIndex={this.props.roundPlayerIndex}/>
+                             roundPlayerIndex={this.props.roundPlayerIndex}
+                             chosenSession={state.chosenSession} />
                 <TableCards cardType={cardType}
                             cards={this.props.cards}
                             startingPlayerIndex={this.props.startingPlayerIndex}
                             playerSeating={playerSeating}
                             collectStich={collectStich}
-                            state={state}/>
+                            state={state.status}/>
                 <Trumpf mode={this.props.mode} color={this.props.color} cardType={cardType}/>
                 <LastStich cards={this.props.cards}
-                           state={this.props.state}
+                           state={state.status}
                            cardType={cardType}
                            playerSeating={playerSeating}
                            startingPlayerIndex={this.props.startingPlayerIndex}/>
