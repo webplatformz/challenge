@@ -6,8 +6,6 @@ import JassActions from "../jassActions";
 export default React.createClass({
     addBot(sessionName, seatId) {
         JassActions.joinBot(sessionName, Number(seatId) % 2);
-        //TODO cleanup
-        console.log("sessionName " + sessionName + " teamIndex " + seatId % 2)
     },
 
     render() {
@@ -31,7 +29,8 @@ export default React.createClass({
                         classes.push('round-player');
                     }
 
-                    if (!player.isEmptyPlaceholder){
+                    if (!player.isEmptyPlaceholder || (player.seatId === 3 && players.find(p => p.seatId===1 && p.isEmptyPlaceholder)))
+                    {
                         addBotClasses.push('hidden');
                     }
 
