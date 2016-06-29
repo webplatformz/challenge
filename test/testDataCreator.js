@@ -19,10 +19,10 @@ function createDummyPlayer (teamName, name, id, seatId, clientApiMock) {
 
 export function createPlayers(clientApiMock) {
     let deck = Deck.create();
-    let player1 = createDummyPlayer("Team 1", "hans", "uuid-1", 0, clientApiMock);
-    let player2 = createDummyPlayer("Team 2", "peter", "uuid-2", 1, clientApiMock);
-    let player3 = createDummyPlayer("Team 1", "homer", "uuid-3", 2, clientApiMock);
-    let player4 = createDummyPlayer("Team 2", "luke", "uuid-4", 3, clientApiMock);
+    let player1 = createDummyPlayer('Team 1', 'hans', 'uuid-1', 0, clientApiMock);
+    let player2 = createDummyPlayer('Team 2', 'peter', 'uuid-2', 1, clientApiMock);
+    let player3 = createDummyPlayer('Team 1', 'homer', 'uuid-3', 2, clientApiMock);
+    let player4 = createDummyPlayer('Team 2', 'luke', 'uuid-4', 3, clientApiMock);
     let players = [player1, player2, player3, player4];
     players.forEach(player => {
         deck.deal(player, 9);

@@ -1,10 +1,8 @@
-
-
 import {expect} from 'chai';
 import sinon from 'sinon';
 import React from 'react';
-import GameSetupStore from '../../../client/js/gameSetup/gameSetupStore';
-import JassActions from '../../../client/js/jassActions.js';
+import {GameSetupState} from '../../../client/js/gameSetup/gameSetupStore';
+import JassActions from '../../../client/js/jassActions';
 
 import TestUtils from 'react-addons-test-utils';
 
@@ -15,7 +13,7 @@ describe('RequestPlayerName Component', () => {
     const shallowRenderer = TestUtils.createRenderer();
 
     it('should render a div element with id requestPlayerName and class hidden', () => {
-        shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupStore.GameSetupState.CONNECTING }));
+        shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupState.CONNECTING }));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
@@ -24,14 +22,14 @@ describe('RequestPlayerName Component', () => {
     });
 
     it('should remove class hidden when setupState SET_PLAYER_NAME', () => {
-        shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupStore.GameSetupState.SET_PLAYER_NAME }));
+        shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupState.SET_PLAYER_NAME }));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.props.className).to.equal('');
     });
 
     it('should add function onKeyPress to input', () => {
-        shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupStore.GameSetupState.SET_PLAYER_NAME }));
+        shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupState.SET_PLAYER_NAME }));
         let actual = shallowRenderer.getRenderOutput();
 
         let input = actual.props.children;

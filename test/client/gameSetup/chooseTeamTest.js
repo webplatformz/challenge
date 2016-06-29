@@ -1,13 +1,11 @@
-
-
 import {expect} from 'chai';
 import sinon from 'sinon';
 import React from 'react';
-import GameSetupStore from '../../../client/js/gameSetup/gameSetupStore';
 
 import TestUtils from 'react-addons-test-utils';
 
 import ChooseTeam from '../../../client/js/gameSetup/chooseTeam.jsx';
+import {GameSetupState} from '../../../client/js/gameSetup/gameSetupStore';
 
 describe('ChooseTeam Component', () => {
 
@@ -15,7 +13,7 @@ describe('ChooseTeam Component', () => {
 
     describe('in GameState CHOSSE_SESISON', () => {
 
-        shallowRenderer.render(React.createElement(ChooseTeam, { setupState: { status: GameSetupStore.GameSetupState.CHOOSE_SESSION }}));
+        shallowRenderer.render(React.createElement(ChooseTeam, { setupState: { status: GameSetupState.CHOOSE_SESSION }}));
         let actual = shallowRenderer.getRenderOutput();
 
         it('should render hidden in GameState CHOOSE_SESSION', () => {
@@ -29,7 +27,7 @@ describe('ChooseTeam Component', () => {
     describe('in GameState CHOOSE_TEAM', () => {
 
         let setupState = {
-           status: GameSetupStore.GameSetupState.CHOOSE_TEAM,
+           status: GameSetupState.CHOOSE_TEAM,
            chosenSession: {
                sessionName: 'sessionDummy',
                joinSession: undefined

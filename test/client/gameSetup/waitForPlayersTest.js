@@ -1,14 +1,12 @@
-
-
 import {expect} from 'chai';
 import sinon from 'sinon';
 import React from 'react';
-import GameSetupStore from '../../../client/js/gameSetup/gameSetupStore';
+import {GameSetupState} from '../../../client/js/gameSetup/gameSetupStore';
 
 import TestUtils from 'react-addons-test-utils';
 
 import WaitForPlayers from '../../../client/js/gameSetup/waitForPlayers.jsx';
-import JassActions from "../../../client/js/jassActions";
+import JassActions from '../../../client/js/jassActions';
 
 describe('WaitForPlayers Component', () => {
 
@@ -26,7 +24,7 @@ describe('WaitForPlayers Component', () => {
 
 
     it('should render hidden in GameState CHOOSE_SESSION', () => {
-        shallowRenderer.render(React.createElement(WaitForPlayers, {setupState: {status: GameSetupStore.GameSetupState.CHOOSE_SESSION}}));
+        shallowRenderer.render(React.createElement(WaitForPlayers, {setupState: {status: GameSetupState.CHOOSE_SESSION}}));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
@@ -35,7 +33,7 @@ describe('WaitForPlayers Component', () => {
     });
 
     it('should render in GameState WAIT_FOR_PLAYERS', () => {
-        shallowRenderer.render(React.createElement(WaitForPlayers, {setupState: {status: GameSetupStore.GameSetupState.WAIT_FOR_PLAYERS}}));
+        shallowRenderer.render(React.createElement(WaitForPlayers, {setupState: {status: GameSetupState.WAIT_FOR_PLAYERS}}));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.props.className).not.to.equal('hidden');
@@ -44,7 +42,7 @@ describe('WaitForPlayers Component', () => {
     it('should handle clicks on buttons', () => {
         const props = {
             setupState: {
-                status: GameSetupStore.GameSetupState.WAIT_FOR_PLAYERS,
+                status: GameSetupState.WAIT_FOR_PLAYERS,
                 chosenSession: {
                     sessionName: 'sessionName'
                 }

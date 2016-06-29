@@ -1,5 +1,3 @@
-
-
 import {expect} from 'chai';
 import sinon from 'sinon';
 import * as TournamentSession from '../../../server/session/tournamentSession';

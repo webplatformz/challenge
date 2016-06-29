@@ -24,7 +24,7 @@
     "test:frontend:watch": "npm run test:frontend -- --no-single-run",
     "test:backend": "mocha --compilers js:babel-core/register \"test/{server,shared,bot}/**/*.js\"",
     "test:backend:watch": "npm run test:backend -- -w",
-    "pretest": "eslint {client,server,shared,test}/**/*.{js,jsx}",
+    "pretest": "eslint \"client/**/*.{js,jsx}\" \"server/**/*.js\" \"shared/**/*.js\" \"test/**/*.js\"",
     "test": "parallelshell \"npm run test:backend\" \"npm run test:frontend\"",
     "test:watch": "parallelshell \"npm run test:backend:watch\" \"npm run test:frontend:watch\"",
     "prestart": "npm run build",
@@ -46,7 +46,6 @@
     "mocha": "2.5.3",
     "nodemon": "1.9.2",
     "phantomjs-prebuilt": "2.1.7",
-    "sinon": "1.17.4",
     "socket.io-client": "1.4.6",
     "watch": "0.18.0",
     "watchify": "3.7.0"
@@ -75,6 +74,7 @@
     "react-addons-test-utils": "15.1.0",
     "react-dom": "15.1.0",
     "rimraf": "2.5.2",
+    "sinon": "1.17.4",
     "utf-8-validate": "1.2.1",
     "validate.js": "0.10.0",
     "ws": "1.1.1"
