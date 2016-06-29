@@ -36,8 +36,8 @@ export default React.createClass({
 
                     return (
                         <div key={player.id} id={'player-' + playerSeating[index]} className={classes.join(' ')}>
-                            <span className={addBotClasses.join(' ')} onClick={() => this.addBot(chosenSession, player.seatId)}>(+) </span>
-                            {player.name}<object data="/images/startingPlayer.svg" type="image/svg+xml"></object>
+                            <span title="Add bot player"><img className={addBotClasses.join(' ')} src="./images/robot.svg" onClick={() => this.addBot(chosenSession, player.seatId)}></img></span>
+                            {player.name}<object className="startingPlayerIcon" data="/images/startingPlayer.svg" type="image/svg+xml"></object>
                         </div>);
                 })}
             </div>
