@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {expect} from 'chai';
 import WebSocket from 'ws';

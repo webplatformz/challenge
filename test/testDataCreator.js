@@ -1,4 +1,4 @@
-'use strict';
+
 
 import * as Deck from '../server/game/deck/deck';
 import * as Player from '../server/game/player/player';

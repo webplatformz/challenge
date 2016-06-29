@@ -1,4 +1,4 @@
-'use strict';
+
 
 import ClientCommunication from '../../../server/communication/clientCommunication.js';
 import * as messages from '../../../shared/messages/messages.js';
