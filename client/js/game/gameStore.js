@@ -30,7 +30,8 @@ function emptyPlayer (emptyPlayerId) {
     return {
         id: emptyPlayerId.toString(),
         seatId: emptyPlayerId,
-        name: "Waiting for player..."
+        name: "Waiting for player...",
+        isEmptyPlaceholder: true
     };
 };
 

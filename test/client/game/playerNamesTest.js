@@ -36,7 +36,8 @@ describe('PlayerNames Component', () => {
                     {
                         id: '1',
                         name: 'Waiting for player...',
-                        seatId: 1
+                        seatId: 1,
+                        isEmptyPlaceholder: true
                     }
                 ],
                 playerSeating: [
