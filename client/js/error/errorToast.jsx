@@ -1,15 +1,11 @@
-
-
 import React from 'react';
 
-export default React.createClass({
-    render() {
-        let error = this.props.error || '';
+export default (props) => {
+    let error = props.error || '';
 
-        return (
-            <div id="errorToast" className={(this.props.error) ? 'in' : 'out'}>
-                <span>{String(error)}</span>
-            </div>
-        );
-    }
-});
+    return (
+        <div id="errorToast" className={(props.error) ? 'in' : 'out'}>
+            <span>{String(error)}</span>
+        </div>
+    );
+};

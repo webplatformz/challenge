@@ -1,15 +1,14 @@
 import React from 'react';
-import { GameMode } from '../../../shared/game/gameMode';
+import {GameMode} from '../../../shared/game/gameMode';
 
-export default React.createClass({
+export default (props) => {
 
-    render() {
-        let mode = this.props.mode,
-            color = this.props.color,
-            cardType = this.props.cardType,
-            imagePath;
+    let mode = props.mode,
+        color = props.color,
+        cardType = props.cardType,
+        imagePath;
 
-        switch (mode) {
+    switch (mode) {
         case GameMode.TRUMPF:
             imagePath = '/images/trumpf/' + cardType + '/' + color.toLowerCase() + '.png';
             break;
@@ -22,10 +21,9 @@ export default React.createClass({
         case GameMode.SCHIEBE:
             imagePath = '/images/trumpf/schiebe.jpg';
             break;
-        }
-
-        return (
-            <img id="trumpf" className={(!mode && !color) ? 'hidden' : ''} src={imagePath} />
-        );
     }
-});
+
+    return (
+        <img id="trumpf" className={(!mode && !color) ? 'hidden' : ''} src={imagePath}/>
+    );
+};
