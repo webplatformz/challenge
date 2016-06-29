@@ -62,8 +62,8 @@ describe('Session', function () {
         }
 
         function expectPlayerInTeam(playerIndex, playerName, teamIndex) {
-            expect(session.players[playerIndex].team).to.equal(session.teams[teamIndex]);
-            expect(session.players[playerIndex].name).to.equal(playerName);
+            const player = session.players.find(player => player.name === playerName);
+            expect(player.team).to.equal(session.teams[teamIndex]);
         }
 
         it('should add players in order to alternating teams', () => {
@@ -134,19 +134,25 @@ describe('Session', function () {
         it('should broadcast session joined and save message for later use', () => {
             let sessionPlayer = {
                 id: 0,
+                seatId: 0,
                 name: 'name'
             };
 
-            clientApiMock.expects('broadcastSessionJoined').once().withArgs(session.name, sessionPlayer, [sessionPlayer]);
+            let playerMatcher = sinon.match(function (actualPlayer) {
+                return actualPlayer.seatId === sessionPlayer.seatId &&
+                    actualPlayer.name === sessionPlayer.name
+            });
+
+            clientApiMock.expects('broadcastSessionJoined').once().withArgs(session.name, playerMatcher, [playerMatcher]);
             clientApiMock.expects('addClient').once().returns(Promise.resolve());
 
             session.addPlayer(webSocketDummy, sessionPlayer.name);
 
             clientApiMock.verify();
-            expect(session.lastSessionJoin.player).to.eql(sessionPlayer);
-            expect(session.lastSessionJoin.playersInSession).to.eql([
-                sessionPlayer
-            ]);
+            expect(session.lastSessionJoin.player).to.have.keys('id', 'seatId', 'name');
+            expect(session.lastSessionJoin.player).to.have.property('seatId', sessionPlayer.seatId);
+            expect(session.lastSessionJoin.player).to.have.property('name', sessionPlayer.name);
+            expect(session.lastSessionJoin.playersInSession.length).to.eq(1);
         });
 
         it('should close session if player left', (done) => {
@@ -236,10 +242,12 @@ describe('Session', function () {
                         players: [
                             {
                                 name: fourPlayers[0].name,
-                                id: fourPlayers[0].id
+                                id: fourPlayers[0].id,
+                                seatId: fourPlayers[0].seatId
                             }, {
                                 name: fourPlayers[2].name,
-                                id: fourPlayers[2].id
+                                id: fourPlayers[2].id,
+                                seatId: fourPlayers[2].seatId
                             }
                         ]
                     }, {
@@ -247,10 +255,12 @@ describe('Session', function () {
                         players: [
                             {
                                 name: fourPlayers[1].name,
-                                id: fourPlayers[1].id
+                                id: fourPlayers[1].id,
+                                seatId: fourPlayers[1].seatId
                             }, {
                                 name: fourPlayers[3].name,
-                                id: fourPlayers[3].id
+                                id: fourPlayers[3].id,
+                                seatId: fourPlayers[3].seatId
                             }
                         ]
                     }

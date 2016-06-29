@@ -29,9 +29,10 @@ const Player = {
     }
 };
 
-export function create(team, name, id, clientApi) {
+export function create(team, name, id, seatId, clientApi) {
     let player = Object.create(Player);
     player.id = id;
+    player.seatId = seatId;
     player.name = name;
     player.team = team;
     player.clientApi = clientApi;
