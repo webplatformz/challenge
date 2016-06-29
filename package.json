@@ -24,6 +24,7 @@
     "test:frontend:watch": "npm run test:frontend -- --no-single-run",
     "test:backend": "mocha --compilers js:babel-core/register \"test/{server,shared,bot}/**/*.js\"",
     "test:backend:watch": "npm run test:backend -- -w",
+    "pretest": "eslint {client,server,shared}/**/*.{js,jsx}",
     "test": "parallelshell \"npm run test:backend\" \"npm run test:frontend\"",
     "test:watch": "parallelshell \"npm run test:backend:watch\" \"npm run test:frontend:watch\"",
     "prestart": "npm run build",
