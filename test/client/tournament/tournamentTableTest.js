@@ -94,7 +94,7 @@ describe('Tournament table Component', () => {
         shallowRenderer.render(React.createElement(TournamentTable, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let pairingRows = actual.props.children[4].props.children;
+        let pairingRows = actual.props.children[3].props.children.props.children;
         pairingRows.forEach((rankingRow, index) => {
             let pairing = props.rankingTable.pairingResults[index];
 

@@ -41,6 +41,7 @@ export default React.createClass({
                 </table>
                 <h1 className="jumbotron">Pairing Results</h1>
                 <table className="pairings">
+                    <tbody>
                     {rankingTable.pairingResults.map((pairing, index) => {
                         return (
                             <tr key={index}>
@@ -63,6 +64,7 @@ export default React.createClass({
                             </tr>
                         );
                     })}
+                    </tbody>
                 </table>
                 {((component) => {
                     if (!component.props.started) {
