@@ -1,12 +1,10 @@
-'use strict';
-
 import React from 'react';
-import {CardType} from './gameStore.js';
-import JassActions from '../jassActions.js';
+import { CardType } from './gameStore';
+import JassActions from '../jassActions';
 
 export default React.createClass({
 
-    render: function () {
+    render() {
         return (
             <div id="cardTypeSwitcher">
                 {Object.getOwnPropertyNames(CardType).map((cardTypeKey) => {

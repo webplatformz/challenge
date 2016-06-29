@@ -1,30 +1,28 @@
-'use strict';
-
 import React from 'react';
-import JassAppStore from './jassAppStore.js';
+import JassAppStore from './jassAppStore';
 import ErrorToast from './error/errorToast.jsx';
 import GameSetup from './gameSetup/gameSetup.jsx';
 import JassTable from './game/jassTable.jsx';
 import TournamentTable from './tournament/tournamentTable.jsx';
-import {SessionType} from '../../shared/session/sessionType.js';
+import { SessionType } from '../../shared/session/sessionType';
 import serverApi from './communication/serverApi';
 
-let JassApp = React.createClass({
+const JassApp = React.createClass({
 
-    handleJassAppState: function () {
+    handleJassAppState() {
         this.setState(JassAppStore.state);
     },
 
-    componentDidMount: function () {
+    componentDidMount() {
         serverApi.connect();
         JassAppStore.addChangeListener(this.handleJassAppState);
     },
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         JassAppStore.removeChangeListener(this.handleJassAppState);
     },
 
-    render: function () {
+    render() {
         this.state = this.state || JassAppStore.state;
 
         return (
@@ -33,10 +31,10 @@ let JassApp = React.createClass({
                 <GameSetup />
                 {(() => {
                     switch (this.state.sessionType) {
-                        case SessionType.SINGLE_GAME:
-                            return <JassTable />;
-                        case SessionType.TOURNAMENT:
-                            return <TournamentTable rankingTable={this.state.rankingTable} started={this.state.tournamentStarted} />;
+                    case SessionType.TOURNAMENT:
+                        return <TournamentTable rankingTable={this.state.rankingTable} started={this.state.tournamentStarted} />;
+                    default:
+                        return <JassTable />;
                     }
                 })()}
             </div>

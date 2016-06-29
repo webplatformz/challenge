@@ -1,10 +1,10 @@
-'use strict';
+
 
 import React from 'react';
 
 export default React.createClass({
 
-    render: function () {
+    render() {
         let players = this.props.players || [],
             playerSeating = this.props.playerSeating,
             nextStartingPlayerIndex = this.props.nextStartingPlayerIndex,
@@ -12,7 +12,7 @@ export default React.createClass({
 
         return (
             <div id="playerNames">
-                {players.map(function(player, index) {
+                {players.map(function (player, index) {
                     let classes = [];
 
                     if (nextStartingPlayerIndex === index) {
@@ -25,7 +25,7 @@ export default React.createClass({
 
                     return (
                         <div key={player.id} id={'player-' + playerSeating[index]} className={classes.join(' ')}>
-                            {player.name}<object data="/images/startingPlayer.svg" type="image/svg+xml"></object>
+                            {player.name}<object data="/images/startingPlayer.svg" type="image/svg+xml" />
                         </div>);
                 })}
             </div>

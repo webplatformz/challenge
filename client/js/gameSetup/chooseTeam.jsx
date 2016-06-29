@@ -1,16 +1,14 @@
-'use strict';
-
 import React from 'react';
-import GameSetupStore from './gameSetupStore.js';
+import {GameSetupState} from './gameSetupStore';
 
 export default React.createClass({
 
-    render: function () {
+    render() {
         const status = this.props.setupState.status;
         const chosenSession = this.props.setupState.chosenSession || {};
 
         return (
-            <div id="chooseTeam" className={(status !== GameSetupStore.GameSetupState.CHOOSE_TEAM ? 'hidden' : '')}>
+            <div id="chooseTeam" className={(status !== GameSetupState.CHOOSE_TEAM ? 'hidden' : '')}>
                 <h1 className="jumbotron">Joining Session {chosenSession.sessionName}</h1>
                 <h2>Choose your preferred team</h2>
                 <div className="team-choice">

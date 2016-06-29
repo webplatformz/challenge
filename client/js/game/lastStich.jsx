@@ -1,23 +1,23 @@
-'use strict';
+
 
 import React from 'react';
-import {GameState} from "./gameStore";
+import { GameState } from './gameStore';
 
 let cards = [],
     startingPlayerIndex = 0,
     playerSeating = ['a', 'b', 'c', 'd'];
 export default React.createClass({
 
-    getInitialState: function () {
+    getInitialState() {
         return {
             showLastStich: false
         };
     },
-    toggleShowLastStich: function () {
+    toggleShowLastStich() {
         let currentShow = this.state.showLastStich;
-        this.setState({showLastStich: !currentShow});
+        this.setState({ showLastStich: !currentShow });
     },
-    render () {
+    render() {
         if (this.props.state === GameState.STICH) {
             cards = this.props.cards;
             startingPlayerIndex = this.props.startingPlayerIndex;
@@ -27,17 +27,20 @@ export default React.createClass({
         return (
             <div id="lastStich" className={(cards.length !== 4) ? 'hidden' : ''}>
                 <img src="./images/carddeck.svg"
-                     onClick={this.toggleShowLastStich}
-                     className={(this.state.showLastStich) ? 'hidden' : ''}/>
+                  onClick={this.toggleShowLastStich}
+                  className={(this.state.showLastStich) ? 'hidden' : ''}
+                />
                 <div className={(this.state.showLastStich) ? '' : 'hidden'}>
                     <img src="./images/close.svg"
-                         onClick={this.toggleShowLastStich}
-                         id="closeButton"/>
-                    <div>{cards.map((card,index) => {
+                      onClick={this.toggleShowLastStich}
+                      id="closeButton"
+                    />
+                    <div>{cards.map((card, index) => {
                         let actPlayerIndex = (startingPlayerIndex + index) % 4;
                         return (
                             <img key={card.color + '_' + card.number} className={'card-' + playerSeating[actPlayerIndex]}
-                                 src={imagePath + card.color.toLowerCase() + '_' + card.number + '.gif'}/>
+                              src={imagePath + card.color.toLowerCase() + '_' + card.number + '.gif'}
+                            />
                         );
                     })}
                     </div>
