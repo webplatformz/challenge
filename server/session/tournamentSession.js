@@ -1,4 +1,4 @@
-'use strict';
+
 
 import * as ClientApi from '../communication/clientApi';
 import {SessionType} from '../../shared/session/sessionType';

@@ -1,8 +1,6 @@
-"use strict";
-
-import Validation from '../../../shared/game/validation/validation.js';
-import stichGranter from './stichGranter.js';
-import * as Counter from '../counter/counter.js';
+import Validation from '../../../shared/game/validation/validation';
+import stichGranter from './stichGranter';
+import * as Counter from '../counter/counter';
 
 const Cycle = {
     iterate: function () {

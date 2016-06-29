@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {SessionType} from '../../shared/session/sessionType';
 import * as SingleGameSession from './singleGameSession';

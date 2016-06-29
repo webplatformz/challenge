@@ -1,4 +1,4 @@
-'use strict';
+
 
 let debug = Boolean(process.env.DEBUG) || false;
 

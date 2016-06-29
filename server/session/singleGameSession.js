@@ -1,13 +1,11 @@
-'use strict';
-
 import * as ClientApi from '../communication/clientApi';
-import * as Game from '../game/game.js';
+import * as Game from '../game/game';
 import * as Player from '../game/player/player';
 import * as Team from '../game/player/team';
 import {SessionType} from '../../shared/session/sessionType';
 import SessionHandler from './sessionHandler';
 import {MessageType} from '../../shared/messages/messageType';
-import {startRandomBot} from "../bot/botStarter";
+import {startRandomBot} from '../bot/botStarter';
 
 function createTeamsArrayForClient(session) {
     return session.teams.map((team) => {
