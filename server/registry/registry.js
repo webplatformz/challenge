@@ -19,12 +19,17 @@ const Registry = {
         });
     },
 
-    addBot(bot, wsUrl) {
+    /**
+     *
+     * @param bot
+     * @param mode SessionType
+     * @returns {Promise}
+     */
+    addBot(bot, mode) {
         return new Promise((resolve, reject) => {
             request.post({ url: registryUrl + '/addBot', json: true, body: {
-                wsUrl: wsUrl,
                 botId: bot.id,
-                mode: 'TOURNAMENT | SINGLE',
+                mode: mode,
                 sessionName: 'sessionName'
             }}, (err, res, body) => {
                 if (err) {

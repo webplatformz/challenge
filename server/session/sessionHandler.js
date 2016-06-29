@@ -93,7 +93,7 @@ const SessionHandler = {
 
         clientApi.subscribeMessage(ws, MessageType.ADD_BOT_FROM_REGISTRY, (message) => {
             let bot = message.data;
-            Registry.addBot(bot, '172.16.37.110:3000');
+            Registry.addBot(bot, SessionType.TOURNAMENT);
         });
 
         return clientApi.requestPlayerName(ws).then((playerName) => {
