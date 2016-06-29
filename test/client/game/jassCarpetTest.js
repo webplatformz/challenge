@@ -14,9 +14,14 @@ import JassCarpet from '../../../client/js/game/jassCarpet.jsx';
 describe('JassCarpet Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
+    const minProps = {
+            state: {
+                chosenSession: 'someSession'
+            }
+        }
 
     it('should render a div element with id', () => {
-        shallowRenderer.render(React.createElement(JassCarpet));
+        shallowRenderer.render(React.createElement(JassCarpet, minProps));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
@@ -24,7 +29,7 @@ describe('JassCarpet Component', () => {
     });
 
     it('should render children', () => {
-        shallowRenderer.render(React.createElement(JassCarpet));
+        shallowRenderer.render(React.createElement(JassCarpet, minProps));
         let actual = shallowRenderer.getRenderOutput();
 
         let children = actual.props.children;
@@ -39,7 +44,10 @@ describe('JassCarpet Component', () => {
             players: ['player1'],
             playerSeating: ['playerSeating'],
             nextStartingPlayerIndex: 2,
-            roundPlayerIndex: 1
+            roundPlayerIndex: 1,
+            state: {
+                chosenSession: 'someSession'
+            }
         };
 
         shallowRenderer.render(React.createElement(JassCarpet, props));
@@ -57,7 +65,10 @@ describe('JassCarpet Component', () => {
             cardType: CardType.FRENCH,
             cards: ['card1'],
             startingPlayerIndex: 2,
-            playerSeating: ['playerSeating']
+            playerSeating: ['playerSeating'],
+            state: {
+                chosenSession: 'someSession'
+            }
         };
 
         shallowRenderer.render(React.createElement(JassCarpet, props));
@@ -74,7 +85,10 @@ describe('JassCarpet Component', () => {
         let props = {
             cardType: CardType.FRENCH,
             mode: 'OBEABE',
-            color: 'SPADES'
+            color: 'SPADES',
+            state: {
+                chosenSession: 'someSession'
+            }
         };
 
         shallowRenderer.render(React.createElement(JassCarpet, props));
