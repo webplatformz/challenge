@@ -4,7 +4,7 @@
   "private": true,
   "main": "build/server/app.js",
   "engines": {
-    "node": ">=5.5"
+    "node": ">=6.2"
   },
   "scripts": {
     "clean": "rimraf build && mkdirp build/server && mkdirp build/client && mkdirp build/bot",
