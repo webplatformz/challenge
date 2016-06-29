@@ -22,7 +22,6 @@ export default React.createClass({
                         </tr>
                     </thead>
                     <tbody>
-                    {console.log(typeof bots)}
                     {bots.map(bot => {
                        return (
                          <tr key={bot.id}>

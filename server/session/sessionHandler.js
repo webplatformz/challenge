@@ -91,6 +91,11 @@ const SessionHandler = {
                 .then(bots => clientApi.sendRegistryBots(ws, bots));
         });
 
+        clientApi.subscribeMessage(ws, MessageType.ADD_BOT_FROM_REGISTRY, (message) => {
+            let bot = message.data;
+            Registry.addBot(bot, '172.16.37.110:3000');
+        });
+
         return clientApi.requestPlayerName(ws).then((playerName) => {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
                 const session = createAndReturnSession(this.sessions, sessionChoiceResponse);

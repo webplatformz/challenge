@@ -1,8 +1,9 @@
 'use strict';
 
 import request from 'request';
+var http = require('http')
 
-let registryUrl = 'http://localhost:1338/api';
+let registryUrl = 'http://172.16.37.113:1338/api';
 
 const Registry = {
 
@@ -17,6 +18,16 @@ const Registry = {
                 resolve(registeredBots);
             });
         });
+    },
+
+    addBot(bot, wsUrl) {
+        return new Promise((resolve, reject) => {
+            request.post({ url: registryUrl + '/addBot', json: true, body: { wsUrl: wsUrl, botId: bot.id }}, (err, res, body) => {
+                resolve();
+            });
+        });
+
+
     }
 
 };
