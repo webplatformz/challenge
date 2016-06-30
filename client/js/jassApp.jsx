@@ -27,14 +27,16 @@ const JassApp = React.createClass({
 
         return (
             <div>
-                <ErrorToast error={this.state.error} />
+                <ErrorToast error={this.state.error}/>
                 <GameSetup />
                 {(() => {
                     switch (this.state.sessionType) {
-                    case SessionType.TOURNAMENT:
-                        return <TournamentTable />;
-                    default:
-                        return <JassTable />;
+                        case SessionType.TOURNAMENT:
+                            return <TournamentTable />;
+                        case SessionType.SINGLE_GAME:
+                            return <JassTable />;
+                        default:
+                            return;
                     }
                 })()}
             </div>
