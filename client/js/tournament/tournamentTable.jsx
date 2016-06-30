@@ -1,6 +1,6 @@
 import React from 'react';
 import JassActions from '../jassActions';
-import RegistryBots from './registryBots.jsx';
+import RegistryBotsTable from './registryBotsTable.jsx';
 import RankingTable from './rankingTable.jsx';
 import PairingsTable from './pairingsTable.jsx';
 import TournamentStore from './tournamentStore';
@@ -26,7 +26,8 @@ export default React.createClass({
 
         return (
             <div id="tournamentTable">
-                <RegistryBots bots={registryBots} />
+                <h1>Add Bots from Registry</h1>
+                <RegistryBotsTable bots={registryBots} />
                 
                 <h1 className="jumbotron">Current rankings</h1>
                 <RankingTable ranking={rankingTable.ranking} />

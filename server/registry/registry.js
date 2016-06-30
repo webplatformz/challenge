@@ -35,8 +35,6 @@ const Registry = {
                 resolve();
             });
         });
-
-
     }
 
 };
