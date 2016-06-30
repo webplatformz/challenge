@@ -1,11 +1,10 @@
-
-
 import React from 'react';
 import { GameState } from './gameStore';
 
 let cards = [],
     startingPlayerIndex = 0,
     playerSeating = ['a', 'b', 'c', 'd'];
+
 export default React.createClass({
 
     getInitialState() {
