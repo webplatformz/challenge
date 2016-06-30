@@ -4,6 +4,7 @@ import JassAppConstants from '../jassAppConstants';
 
 const TournamentStore = Object.assign(Object.create(EventEmitter.prototype), {
     state: {
+        isSpectator: false,
         rankingTable: {
             ranking: [],
             pairingResults: []
@@ -24,6 +25,7 @@ const TournamentStore = Object.assign(Object.create(EventEmitter.prototype), {
         switch (action.actionType) {
             case JassAppConstants.CREATE_NEW_SESSION:
             case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
+                this.state.isSpectator = true;
                 this.state.sessionName = action.data.sessionName;
                 break;
             case JassAppConstants.BROADCAST_TOURNAMENT_RANKING_TABLE:
