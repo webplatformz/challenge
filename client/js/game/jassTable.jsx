@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { default as GameStore, GameState, PlayerType } from './gameStore';
 import CardTypeSwitcher from './cardTypeSwitcher.jsx';
@@ -13,7 +11,7 @@ export default React.createClass({
 
     handleGameSetupState() {
         this.setState(GameStore.state);
-    },
+      },
 
     componentDidMount() {
         GameStore.addChangeListener(this.handleGameSetupState);
@@ -35,17 +33,17 @@ export default React.createClass({
             <div id="jassTable">
                 <CardTypeSwitcher cardType={state.cardType} />
                 <JassCarpet
-                  cardType={state.cardType}
-                  players={players}
-                  playerSeating={playerSeating}
-                  cards={tableCards}
-                  startingPlayerIndex={state.startingPlayerIndex}
-                  nextStartingPlayerIndex={state.nextStartingPlayerIndex}
-                  mode={state.mode}
-                  color={state.color}
-                  roundPlayerIndex={state.roundPlayerIndex}
-                  collectStich={state.collectStich}
-                  state={state.status}
+                    cardType={state.cardType}
+                    players={players}
+                    playerSeating={playerSeating}
+                    cards={tableCards}
+                    startingPlayerIndex={state.startingPlayerIndex}
+                    nextStartingPlayerIndex={state.nextStartingPlayerIndex}
+                    mode={state.mode}
+                    color={state.color}
+                    roundPlayerIndex={state.roundPlayerIndex}
+                    collectStich={state.collectStich}
+                    state={state}
                 />
                 <Points teams={teams} />
                 {(() => {

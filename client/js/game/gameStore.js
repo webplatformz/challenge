@@ -28,9 +28,10 @@ export const PlayerType = {
 
 function emptyPlayer(emptyPlayerId) {
     return {
-        id: emptyPlayerId,
+        id: emptyPlayerId.toString(),
         seatId: emptyPlayerId,
-        name: 'Waiting for player...'
+        name: 'Waiting for player...',
+        isEmptyPlaceholder: true
     };
 }
 
@@ -97,10 +98,11 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
             let playerSeating = this.state.playerSeating,
                 playerIndex;
 
-            if (!player) {
-                player = action.data.player;
-                playerIndex = player.seatId;
-            }
+                if (!player) {
+                    player = action.data.player;
+                    playerIndex = player.seatId;
+                }
+                this.state.chosenSession = action.data.sessionName;
 
             this.state.players = emptyPlayersTable.map(player => {
                 return action.data.playersInSession.find(p => p.seatId === player.seatId) || player;
