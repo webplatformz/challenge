@@ -1,15 +1,25 @@
-
-
 import {expect} from 'chai';
 import React from 'react';
 
 import TestUtils from 'react-addons-test-utils';
 
 import Points from '../../../client/js/game/points.jsx';
+import JassActions from '../../../client/js/jassActions';
+import sinon from 'sinon';
 
 describe('Points Component', () => {
 
     let shallowRenderer = TestUtils.createRenderer();
+
+    let toggleSpy;
+
+    beforeEach(() => {
+        toggleSpy = sinon.spy(JassActions, 'toggleShowPoints');
+    });
+
+    afterEach(() => {
+        JassActions.toggleShowPoints.restore();
+    });
 
     it('should render a div with id, no class and onclick handler', () => {
         let props = {
@@ -75,5 +85,19 @@ describe('Points Component', () => {
         expect(team2Title[0]).to.equal(props.teams[1].name);
         expect(team2CurrentPoints[1]).to.equal(props.teams[1].currentRoundPoints);
         expect(team2TotalPoints[1]).to.equal(props.teams[1].points);
+    });
+
+    it('should toggle display onclick', () => {
+        let props = {
+            teams: []
+        };
+
+        shallowRenderer.render(React.createElement(Points, props));
+        let actual = shallowRenderer.getRenderOutput();
+
+        const elementClick = actual.props.onClick;
+        expect(elementClick).to.be.a('function');
+        elementClick();
+        sinon.assert.calledOnce(toggleSpy);
     });
 });

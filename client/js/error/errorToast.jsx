@@ -1,10 +1,8 @@
 import React from 'react';
 
-export default (props) => {
-    let error = props.error || '';
-
+export default ({error = ''}) => {
     return (
-        <div id="errorToast" className={(props.error) ? 'in' : 'out'}>
+        <div id="errorToast" className={(error) ? 'in' : 'out'}>
             <span>{String(error)}</span>
         </div>
     );

@@ -33,6 +33,7 @@ export default (props) => {
                        cardType={cardType}
                        playerSeating={playerSeating}
                        startingPlayerIndex={props.startingPlayerIndex}
+                       showLastStich={state.showLastStich}
             />
         </div>
     );
