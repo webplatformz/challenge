@@ -20,7 +20,7 @@ export default (props) => {
         <div id="playerNames">
             {players.map((player, index) => {
                 let classes = [];
-                let addBotClasses = ['addBotIcon'];
+                let addBotClasses = ['add-bot-icon'];
 
                 if (nextStartingPlayerIndex === index) {
                     classes.push('active');
