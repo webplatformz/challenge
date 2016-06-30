@@ -215,6 +215,11 @@ export default {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.COLLECT_STICH
         });
-    }
+    },
 
+    toggleShowLastStich() {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.TOGGLE_SHOW_LAST_STICH
+        });
+    }
 };
