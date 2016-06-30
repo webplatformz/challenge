@@ -5,7 +5,6 @@ import {SessionType} from '../../shared/session/sessionType';
 import * as Ranking from '../game/ranking/ranking';
 import * as RankingTable from './rankingTable';
 import * as SingleGameSession from './singleGameSession';
-import 'babel-polyfill';
 import * as _ from 'lodash';
 import nameGenerator from 'docker-namesgenerator';
 
@@ -126,9 +125,9 @@ const TournamentSession = {
         return this.startPairingSessions().then(() => {
             this.ranking.updateRatings();
             this.ranking.players.forEach(ranking => {
-                this.rankingTable.updateRating(ranking.name, ranking.player.getRating());
+                this.rankingTable.updatePlayerRating(ranking.name, ranking.player.getRating());
             });
-
+            this.rankingTable.updateAndSortRanking();
             this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
         });
     },

@@ -15,5 +15,5 @@ branches:
     - develop
     - master
     - /hotfix\/.*/
-
+    - /^greenkeeper-.*$/
 install: npm install
