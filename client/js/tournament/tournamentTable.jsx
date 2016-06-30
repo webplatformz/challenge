@@ -6,9 +6,8 @@ export default ({rankingTable, registryBots, started}) => {
     setTimeout(JassActions.requestRegistryBots);
     
     return (
-        <div id="tournamentDashboard">
-            <RegistryBots bots={registryBots}/>
             <div id="tournamentTable">
+                <RegistryBots bots={registryBots}/>
                 <h1 className="jumbotron">Current rankings</h1>
                 <table>
                     <thead>
@@ -71,6 +70,5 @@ export default ({rankingTable, registryBots, started}) => {
                     }
                 })()}
             </div>
-        </div>
     );
 };
