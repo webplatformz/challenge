@@ -1,7 +1,4 @@
-'use strict';
 
-import 'babel-polyfill';
-import _ from 'lodash';
 
 const RankingTable = {
     addPlayer(playerName) {
@@ -23,18 +20,21 @@ const RankingTable = {
         this.pairingResults.push({
             player1,
             player2,
-            firstPlayerWon: firstPlayerWon
+            firstPlayerWon
         });
     },
 
-    updateRating(playerName, rating) {
-        let player = this.ranking.find(actPlayer => actPlayer.playerName === playerName);
-        player.rating = rating;
-        this.ranking = _.sortByOrder(this.ranking, ['rating'], ['desc']);
-        this.ranking = _.map(this.ranking, (elem, index) => {
-            elem.rank = index + 1;
-            return elem;
-        });
+    updatePlayerRating(playerName, rating) {
+        this.ranking.find(actPlayer => actPlayer.playerName === playerName).rating = rating;
+    },
+
+    updateAndSortRanking() {
+        this.ranking = this.ranking
+            .sort((a, b) => b.rating - a.rating)
+            .map((elem, index) => {
+                elem.rank = index + 1;
+                return elem;
+            });
     }
 };
 

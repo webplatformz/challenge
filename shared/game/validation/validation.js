@@ -1,8 +1,6 @@
-'use strict';
-
-import HandCardValidator from './hasCardValidator.js';
-import AngebenValidator from './angebenValidator.js';
-import UnderTrumpfValidator from './underTrumpfValidator.js';
+import HandCardValidator from './hasCardValidator';
+import AngebenValidator from './angebenValidator';
+import UnderTrumpfValidator from './underTrumpfValidator';
 
 const Validation = {
     validate (tableCards, handCards, cardToPlay) {

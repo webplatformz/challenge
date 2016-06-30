@@ -1,4 +1,4 @@
-'use strict';
+
 
 import * as Deck from './deck/deck';
 import * as Cycle from './cycle/cycle';

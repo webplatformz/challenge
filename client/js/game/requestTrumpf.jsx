@@ -1,17 +1,15 @@
-'use strict';
-
 import React from 'react';
-import {CardColor} from '../../../shared/deck/cardColor';
-import {GameMode} from '../../../shared/game/gameMode.js';
-import JassActions from '../jassActions.js';
+import { CardColor } from '../../../shared/deck/cardColor';
+import { GameMode } from '../../../shared/game/gameMode';
+import JassActions from '../jassActions';
 
 export default React.createClass({
 
-    chooseTrumpf: function(mode, color) {
+    chooseTrumpf(mode, color) {
         JassActions.chooseTrumpf(mode, color);
     },
 
-    render: function () {
+    render() {
         let imagePath = '/images/trumpf/',
             cardTypeImagePath = imagePath + this.props.cardType + '/';
 

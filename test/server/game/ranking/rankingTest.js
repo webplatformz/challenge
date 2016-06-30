@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {expect} from 'chai';
 import * as Ranking from '../../../../server/game/ranking/ranking';

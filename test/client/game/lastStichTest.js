@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {expect} from 'chai';
 import React from 'react';
@@ -8,7 +8,7 @@ import {CardColor} from '../../../shared/deck/cardColor';
 import TestUtils from 'react-addons-test-utils';
 
 import LastStich from '../../../client/js/game/lastStich.jsx';
-import {GameState} from "../../../client/js/game/gameStore";
+import {GameState} from '../../../client/js/game/gameStore';
 
 describe('LastStich Component', () => {
 

@@ -1,4 +1,4 @@
-'use strict';
+
 
 const Card = {
     equals: function (otherCard) {

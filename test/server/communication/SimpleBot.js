@@ -1,4 +1,4 @@
-'use strict';
+
 
 import WebSocket from 'ws';
 import * as GameType from '../../../server/game/gameType';

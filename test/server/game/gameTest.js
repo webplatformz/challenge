@@ -1,5 +1,3 @@
-"use strict";
-
 import {expect} from 'chai';
 import * as Game from '../../../server/game/game';
 import {GameMode} from '../../../shared/game/gameMode';

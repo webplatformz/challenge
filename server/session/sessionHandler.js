@@ -1,9 +1,7 @@
-'use strict';
-
-import * as ClientApi from '../communication/clientApi.js';
+import * as ClientApi from '../communication/clientApi';
 import * as SessionFactory from './sessionFactory';
-import {SessionChoice} from '../../shared/session/sessionChoice.js';
-import {SessionType} from '../../shared/session/sessionType.js';
+import {SessionChoice} from '../../shared/session/sessionChoice';
+import {SessionType} from '../../shared/session/sessionType';
 import nameGenerator from 'docker-namesgenerator';
 
 let clientApi = ClientApi.create();

@@ -1,8 +1,6 @@
-'use strict';
-
-import ClientCommunication from '../../../server/communication/clientCommunication.js';
-import * as messages from '../../../shared/messages/messages.js';
-import {MessageType} from '../../../shared/messages/messageType.js';
+import ClientCommunication from '../../../server/communication/clientCommunication';
+import * as messages from '../../../shared/messages/messages';
+import {MessageType} from '../../../shared/messages/messageType';
 import {CardColor} from '../../../shared/deck/cardColor';
 import {expect} from 'chai';
 import sinon from 'sinon';

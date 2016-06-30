@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {create as createJassBot} from '../../bot/JassBot';
 import nameGenerator from 'docker-namesgenerator';
