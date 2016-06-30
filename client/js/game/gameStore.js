@@ -54,7 +54,8 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         cyclesMade: 0,
         status: GameState.WAITING,
         collectStich: true,
-        showLastStich: false
+        showLastStich: false,
+        showPoints: false
     },
 
     addChangeListener(callback) {
@@ -205,6 +206,10 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 break;
             case JassAppConstants.TOGGLE_SHOW_LAST_STICH:
                 this.state.showLastStich = !this.state.showLastStich;
+                this.emit('change');
+                break;
+            case JassAppConstants.TOGGLE_SHOW_POINTS:
+                this.state.showPoints = !this.state.showPoints;
                 this.emit('change');
                 break;
         }

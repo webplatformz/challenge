@@ -221,5 +221,11 @@ export default {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.TOGGLE_SHOW_LAST_STICH
         });
+    },
+
+    toggleShowPoints() {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.TOGGLE_SHOW_POINTS
+        })
     }
 };
