@@ -1,11 +1,28 @@
 import React from 'react';
 import JassActions from '../jassActions';
 import RegistryBots from './registryBots.jsx';
+import TournamentStore from './tournamentStore';
 
-export default ({rankingTable, registryBots, started}) => {
-    setTimeout(JassActions.requestRegistryBots);
-    
-    return (
+
+export default React.createClass({
+
+    handleGameSetupState() {
+        this.setState(TournamentStore.state);
+    },
+
+    componentDidMount() {
+        TournamentStore.addChangeListener(this.handleGameSetupState);
+        setTimeout(JassActions.requestRegistryBots);
+    },
+
+    componentWillUnmount() {
+        TournamentStore.removeChangeListener(this.handleGameSetupState);
+    },
+
+    render() {
+        const {rankingTable, registryBots, tournamentStarted} = this.state || TournamentStore.state;
+
+        return (
             <div id="tournamentTable">
                 <RegistryBots bots={registryBots}/>
                 <h1 className="jumbotron">Current rankings</h1>
@@ -61,7 +78,7 @@ export default ({rankingTable, registryBots, started}) => {
                     </tbody>
                 </table>
                 {(() => {
-                    if (!started) {
+                    if (!tournamentStarted) {
                         return (
                             <button type="button" name="startTournament" onClick={JassActions.startTournament}>
                                 Start!
@@ -70,5 +87,6 @@ export default ({rankingTable, registryBots, started}) => {
                     }
                 })()}
             </div>
-    );
-};
+        );
+    }
+});

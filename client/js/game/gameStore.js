@@ -217,6 +217,6 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 
 });
 
-JassAppDispatcher.register(GameStore.handleAction.bind(GameStore));
+JassAppDispatcher.register((payload) => GameStore.handleAction(payload));
 
 export default GameStore;

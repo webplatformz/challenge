@@ -80,7 +80,7 @@ export default {
                 }
             });
         } else {
-            let chosenSessionPartial = {
+            const chosenSessionPartial = {
                 sessionName,
                 joinSession: (chosenTeamIndex) => {
                     JassAppDispatcher.handleViewAction({

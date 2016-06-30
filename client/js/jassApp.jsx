@@ -9,20 +9,20 @@ import serverApi from './communication/serverApi';
 
 const JassApp = React.createClass({
 
-    handleJassAppState: function () {
+    handleJassAppState() {
         this.setState(JassAppStore.state);
     },
 
-    componentDidMount: function () {
+    componentDidMount() {
         serverApi.connect();
         JassAppStore.addChangeListener(this.handleJassAppState);
     },
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         JassAppStore.removeChangeListener(this.handleJassAppState);
     },
 
-    render: function () {
+    render() {
         this.state = this.state || JassAppStore.state;
 
         return (
@@ -32,7 +32,7 @@ const JassApp = React.createClass({
                 {(() => {
                     switch (this.state.sessionType) {
                     case SessionType.TOURNAMENT:
-                        return <TournamentTable rankingTable={this.state.rankingTable} registryBots={this.state.registryBots} started={this.state.tournamentStarted} />;
+                        return <TournamentTable />;
                     default:
                         return <JassTable />;
                     }
