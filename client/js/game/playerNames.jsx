@@ -8,6 +8,10 @@ export default React.createClass({
         JassActions.joinBot(sessionName, Number(seatId) % 2);
     },
 
+    isSeatOccupiedOrNotAllowedForBot: function (players, player) {
+        return !player.isEmptyPlaceholder || (player.seatId === 3 && players.find(p => p.seatId===1 && p.isEmptyPlaceholder))
+    },
+
     render() {
         let players = this.props.players || [],
             playerSeating = this.props.playerSeating,
@@ -29,14 +33,14 @@ export default React.createClass({
                         classes.push('round-player');
                     }
 
-                    if (!player.isEmptyPlaceholder || (player.seatId === 3 && players.find(p => p.seatId===1 && p.isEmptyPlaceholder)))
+                    if (this.isSeatOccupiedOrNotAllowedForBot(players, player))
                     {
                         addBotClasses.push('hidden');
                     }
 
                     return (
                         <div key={player.id} id={'player-' + playerSeating[index]} className={classes.join(' ')}>
-                            <span title="Add bot player"><img className={addBotClasses.join(' ')} src="./images/robot.svg" onClick={() => this.addBot(chosenSession, player.seatId)}></img></span>
+                            <span title="Add bot player"><img className={addBotClasses.join(' ')} src="./images/robot.svg" onClick={() => this.addBot(chosenSession, player.seatId)} /></span>
                             {player.name}<object className="startingPlayerIcon" data="/images/startingPlayer.svg" type="image/svg+xml"></object>
                         </div>);
                 })}
