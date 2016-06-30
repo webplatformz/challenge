@@ -230,10 +230,13 @@ export default {
         });
     },
     
-    addBotFromRegistry: (bot) => {
+    addBotFromRegistry: (bot, sessionName) => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.ADD_BOT_FROM_REGISTRY,
-            data: bot
+            data: {
+                bot,
+                sessionName
+            }
         });
     },
 

@@ -90,8 +90,9 @@ const SessionHandler = {
         });
 
         clientApi.subscribeMessage(ws, MessageType.ADD_BOT_FROM_REGISTRY, (message) => {
-            let bot = message.data;
-            Registry.addBot(bot, SessionType.TOURNAMENT);
+            const bot = message.data.bot;
+            const sessionName = message.data.sessionName;
+            Registry.addBot(bot, SessionType.TOURNAMENT, sessionName);
         });
 
         return clientApi.requestPlayerName(ws).then((playerName) => {

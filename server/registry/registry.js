@@ -31,7 +31,6 @@ const Registry = {
                 mode: mode,
                 sessionName: sessionName
             };
-
             request.post({
                 url: EnvironmentUtil.getRegistryAddress() + '/addBot',
                 json: true,

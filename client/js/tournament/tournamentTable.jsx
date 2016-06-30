@@ -22,20 +22,23 @@ export default React.createClass({
     },
 
     render() {
-        const {rankingTable, registryBots, tournamentStarted} = this.state || TournamentStore.state;
-
+        const state = this.state || TournamentStore.state;
         return (
             <div id="tournamentTable">
-                <RegistryBots bots={registryBots} />
+                <RegistryBots
+                    bots={state.registryBots}
+                    sessionName={state.sessionName}
+                    isSpectator={state.isSpectator}
+                />
                 
                 <h1 className="jumbotron">Current rankings</h1>
-                <RankingTable ranking={rankingTable.ranking} />
+                <RankingTable ranking={state.rankingTable.ranking} />
                 
                 <h1 className="jumbotron">Pairing Results</h1>
-                <PairingsTable pairings={rankingTable.pairingResults} />
+                <PairingsTable pairings={state.rankingTable.pairingResults} />
                 
                 {(() => {
-                    if (!tournamentStarted) {
+                    if (!state.tournamentStarted) {
                         return (
                             <button type="button" name="startTournament" onClick={JassActions.startTournament}>
                                 Start!

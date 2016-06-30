@@ -1,9 +1,9 @@
 import React from 'react';
 import JassActions from '../jassActions';
 
-export default ({bots = []}) => {
+export default ({bots = [], sessionName, isSpectator}) => {
     return (
-        <div id="registryBots">
+        <div id="registryBots" className={isSpectator ? '' : 'hidden'}>
             {(() => {
                 if (bots.length) {
                     return (
@@ -21,7 +21,7 @@ export default ({bots = []}) => {
                                         <tr key={bot.id}>
                                             <td>{bot.owner}</td>
                                             <td>
-                                                <a onClick={() => JassActions.addBotFromRegistry(bot)}>
+                                                <a onClick={() => JassActions.addBotFromRegistry(bot, sessionName)}>
                                                     Add
                                                 </a>
                                                 <i className="fa fa-bolt" />
