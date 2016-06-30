@@ -3,7 +3,7 @@ import JassActions from '../jassActions';
 import RegistryBots from './registryBots.jsx';
 
 export default ({rankingTable, registryBots, started}) => {
-    JassActions.requestRegistryBots();
+    setTimeout(JassActions.requestRegistryBots);
     
     return (
         <div id="tournamentTable">
