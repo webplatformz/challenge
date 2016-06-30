@@ -1,7 +1,6 @@
 
 
 import glicko2 from 'glicko2';
-import 'babel-polyfill';
 
 const Ranking = {
     addPlayer (playerName) {

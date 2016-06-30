@@ -34,7 +34,7 @@ describe('rankingTable', () => {
 
     describe('addPlayer', () => {
         it('should add Player to ranking', () => {
-            var player1 = 'player1';
+            const player1 = 'player1';
 
             rankingTable.addPlayer(player1);
 
@@ -44,12 +44,53 @@ describe('rankingTable', () => {
         });
 
         it('should increment connectedClients', () => {
-            var player1 = 'player1';
+            const player1 = 'player1';
 
             rankingTable.addPlayer(player1);
             rankingTable.addPlayer(player1);
 
             expect(rankingTable.ranking[0].connectedClients).to.equal(2);
+        });
+    });
+
+    describe('updatePlayerRating', () => {
+        it('should update given player rating', () => {
+            const player1 = 'player1',
+                player2 = 'player2';
+
+            rankingTable.addPlayer(player1);
+            rankingTable.addPlayer(player2);
+
+            rankingTable.updatePlayerRating(player1, 999);
+            rankingTable.updatePlayerRating(player2, 1000);
+
+            expect(rankingTable.ranking.find(player => player.playerName === player1).rating).to.equal(999);
+            expect(rankingTable.ranking.find(player => player.playerName === player2).rating).to.equal(1000);
+        });
+    });
+
+    describe('updateAndSortRanking', () => {
+        it('should sort table and set ranks', () => {
+            const player1 = 'player1',
+                player2 = 'player2',
+                player3 = 'player3';
+
+            rankingTable.addPlayer(player1);
+            rankingTable.addPlayer(player2);
+            rankingTable.addPlayer(player3);
+
+            rankingTable.updatePlayerRating(player1, 999);
+            rankingTable.updatePlayerRating(player2, 1000);
+            rankingTable.updatePlayerRating(player3, 998);
+
+            rankingTable.updateAndSortRanking();
+
+            expect(rankingTable.ranking[0].playerName).to.equal(player2);
+            expect(rankingTable.ranking[0].rating).to.equal(1000);
+            expect(rankingTable.ranking[1].playerName).to.equal(player1);
+            expect(rankingTable.ranking[1].rating).to.equal(999);
+            expect(rankingTable.ranking[2].playerName).to.equal(player3);
+            expect(rankingTable.ranking[2].rating).to.equal(998);
         });
     });
 });

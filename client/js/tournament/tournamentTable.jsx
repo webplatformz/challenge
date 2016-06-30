@@ -27,6 +27,7 @@ export default (props) => {
             </table>
             <h1 className="jumbotron">Pairing Results</h1>
             <table className="pairings">
+                <tbody>
                 {rankingTable.pairingResults.map((pairing, index) => {
                     return (
                         <tr key={index}>
@@ -51,6 +52,7 @@ export default (props) => {
                         </tr>
                     );
                 })}
+                </tbody>
             </table>
             {(() => {
                 if (!props.started) {
