@@ -65,13 +65,13 @@ describe('PlayerNames Component', () => {
         expect(playerNameElements[1].key).to.equal(props.players[1].id);
         expect(playerNameElements[0].props.id).to.equal('player-' + props.playerSeating[0]);
         expect(playerNameElements[0].props.className).to.equal('');
-        expect(playerNameElements[0].props.children[0].props.children.props.className).to.equal('addBotIcon hidden');
+        expect(playerNameElements[0].props.children[0].props.children.props.className).to.equal('add-bot-icon hidden');
         expect(playerNameElements[0].props.children[1]).to.equal(props.players[0].name);
         expect(playerNameElements[0].props.children[2].type).to.equal('object');
         expect(playerNameElements[1].key).to.equal(props.players[1].id);
         expect(playerNameElements[1].props.className).to.equal('');
         expect(playerNameElements[1].props.id).to.equal('player-' + props.playerSeating[1]);
-        expect(playerNameElements[1].props.children[0].props.children.props.className).to.equal('addBotIcon');
+        expect(playerNameElements[1].props.children[0].props.children.props.className).to.equal('add-bot-icon');
         expect(playerNameElements[1].props.children[1]).to.equal(props.players[1].name);
         expect(playerNameElements[1].props.children[2].type).to.equal('object');
     });
