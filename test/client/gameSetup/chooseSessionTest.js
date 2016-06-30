@@ -13,14 +13,16 @@ import {GameSetupState} from '../../../client/js/gameSetup/gameSetupStore';
 describe('ChooseSession Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
+    
     let createNewSessionSpy; 
+    
     beforeEach(() => {
         createNewSessionSpy = sinon.spy(JassActions, 'createNewSession');
     });
 
     afterEach(() => {
         JassActions.createNewSession.restore();
-    })
+    });
 
     it('should render a div element with id chooseSession and class hidden', () => {
         shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupState.CONNECTING }}));
@@ -86,15 +88,19 @@ describe('ChooseSession Component', () => {
                 target: {
                     value: ''
                 }
-            },
-            asSpectator = true;
+            };
 
-        let createNewSession = ChooseSession.prototype.createNewSession;
+        let createNewSession;
+
+        beforeEach(() => {
+            shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupState.CHOOSE_SESSION }}));
+            createNewSession = shallowRenderer.getRenderOutput().props.children[2].props.children.props.onKeyPress;
+        });
 
         it('should not start action with keypress which is not Enter', () => {
             eventDummy.charCode = 99;
 
-            createNewSession(SessionType.SINGLE_GAME, asSpectator, eventDummy);
+            createNewSession(eventDummy);
             sinon.assert.callCount(createNewSessionSpy, 0);
         });
 
@@ -103,7 +109,7 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 13;
             eventDummy.target.value = '';
 
-            createNewSession(SessionType.SINGLE_GAME, asSpectator, eventDummy);
+            createNewSession(eventDummy);
 
             sinon.assert.callCount(createNewSessionSpy, 0);
         });
@@ -112,7 +118,7 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 13;
             eventDummy.target.value = '   ';
 
-            createNewSession(SessionType.SINGLE_GAME, asSpectator, eventDummy);
+            createNewSession(eventDummy);
 
             sinon.assert.callCount(createNewSessionSpy, 0);
         });
@@ -121,9 +127,9 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 13;
             eventDummy.target.value = 'sessionName';
 
-            createNewSession(SessionType.TOURNAMENT, asSpectator, eventDummy);
+            createNewSession(eventDummy);
 
-            sinon.assert.calledWith(createNewSessionSpy, SessionType.TOURNAMENT, eventDummy.target.value);
+            sinon.assert.calledWith(createNewSessionSpy, SessionType.SINGLE_GAME, eventDummy.target.value);
             sinon.assert.callCount(createNewSessionSpy, 1);
 
             expect(eventDummy.target.disabled).to.equal(true);

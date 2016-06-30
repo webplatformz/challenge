@@ -34,7 +34,7 @@ describe('RequestPlayerName Component', () => {
 
         let input = actual.props.children;
         expect(input.type).to.equal('input');
-        expect(input.props.onKeyPress.__reactBoundMethod).to.equal(RequestPlayerName.prototype.choosePlayerName);
+        expect(input.props.onKeyPress).to.be.a('function');
     });
 
     describe('choosePlayerName', () => {
@@ -45,10 +45,13 @@ describe('RequestPlayerName Component', () => {
             },
             choosePlayerNameSpy;
 
-        let choosePlayerName = RequestPlayerName.prototype.choosePlayerName;
+        let choosePlayerName;
 
         beforeEach(() => {
+            shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupState.SET_PLAYER_NAME }));
+            choosePlayerName = shallowRenderer.getRenderOutput().props.children.props.onKeyPress;
             choosePlayerNameSpy = sinon.stub(JassActions, 'choosePlayerName');
+
         });
 
         afterEach(() => {
