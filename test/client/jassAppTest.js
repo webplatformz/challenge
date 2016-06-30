@@ -1,13 +1,11 @@
-'use strict';
-
 import {expect} from 'chai';
 import React from 'react';
 import ErrorToast from '../../client/js/error/errorToast.jsx';
 import GameSetup from '../../client/js/gameSetup/gameSetup.jsx';
 import JassTable from '../../client/js/game/jassTable.jsx';
 import TournamentTable from '../../client/js/tournament/tournamentTable.jsx';
-import JassAppStore from '../../client/js/jassAppStore.js';
-import {SessionType} from '../../shared/session/sessionType.js';
+import JassAppStore from '../../client/js/jassAppStore';
+import {SessionType} from '../../shared/session/sessionType';
 
 import TestUtils from 'react-addons-test-utils';
 

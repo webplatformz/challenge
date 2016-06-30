@@ -1,5 +1,3 @@
-"use strict";
-
 import {expect} from 'chai';
 import * as Card from '../../../shared/deck/card';
 import {CardColor} from '../../../shared/deck/cardColor';

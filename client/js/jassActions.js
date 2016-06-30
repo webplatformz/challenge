@@ -1,14 +1,12 @@
-'use strict';
-
-import JassAppConstants from './jassAppConstants.js';
-import JassAppDispatcher from './jassAppDispatcher.js';
+import JassAppConstants from './jassAppConstants';
+import JassAppDispatcher from './jassAppDispatcher';
 
 export default {
     throwError: (source, error) => {
         JassAppDispatcher.throwErrorAction({
             actionType: JassAppConstants.ERROR,
             data: error,
-            source: source
+            source
         });
     },
 
@@ -50,7 +48,7 @@ export default {
             data: chosenSessionPartial
         });
     },
-    
+
     joinBot: (sessionName, chosenTeamIndex) => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.JOIN_BOT,
@@ -58,7 +56,7 @@ export default {
                 sessionName,
                 chosenTeamIndex
             }
-        })
+        });
     },
 
     joinExistingSessionAsSpectator: (sessionName) => {
@@ -212,11 +210,11 @@ export default {
             actionType: JassAppConstants.BROADCAST_TOURNAMENT_STARTED
         });
     },
-    
+
     collectStich() {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.COLLECT_STICH
         });
     }
-    
+
 };

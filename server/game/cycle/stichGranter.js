@@ -1,6 +1,4 @@
-'use strict';
-
-import {GameMode} from '../../../shared/game/gameMode.js';
+import {GameMode} from '../../../shared/game/gameMode';
 
 const StichGranter = {
     determineWinner: function (mode, trumpfColor, playedCards, players) {

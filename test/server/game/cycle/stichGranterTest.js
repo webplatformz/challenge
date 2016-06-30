@@ -1,6 +1,4 @@
-"use strict";
-
-import assert from "assert";
+import assert from 'assert';
 import {GameMode} from '../../../../shared/game/gameMode';
 import StichGranter from '../../../../server/game/cycle/stichGranter';
 import {CardColor} from '../../../../shared/deck/cardColor';

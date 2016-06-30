@@ -1,8 +1,6 @@
-'use strict';
-
 import React from 'react';
-import GameSetupStore from './gameSetupStore.js';
-import JassActions from "../jassActions";
+import {GameSetupState} from './gameSetupStore';
+import JassActions from '../jassActions';
 
 export default React.createClass({
 
@@ -10,12 +8,13 @@ export default React.createClass({
         JassActions.joinBot(sessionName, chosenTeamIndex);
     },
 
-    render: function () {
+    render() {
         let status = this.props.setupState.status;
         let chosenSession = this.props.setupState.chosenSession || {};
         return (
             <div id="waitForPlayers"
-                 className={(status !== GameSetupStore.GameSetupState.WAIT_FOR_PLAYERS ? 'hidden' : '')}>
+              className={(status !== GameSetupState.WAIT_FOR_PLAYERS ? 'hidden' : '')}
+            >
 
                 <h1 className="jumbotron">Joining Session {chosenSession.sessionName}</h1>
 

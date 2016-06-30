@@ -1,14 +1,12 @@
-'use strict';
-
 import React from 'react';
 import ExistingSessions from './existingSessions.jsx';
-import GameSetupStore from './gameSetupStore.js';
-import JassActions from '../jassActions.js';
-import {SessionType} from '../../../shared/session/sessionType.js';
+import {GameSetupState} from './gameSetupStore';
+import JassActions from '../jassActions';
+import { SessionType } from '../../../shared/session/sessionType';
 
 export default React.createClass({
 
-    createNewSession: function(sessionType, asSpectator, event) {
+    createNewSession(sessionType, asSpectator, event) {
         let inputElement = event.target,
             sessionName = inputElement.value;
 
@@ -18,11 +16,11 @@ export default React.createClass({
         }
     },
 
-    render: function () {
+    render() {
         let status = this.props.setupState.status;
 
         return (
-            <div id="chooseSession" className={(status !== GameSetupStore.GameSetupState.CHOOSE_SESSION ? 'hidden' : '')}>
+            <div id="chooseSession" className={(status !== GameSetupState.CHOOSE_SESSION ? 'hidden' : '')}>
                 <h1 className="jumbotron">Choose Session</h1>
                 <ExistingSessions sessions={this.props.setupState.sessions} />
                 <div className="session-choice">
@@ -35,6 +33,6 @@ export default React.createClass({
                     <button type="button" name="autoJoin" onClick={JassActions.autojoinSession}>Just Join!</button>
                 </div>
             </div>
-        )
+        );
     }
 });

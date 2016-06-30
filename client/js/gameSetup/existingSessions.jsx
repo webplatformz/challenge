@@ -1,23 +1,23 @@
-'use strict';
+
 
 import React from 'react';
 import JassActions from '../jassActions';
 
 export default React.createClass({
 
-    hasSessions: function(sessions) {
+    hasSessions(sessions) {
         return sessions.length;
     },
 
-    joinExistingSession: function(sessionName) {
+    joinExistingSession(sessionName) {
         JassActions.joinExistingSession(sessionName);
     },
 
-    joinExistingSessionAsSpectator: function(sessionName) {
+    joinExistingSessionAsSpectator(sessionName) {
         JassActions.joinExistingSessionAsSpectator(sessionName);
     },
 
-    render: function () {
+    render() {
         let sessions = this.props.sessions || [];
 
         return (
@@ -32,6 +32,6 @@ export default React.createClass({
                     })}
                 </ul>
             </div>
-        )
+        );
     }
 });

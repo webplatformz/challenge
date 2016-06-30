@@ -1,11 +1,9 @@
-'use strict';
-
 import React from 'react';
-import JassActions from '../jassActions.js';
-import GameSetupStore from './gameSetupStore.js';
+import JassActions from '../jassActions';
+import {GameSetupState} from './gameSetupStore';
 
 export default React.createClass({
-    choosePlayerName: function (event) {
+    choosePlayerName(event) {
         let inputElement = event.target,
             playerName = inputElement.value;
 
@@ -15,11 +13,11 @@ export default React.createClass({
         }
     },
 
-    render: function () {
+    render() {
         return (
-            <div id="requestPlayerName" className={(this.props.setupState === GameSetupStore.GameSetupState.SET_PLAYER_NAME ? '' : 'hidden')}>
-                <input type="text" placeholder="Enter Player Name..." onKeyPress={this.choosePlayerName}></input>
+            <div id="requestPlayerName" className={(this.props.setupState === GameSetupState.SET_PLAYER_NAME ? '' : 'hidden')}>
+                <input type="text" placeholder="Enter Player Name..." onKeyPress={this.choosePlayerName} />
             </div>
-        )
+        );
     }
 });

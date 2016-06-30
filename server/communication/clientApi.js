@@ -1,11 +1,9 @@
-'use strict';
-
-import {MessageType} from '../../shared/messages/messageType.js';
+import {MessageType} from '../../shared/messages/messageType';
 import ClientCommunication from './clientCommunication';
 import validate from 'validate.js';
 import _ from 'lodash';
 import WebSocket from 'ws';
-import {Logger} from '../logger.js';
+import {Logger} from '../logger';
 import CloseEventCode from './closeEventCode';
 
 

@@ -1,12 +1,10 @@
-'use strict';
-
 import {expect} from 'chai';
 import React from 'react';
-import GameSetupStore from '../../../client/js/gameSetup/gameSetupStore';
 
 import TestUtils from 'react-addons-test-utils';
 
 import Connecting from '../../../client/js/gameSetup/connecting.jsx';
+import {GameSetupState} from '../../../client/js/gameSetup/gameSetupStore';
 
 describe('Connecting Component', () => {
 
@@ -23,7 +21,7 @@ describe('Connecting Component', () => {
     });
 
     it('should remove className hidden when GameSetupState CONNECTING', () => {
-        shallowRenderer.render(React.createElement(Connecting, { setupState: GameSetupStore.GameSetupState.CONNECTING }));
+        shallowRenderer.render(React.createElement(Connecting, { setupState: GameSetupState.CONNECTING }));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.props.className).to.equal('');
