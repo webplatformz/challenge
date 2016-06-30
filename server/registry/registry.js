@@ -20,15 +20,23 @@ const Registry = {
      *
      * @param bot
      * @param mode SessionType
+     * @param sessionName
      * @returns {Promise}
      */
-    addBot(bot, mode) {
+    addBot(bot, mode, sessionName) {
         return new Promise((resolve, reject) => {
-            request.post({ url: EnvironmentUtil.getRegistryAddress() + '/addBot', json: true, body: {
+            const addBotRequest = {
                 botId: bot.id,
+                serverUrl: EnvironmentUtil.getPublicServerAddress(),
                 mode: mode,
-                sessionName: 'sessionName'
-            }}, (err, res, body) => {
+                sessionName: sessionName
+            };
+
+            request.post({
+                url: EnvironmentUtil.getRegistryAddress() + '/addBot',
+                json: true,
+                body: addBotRequest
+            }, (err, res, body) => {
                 if (err) {
                     return reject();
                 }
