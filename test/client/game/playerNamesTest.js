@@ -1,15 +1,25 @@
-
-
 import {expect} from 'chai';
 import React from 'react';
 
 import TestUtils from 'react-addons-test-utils';
 
 import PlayerNames from '../../../client/js/game/playerNames.jsx';
+import JassActions from '../../../client/js/jassActions';
+import sinon from 'sinon';
 
 describe('PlayerNames Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
+
+    let joinBotSpy;
+
+    beforeEach(() => {
+        joinBotSpy = sinon.spy(JassActions, 'joinBot');
+    });
+
+    afterEach(() => {
+        JassActions.joinBot.restore();
+    });
 
     it('should render a div element with id', () => {
         let props = {
@@ -92,7 +102,7 @@ describe('PlayerNames Component', () => {
     });
 
     it('should set round-player class to player who has to choose trumpf', () => {
-        let props = {
+        const props = {
             players: [
                 {
                     id: 0,
@@ -115,6 +125,38 @@ describe('PlayerNames Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.props.children[1].props.className).to.equal('active round-player');
+    });
+
+    it('should call joinBot onclick', () => {
+        const props = {
+            players: [
+                {
+                    id: 0,
+                    name: 'Player1',
+                    seatId: 0
+                },
+                {
+                    id: 1,
+                    name: 'Waiting for player...',
+                    seatId: 1,
+                    isEmptyPlaceholder: true
+                }
+            ],
+            playerSeating: [
+                'bottom'
+            ],
+            nextStartingPlayerIndex: 0,
+            roundPlayerIndex: 0,
+            chosenSession: 'chosenSession'
+        };
+
+        shallowRenderer.render(React.createElement(PlayerNames, props));
+        let actual = shallowRenderer.getRenderOutput();
+
+        const playerRightOnClick = actual.props.children[1].props.children[0].props.children.props.onClick;
+        expect(playerRightOnClick).to.be.a('function');
+        playerRightOnClick();
+        sinon.assert.calledWithExactly(joinBotSpy, props.chosenSession, 1);
     });
 
 });
