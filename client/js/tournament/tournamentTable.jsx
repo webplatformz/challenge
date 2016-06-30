@@ -1,6 +1,6 @@
 import React from 'react';
 import JassActions from '../jassActions';
-import RegistryBots from './registryBots.jsx';
+import RegistryBotsTable from './registryBotsTable.jsx';
 import RankingTable from './rankingTable.jsx';
 import PairingsTable from './pairingsTable.jsx';
 import TournamentStore from './tournamentStore';
@@ -25,7 +25,8 @@ export default React.createClass({
         const state = this.state || TournamentStore.state;
         return (
             <div id="tournamentTable">
-                <RegistryBots
+                <h1>Add Bots from Registry</h1>
+                <RegistryBotsTable
                     bots={state.registryBots}
                     sessionName={state.sessionName}
                     isSpectator={state.isSpectator}
