@@ -17,7 +17,7 @@ const RankingTable = {
     },
 
     addPairingResult(player1, player2, firstPlayerWon) {
-        this.pairingResults.push({
+        this.pairingResults.unshift({
             player1,
             player2,
             firstPlayerWon

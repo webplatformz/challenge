@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import React from 'react';
 import JassActions from '../../../client/js/jassActions';
+import TournamentStore from '../../../client/js/tournament/tournamentStore';
 
 import TestUtils from 'react-addons-test-utils';
 
@@ -8,56 +9,35 @@ import TournamentTable from '../../../client/js/tournament/tournamentTable.jsx';
 
 describe('Tournament table Component', () => {
 
-    let shallowRenderer = TestUtils.createRenderer(),
-        props;
-
-    beforeEach(() => {
-        props = {
-            rankingTable: {
-                ranking: [
-                    {
-                        rank: 1,
-                        playerName: 'Player A',
-                        connectedClients: 1
-                    },
-                    {
-                        rank: 2,
-                        playerName: 'Player B',
-                        connectedClients: 2
-                    },
-                    {
-                        rank: 3,
-                        playerName: 'Player B',
-                        connectedClients: 1
-                    }
-                ],
-                pairingResults: [
-                    {
-                        player1: 'Player A',
-                        player2: 'Player C',
-                        firstPlayerWon: true
-                    },
-                    {
-                        player1: 'Player B',
-                        player2: 'Player A',
-                        firstPlayerWon: false
-                    }
-                ]
-            },
-            started: false
-        };
-    });
+    let shallowRenderer = TestUtils.createRenderer();
 
     it('should render a div with id', () => {
-        shallowRenderer.render(React.createElement(TournamentTable, props));
+        shallowRenderer.render(React.createElement(TournamentTable));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
         expect(actual.props.id).to.equal('tournamentTable');
     });
 
-    it('should render start button with click handler', () => {
-        shallowRenderer.render(React.createElement(TournamentTable, props));
+    it('should pass correct properties to children', () => {
+        TournamentStore.state.registryBots = 'bots';
+        TournamentStore.state.rankingTable = {
+            ranking: 'ranking',
+            pairingResults: 'pairingResults'
+        };
+
+        shallowRenderer.render(React.createElement(TournamentTable));
+        let actual = shallowRenderer.getRenderOutput();
+
+        expect(actual.props.children[0].props.bots).to.equal(TournamentStore.state.registryBots);
+        expect(actual.props.children[2].props.ranking).to.equal(TournamentStore.state.rankingTable.ranking);
+        expect(actual.props.children[4].props.pairings).to.equal(TournamentStore.state.rankingTable.pairingResults);
+    });
+
+    it('should render start button with click handler when not started', () => {
+        TournamentStore.state.tournamentStarted = false;
+
+        shallowRenderer.render(React.createElement(TournamentTable));
         let actual = shallowRenderer.getRenderOutput();
 
         let button = actual.props.children[5];
@@ -66,47 +46,14 @@ describe('Tournament table Component', () => {
     });
 
     it('should not render start button when tournament started', () => {
-        props.started = true;
+        TournamentStore.state.tournamentStarted = true;
 
-        shallowRenderer.render(React.createElement(TournamentTable, props));
+        shallowRenderer.render(React.createElement(TournamentTable));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.props.children[5]).to.equal(undefined);
     });
 
-    it('should render table with rankings', () => {
-        shallowRenderer.render(React.createElement(TournamentTable, props));
-        let actual = shallowRenderer.getRenderOutput();
-
-        let rankingRows = actual.props.children[2].props.children[1].props.children;
-        rankingRows.forEach((rankingRow, index) => {
-            let ranking = props.rankingTable.ranking[index];
-
-            expect(rankingRow.props.children[0].props.children).to.equal(ranking.rank);
-            expect(rankingRow.props.children[1].props.children).to.equal(ranking.playerName);
-            expect(rankingRow.props.children[2].props.children).to.equal(ranking.connectedClients);
-        });
-    });
-
-    it('should render table with pairings', () => {
-        shallowRenderer.render(React.createElement(TournamentTable, props));
-        let actual = shallowRenderer.getRenderOutput();
-
-        let pairingRows = actual.props.children[4].props.children.props.children;
-        pairingRows.forEach((rankingRow, index) => {
-            let pairing = props.rankingTable.pairingResults[index];
-
-            if (pairing.firstPlayerWon) {
-                expect(rankingRow.props.children[0].props.children[0].type).to.equal('object');
-                expect(rankingRow.props.children[1].props.children[0]).to.equal(undefined);
-            } else {
-                expect(rankingRow.props.children[1].props.children[0].type).to.equal('object');
-                expect(rankingRow.props.children[0].props.children[0]).to.equal(undefined);
-            }
-
-            expect(rankingRow.props.children[0].props.children[1]).to.equal(pairing.player1);
-            expect(rankingRow.props.children[1].props.children[1]).to.equal(pairing.player2);
-        });
-    });
+   
 
 });
