@@ -33,10 +33,10 @@ let JassApp = React.createClass({
                 <GameSetup />
                 {(() => {
                     switch (this.state.sessionType) {
-                        case SessionType.SINGLE_GAME:
-                            return <JassTable />;
-                        case SessionType.TOURNAMENT:
-                            return <TournamentTable rankingTable={this.state.rankingTable} registryBots={this.state.registryBots} started={this.state.tournamentStarted} />;
+                    case SessionType.TOURNAMENT:
+                        return <TournamentTable rankingTable={this.state.rankingTable} registryBots={this.state.registryBots} started={this.state.tournamentStarted} />;
+                    default:
+                        return <JassTable />;
                     }
                 })()}
             </div>

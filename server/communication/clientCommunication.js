@@ -1,9 +1,7 @@
-'use strict';
-
-import * as messages from '../../shared/messages/messages.js';
-import {MessageType} from '../../shared/messages/messageType.js';
+import * as messages from '../../shared/messages/messages';
+import {MessageType} from '../../shared/messages/messageType';
 import validate from 'validate.js';
-import {Logger} from './../logger.js';
+import {Logger} from './../logger';
 
 const ClientCommunication = {
     toJSON(object) {
@@ -14,7 +12,7 @@ const ClientCommunication = {
         try {
             return JSON.parse(jsonAsString);
         } catch (error) {
-            Logger.error("Bad message from client: " + jsonAsString);
+            Logger.error('Bad message from client: ' + jsonAsString);
         }
     },
 

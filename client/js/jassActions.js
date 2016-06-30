@@ -1,14 +1,12 @@
-'use strict';
-
-import JassAppConstants from './jassAppConstants.js';
-import JassAppDispatcher from './jassAppDispatcher.js';
+import JassAppConstants from './jassAppConstants';
+import JassAppDispatcher from './jassAppDispatcher';
 
 export default {
     throwError: (source, error) => {
         JassAppDispatcher.throwErrorAction({
             actionType: JassAppConstants.ERROR,
             data: error,
-            source: source
+            source
         });
     },
 
@@ -58,7 +56,7 @@ export default {
                 sessionName,
                 chosenTeamIndex
             }
-        })
+        });
     },
 
     joinExistingSessionAsSpectator: (sessionName) => {
@@ -237,6 +235,17 @@ export default {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.COLLECT_STICH
         });
-    }
+    },
 
+    toggleShowLastStich() {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.TOGGLE_SHOW_LAST_STICH
+        });
+    },
+
+    toggleShowPoints() {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.TOGGLE_SHOW_POINTS
+        })
+    }
 };

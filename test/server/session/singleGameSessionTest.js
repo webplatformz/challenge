@@ -1,13 +1,11 @@
-'use strict';
-
 import {expect} from 'chai';
 import sinon from 'sinon';
 import * as SingleGameSession from '../../../server/session/singleGameSession';
-import * as Game from '../../../server/game/game.js';
+import * as Game from '../../../server/game/game';
 import * as TestDataCreator from '../../testDataCreator';
 import CloseEventCode from '../../../server/communication/closeEventCode';
 import {SessionType} from '../../../shared/session/sessionType';
-import {MessageType} from "../../../shared/messages/messageType";
+import {MessageType} from '../../../shared/messages/messageType';
 
 describe('Session', function () {
     let session,

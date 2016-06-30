@@ -1,9 +1,7 @@
-'use strict';
-
-import {SessionChoice} from '../session/sessionChoice.js';
-import {GameMode} from '../game/gameMode.js';
+import {SessionChoice} from '../session/sessionChoice';
+import {GameMode} from '../game/gameMode';
 import {CardColor} from '../deck/cardColor';
-import {SessionType} from '../session/sessionType.js';
+import {SessionType} from '../session/sessionType';
 
 export const MessageType = {
     REQUEST_PLAYER_NAME: {

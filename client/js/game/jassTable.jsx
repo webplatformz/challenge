@@ -1,7 +1,5 @@
-'use strict';
-
 import React from 'react';
-import {default as GameStore, GameState, PlayerType} from './gameStore';
+import { default as GameStore, GameState, PlayerType } from './gameStore';
 import CardTypeSwitcher from './cardTypeSwitcher.jsx';
 import PlayerCards from './playerCards.jsx';
 import RequestTrumpf from './requestTrumpf.jsx';
@@ -11,19 +9,19 @@ import SpectatorControls from './spectatorControls.jsx';
 
 export default React.createClass({
 
-    handleGameSetupState: function () {
+    handleGameSetupState() {
         this.setState(GameStore.state);
-    },
+      },
 
-    componentDidMount: function () {
+    componentDidMount() {
         GameStore.addChangeListener(this.handleGameSetupState);
     },
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         GameStore.removeChangeListener(this.handleGameSetupState);
     },
 
-    render: function () {
+    render() {
         let state = this.state || GameStore.state,
             players = state.players || [],
             playerSeating = state.playerSeating,
@@ -33,7 +31,7 @@ export default React.createClass({
 
         return (
             <div id="jassTable">
-                <CardTypeSwitcher cardType={state.cardType}/>
+                <CardTypeSwitcher cardType={state.cardType} />
                 <JassCarpet
                     cardType={state.cardType}
                     players={players}
@@ -45,26 +43,28 @@ export default React.createClass({
                     color={state.color}
                     roundPlayerIndex={state.roundPlayerIndex}
                     collectStich={state.collectStich}
-                    state={state.status}/>
-                <Points teams={teams} />
+                    state={state}
+                />
+                <Points teams={teams} showPoints={state.showPoints} />
                 {(() => {
                     if (state.playerType === PlayerType.PLAYER) {
-                        return <PlayerCards cards={playerCards}
-                                            cardType={state.cardType}
-                                            state={state.status}
-                                            tableCards={state.tableCards}
-                                            mode={state.mode}
-                                            color={state.color}/>;
+                        return (<PlayerCards cards={playerCards}
+                          cardType={state.cardType}
+                          state={state.status}
+                          tableCards={state.tableCards}
+                          mode={state.mode}
+                          color={state.color}
+                        />);
                     }
                 })()}
                 {(() => {
                     if (state.status === GameState.REQUESTING_TRUMPF) {
-                        return <RequestTrumpf isGeschoben={state.isGeschoben} cardType={state.cardType}/>;
+                        return <RequestTrumpf isGeschoben={state.isGeschoben} cardType={state.cardType} />;
                     }
                 })()}
                 {(() => {
                     if (state.playerType === PlayerType.SPECTATOR) {
-                        return <SpectatorControls/>;
+                        return <SpectatorControls />;
                     }
                 })()}
             </div>

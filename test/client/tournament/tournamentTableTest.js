@@ -1,8 +1,6 @@
-'use strict';
-
 import {expect} from 'chai';
 import React from 'react';
-import JassActions from '../../../client/js/jassActions.js';
+import JassActions from '../../../client/js/jassActions';
 
 import TestUtils from 'react-addons-test-utils';
 
@@ -19,29 +17,29 @@ describe('Tournament table Component', () => {
                 ranking: [
                     {
                         rank: 1,
-                        playerName: "Player A",
+                        playerName: 'Player A',
                         connectedClients: 1
                     },
                     {
                         rank: 2,
-                        playerName: "Player B",
+                        playerName: 'Player B',
                         connectedClients: 2
                     },
                     {
                         rank: 3,
-                        playerName: "Player B",
+                        playerName: 'Player B',
                         connectedClients: 1
                     }
                 ],
                 pairingResults: [
                     {
-                        player1: "Player A",
-                        player2: "Player C",
+                        player1: 'Player A',
+                        player2: 'Player C',
                         firstPlayerWon: true
                     },
                     {
-                        player1: "Player B",
-                        player2: "Player A",
+                        player1: 'Player B',
+                        player2: 'Player A',
                         firstPlayerWon: false
                     }
                 ]

@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {expect} from 'chai';
 import React from 'react';
@@ -11,7 +11,7 @@ import JassActions from '../../../client/js/jassActions';
 import TestUtils from 'react-addons-test-utils';
 
 import PlayerCards from '../../../client/js/game/playerCards.jsx';
-import {GameMode} from "../../../shared/game/gameMode";
+import {GameMode} from '../../../shared/game/gameMode';
 
 describe('PlayerCards Component', () => {
 

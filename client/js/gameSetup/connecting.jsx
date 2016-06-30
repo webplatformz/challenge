@@ -1,14 +1,10 @@
-'use strict';
-
 import React from 'react';
-import GameSetupStore from './gameSetupStore.js';
+import {GameSetupState} from './gameSetupStore';
 
-export default React.createClass({
-    render: function () {
-        return (
-            <div id="connecting" className={(this.props.setupState !== GameSetupStore.GameSetupState.CONNECTING ? 'hidden' : '')}>
-                <h1 className="jumbotron">Connecting to Server...</h1>
-            </div>
-        )
-    }
-});
+export default (props) => {
+    return (
+        <div id="connecting" className={(props.setupState !== GameSetupState.CONNECTING ? 'hidden' : '')}>
+            <h1 className="jumbotron">Connecting to Server...</h1>
+        </div>
+    );
+};

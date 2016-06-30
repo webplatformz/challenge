@@ -1,37 +1,21 @@
-'use strict';
-
 import React from 'react';
 import JassActions from '../jassActions';
 
-export default React.createClass({
+export default (props) => {
 
-    hasSessions: function(sessions) {
-        return sessions.length;
-    },
+    let sessions = props.sessions || [];
 
-    joinExistingSession: function(sessionName) {
-        JassActions.joinExistingSession(sessionName);
-    },
-
-    joinExistingSessionAsSpectator: function(sessionName) {
-        JassActions.joinExistingSessionAsSpectator(sessionName);
-    },
-
-    render: function () {
-        let sessions = this.props.sessions || [];
-
-        return (
-            <div className="session-choice">
-                <ul className={(!this.hasSessions(sessions)) ? 'hidden' : ''}>
-                    {sessions.map((session) => {
-                        return (
-                            <li key={session}>
-                                <div onClick={() => this.joinExistingSession(session)}>{session}</div>
-                                <div onClick={() => this.joinExistingSessionAsSpectator(session)}>S</div>
-                            </li>);
-                    })}
-                </ul>
-            </div>
-        )
-    }
-});
+    return (
+        <div className="session-choice">
+            <ul className={(!sessions.length) ? 'hidden' : ''}>
+                {sessions.map((session) => {
+                    return (
+                        <li key={session}>
+                            <div onClick={() => JassActions.joinExistingSession(session)}>{session}</div>
+                            <div onClick={() => JassActions.joinExistingSessionAsSpectator(session)}>S</div>
+                        </li>);
+                })}
+            </ul>
+        </div>
+    );
+};

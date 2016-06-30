@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {GameMode} from '../../../shared/game/gameMode';
 import {CardColor} from '../../../shared/deck/cardColor';

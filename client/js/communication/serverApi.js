@@ -1,11 +1,9 @@
-'use strict';
-
-import JassAppDispatcher from '../jassAppDispatcher.js';
-import JassAppConstants from '../jassAppConstants.js';
-import JassActions from '../jassActions.js';
-import * as messages from '../../../shared/messages/messages.js';
-import {MessageType} from '../../../shared/messages/messageType.js';
-import {SessionChoice} from '../../../shared/session/sessionChoice.js';
+import JassAppDispatcher from '../jassAppDispatcher';
+import JassAppConstants from '../jassAppConstants';
+import JassActions from '../jassActions';
+import * as messages from '../../../shared/messages/messages';
+import {MessageType} from '../../../shared/messages/messageType';
+import {SessionChoice} from '../../../shared/session/sessionChoice';
 
 const serverAddress = 'ws://' + window.location.host;
 
@@ -15,11 +13,11 @@ function sendJSONMessageToClient(messageType, ...data) {
     webSocket.send(JSON.stringify(messages.create(messageType, ...data)));
 }
 
-let ServerApi = {
+const ServerApi = {
     handleMessageFromServer: (messageEvent) => {
         let message = JSON.parse(messageEvent.data);
 
-        switch(message.type) {
+        switch (message.type) {
             case MessageType.BAD_MESSAGE:
                 JassActions.throwError('SERVER', message.data);
                 break;
@@ -102,8 +100,10 @@ let ServerApi = {
                     break;
                 case JassAppConstants.START_TOURNAMENT:
                     sendJSONMessageToClient(MessageType.START_TOURNAMENT.name);
+                    break;
                 case JassAppConstants.JOIN_BOT:
                     sendJSONMessageToClient(MessageType.JOIN_BOT.name, action.data);
+                    break;
             }
         }
     },

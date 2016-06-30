@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {expect} from 'chai';
 import sinon from 'sinon';
@@ -87,17 +87,17 @@ describe('GameStore', () => {
                     player: {
                         name: 'Player 1',
                         seatId: 1,
-                        id: "A1"
+                        id: 'A1'
                     },
                     playersInSession: [
                         {
                             name: 'Player 0',
-                            id: "A0",
+                            id: 'A0',
                             seatId: 0
                         },
                         {
                             name: 'Player 1',
-                            id: "A1",
+                            id: 'A1',
                             seatId: 1
                         }
                     ]
@@ -116,23 +116,23 @@ describe('GameStore', () => {
                 data: {
                     player: {
                         name: 'Player 2',
-                        id: "2",
+                        id: '2',
                         seatId: 2
                     },
                     playersInSession: [
                         {
                             name: 'Player 0',
-                            id: "0",
+                            id: '0',
                             seatId: 0
                         },
                         {
                             name: 'Player 1',
-                            id: "1",
+                            id: '1',
                             seatId: 1
                         },
                         {
                             name: 'Player 2',
-                            id: "2",
+                            id: '2',
                             seatId: 2
                         }
                     ]
@@ -175,19 +175,19 @@ describe('GameStore', () => {
             action: {
                 actionType: JassAppConstants.BROADCAST_STICH,
                 data: {
-                    "name": "Player 1",
-                    "id": 1,
-                    "playedCards": [],
-                    "teams": [
+                    'name': 'Player 1',
+                    'id': 1,
+                    'playedCards': [],
+                    'teams': [
                         {
-                            "name": "Team 2",
-                            "points": 157,
-                            "currentRoundPoints": 0
+                            'name': 'Team 2',
+                            'points': 157,
+                            'currentRoundPoints': 0
                         },
                         {
-                            "name": "Team 1",
-                            "points": 0,
-                            "currentRoundPoints": 42
+                            'name': 'Team 1',
+                            'points': 0,
+                            'currentRoundPoints': 42
                         }
                     ]
                 }
@@ -247,19 +247,19 @@ describe('GameStore', () => {
             action: {
                 actionType: JassAppConstants.BROADCAST_STICH,
                 data: {
-                    "name": "Player 1",
-                    "id": 1,
-                    "playedCards": [],
-                    "teams": [
+                    'name': 'Player 1',
+                    'id': 1,
+                    'playedCards': [],
+                    'teams': [
                         {
-                            "name": "Team 2",
-                            "points": 157,
-                            "currentRoundPoints": 0
+                            'name': 'Team 2',
+                            'points': 157,
+                            'currentRoundPoints': 0
                         },
                         {
-                            "name": "Team 1",
-                            "points": 0,
-                            "currentRoundPoints": 42
+                            'name': 'Team 1',
+                            'points': 0,
+                            'currentRoundPoints': 42
                         }
                     ]
                 }
