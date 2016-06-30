@@ -12,30 +12,40 @@ export default React.createClass({
 
         return (
             <div id="registryBots">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Owner</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {bots.map(bot => {
-                       return (
-                         <tr key={bot.id}>
-                             <td>{bot.owner}</td>
-                             <td>
-                                 <a href="javascript:void(0)"
-                                    onClick={() => this.addBotFromRegistry(bot)}
-                                 >
-                                     Add
-                                 </a>
-                             </td>
-                         </tr>
-                       );
-                    })}
-                    </tbody>
-                </table>
+                {(() => {
+                    if (bots.length) {
+                        return (
+                            <div>
+                                <h1>Add Bots from Registry</h1>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Owner</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {bots.map(bot => {
+                                        return (
+                                            <tr key={bot.id}>
+                                                <td>{bot.owner}</td>
+                                                <td><a href="javascript:void(0)"
+                                                       onClick={() => this.addBotFromRegistry(bot)}>Add</a>
+                                                    <i className="fa fa-bolt"></i>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )
+                    } else {
+                        return <p>There are no bots available in the registry.</p>
+                    }
+                })()
+                }
+
             </div>
         );
     }
