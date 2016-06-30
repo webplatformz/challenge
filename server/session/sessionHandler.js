@@ -3,7 +3,7 @@ import * as SessionFactory from './sessionFactory';
 import {SessionChoice} from '../../shared/session/sessionChoice';
 import {SessionType} from '../../shared/session/sessionType';
 import nameGenerator from 'docker-namesgenerator';
-import {MessageType} from "../../shared/messages/messageType";
+import {MessageType} from '../../shared/messages/messageType';
 import Registry from '../registry/registry';
 
 let clientApi = ClientApi.create();

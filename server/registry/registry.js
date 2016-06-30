@@ -1,14 +1,11 @@
-'use strict';
-
 import request from 'request';
-
-let registryUrl = 'http://172.16.37.113:1338/api';
+import EnvironmentUtil from './environmentUtil';
 
 const Registry = {
 
     getRegisteredBots() {
         return new Promise((resolve, reject) => {
-            request(registryUrl, (error, response, body) => {
+            request(EnvironmentUtil.getRegistryAddress(), (error, response, body) => {
                 if (error) {
                     return reject(error);
                 }
@@ -27,7 +24,7 @@ const Registry = {
      */
     addBot(bot, mode) {
         return new Promise((resolve, reject) => {
-            request.post({ url: registryUrl + '/addBot', json: true, body: {
+            request.post({ url: EnvironmentUtil.getRegistryAddress() + '/addBot', json: true, body: {
                 botId: bot.id,
                 mode: mode,
                 sessionName: 'sessionName'

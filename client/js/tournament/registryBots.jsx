@@ -1,7 +1,5 @@
-'use strict';
-
 import React from 'react';
-import JassActions from '../jassActions.js';
+import JassActions from '../jassActions';
 
 export default React.createClass({
 
@@ -26,8 +24,13 @@ export default React.createClass({
                        return (
                          <tr key={bot.id}>
                              <td>{bot.owner}</td>
-                             <td><a href="javascript:void(0)"
-                                    onClick={() => this.addBotFromRegistry(bot)}>Add</a></td>
+                             <td>
+                                 <a href="javascript:void(0)"
+                                    onClick={() => this.addBotFromRegistry(bot)}
+                                 >
+                                     Add
+                                 </a>
+                             </td>
                          </tr>
                        );
                     })}

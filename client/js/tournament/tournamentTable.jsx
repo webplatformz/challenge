@@ -2,16 +2,12 @@ import React from 'react';
 import JassActions from '../jassActions';
 import RegistryBots from './registryBots.jsx';
 
-export default (props) => {
-    const rankingTable = props.rankingTable;
-    let rankingTable = props.rankingTable;
-    let registryBots = props.registryBots;
-
+export default ({rankingTable, registryBots, started}) => {
     JassActions.requestRegistryBots();
     
     return (
         <div id="tournamentTable">
-            {(registryBots) ? <RegistryBots bots={ registryBots }/> : undefined}
+            {(registryBots) ? <RegistryBots bots={registryBots}/> : undefined}
             <h1 className="jumbotron">Current rankings</h1>
             <table>
                 <thead>
@@ -61,7 +57,7 @@ export default (props) => {
                 </tbody>
             </table>
             {(() => {
-                if (!props.started) {
+                if (!started) {
                     return (
                         <button type="button" name="startTournament" onClick={JassActions.startTournament}>
                             Start!
