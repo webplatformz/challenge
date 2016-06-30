@@ -29,8 +29,12 @@ export default React.createClass({
                                         return (
                                             <tr key={bot.id}>
                                                 <td>{bot.owner}</td>
-                                                <td><a href="javascript:void(0)"
-                                                       onClick={() => this.addBotFromRegistry(bot)}>Add</a>
+                                                <td>
+                                                    <a href="javascript:void(0)"
+                                                       onClick={() => this.addBotFromRegistry(bot)}
+                                                    >
+                                                    Add
+                                                </a>
                                                     <i className="fa fa-bolt"></i>
                                                 </td>
                                             </tr>

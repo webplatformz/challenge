@@ -7,7 +7,7 @@ export default ({rankingTable, registryBots, started}) => {
     
     return (
         <div id="tournamentDashboard">
-            <RegistryBots bots={ registryBots }/>
+            <RegistryBots bots={registryBots}/>
             <div id="tournamentTable">
                 <h1 className="jumbotron">Current rankings</h1>
                 <table>
@@ -39,7 +39,8 @@ export default ({rankingTable, registryBots, started}) => {
                                         if (pairing.firstPlayerWon) {
                                             return (
                                                 <object className="winner" data="/images/star.svg"
-                                                        type="image/svg+xml"/>);
+                                                        type="image/svg+xml"
+                                                />);
                                         }
                                     })()}
                                     {pairing.player1}
@@ -49,7 +50,8 @@ export default ({rankingTable, registryBots, started}) => {
                                         if (!pairing.firstPlayerWon) {
                                             return (
                                                 <object className="winner" data="/images/star.svg"
-                                                        type="image/svg+xml"/>);
+                                                        type="image/svg+xml"
+                                                />);
                                         }
                                     })()}
                                     {pairing.player2}
