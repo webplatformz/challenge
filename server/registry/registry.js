@@ -7,22 +7,14 @@ const Registry = {
         return new Promise((resolve, reject) => {
             request(EnvironmentUtil.getRegistryAddress(), (error, response, body) => {
                 if (error) {
-                    return reject(error);
+                    reject(error);
+                } else {
+                    resolve(body);
                 }
-
-                let registeredBots = body;
-                resolve(registeredBots);
             });
         });
     },
 
-    /**
-     *
-     * @param bot
-     * @param mode SessionType
-     * @param sessionName
-     * @returns {Promise}
-     */
     addBot(bot, mode, sessionName) {
         return new Promise((resolve, reject) => {
             const addBotRequest = {
@@ -35,11 +27,12 @@ const Registry = {
                 url: EnvironmentUtil.getRegistryAddress() + '/addBot',
                 json: true,
                 body: addBotRequest
-            }, (err, res, body) => {
-                if (err) {
-                    return reject();
+            }, (error) => {
+                if (error) {
+                    reject();
+                } else {
+                    resolve();
                 }
-                resolve();
             });
         });
     }
