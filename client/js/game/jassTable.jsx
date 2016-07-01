@@ -45,7 +45,7 @@ export default React.createClass({
                     collectStich={state.collectStich}
                     state={state}
                 />
-                <Points teams={teams} />
+                <Points teams={teams} showPoints={state.showPoints} />
                 {(() => {
                     if (state.playerType === PlayerType.PLAYER) {
                         return (<PlayerCards cards={playerCards}

@@ -18,9 +18,9 @@ export default (props) => {
 
     return (
         <div id="playerNames">
-            {players.map(function (player, index) {
+            {players.map((player, index) => {
                 let classes = [];
-                let addBotClasses = ['addBotIcon'];
+                let addBotClasses = ['add-bot-icon'];
 
                 if (nextStartingPlayerIndex === index) {
                     classes.push('active');
@@ -37,7 +37,7 @@ export default (props) => {
 
                 return (
                     <div key={player.id} id={'player-' + playerSeating[index]} className={classes.join(' ')}>
-                        <span title="Add bot player"><img className={addBotClasses.join(' ')} src="./images/robot.svg" onClick={() => addBot(chosenSession, player.seatId)} /></span>
+                        <span title="Add bot player"><img className={addBotClasses.join(' ')} src="./images/robot.svg" onClick={() => addBot(props.chosenSession, player.seatId)} /></span>
                         {player.name}<object data="/images/startingPlayer.svg" type="image/svg+xml"/>
                     </div>);
             })}

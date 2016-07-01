@@ -7,8 +7,7 @@ const JassAppStore = Object.create(EventEmitter.prototype);
 
 JassAppStore.state = {
     error: undefined,
-    sessionType: undefined,
-    tournamentStarted: false
+    sessionType: undefined
 };
 
 JassAppStore.emitChange = function () {
@@ -37,11 +36,6 @@ JassAppDispatcher.register(function (payload) {
         break;
     case JassAppConstants.BROADCAST_TOURNAMENT_RANKING_TABLE:
         JassAppStore.state.sessionType = SessionType.TOURNAMENT;
-        JassAppStore.state.rankingTable = action.data;
-        JassAppStore.emitChange();
-        break;
-    case JassAppConstants.BROADCAST_TOURNAMENT_STARTED:
-        JassAppStore.state.tournamentStarted = true;
         JassAppStore.emitChange();
         break;
     }

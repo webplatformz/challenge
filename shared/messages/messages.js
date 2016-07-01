@@ -181,6 +181,25 @@ function createJoinBot(data) {
     }
 }
 
+function createRequestRegistryBots(data) {
+    return {
+        type: MessageType.REQUEST_REGISTRY_BOTS.name,
+        data
+    }
+}
+function createSendRegistryBots(data) {
+    return {
+        type: MessageType.SEND_REGISTRY_BOTS.name,
+        data
+    }
+}
+function createAddBotFromRegistry(data) {
+    return {
+        type: MessageType.ADD_BOT_FROM_REGISTRY.name,
+        data
+    }
+}
+
 export function create(messageType, ...data) {
     switch (messageType) {
         case MessageType.REQUEST_PLAYER_NAME.name:
@@ -231,6 +250,12 @@ export function create(messageType, ...data) {
             return createBroadcastTournamentStarted(...data);
         case MessageType.JOIN_BOT.name:
             return createJoinBot(...data);
+        case MessageType.REQUEST_REGISTRY_BOTS.name:
+            return createRequestRegistryBots(...data);
+        case MessageType.SEND_REGISTRY_BOTS.name:
+            return createSendRegistryBots(...data);
+        case MessageType.ADD_BOT_FROM_REGISTRY.name:
+            return createAddBotFromRegistry(...data);
         default:
             throw 'Unknown message type ' + messageType;
     }

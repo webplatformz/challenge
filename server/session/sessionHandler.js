@@ -3,8 +3,12 @@ import * as SessionFactory from './sessionFactory';
 import {SessionChoice} from '../../shared/session/sessionChoice';
 import {SessionType} from '../../shared/session/sessionType';
 import nameGenerator from 'docker-namesgenerator';
+import {MessageType} from '../../shared/messages/messageType';
+import Registry from '../registry/registry';
 
 let clientApi = ClientApi.create();
+
+let messageListeners = [];
 
 function findOrCreateSessionWithSpace(sessions, sessionChoiceResponse) {
     let filteredSessions = sessions.filter((session) => {
@@ -82,11 +86,21 @@ const SessionHandler = {
     handleClientConnection(ws) {
         keepSessionAlive(ws, 10000);
 
+        messageListeners.push(clientApi.subscribeMessage(ws, MessageType.REQUEST_REGISTRY_BOTS, () => {
+            Registry.getRegisteredBots()
+                .then(bots => clientApi.sendRegistryBots(ws, bots));
+        }));
+
+        messageListeners.push(clientApi.subscribeMessage(ws, MessageType.ADD_BOT_FROM_REGISTRY, (message) => {
+            const bot = message.data.bot;
+            const sessionName = message.data.sessionName;
+            Registry.addBot(bot, SessionType.TOURNAMENT, sessionName);
+        }));
+
         return clientApi.requestPlayerName(ws).then((playerName) => {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
                 const session = createAndReturnSession(this.sessions, sessionChoiceResponse);
 
-                // TODO danielsuter why are there 2 possibilities?
                 if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR || sessionChoiceResponse.asSpectator) {
                     session.addSpectator(ws);
 
@@ -104,6 +118,11 @@ const SessionHandler = {
     },
 
     startSession(session) {
+        messageListeners = messageListeners.filter(unbindListener => {
+            unbindListener();
+            return false;
+        });
+
         session.start().then(
             this.finishSession.bind(this, session),
             this.finishSession.bind(this, session));
@@ -113,7 +132,7 @@ const SessionHandler = {
         session.close('Game Finished');
         this.removeSession(session);
     },
-    
+
     removeSession(session) {
         let index = this.sessions.indexOf(session);
         this.sessions.splice(index, 1);

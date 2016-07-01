@@ -1,5 +1,3 @@
-
-
 import {expect} from 'chai';
 import * as RankingTable from '../../../server/session/rankingTable';
 
@@ -23,12 +21,12 @@ describe('rankingTable', () => {
             rankingTable.addPairingResult(player2, player1, firstPlayerWon2);
 
             expect(rankingTable.pairingResults).to.have.length(2);
-            expect(rankingTable.pairingResults[0].player1).to.equal(player1);
-            expect(rankingTable.pairingResults[0].player2).to.equal(player2);
-            expect(rankingTable.pairingResults[0].firstPlayerWon).to.equal(firstPlayerWon1);
-            expect(rankingTable.pairingResults[1].player1).to.equal(player2);
-            expect(rankingTable.pairingResults[1].player2).to.equal(player1);
-            expect(rankingTable.pairingResults[1].firstPlayerWon).to.equal(firstPlayerWon2);
+            expect(rankingTable.pairingResults[1].player1).to.equal(player1);
+            expect(rankingTable.pairingResults[1].player2).to.equal(player2);
+            expect(rankingTable.pairingResults[1].firstPlayerWon).to.equal(firstPlayerWon1);
+            expect(rankingTable.pairingResults[0].player1).to.equal(player2);
+            expect(rankingTable.pairingResults[0].player2).to.equal(player1);
+            expect(rankingTable.pairingResults[0].firstPlayerWon).to.equal(firstPlayerWon2);
         });
     });
 
