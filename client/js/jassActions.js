@@ -1,14 +1,13 @@
-'use strict';
-
-import JassAppConstants from './jassAppConstants.js';
-import JassAppDispatcher from './jassAppDispatcher.js';
+import JassAppConstants from './jassAppConstants';
+import JassAppDispatcher from './jassAppDispatcher';
+import {SessionType} from '../../shared/session/sessionType';
 
 export default {
     throwError: (source, error) => {
         JassAppDispatcher.throwErrorAction({
             actionType: JassAppConstants.ERROR,
             data: error,
-            source: source
+            source
         });
     },
 
@@ -32,29 +31,74 @@ export default {
         });
     },
 
-    joinExistingSession: (sessionChoice) => {
+    joinExistingSession: (sessionName) => {
+        let chosenSessionPartial = {
+            sessionName,
+            joinSession: (chosenTeamIndex) => {
+                JassAppDispatcher.handleViewAction({
+                    actionType: JassAppConstants.CHOOSE_EXISTING_SESSION,
+                    data: {
+                        sessionName,
+                        chosenTeamIndex
+                    }
+                });
+            }
+        };
         JassAppDispatcher.handleViewAction({
-            actionType: JassAppConstants.CHOOSE_EXISTING_SESSION,
-            data: sessionChoice
+            actionType: JassAppConstants.CHOOSE_SESSION_PARTIAL,
+            data: chosenSessionPartial
         });
     },
 
-    joinExistingSessionAsSpectator: (sessionChoice) => {
+    joinBot: (sessionName, chosenTeamIndex) => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.JOIN_BOT,
+            data: {
+                sessionName,
+                chosenTeamIndex
+            }
+        });
+    },
+
+    joinExistingSessionAsSpectator: (sessionName) => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR,
-            data: sessionChoice
+            data: {
+                sessionName
+            }
         });
     },
 
     createNewSession: (sessionType, sessionName, asSpectator) => {
-        JassAppDispatcher.handleViewAction({
-            actionType: JassAppConstants.CREATE_NEW_SESSION,
-            data: {
+        if (sessionType === SessionType.TOURNAMENT) {
+            JassAppDispatcher.handleViewAction({
+                actionType: JassAppConstants.CREATE_NEW_SESSION,
+                data: {
+                    sessionName,
+                    sessionType,
+                    asSpectator
+                }
+            });
+        } else {
+            const chosenSessionPartial = {
                 sessionName,
-                sessionType,
-                asSpectator
-            }
-        });
+                joinSession: (chosenTeamIndex) => {
+                    JassAppDispatcher.handleViewAction({
+                        actionType: JassAppConstants.CREATE_NEW_SESSION,
+                        data: {
+                            sessionName,
+                            sessionType,
+                            asSpectator,
+                            chosenTeamIndex
+                        }
+                    });
+                }
+            };
+            JassAppDispatcher.handleViewAction({
+                actionType: JassAppConstants.CHOOSE_SESSION_PARTIAL,
+                data: chosenSessionPartial
+            });
+        }
     },
 
     autojoinSession: () => {
@@ -173,9 +217,50 @@ export default {
         });
     },
 
+    requestRegistryBots: () => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.REQUEST_REGISTRY_BOTS
+        });
+    },
+
+    sendRegistryBots: (registryBots) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.SEND_REGISTRY_BOTS,
+            data: registryBots
+        });
+    },
+    
+    addBotFromRegistry: (bot, sessionName) => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.ADD_BOT_FROM_REGISTRY,
+            data: {
+                bot,
+                sessionName
+            }
+        });
+    },
+
     broadcastTournamentStarted: () => {
         JassAppDispatcher.handleServerAction({
             actionType: JassAppConstants.BROADCAST_TOURNAMENT_STARTED
         });
+    },
+
+    collectStich() {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.COLLECT_STICH
+        });
+    },
+
+    toggleShowLastStich() {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.TOGGLE_SHOW_LAST_STICH
+        });
+    },
+
+    toggleShowPoints() {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.TOGGLE_SHOW_POINTS
+        })
     }
 };

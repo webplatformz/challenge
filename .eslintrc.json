@@ -1,0 +1,31 @@
+{
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "env": {
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "array-callback-return": 2,
+    "quotes": [2, "single"],
+    "strict": [2, "never"],
+    "import/export": 2,
+    "import/no-amd": 2,
+    "import/no-duplicates": 2,
+    "import/extensions": [2, "never"],
+    "import/no-extraneous-dependencies": [2, {
+      "devDependencies": false,
+      "optionalDependencies": false
+    }],
+    "import/no-mutable-exports": 2,
+    "import/no-named-as-default": 2,
+    "import/no-named-as-default-member": 2,
+    "import/no-unresolved": [2, { "commonjs": true }],
+    "no-console": 2
+  },
+  "plugins": [
+    "import",
+    "react"
+  ]
+}

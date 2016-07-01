@@ -1,17 +1,20 @@
-'use strict';
-
 import {expect} from 'chai';
 import sinon from 'sinon';
 import * as SingleGameSession from '../../../server/session/singleGameSession';
-import * as Game from '../../../server/game/game.js';
+import * as Game from '../../../server/game/game';
 import * as TestDataCreator from '../../testDataCreator';
 import CloseEventCode from '../../../server/communication/closeEventCode';
 import {SessionType} from '../../../shared/session/sessionType';
+import {MessageType} from '../../../shared/messages/messageType';
 
 describe('Session', function () {
     let session,
         fourPlayers,
         clientApiMock;
+
+    const webSocketDummy = {
+        on() {}
+    };
 
     beforeEach(() => {
         session = SingleGameSession.create('TestSession');
@@ -43,48 +46,111 @@ describe('Session', function () {
 
     describe('addPlayer', () => {
 
-        it('should add alternating team to player and ask for player name', () => {
-            var playerName0 = 'Peter';
-            var playerName1 = 'Hans';
-            var playerName2 = 'Homer';
-            var playerName3 = 'Luke';
+        const playerName0 = 'Peter';
+        const playerName1 = 'Hans';
+        const playerName2 = 'Homer';
+        const playerName3 = 'Luke';
+        const team1 = 0;
+        const team2 = 1;
 
+
+        function expectClientApiMockToAdd4Players() {
             clientApiMock.expects('broadcastSessionJoined').exactly(4);
             clientApiMock.expects('addClient').exactly(4).returns(Promise.resolve());
+        }
 
-            session.addPlayer('webSocket', playerName0);
-            session.addPlayer('webSocket', playerName1);
-            session.addPlayer('webSocket', playerName2);
-            session.addPlayer('webSocket', playerName3);
+        function expectPlayerInTeam(playerIndex, playerName, teamIndex) {
+            const player = session.players.find(player => player.name === playerName);
+            expect(player.team).to.equal(session.teams[teamIndex]);
+        }
 
-            expect(session.players[0].team).to.equal(session.teams[0]);
-            expect(session.players[0].name).to.equal(playerName0);
-            expect(session.players[1].team).to.equal(session.teams[1]);
-            expect(session.players[1].name).to.equal(playerName1);
-            expect(session.players[2].team).to.equal(session.teams[0]);
-            expect(session.players[2].name).to.equal(playerName2);
-            expect(session.players[3].team).to.equal(session.teams[1]);
-            expect(session.players[3].name).to.equal(playerName3);
+        it('should add players in order to alternating teams', () => {
+            expectClientApiMockToAdd4Players();
+
+            session.addPlayer(webSocketDummy, playerName0);
+            session.addPlayer(webSocketDummy, playerName1);
+            session.addPlayer(webSocketDummy, playerName2);
+            session.addPlayer(webSocketDummy, playerName3);
+
+            expectPlayerInTeam(0, playerName0, team1);
+            expectPlayerInTeam(1, playerName1, team2);
+            expectPlayerInTeam(2, playerName2, team1);
+            expectPlayerInTeam(3, playerName3, team2);
 
             clientApiMock.verify();
         });
 
+        it('should add players to chosen teams', () => {
+            expectClientApiMockToAdd4Players();
+
+            session.addPlayer(webSocketDummy, playerName0, team2);
+            session.addPlayer(webSocketDummy, playerName1, team2);
+            session.addPlayer(webSocketDummy, playerName2, team1);
+            session.addPlayer(webSocketDummy, playerName3, team1);
+
+            expectPlayerInTeam(0, playerName2, team1);
+            expectPlayerInTeam(1, playerName0, team2);
+            expectPlayerInTeam(2, playerName3, team1);
+            expectPlayerInTeam(3, playerName1, team2);
+
+            clientApiMock.verify();
+        });
+
+        it('should assign first free team slot to player choosing full team', () => {
+            expectClientApiMockToAdd4Players();
+
+            session.addPlayer(webSocketDummy, playerName0, team2);
+            session.addPlayer(webSocketDummy, playerName1, team1);
+            session.addPlayer(webSocketDummy, playerName2, team2);
+            session.addPlayer(webSocketDummy, playerName3, team2);
+
+            expectPlayerInTeam(0, playerName1, team1);
+            expectPlayerInTeam(1, playerName0, team2);
+            expectPlayerInTeam(2, playerName3, team1);
+            expectPlayerInTeam(3, playerName2, team2);
+
+            clientApiMock.verify();
+        });
+
+        it('should assign first free team slot to player when no team chosen', () => {
+            expectClientApiMockToAdd4Players();
+
+            session.addPlayer(webSocketDummy, playerName0, team2);
+            session.addPlayer(webSocketDummy, playerName1);
+            session.addPlayer(webSocketDummy, playerName2, team1);
+            session.addPlayer(webSocketDummy, playerName3);
+
+            expectPlayerInTeam(0, playerName1, team1);
+            expectPlayerInTeam(1, playerName0, team2);
+            expectPlayerInTeam(2, playerName2, team1);
+            expectPlayerInTeam(3, playerName3, team2);
+
+            clientApiMock.verify();
+        });
+
+
         it('should broadcast session joined and save message for later use', () => {
             let sessionPlayer = {
                 id: 0,
+                seatId: 0,
                 name: 'name'
             };
 
-            clientApiMock.expects('broadcastSessionJoined').once().withArgs(session.name, sessionPlayer, [sessionPlayer]);
+            let playerMatcher = sinon.match(function (actualPlayer) {
+                return actualPlayer.seatId === sessionPlayer.seatId &&
+                    actualPlayer.name === sessionPlayer.name
+            });
+
+            clientApiMock.expects('broadcastSessionJoined').once().withArgs(session.name, playerMatcher, [playerMatcher]);
             clientApiMock.expects('addClient').once().returns(Promise.resolve());
 
-            session.addPlayer('webSocket', sessionPlayer.name);
+            session.addPlayer(webSocketDummy, sessionPlayer.name);
 
             clientApiMock.verify();
-            expect(session.lastSessionJoin.player).to.eql(sessionPlayer);
-            expect(session.lastSessionJoin.playersInSession).to.eql([
-                sessionPlayer
-            ]);
+            expect(session.lastSessionJoin.player).to.have.keys('id', 'seatId', 'name');
+            expect(session.lastSessionJoin.player).to.have.property('seatId', sessionPlayer.seatId);
+            expect(session.lastSessionJoin.player).to.have.property('name', sessionPlayer.name);
+            expect(session.lastSessionJoin.playersInSession.length).to.eq(1);
         });
 
         it('should close session if player left', (done) => {
@@ -97,12 +163,27 @@ describe('Session', function () {
             clientApiMock.expects('addClient').once().returns(rejectedPromise);
             clientApiMock.expects('broadcastWinnerTeam').once();
 
-            session.addPlayer('webSocket', 'playerName');
+            session.addPlayer(webSocketDummy, 'playerName');
 
             setTimeout(() => {
                 clientApiMock.verify();
                 done();
             }, 1);
+        });
+
+        it('should assign first free team slot to player when no team chosen', () => {
+            expectClientApiMockToAdd4Players();
+
+            clientApiMock.expects('subscribeMessage').exactly(4).withExactArgs(webSocketDummy, MessageType.JOIN_BOT, sinon.match.func);
+
+            session.addPlayer(webSocketDummy, playerName0);
+            session.addPlayer(webSocketDummy, playerName1);
+            session.addPlayer(webSocketDummy, playerName2);
+            session.addPlayer(webSocketDummy, playerName3);
+
+            expect(session.joinBotListeners.length).to.equal(4);
+
+            clientApiMock.verify();
         });
     });
 
@@ -113,16 +194,16 @@ describe('Session', function () {
             clientApiMock.expects('broadcastSessionJoined').exactly(4);
             clientApiMock.expects('addClient').exactly(4).returns(Promise.resolve());
 
-            session.addPlayer('webSocket', playerName);
+            session.addPlayer(webSocketDummy, playerName);
             expect(session.isComplete()).to.equal(false);
 
-            session.addPlayer('webSocket', playerName);
+            session.addPlayer(webSocketDummy, playerName);
             expect(session.isComplete()).to.equal(false);
 
-            session.addPlayer('webSocket', playerName);
+            session.addPlayer(webSocketDummy, playerName);
             expect(session.isComplete()).to.equal(false);
 
-            session.addPlayer('webSocket', playerName);
+            session.addPlayer(webSocketDummy, playerName);
             expect(session.isComplete()).to.equal(true);
 
             clientApiMock.verify();
@@ -159,10 +240,12 @@ describe('Session', function () {
                         players: [
                             {
                                 name: fourPlayers[0].name,
-                                id: fourPlayers[0].id
+                                id: fourPlayers[0].id,
+                                seatId: fourPlayers[0].seatId
                             }, {
                                 name: fourPlayers[2].name,
-                                id: fourPlayers[2].id
+                                id: fourPlayers[2].id,
+                                seatId: fourPlayers[2].seatId
                             }
                         ]
                     }, {
@@ -170,10 +253,12 @@ describe('Session', function () {
                         players: [
                             {
                                 name: fourPlayers[1].name,
-                                id: fourPlayers[1].id
+                                id: fourPlayers[1].id,
+                                seatId: fourPlayers[1].seatId
                             }, {
                                 name: fourPlayers[3].name,
-                                id: fourPlayers[3].id
+                                id: fourPlayers[3].id,
+                                seatId: fourPlayers[3].seatId
                             }
                         ]
                     }
@@ -208,6 +293,24 @@ describe('Session', function () {
                 done();
             }).catch(done);
         });
+
+        it('should unbind all joinBotListeners', () => {
+            const game = {
+                start: function () {
+                    return Promise.resolve();
+                }
+            };
+            const unbindSpy = sinon.spy();
+
+            gameFactoryMock.expects('create').returns(game);
+            session.joinBotListeners.push(unbindSpy);
+            session.players = fourPlayers;
+
+            session.start();
+
+            sinon.assert.calledOnce(unbindSpy);
+        });
+
 
         it('should finish a game and check better team wins', (done) => {
             let game = {
@@ -262,8 +365,6 @@ describe('Session', function () {
 
     describe('addSpectator', () => {
         it('should add Spectator to clients and send sessionJoined', () => {
-            let webSocket = 'webSocket';
-
             session.lastSessionJoin = {
                 player: 'player',
                 playersInSession: [
@@ -271,10 +372,10 @@ describe('Session', function () {
                 ]
             };
 
-            clientApiMock.expects('addClient').once().withArgs(webSocket);
-            clientApiMock.expects('sessionJoined').once().withArgs(webSocket, session.name, session.lastSessionJoin.player, session.lastSessionJoin.playersInSession);
+            clientApiMock.expects('addClient').once().withArgs(webSocketDummy);
+            clientApiMock.expects('sessionJoined').once().withArgs(webSocketDummy, session.name, session.lastSessionJoin.player, session.lastSessionJoin.playersInSession);
 
-            session.addSpectator(webSocket);
+            session.addSpectator(webSocketDummy);
 
             clientApiMock.verify();
         });

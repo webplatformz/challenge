@@ -1,5 +1,3 @@
-'use strict';
-
 import {expect} from 'chai';
 import React from 'react';
 import sinon from 'sinon';
@@ -12,6 +10,16 @@ import SpectatorControls from '../../../client/js/game/spectatorControls.jsx';
 describe('SpectatorControls Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
+
+    let adjustSpectatorSpeedSpy;
+
+    beforeEach(() => {
+        adjustSpectatorSpeedSpy = sinon.spy(JassActions, 'adjustSpectatorSpeed');
+    });
+
+    afterEach(() => {
+        JassActions.adjustSpectatorSpeed.restore();
+    });
 
     it('should render a div element with id', () => {
         shallowRenderer.render(React.createElement(SpectatorControls));
@@ -27,35 +35,22 @@ describe('SpectatorControls Component', () => {
 
         expect(actual.props.children[1].type).to.equal('input');
         expect(actual.props.children[1].props.type).to.equal('range');
-        expect(actual.props.children[1].props.onChange.__reactBoundMethod).to.equal(SpectatorControls.prototype.handlePlayingSpeed);
+        expect(actual.props.children[1].props.onChange).to.be.a('function');
     });
 
-    describe('handlePlayingSpeed', () => {
+    it('should read input value and start action onchange', () => {
+        let eventDummy = {
+            target: {
+                value: 150
+            }
+        };
 
-        let adjustSpectatorSpeedSpy;
+        shallowRenderer.render(React.createElement(SpectatorControls));
+        let actual = shallowRenderer.getRenderOutput();
 
-        beforeEach(() => {
-            adjustSpectatorSpeedSpy = sinon.spy(JassActions, 'adjustSpectatorSpeed');
-        });
-
-        afterEach(() => {
-            JassActions.adjustSpectatorSpeed.restore();
-        });
-
-        it('should read input value and start action', () => {
-            let eventDummy = {
-                target: {
-                    value: 150
-                }
-            };
-
-            shallowRenderer.render(React.createElement(SpectatorControls));
-            let actual = shallowRenderer.getRenderOutput();
-
-            actual.props.children[1].props.onChange(eventDummy);
-            sinon.assert.calledOnce(adjustSpectatorSpeedSpy);
-            sinon.assert.calledWith(adjustSpectatorSpeedSpy, eventDummy.target.value);
-        });
+        actual.props.children[1].props.onChange(eventDummy);
+        sinon.assert.calledOnce(adjustSpectatorSpeedSpy);
+        sinon.assert.calledWith(adjustSpectatorSpeedSpy, eventDummy.target.value);
     });
 
 });

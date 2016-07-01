@@ -1,5 +1,3 @@
-"use strict";
-
 import {expect} from 'chai';
 import * as Card from '../../../../shared/deck/card';
 import {CardColor} from '../../../../shared/deck/cardColor';
@@ -54,10 +52,11 @@ describe('Cycle', function () {
         let card4 = Card.create(7, CardColor.DIAMONDS);
 
         let expectedStichMessage = {
-            "name": "hans",
-            "id": 0,
-            "playedCards": [card2, card3, card4, winnerCard],
-            "teams": [{"name": "Team 1", "points": 30, "currentRoundPoints":30}, {"name": "Team 2", "points": 0, "currentRoundPoints":0}]
+            'name': 'hans',
+            'id': 'uuid-1',
+            'seatId': 0,
+            'playedCards': [card2, card3, card4, winnerCard],
+            'teams': [{'name': 'Team 1', 'points': 30, 'currentRoundPoints':30}, {'name': 'Team 2', 'points': 0, 'currentRoundPoints':0}]
         };
 
         clientApiMock.expects('broadcastStich').exactly(1).withArgs(expectedStichMessage);

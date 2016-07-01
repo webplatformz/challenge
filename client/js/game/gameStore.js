@@ -1,5 +1,3 @@
-'use strict';
-
 import {EventEmitter} from 'events';
 import JassAppDispatcher from '../jassAppDispatcher';
 import JassAppConstants from '../jassAppConstants';
@@ -26,14 +24,25 @@ export const PlayerType = {
     SPECTATOR: 'SPECTATOR'
 };
 
+function emptyPlayer(emptyPlayerId) {
+    return {
+        id: emptyPlayerId.toString(),
+        seatId: emptyPlayerId,
+        name: 'Waiting for player...',
+        isEmptyPlaceholder: true
+    };
+}
+
+const emptyPlayersTable = [emptyPlayer(0), emptyPlayer(1), emptyPlayer(2), emptyPlayer(3)];
+
 let player,
     spectatorEventQueue = [],
     spectatorRenderingIntervall = 500;
 
-let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
+const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
     state: {
         playerType: PlayerType.PLAYER,
-        cardType: CardType.FRENCH,
+        cardType: localStorage.getItem('cardType') || CardType.FRENCH,
         players: [],
         teams: [],
         playerSeating: ['bottom', 'right', 'top', 'left'],
@@ -43,14 +52,17 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         nextStartingPlayerIndex: 0,
         roundPlayerIndex: 0,
         cyclesMade: 0,
-        status: GameState.WAITING
+        status: GameState.WAITING,
+        collectStich: true,
+        showLastStich: false,
+        showPoints: false
     },
 
-    addChangeListener: function (callback) {
+    addChangeListener(callback) {
         this.on('change', callback);
     },
 
-    removeChangeListener: function (callback) {
+    removeChangeListener(callback) {
         this.removeListener('change', callback);
     },
 
@@ -58,7 +70,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         var payload = spectatorEventQueue.shift();
         if (payload) {
             this.handlePayload(payload);
-            if(payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED){
+            if (payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED) {
                 return;
             }
         }
@@ -88,14 +100,13 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 
                 if (!player) {
                     player = action.data.player;
-                    this.state.players = action.data.playersInSession;
-
-                    playerIndex = this.state.players.findIndex((element) => {
-                        return element.id === player.id;
-                    });
-                } else {
-                    this.state.players.push(action.data.player);
+                    playerIndex = player.seatId;
                 }
+                this.state.chosenSession = action.data.sessionName;
+
+                this.state.players = emptyPlayersTable.map(player => {
+                    return action.data.playersInSession.find(p => p.seatId === player.seatId) || player;
+                });
 
                 this.state.playerSeating = playerSeating.concat(playerSeating.splice(0, 4 - playerIndex));
                 this.emit('change');
@@ -127,6 +138,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 break;
             case JassAppConstants.CHANGE_CARD_TYPE:
                 this.state.cardType = action.data;
+                localStorage.setItem('cardType', action.data);
                 this.emit('change');
                 break;
             case JassAppConstants.REQUEST_CARD:
@@ -136,7 +148,7 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
             case JassAppConstants.CHOOSE_CARD:
                 let chosenCard = Card.createFromObject(action.data);
                 this.state.playerCards = this.state.playerCards.filter((card) => {
-                    return chosenCard.color !== card.color || chosenCard.number !== card.number;
+                    return !card.equals(chosenCard);
                 });
                 this.emit('change');
                 break;
@@ -183,6 +195,21 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                         }
                     });
                 });
+
+                this.emit('change');
+                this.state.collectStich = false;
+                this.state.tableCards = [];
+                break;
+            case JassAppConstants.COLLECT_STICH:
+                this.state.collectStich = true;
+                this.emit('change');
+                break;
+            case JassAppConstants.TOGGLE_SHOW_LAST_STICH:
+                this.state.showLastStich = !this.state.showLastStich;
+                this.emit('change');
+                break;
+            case JassAppConstants.TOGGLE_SHOW_POINTS:
+                this.state.showPoints = !this.state.showPoints;
                 this.emit('change');
                 break;
         }
@@ -190,6 +217,6 @@ let GameStore = Object.assign(Object.create(EventEmitter.prototype), {
 
 });
 
-JassAppDispatcher.register(GameStore.handleAction.bind(GameStore));
+JassAppDispatcher.register((payload) => GameStore.handleAction(payload));
 
 export default GameStore;

@@ -1,13 +1,12 @@
-'use strict';
+import JassAppDispatcher from '../jassAppDispatcher';
+import JassAppConstants from '../jassAppConstants';
+import JassActions from '../jassActions';
+import * as messages from '../../../shared/messages/messages';
+import {MessageType} from '../../../shared/messages/messageType';
+import {SessionChoice} from '../../../shared/session/sessionChoice';
 
-import JassAppDispatcher from '../jassAppDispatcher.js';
-import JassAppConstants from '../jassAppConstants.js';
-import JassActions from '../jassActions.js';
-import * as messages from '../../../shared/messages/messages.js';
-import {MessageType} from '../../../shared/messages/messageType.js';
-import {SessionChoice} from '../../../shared/session/sessionChoice.js';
-
-const serverAddress = 'ws://' + window.location.host;
+const protocol = (window.location.hostname === 'localhost') ? 'ws' : 'wss';
+const serverAddress = `${protocol}://${window.location.host}`;
 
 let webSocket;
 
@@ -15,11 +14,11 @@ function sendJSONMessageToClient(messageType, ...data) {
     webSocket.send(JSON.stringify(messages.create(messageType, ...data)));
 }
 
-let ServerApi = {
+const ServerApi = {
     handleMessageFromServer: (messageEvent) => {
         let message = JSON.parse(messageEvent.data);
 
-        switch(message.type) {
+        switch (message.type) {
             case MessageType.BAD_MESSAGE:
                 JassActions.throwError('SERVER', message.data);
                 break;
@@ -63,6 +62,9 @@ let ServerApi = {
             case MessageType.BROADCAST_TOURNAMENT_STARTED.name:
                 JassActions.broadcastTournamentStarted();
                 break;
+            case MessageType.SEND_REGISTRY_BOTS.name:
+                JassActions.sendRegistryBots(message.data);
+                break;
         }
     },
     handleActionsFromUi: (payload) => {
@@ -70,6 +72,12 @@ let ServerApi = {
             let action = payload.action;
 
             switch (action.actionType) {
+                case JassAppConstants.REQUEST_REGISTRY_BOTS:
+                    sendJSONMessageToClient(MessageType.REQUEST_REGISTRY_BOTS.name, action.data);
+                    break;
+                case JassAppConstants.ADD_BOT_FROM_REGISTRY:
+                    sendJSONMessageToClient(MessageType.ADD_BOT_FROM_REGISTRY.name, action.data);
+                    break;
                 case JassAppConstants.CHOOSE_PLAYER_NAME:
                     sendJSONMessageToClient(MessageType.CHOOSE_PLAYER_NAME.name, action.data);
                     break;
@@ -80,7 +88,7 @@ let ServerApi = {
                     sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.SPECTATOR, action.data);
                     break;
                 case JassAppConstants.CREATE_NEW_SESSION:
-                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, action.data.sessionName, action.data.sessionType, action.data.asSpectator);
+                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, action.data);
                     break;
                 case JassAppConstants.AUTOJOIN_SESSION:
                     sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN);
@@ -93,6 +101,10 @@ let ServerApi = {
                     break;
                 case JassAppConstants.START_TOURNAMENT:
                     sendJSONMessageToClient(MessageType.START_TOURNAMENT.name);
+                    break;
+                case JassAppConstants.JOIN_BOT:
+                    sendJSONMessageToClient(MessageType.JOIN_BOT.name, action.data);
+                    break;
             }
         }
     },

@@ -1,4 +1,5 @@
-'use strict';
+/*eslint no-console: 0*/
+
 
 let debug = Boolean(process.env.DEBUG) || false;
 
@@ -11,5 +12,9 @@ export const Logger = {
 
     error (messageToLog) {
         console.error(messageToLog);
+    },
+
+    info (messageToLog) {
+        console.info(messageToLog);
     }
 };

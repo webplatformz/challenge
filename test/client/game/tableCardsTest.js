@@ -1,12 +1,10 @@
-'use strict';
+
 
 import {expect} from 'chai';
 import React from 'react';
 import {CardType} from '../../../client/js/game/gameStore';
 import {CardColor} from '../../../shared/deck/cardColor';
-
 import TestUtils from 'react-addons-test-utils';
-
 import TableCards from '../../../client/js/game/tableCards.jsx';
 
 describe('PlayerNames Component', () => {
@@ -44,13 +42,14 @@ describe('PlayerNames Component', () => {
                 'bottom',
                 'left'
             ],
-            cardType: CardType.GERMAN
+            cardType: CardType.GERMAN,
+            collectStich: true
         };
 
         shallowRenderer.render(React.createElement(TableCards, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let children = actual.props.children;
+        let children = actual.props.children.props.children;
         expect(children).to.have.length(3);
         children.forEach((actCard, index) => {
             let expectedCard = props.cards[index];

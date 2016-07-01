@@ -1,9 +1,7 @@
-'use strict';
-
-import * as messages from '../../shared/messages/messages.js';
-import {MessageType} from '../../shared/messages/messageType.js';
+import * as messages from '../../shared/messages/messages';
+import {MessageType} from '../../shared/messages/messageType';
 import validate from 'validate.js';
-import {Logger} from './../logger.js';
+import {Logger} from './../logger';
 
 const ClientCommunication = {
     toJSON(object) {
@@ -14,8 +12,29 @@ const ClientCommunication = {
         try {
             return JSON.parse(jsonAsString);
         } catch (error) {
-            Logger.error("Bad message from client: " + jsonAsString);
+            Logger.error('Bad message from client: ' + jsonAsString);
         }
+    },
+
+    on(client, messageType, messageHandler) {
+        function handleMessage(message) {
+            let messageObject = ClientCommunication.fromJSON(message);
+
+            if (messageObject.type === messageType.name) {
+                Logger.debug('<-- Received Message: ' + message);
+
+                const validationResult = validate(messageObject, messageType.constraints);
+                if (validationResult) {
+                    ClientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationResult);
+                } else {
+                    messageHandler(messageObject);
+                }
+            }
+        }
+
+        client.on('message', handleMessage);
+
+        return () => client.removeListener('message', handleMessage);
     },
 
     await(client, expectedMessageType) {
@@ -25,15 +44,14 @@ const ClientCommunication = {
 
                 if (messageObject.type === expectedMessageType.name) {
                     Logger.debug('<-- Received Message: ' + message);
-                    let validationResult = validate(messageObject, expectedMessageType.constraints);
 
+                    const validationResult = validate(messageObject, expectedMessageType.constraints);
                     if (validationResult) {
                         ClientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationResult);
                         reject(validationResult);
                     } else {
                         resolve(messageObject);
                     }
-
                     client.removeListener('message', handleMessage);
                 }
             });

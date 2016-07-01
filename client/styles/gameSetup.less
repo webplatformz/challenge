@@ -14,10 +14,6 @@
   transition: transform .5s ease-out;
   -webkit-transition: -webkit-transform .5s ease-out;
 
-  .hidden {
-    display: none;
-  }
-
   #connecting {
     color: @white;
   }
@@ -29,8 +25,6 @@
 
     ul {
       max-width: 500px;
-      max-height: 300px;
-      overflow-y: scroll;
       margin: 0 auto 20px;
       padding: 0;
       list-style: none;
@@ -100,6 +94,34 @@
 
     input[type=text] {
       max-width: 500px;
+    }
+  }
+
+  #chooseTeam {
+    .team-choice {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: stretch;
+      max-width: 500px;
+      margin: 0 auto;
+
+      button {
+        flex-grow: 1;
+      }
+    }
+  }
+
+  #waitForPlayers {
+    .addBots {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: stretch;
+      max-width: 500px;
+      margin: 0 auto;
+
+      button {
+        flex-grow: 1;
+      }
     }
   }
 

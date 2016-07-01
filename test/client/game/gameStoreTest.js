@@ -1,22 +1,31 @@
-'use strict';
+
 
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {default as GameStore, CardType, PlayerType, GameState} from '../../../client/js/game/gameStore';
 import JassAppConstants from '../../../client/js/jassAppConstants';
 import {CardColor} from '../../../shared/deck/cardColor';
+import * as Card from '../../../shared/deck/card';
 
 describe('GameStore', () => {
 
-    let initialGameState;
+    let initialGameState,
+        handlePayloadSpy;
 
     beforeEach(() => {
         initialGameState = GameStore.state;
+        handlePayloadSpy = sinon.spy(GameStore, 'handlePayload');
     });
 
     afterEach(() => {
-       GameStore.state = initialGameState;
+        GameStore.state = initialGameState;
+        GameStore.handlePayload.restore();
     });
+
+    const filterEmptyPlayer = function(gamestoreState) {
+        return gamestoreState.players.filter(player => player.name !== 'Waiting for player...');
+    };
+
 
     it('should have initial state', () => {
         let state = GameStore.state;
@@ -36,7 +45,6 @@ describe('GameStore', () => {
     });
 
     it('should emit events in the right order with given timeout for spectator', (done) => {
-        const handlePayloadSpy = sinon.spy(GameStore, 'handlePayload');
         const gameFinishedBroadcast = {
             action: {
                 actionType: JassAppConstants.BROADCAST_GAME_FINISHED
@@ -78,16 +86,19 @@ describe('GameStore', () => {
                 data: {
                     player: {
                         name: 'Player 1',
-                        id: 1
+                        seatId: 1,
+                        id: 'A1'
                     },
                     playersInSession: [
                         {
                             name: 'Player 0',
-                            id: 0
+                            id: 'A0',
+                            seatId: 0
                         },
                         {
                             name: 'Player 1',
-                            id: 1
+                            id: 'A1',
+                            seatId: 1
                         }
                     ]
                 }
@@ -96,7 +107,7 @@ describe('GameStore', () => {
 
         GameStore.handleAction(dummyPayload);
 
-        expect(GameStore.state.players).to.eql(dummyPayload.action.data.playersInSession);
+        expect(filterEmptyPlayer(GameStore.state)).to.eql(dummyPayload.action.data.playersInSession);
         expect(GameStore.state.playerSeating).to.eql(['left', 'bottom', 'right', 'top']);
 
         let dummyPayload2 = {
@@ -105,20 +116,24 @@ describe('GameStore', () => {
                 data: {
                     player: {
                         name: 'Player 2',
-                        id: 2
+                        id: '2',
+                        seatId: 2
                     },
                     playersInSession: [
                         {
                             name: 'Player 0',
-                            id: 0
+                            id: '0',
+                            seatId: 0
                         },
                         {
                             name: 'Player 1',
-                            id: 1
+                            id: '1',
+                            seatId: 1
                         },
                         {
                             name: 'Player 2',
-                            id: 2
+                            id: '2',
+                            seatId: 2
                         }
                     ]
                 }
@@ -127,7 +142,7 @@ describe('GameStore', () => {
 
         GameStore.handleAction(dummyPayload2);
 
-        expect(GameStore.state.players).to.eql(dummyPayload2.action.data.playersInSession);
+        expect(filterEmptyPlayer(GameStore.state)).to.eql(dummyPayload2.action.data.playersInSession);
         expect(GameStore.state.playerSeating).to.eql(['left', 'bottom', 'right', 'top']);
     });
 
@@ -142,31 +157,16 @@ describe('GameStore', () => {
             }
         };
         GameStore.state.playerCards = [
-            {
-                color: CardColor.DIAMONDS,
-                number: 6
-            },
-            {
-                color: CardColor.HEARTS,
-                number: 9
-            },
-            {
-                color: CardColor.HEARTS,
-                number: 14
-            }
+            Card.create(6, CardColor.DIAMONDS),
+            Card.create(9, CardColor.HEARTS),
+            Card.create(14, CardColor.HEARTS)
         ];
 
         GameStore.handleAction(dummyPayload);
 
         expect(GameStore.state.playerCards).to.eql([
-            {
-                color: CardColor.DIAMONDS,
-                number: 6
-            },
-            {
-                color: CardColor.HEARTS,
-                number: 14
-            }
+            Card.create(6, CardColor.DIAMONDS),
+            Card.create(14, CardColor.HEARTS)
         ]);
     });
 
@@ -175,19 +175,19 @@ describe('GameStore', () => {
             action: {
                 actionType: JassAppConstants.BROADCAST_STICH,
                 data: {
-                    "name": "Player 1",
-                    "id": 1,
-                    "playedCards": [],
-                    "teams": [
+                    'name': 'Player 1',
+                    'id': 1,
+                    'playedCards': [],
+                    'teams': [
                         {
-                            "name": "Team 2",
-                            "points": 157,
-                            "currentRoundPoints": 0
+                            'name': 'Team 2',
+                            'points': 157,
+                            'currentRoundPoints': 0
                         },
                         {
-                            "name": "Team 1",
-                            "points": 0,
-                            "currentRoundPoints": 42
+                            'name': 'Team 1',
+                            'points': 0,
+                            'currentRoundPoints': 42
                         }
                     ]
                 }
@@ -247,19 +247,19 @@ describe('GameStore', () => {
             action: {
                 actionType: JassAppConstants.BROADCAST_STICH,
                 data: {
-                    "name": "Player 1",
-                    "id": 1,
-                    "playedCards": [],
-                    "teams": [
+                    'name': 'Player 1',
+                    'id': 1,
+                    'playedCards': [],
+                    'teams': [
                         {
-                            "name": "Team 2",
-                            "points": 157,
-                            "currentRoundPoints": 0
+                            'name': 'Team 2',
+                            'points': 157,
+                            'currentRoundPoints': 0
                         },
                         {
-                            "name": "Team 1",
-                            "points": 0,
-                            "currentRoundPoints": 42
+                            'name': 'Team 1',
+                            'points': 0,
+                            'currentRoundPoints': 42
                         }
                     ]
                 }

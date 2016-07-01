@@ -1,4 +1,4 @@
-'use strict';
+
 
 export const SessionChoice = {
     AUTOJOIN: 'AUTOJOIN',

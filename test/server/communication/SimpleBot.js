@@ -1,4 +1,4 @@
-'use strict';
+
 
 import WebSocket from 'ws';
 import * as GameType from '../../../server/game/gameType';
@@ -13,9 +13,8 @@ import {expect} from 'chai';
 
 
 let SimpleBot = {
-    gameType: GameType.create(GameMode.TRUMPF, CardColor.SPADES),
 
-    onMessage: function (messageJson) {
+    onMessage(messageJson) {
         let message = JSON.parse(messageJson);
 
         if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
@@ -24,12 +23,15 @@ let SimpleBot = {
 
         if (message.type === MessageType.REQUEST_SESSION_CHOICE.name) {
             let sessionName = 'Session 1';
+            let sessionConfig = {
+                sessionName
+            };
 
             if (this.id === 1) {
                 expect(message.data.length).to.equal(0);
-                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, sessionName)));
+                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, sessionConfig)));
             } else {
-                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, sessionName)));
+                this.client.send(JSON.stringify(messages.create(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, sessionConfig)));
             }
         }
 
@@ -52,15 +54,21 @@ let SimpleBot = {
             let chooseTrumpfResponse = messages.create(MessageType.CHOOSE_TRUMPF.name, this.gameType);
             this.client.send(JSON.stringify(chooseTrumpfResponse));
         }
+
+        if (message.type === MessageType.BROADCAST_TRUMPF.name) {
+            if (message.data.mode !== GameMode.SCHIEBE) {
+                this.gameType = GameType.create(message.data.mode, message.data.trumpfColor);
+            }
+        }
     },
 
-    mapCardsFromJson: function (cards) {
+    mapCardsFromJson(cards) {
         return cards.map((element) => {
             return Card.create(element.number, element.color);
         });
     },
 
-    giveValidCardFromHand: function (tableCards, handCards) {
+    giveValidCardFromHand(tableCards, handCards) {
         let validation = Validation.create(this.gameType.mode, this.gameType.trumpfColor);
 
         for (let i = 0; i < handCards.length; i++) {
@@ -81,5 +89,6 @@ export function create(id, name, doneFunction) {
     clientBot.client = new WebSocket('ws://localhost:10001');
     clientBot.client.on('message', clientBot.onMessage.bind(clientBot));
     clientBot.name = name;
+    clientBot.gameType = GameType.create(GameMode.TRUMPF, CardColor.SPADES);
     return clientBot;
 }

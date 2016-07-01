@@ -1,12 +1,14 @@
-'use strict';
-
-import * as ClientApi from '../communication/clientApi.js';
+import * as ClientApi from '../communication/clientApi';
 import * as SessionFactory from './sessionFactory';
-import {SessionChoice} from '../../shared/session/sessionChoice.js';
-import {SessionType} from '../../shared/session/sessionType.js';
-import UUID from 'uuid';
+import {SessionChoice} from '../../shared/session/sessionChoice';
+import {SessionType} from '../../shared/session/sessionType';
+import nameGenerator from 'docker-namesgenerator';
+import {MessageType} from '../../shared/messages/messageType';
+import Registry from '../registry/registry';
 
 let clientApi = ClientApi.create();
+
+let messageListeners = [];
 
 function findOrCreateSessionWithSpace(sessions, sessionChoiceResponse) {
     let filteredSessions = sessions.filter((session) => {
@@ -15,7 +17,7 @@ function findOrCreateSessionWithSpace(sessions, sessionChoiceResponse) {
 
     if (filteredSessions.length === 0) {
         return createSession(sessions, {
-            sessionName: sessionChoiceResponse.sessionName || UUID.v4(),
+            sessionName: sessionChoiceResponse.sessionName || nameGenerator(),
             sessionType: sessionChoiceResponse.sessionType || SessionType.SINGLE_GAME
         });
     }
@@ -41,7 +43,7 @@ function findSession(sessions, sessionChoiceResponse) {
     return filteredSessions[0];
 }
 
-function createOrJoinSession(sessions, sessionChoiceResponse) {
+function createAndReturnSession(sessions, sessionChoiceResponse) {
     switch (sessionChoiceResponse.sessionChoice) {
         case SessionChoice.CREATE_NEW:
             return createSession(sessions, sessionChoiceResponse);
@@ -84,9 +86,20 @@ const SessionHandler = {
     handleClientConnection(ws) {
         keepSessionAlive(ws, 10000);
 
+        messageListeners.push(clientApi.subscribeMessage(ws, MessageType.REQUEST_REGISTRY_BOTS, () => {
+            Registry.getRegisteredBots()
+                .then(bots => clientApi.sendRegistryBots(ws, bots));
+        }));
+
+        messageListeners.push(clientApi.subscribeMessage(ws, MessageType.ADD_BOT_FROM_REGISTRY, (message) => {
+            const bot = message.data.bot;
+            const sessionName = message.data.sessionName;
+            Registry.addBot(bot, SessionType.TOURNAMENT, sessionName);
+        }));
+
         return clientApi.requestPlayerName(ws).then((playerName) => {
             return clientApi.requestSessionChoice(ws, this.getAvailableSessionNames()).then((sessionChoiceResponse) => {
-                let session = createOrJoinSession(this.sessions, sessionChoiceResponse);
+                const session = createAndReturnSession(this.sessions, sessionChoiceResponse);
 
                 if (sessionChoiceResponse.sessionChoice === SessionChoice.SPECTATOR || sessionChoiceResponse.asSpectator) {
                     session.addSpectator(ws);
@@ -95,8 +108,7 @@ const SessionHandler = {
                         clientApi.waitForTournamentStart(ws).then(handleTournamentStart.bind(null, this, ws, session));
                     }
                 } else {
-                    session.addPlayer(ws, playerName);
-
+                    session.addPlayer(ws, playerName, sessionChoiceResponse.chosenTeamIndex);
                     if (session.type === SessionType.SINGLE_GAME && session.isComplete()) {
                         this.startSession(session);
                     }
@@ -106,6 +118,11 @@ const SessionHandler = {
     },
 
     startSession(session) {
+        messageListeners = messageListeners.filter(unbindListener => {
+            unbindListener();
+            return false;
+        });
+
         session.start().then(
             this.finishSession.bind(this, session),
             this.finishSession.bind(this, session));
@@ -115,7 +132,7 @@ const SessionHandler = {
         session.close('Game Finished');
         this.removeSession(session);
     },
-    
+
     removeSession(session) {
         let index = this.sessions.indexOf(session);
         this.sessions.splice(index, 1);

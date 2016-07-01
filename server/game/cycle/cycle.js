@@ -1,8 +1,6 @@
-"use strict";
-
-import Validation from '../../../shared/game/validation/validation.js';
-import stichGranter from './stichGranter.js';
-import * as Counter from '../counter/counter.js';
+import Validation from '../../../shared/game/validation/validation';
+import stichGranter from './stichGranter';
+import * as Counter from '../counter/counter';
 
 const Cycle = {
     iterate: function () {
@@ -28,7 +26,7 @@ const Cycle = {
         function broadcastAndReturnWinner(playedCards) {
             let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
             let winnerTeam = winner.team;
-            let looserTeam = that.players.filter((player) => {
+            let loserTeam = that.players.filter((player) => {
                 return player.team !== winner.team;
             })[0].team;
             let actPoints = Counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
@@ -41,16 +39,16 @@ const Cycle = {
                 winnerTeam.points += lastStichPoints;
                 winnerTeam.currentRoundPoints += lastStichPoints;
 
-                if (looserTeam.currentRoundPoints === 0) {
+                if (loserTeam.currentRoundPoints === 0) {
                     var matchPoints = Counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
                     winnerTeam.points += matchPoints;
                     winnerTeam.currentRoundPoints += matchPoints;
                 }
 
                 that.clientApi.broadcastStich(createStichMessage(winner));
-                that.clientApi.broadcastGameFinished([winnerTeam, looserTeam]);
+                that.clientApi.broadcastGameFinished([winnerTeam, loserTeam]);
                 winnerTeam.currentRoundPoints = 0;
-                looserTeam.currentRoundPoints = 0;
+                loserTeam.currentRoundPoints = 0;
             } else {
                 that.clientApi.broadcastStich(createStichMessage(winner));
             }
@@ -62,6 +60,7 @@ const Cycle = {
             return {
                 name: winner.name,
                 id: winner.id,
+                seatId: winner.seatId,
                 playedCards: that.playedCards,
                 teams: [
                     winner.team,

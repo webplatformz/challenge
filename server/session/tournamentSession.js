@@ -1,13 +1,12 @@
-'use strict';
+
 
 import * as ClientApi from '../communication/clientApi';
 import {SessionType} from '../../shared/session/sessionType';
 import * as Ranking from '../game/ranking/ranking';
 import * as RankingTable from './rankingTable';
 import * as SingleGameSession from './singleGameSession';
-import 'babel-polyfill';
 import * as _ from 'lodash';
-import UUID from 'uuid';
+import nameGenerator from 'docker-namesgenerator';
 
 function getPairingsPerRound(players) {
     return _.flatMap(players, (player, index) => {
@@ -23,7 +22,7 @@ function getPairingsPerRound(players) {
 }
 
 function createSessionWithPlayers({player1, player2}) {
-    let session = SingleGameSession.create(UUID.v4());
+    let session = SingleGameSession.create(nameGenerator());
 
     session.addPlayer(player1.clients[0], player1.playerName);
     session.addPlayer(player2.clients[0], player2.playerName);
@@ -126,9 +125,9 @@ const TournamentSession = {
         return this.startPairingSessions().then(() => {
             this.ranking.updateRatings();
             this.ranking.players.forEach(ranking => {
-                this.rankingTable.updateRating(ranking.name, ranking.player.getRating());
+                this.rankingTable.updatePlayerRating(ranking.name, ranking.player.getRating());
             });
-
+            this.rankingTable.updateAndSortRanking();
             this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
         });
     },

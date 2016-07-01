@@ -1,8 +1,6 @@
-'use strict';
-
-import clientCommunication from '../../../server/communication/clientCommunication.js';
-import * as messages from '../../../shared/messages/messages.js';
-import {MessageType} from '../../../shared/messages/messageType.js';
+import ClientCommunication from '../../../server/communication/clientCommunication';
+import * as messages from '../../../shared/messages/messages';
+import {MessageType} from '../../../shared/messages/messageType';
 import {CardColor} from '../../../shared/deck/cardColor';
 import {expect} from 'chai';
 import sinon from 'sinon';
@@ -12,7 +10,7 @@ describe('ClientCommunication', () => {
         it('should convert message to JSON string', () => {
             let message = messages.create(MessageType.REQUEST_TRUMPF.name, false);
 
-            let actual = clientCommunication.toJSON(message);
+            let actual = ClientCommunication.toJSON(message);
 
             expect(actual).to.equal('{"type":"REQUEST_TRUMPF","data":false}');
         });
@@ -22,16 +20,95 @@ describe('ClientCommunication', () => {
         it('should convert JSON string to message', () => {
             let message = '{"type":"REQUEST_TRUMPF","data":false}';
 
-            let actual = clientCommunication.fromJSON(message);
+            let actual = ClientCommunication.fromJSON(message);
 
             expect(actual.type).to.equal(MessageType.REQUEST_TRUMPF.name);
             expect(actual.data).to.eql(false);
         });
     });
 
+    describe('on', () => {
+
+        let sendSpy;
+
+        beforeEach(() => {
+            sendSpy = sinon.spy(ClientCommunication, 'send');
+        });
+
+        afterEach(() => {
+            ClientCommunication.send.restore();
+        });
+
+        it('should return function to unbind listener', () => {
+            let webSocketStub = {
+                on: () => {},
+                removeListener: sinon.spy()
+            };
+
+            const actual = ClientCommunication.on(webSocketStub, MessageType.JOIN_BOT, () => {});
+            actual();
+
+            sinon.assert.calledWith(webSocketStub.removeListener, 'message', sinon.match.func);
+        });
+
+        it('should call given handler on correct messageType', () => {
+            let correctMessage = {
+                    type: MessageType.JOIN_BOT.name,
+                    data: {
+                        sessionName: 'sessionName',
+                        chosenTeamIndex: 0
+                    }
+                },
+                webSocketStub = {
+                    on: (type, givenMessageHandler) => {
+                        givenMessageHandler(JSON.stringify(correctMessage));
+                    }
+                },
+                messageHandlerSpy = sinon.spy();
+
+            ClientCommunication.on(webSocketStub, MessageType.JOIN_BOT, messageHandlerSpy);
+
+            sinon.assert.calledWithExactly(messageHandlerSpy, correctMessage);
+        });
+
+        it('should not call given handler on other messageTypes', () => {
+            let wrongMessage = {
+                    type: MessageType.CHOOSE_CARD.name
+                },
+                webSocketStub = {
+                    on: (type, givenMessageHandler) => {
+                        givenMessageHandler(JSON.stringify(wrongMessage));
+                    }
+                },
+                messageHandlerSpy = sinon.spy();
+
+            ClientCommunication.on(webSocketStub, MessageType.JOIN_BOT, messageHandlerSpy);
+
+            sinon.assert.notCalled(messageHandlerSpy);
+        });
+
+        it('should send BAD_MESSAGE on validation error', () => {
+            let invalidMessage = {
+                    type: MessageType.JOIN_BOT.name,
+                    data: {}
+                },
+                webSocketStub = {
+                    on: (type, givenMessageHandler) => {
+                        givenMessageHandler(JSON.stringify(invalidMessage));
+                    }
+                },
+                messageHandlerSpy = sinon.spy();
+
+            ClientCommunication.on(webSocketStub, MessageType.JOIN_BOT, messageHandlerSpy);
+
+            sinon.assert.notCalled(messageHandlerSpy);
+            sinon.assert.calledWithExactly(sendSpy, webSocketStub, MessageType.BAD_MESSAGE.name, sinon.match.object);
+        });
+    });
+
     describe('await', () => {
         it('should resolve on correct message only', (done) => {
-            let messageHandler,
+            let messageHandler = () => {},
                 wrongMessage = {
                     type: MessageType.CHOOSE_SESSION.name
                 },
@@ -52,7 +129,7 @@ describe('ClientCommunication', () => {
 
             let client = Object.create(WebSocketStub);
 
-            let actual = clientCommunication.await(client, MessageType.CHOOSE_CARD);
+            let actual = ClientCommunication.await(client, MessageType.CHOOSE_CARD);
 
             messageHandler(JSON.stringify(wrongMessage));
             messageHandler(JSON.stringify(correctMessage));
@@ -82,7 +159,7 @@ describe('ClientCommunication', () => {
 
             let client = Object.create(WebSocketStub);
 
-            let actual = clientCommunication.await(client, MessageType.CHOOSE_PLAYER_NAME);
+            let actual = ClientCommunication.await(client, MessageType.CHOOSE_PLAYER_NAME);
 
             messageHandler(JSON.stringify(invalidMessage));
 
@@ -109,7 +186,7 @@ describe('ClientCommunication', () => {
 
             clientMock.expects('send').withExactArgs('{"type":"DEAL_CARDS","data":["a","b","c"]}').once();
 
-            clientCommunication.send(client, MessageType.DEAL_CARDS.name, ['a', 'b', 'c']);
+            ClientCommunication.send(client, MessageType.DEAL_CARDS.name, ['a', 'b', 'c']);
 
             clientMock.verify();
         });
@@ -126,7 +203,7 @@ describe('ClientCommunication', () => {
 
             clientMock.expects('send').never();
 
-            clientCommunication.send(client, MessageType.DEAL_CARDS.name, ['a', 'b', 'c']);
+            ClientCommunication.send(client, MessageType.DEAL_CARDS.name, ['a', 'b', 'c']);
 
             clientMock.verify();
         });
@@ -148,7 +225,7 @@ describe('ClientCommunication', () => {
             client1Mock.expects('send').withExactArgs('{"type":"PLAYED_CARDS","data":["a","b","c"]}').once();
             client2Mock.expects('send').withExactArgs('{"type":"PLAYED_CARDS","data":["a","b","c"]}').once();
 
-            clientCommunication.broadcast([client1, client2], MessageType.PLAYED_CARDS.name, ['a', 'b', 'c']);
+            ClientCommunication.broadcast([client1, client2], MessageType.PLAYED_CARDS.name, ['a', 'b', 'c']);
 
             client1Mock.verify();
             client2Mock.verify();
@@ -172,7 +249,7 @@ describe('ClientCommunication', () => {
             clientMock.expects('send').withExactArgs('{"type":"REQUEST_TRUMPF","data":false}').once();
             clientMock.expects('removeListener').withArgs('message', sinon.match.func).once();
 
-            clientCommunication.request(client, MessageType.REQUEST_TRUMPF.name, function onMessage(message, resolve) {
+            ClientCommunication.request(client, MessageType.REQUEST_TRUMPF.name, function onMessage(message, resolve) {
                 resolve();
                 clientMock.verify();
                 done();

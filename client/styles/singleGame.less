@@ -45,14 +45,14 @@
 
 .card-horizontal {
   position: absolute;
-  margin-left: 50%;
+  left: 50%;
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
 }
 
 .card-vertical {
   position: absolute;
-  margin-top: 50%;
+  top: 50%;
   transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
 }
@@ -131,6 +131,12 @@
         display: none;
       }
 
+      img.add-bot-icon {
+        height: 15px;
+        padding: 0 5px 0 0;
+        cursor: pointer;
+      }
+
       &.round-player {
         padding-right: 30px;
 
@@ -182,18 +188,64 @@
 
     .card-top:extend(.card-horizontal) {
       top: @cardSpacer;
+
+      &.cards-leave-active {
+        top: 0;
+        left: 0;
+        transform: translateX(0) translateY(0) scale(0.2);
+      }
     }
 
     .card-right:extend(.card-vertical) {
       right: @cardSpacer;
+
+      &.cards-leave-active {
+        top: 0;
+        right: 100%;
+        transform: translateX(100%) translateY(0) scale(0.2);
+      }
     }
 
     .card-bottom:extend(.card-horizontal) {
       bottom: @cardSpacer;
+
+      &.cards-leave-active {
+        bottom: 100%;
+        left: 0;
+        transform: translateX(0) translateY(100%) scale(0.2);
+      }
     }
 
     .card-left:extend(.card-vertical) {
       left: @cardSpacer;
+
+      &.cards-leave-active {
+        top: 0;
+        left: 0;
+        transform: translateX(0) translateY(0) scale(0.2);
+      }
+    }
+
+    .cards-enter {
+      opacity: 0;
+      transition: opacity .15s ease;
+
+      &.cards-enter-active {
+        opacity: 1;
+      }
+    }
+
+    .cards-leave {
+      transition-property: top, right, bottom, left, transform, opacity;
+      transition-duration: 0.5s;
+      transition-timing-function: ease-out;
+      transform-origin: 20px 20px;
+
+      opacity: 1;
+
+      &.cards-leave-active {
+        opacity: 0;
+      }
     }
 
     img {
@@ -318,6 +370,49 @@
 
       &:hover {
         box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+
+  #lastStich {
+
+    >img {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      cursor: pointer;
+    }
+    >div{
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-75%);
+      -webkit-transform: translateX(-75%);
+      text-align: center;
+      padding: 20px;
+      z-index: 1;
+      color: white;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.8);
+      width: 250px;
+      height: 250px;
+
+      img {
+        max-width: 60px;
+      }
+
+      #closeButton {
+        top: 10px;
+        right: 0;
+        position: absolute;
+        width: 80px;
+        height: 40px;
+        filter: invert(100%);
+        -webkit-filter: invert(100%);
+        cursor: pointer;
       }
     }
   }

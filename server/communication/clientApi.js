@@ -1,11 +1,9 @@
-'use strict';
-
-import {MessageType} from '../../shared/messages/messageType.js';
+import {MessageType} from '../../shared/messages/messageType';
 import ClientCommunication from './clientCommunication';
 import validate from 'validate.js';
 import _ from 'lodash';
 import WebSocket from 'ws';
-import {Logger} from '../logger.js';
+import {Logger} from '../logger';
 import CloseEventCode from './closeEventCode';
 
 
@@ -31,7 +29,6 @@ function resolveCorrectMessageOrReject(client, expectedMessageType, message, res
 const ClientApi = {
     addClient(client) {
         this.clients.push(client);
-
         return new Promise((resolve, reject) => {
             client.on('close', (code, message) => {
                 this.clients = this.clients.filter((actClient) => {
@@ -54,7 +51,7 @@ const ClientApi = {
 
     requestPlayerName(client) {
         return ClientCommunication.request(client, MessageType.REQUEST_PLAYER_NAME.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_PLAYER_NAME));
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_PLAYER_NAME, message, resolve, reject));
     },
 
     broadcastTeams(teams) {
@@ -67,7 +64,7 @@ const ClientApi = {
 
     requestTrumpf(client, pushed) {
         return ClientCommunication.request(client, MessageType.REQUEST_TRUMPF.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_TRUMPF),
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_TRUMPF, message, resolve, reject),
             pushed);
     },
 
@@ -97,7 +94,7 @@ const ClientApi = {
 
     requestCard(client, cardsOnTable) {
         return ClientCommunication.request(client, MessageType.REQUEST_CARD.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_CARD),
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_CARD, message, resolve, reject),
             cardsOnTable);
     },
 
@@ -107,7 +104,7 @@ const ClientApi = {
 
     requestSessionChoice(client, availableSessions) {
         return ClientCommunication.request(client, MessageType.REQUEST_SESSION_CHOICE.name,
-            resolveCorrectMessageOrReject.bind(null, client, MessageType.CHOOSE_SESSION),
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_SESSION, message, resolve, reject),
             availableSessions);
     },
 
@@ -126,7 +123,9 @@ const ClientApi = {
     sendTournamentRankingTable(client, rankingTable) {
         ClientCommunication.send(client, MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name, rankingTable);
     },
-
+    sendRegistryBots(client, registryBots){
+        ClientCommunication.send(client, MessageType.SEND_REGISTRY_BOTS.name, registryBots);
+    },
     waitForTournamentStart(client) {
         return ClientCommunication.await(client, MessageType.START_TOURNAMENT);
     },
@@ -145,6 +144,10 @@ const ClientApi = {
         } catch (e) {
             Logger.error(e);
         }
+    },
+
+    subscribeMessage(client, messageType, messageHandler) {
+        return ClientCommunication.on(client, messageType, messageHandler);
     }
 };
 

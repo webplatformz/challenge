@@ -1,9 +1,7 @@
-'use strict';
-
-import {SessionChoice} from '../session/sessionChoice.js';
-import {GameMode} from '../game/gameMode.js';
+import {SessionChoice} from '../session/sessionChoice';
+import {GameMode} from '../game/gameMode';
 import {CardColor} from '../deck/cardColor';
-import {SessionType} from '../session/sessionType.js';
+import {SessionType} from '../session/sessionType';
 
 export const MessageType = {
     REQUEST_PLAYER_NAME: {
@@ -120,6 +118,11 @@ export const MessageType = {
                     within: SessionType
                 }
             },
+            'data.chosenTeamIndex': {
+                inclusion: {
+                    within: [0, 1]
+                }
+            },
             'data.asSpectator': {
                 presence: false
             }
@@ -147,5 +150,30 @@ export const MessageType = {
     },
     BROADCAST_TOURNAMENT_STARTED: {
         name: 'BROADCAST_TOURNAMENT_STARTED'
+    },
+    JOIN_BOT: {
+        name: 'JOIN_BOT',
+        constraints: {
+            'type': {
+                presence: true
+            },
+            'data.sessionName': {
+                presence: true
+            },
+            'data.chosenTeamIndex': {
+                inclusion: {
+                    within: [0, 1]
+                }
+            }
+        }
+    },
+    REQUEST_REGISTRY_BOTS: {
+        name: 'REQUEST_REGISTRY_BOTS'
+    },
+    ADD_BOT_FROM_REGISTRY: {
+        name: 'ADD_BOT_FROM_REGISTRY'
+    },
+    SEND_REGISTRY_BOTS: {
+        name: 'SEND_REGISTRY_BOTS'
     }
 };

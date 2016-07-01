@@ -1,16 +1,14 @@
-'use strict';
-
 import {expect} from 'chai';
 import WebSocket from 'ws';
-import * as ClientApi from '../../../server/communication/clientApi.js';
-import * as GameType from '../../../server/game/gameType.js';
-import {GameMode} from '../../../shared/game/gameMode.js';
+import * as ClientApi from '../../../server/communication/clientApi';
+import * as GameType from '../../../server/game/gameType';
+import {GameMode} from '../../../shared/game/gameMode';
 import {CardColor} from '../../../shared/deck/cardColor';
-import CloseEventCode from '../../../server/communication/closeEventCode.js';
+import CloseEventCode from '../../../server/communication/closeEventCode';
 import sinon from 'sinon';
-import * as messages from '../../../shared/messages/messages.js';
-import {MessageType} from '../../../shared/messages/messageType.js';
-import {SessionChoice} from '../../../shared/session/sessionChoice.js';
+import * as messages from '../../../shared/messages/messages';
+import {MessageType} from '../../../shared/messages/messageType';
+import {SessionChoice} from '../../../shared/session/sessionChoice';
 import {Logger} from '../../../server/logger';
 
 let WebSocketServer = WebSocket.Server;

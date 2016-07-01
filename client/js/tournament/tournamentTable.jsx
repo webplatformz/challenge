@@ -1,67 +1,53 @@
-'use strict';
-
 import React from 'react';
-import GameSetupStore from './../gameSetup/gameSetupStore.js';
-import JassActions from '../jassActions.js';
+import JassActions from '../jassActions';
+import RegistryBotsTable from './registryBotsTable.jsx';
+import RankingTable from './rankingTable.jsx';
+import PairingsTable from './pairingsTable.jsx';
+import TournamentStore from './tournamentStore';
+
 
 export default React.createClass({
-    render: function () {
-        let rankingTable = this.props.rankingTable;
 
+    handleGameSetupState() {
+        this.setState(TournamentStore.state);
+    },
+
+    componentDidMount() {
+        TournamentStore.addChangeListener(this.handleGameSetupState);
+        setTimeout(JassActions.requestRegistryBots);
+    },
+
+    componentWillUnmount() {
+        TournamentStore.removeChangeListener(this.handleGameSetupState);
+    },
+
+    render() {
+        const state = this.state || TournamentStore.state;
         return (
             <div id="tournamentTable">
+                <h1>Add Bots from Registry</h1>
+                <RegistryBotsTable
+                    bots={state.registryBots}
+                    sessionName={state.sessionName}
+                    isSpectator={state.isSpectator}
+                />
+                
                 <h1 className="jumbotron">Current rankings</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Player</th>
-                            <th>Connected Clients</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rankingTable.ranking.map((player) => {
-                            return (
-                                <tr key={player.playerName}>
-                                    <td>{player.rank}</td>
-                                    <td>{player.playerName}</td>
-                                    <td>{player.connectedClients}</td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                <RankingTable ranking={state.rankingTable.ranking} />
+                
                 <h1 className="jumbotron">Pairing Results</h1>
-                <table className="pairings">
-                    {rankingTable.pairingResults.map((pairing, index) => {
+                <PairingsTable pairings={state.rankingTable.pairingResults} />
+                
+                {(() => {
+                    if (!state.tournamentStarted) {
                         return (
-                            <tr key={index}>
-                                <td>
-                                    {((pairing) => {
-                                        if (pairing.firstPlayerWon) {
-                                            return <object className="winner" data="/images/star.svg" type="image/svg+xml"></object>;
-                                        }
-                                    })(pairing)}
-                                    {pairing.player1}
-                                </td>
-                                <td>
-                                    {((pairing) => {
-                                        if (!pairing.firstPlayerWon) {
-                                            return <object className="winner" data="/images/star.svg" type="image/svg+xml"></object>;
-                                        }
-                                    })(pairing)}
-                                    {pairing.player2}
-                                </td>
-                            </tr>
+                            <button type="button" name="startTournament" onClick={JassActions.startTournament}>
+                                Start!
+                            </button>
                         );
-                    })}
-                </table>
-                {((component) => {
-                    if (!component.props.started) {
-                        return <button type="button" name="startTournament" onClick={JassActions.startTournament}>Start!</button>;
                     }
-                })(this)}
+                })()}
             </div>
-        )
+        );
     }
 });

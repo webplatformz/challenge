@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {expect} from 'chai';
 import React from 'react';
@@ -35,22 +35,14 @@ describe('CardTypeSwitcher Component', () => {
     it('should render a child for each CardType and append click handler to it', () => {
         shallowRenderer.render(React.createElement(CardTypeSwitcher));
         let actual = shallowRenderer.getRenderOutput();
-
         let children = actual.props.children;
+
         expect(children.length).to.equal(Object.keys(CardType).length);
-        expect(children[0].props.children.props.onClick.__reactBoundMethod).to.equal(CardTypeSwitcher.prototype.changeCardType);
-        expect(children[1].props.children.props.onClick.__reactBoundMethod).to.equal(CardTypeSwitcher.prototype.changeCardType);
-    });
 
-    it('should bind clickHandlers with correct cardType parameter', () => {
-        shallowRenderer.render(React.createElement(CardTypeSwitcher));
-        let actual = shallowRenderer.getRenderOutput();
-
-        let children = actual.props.children;
         children[0].props.children.props.onClick();
-        children[1].props.children.props.onClick();
         sinon.assert.calledWith(changeCardTypeStub, 'french');
+
+        children[1].props.children.props.onClick();
         sinon.assert.calledWith(changeCardTypeStub, 'german');
     });
-
 });
