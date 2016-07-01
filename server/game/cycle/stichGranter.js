@@ -2,98 +2,54 @@ import {GameMode} from '../../../shared/game/gameMode';
 
 const StichGranter = {
     determineWinner: function (mode, trumpfColor, playedCards, players) {
-        let winnerIndex = 0;
-        let winnerCard;
+        const firstPlayedColor = playedCards[0].color;
+        const isModeTrumpf = mode === GameMode.TRUMPF;
+        const trumpfAndFirstPlayedColorCards = playedCards.map(addIndexAndAdjustTrumpfValues)
+                .filter((playedCard) => playedCard.color === firstPlayedColor
+                || (isModeTrumpf && isTrumpf(playedCard)));
 
-        function trumpfAlreadyPlayed() {
-            return winnerCard.color === trumpfColor;
+        switch (mode) {
+            case GameMode.UNDEUFE:
+                trumpfAndFirstPlayedColorCards.sort((card1, card2) => {
+                    return card1.valueForSorting - card2.valueForSorting
+                });
+                break;
+            case GameMode.OBEABE:
+            case GameMode.TRUMPF:
+                trumpfAndFirstPlayedColorCards.sort((card1, card2) => {
+                    return card2.valueForSorting - card1.valueForSorting
+                });
+                break;
+        }
+
+        return players[trumpfAndFirstPlayedColorCards[0].index];
+
+        function addIndexAndAdjustTrumpfValues(card, index) {
+            let valueForSorting = card.number;
+            if (isModeTrumpf && isTrumpf(card)) {
+                valueForSorting += 20;
+                valueForSorting += isBuur(card) || isNell(card) ? 60 : 0;
+            }
+            return {
+                index,
+                color: card.color,
+                number: card.number,
+                valueForSorting
+            };
+
         }
 
         function isTrumpf(card) {
             return card.color === trumpfColor;
         }
 
-        function noTrumpfPlayedYet() {
-            return !trumpfAlreadyPlayed();
-        }
-
-        function isHighestCardSoFar(card) {
-            return card.color === winnerCard.color && card.number > winnerCard.number;
-        }
-
-        function isLowestCardSoFar(card) {
-            return card.color === winnerCard.color && card.number < winnerCard.number;
-        }
-
-        function isFirstCard(index) {
-            return index === 0;
-        }
-
         function isBuur(card) {
-            return card.number === 11 && card.color === trumpfColor;
+            return card.number === 11 && isTrumpf(card);
         }
 
         function isNell(card) {
-            return card.number === 9 && card.color === trumpfColor;
+            return card.number === 9 && isTrumpf(card);
         }
-
-        function buurAlreadyPlayed() {
-            return isBuur(winnerCard);
-        }
-
-        function nellAlreadyPlayed() {
-            return isNell(winnerCard);
-        }
-
-        function neitherBuurNorNellPlayed() {
-            return !(buurAlreadyPlayed() || nellAlreadyPlayed());
-        }
-
-        function isHighestTrumpfSoFar(card) {
-            if (!isTrumpf(card)) {
-                return false;
-            }
-            if (isBuur(card)) {
-                return true;
-            }
-            if(!isBuur(winnerCard) && isNell(card)) {
-                return true;
-            }
-
-            if (neitherBuurNorNellPlayed() && trumpfAlreadyPlayed()) {
-                return card.number > winnerCard.number;
-            } else {
-                return !trumpfAlreadyPlayed();
-            }
-        }
-
-        function setCardToCurrentWinner(index, card) {
-            winnerIndex = index;
-            winnerCard = card;
-        }
-
-        playedCards.forEach((card, index) => {
-            if (isFirstCard(index)) {
-                setCardToCurrentWinner(index, card);
-            } else if (mode === GameMode.TRUMPF) {
-                if (isHighestTrumpfSoFar(card)) {
-                    setCardToCurrentWinner(index, card);
-                } else if (noTrumpfPlayedYet() && isHighestCardSoFar(card)) {
-                    setCardToCurrentWinner(index, card);
-                }
-            } else if (mode === GameMode.UNDEUFE) {
-                if (isLowestCardSoFar(card)) {
-                    setCardToCurrentWinner(index, card);
-                }
-            } else if(mode === GameMode.OBEABE) {
-                if(isHighestCardSoFar(card)) {
-                    setCardToCurrentWinner(index, card);
-                }
-            }
-        });
-        return players[winnerIndex];
     }
-
 };
-
 export default StichGranter;
