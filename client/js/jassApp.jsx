@@ -1,47 +1,41 @@
 import React from 'react';
-import JassAppStore from './jassAppStore';
 import ErrorToast from './error/errorToast.jsx';
 import GameSetup from './gameSetup/gameSetup.jsx';
 import JassTable from './game/jassTable.jsx';
 import TournamentTable from './tournament/tournamentTable.jsx';
 import {SessionType} from '../../shared/session/sessionType';
 import serverApi from './communication/serverApi';
+import {connect} from 'react-redux';
 
-const JassApp = React.createClass({
+serverApi.connect();
 
-    handleJassAppState() {
-        this.setState(JassAppStore.state);
-    },
+const JassAppComponent = ({error, sessionType}) => {
+    return (
+        <div>
+            <ErrorToast error={error}/>
+            <GameSetup />
+            {(() => {
+                switch (sessionType) {
+                    case SessionType.TOURNAMENT:
+                        return <TournamentTable />;
+                    case SessionType.SINGLE_GAME:
+                        return <JassTable />;
+                }
+            })()}
+        </div>
+    );
+};
 
-    componentDidMount() {
-        serverApi.connect();
-        JassAppStore.addChangeListener(this.handleJassAppState);
-    },
+JassAppComponent.propTypes = {
+    error: React.PropTypes.string,
+    sessionType: React.PropTypes.oneOf(Object.keys(SessionType))
+};
 
-    componentWillUnmount() {
-        JassAppStore.removeChangeListener(this.handleJassAppState);
-    },
-
-    render() {
-        this.state = this.state || JassAppStore.state;
-
-        return (
-            <div>
-                <ErrorToast error={this.state.error}/>
-                <GameSetup />
-                {(() => {
-                    switch (this.state.sessionType) {
-                        case SessionType.TOURNAMENT:
-                            return <TournamentTable />;
-                        case SessionType.SINGLE_GAME:
-                            return <JassTable />;
-                        default:
-                            return;
-                    }
-                })()}
-            </div>
-        );
+const JassApp = connect(
+    (state) => state.jassApp,
+    () => {
+        return {};
     }
-});
+)(JassAppComponent);
 
 export default JassApp;
