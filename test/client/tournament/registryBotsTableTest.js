@@ -37,7 +37,7 @@ describe('RegistryBotsTable', () => {
             expect(botRow.key).to.equal(bot.id);
             expect(botRow.props.children[0].props.children).to.equal(bot.owner);
 
-            let addBotFromRegistryAnchor = botRow.props.children[1].props.children[0];
+            let addBotFromRegistryAnchor = botRow.props.children[1].props.children;
             addBotFromRegistryAnchor.props.onClick();
             sinon.assert.calledWith(addBotFromRegistrySpy, bot);
         });

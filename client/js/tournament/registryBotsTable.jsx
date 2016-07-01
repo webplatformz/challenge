@@ -22,7 +22,6 @@ export default ({bots = [], sessionName, isSpectator}) => {
                                         <a onClick={() => JassActions.addBotFromRegistry(bot, sessionName)}>
                                             Add
                                         </a>
-                                        <i className="fa fa-bolt"/>
                                     </td>
                                 </tr>
                             ))}
