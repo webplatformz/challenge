@@ -4,7 +4,7 @@ import ErrorToast from './error/errorToast.jsx';
 import GameSetup from './gameSetup/gameSetup.jsx';
 import JassTable from './game/jassTable.jsx';
 import TournamentTable from './tournament/tournamentTable.jsx';
-import { SessionType } from '../../shared/session/sessionType';
+import {SessionType} from '../../shared/session/sessionType';
 import serverApi from './communication/serverApi';
 
 const JassApp = React.createClass({
@@ -27,14 +27,16 @@ const JassApp = React.createClass({
 
         return (
             <div>
-                <ErrorToast error={this.state.error} />
+                <ErrorToast error={this.state.error}/>
                 <GameSetup />
                 {(() => {
                     switch (this.state.sessionType) {
-                    case SessionType.TOURNAMENT:
-                        return <TournamentTable rankingTable={this.state.rankingTable} started={this.state.tournamentStarted} />;
-                    default:
-                        return <JassTable />;
+                        case SessionType.TOURNAMENT:
+                            return <TournamentTable />;
+                        case SessionType.SINGLE_GAME:
+                            return <JassTable />;
+                        default:
+                            return;
                     }
                 })()}
             </div>

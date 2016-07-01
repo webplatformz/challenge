@@ -1,9 +1,9 @@
 import express from 'express';
 import * as Server from './server/server';
+import EnvironmentUtil from './server/registry/environmentUtil';
 
-const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.static(__dirname + '/build/client'));
 
-Server.start(port, app);
+Server.start(EnvironmentUtil.getPort(), app);

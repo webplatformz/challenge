@@ -1,5 +1,6 @@
 import JassAppConstants from './jassAppConstants';
 import JassAppDispatcher from './jassAppDispatcher';
+import {SessionType} from '../../shared/session/sessionType';
 
 export default {
     throwError: (source, error) => {
@@ -69,24 +70,35 @@ export default {
     },
 
     createNewSession: (sessionType, sessionName, asSpectator) => {
-        let chosenSessionPartial = {
-            sessionName,
-            joinSession: (chosenTeamIndex) => {
-                JassAppDispatcher.handleViewAction({
-                    actionType: JassAppConstants.CREATE_NEW_SESSION,
-                    data: {
-                        sessionName,
-                        sessionType,
-                        asSpectator,
-                        chosenTeamIndex
-                    }
-                });
-            }
-        };
-        JassAppDispatcher.handleViewAction({
-            actionType: JassAppConstants.CHOOSE_SESSION_PARTIAL,
-            data: chosenSessionPartial
-        });
+        if (sessionType === SessionType.TOURNAMENT) {
+            JassAppDispatcher.handleViewAction({
+                actionType: JassAppConstants.CREATE_NEW_SESSION,
+                data: {
+                    sessionName,
+                    sessionType,
+                    asSpectator
+                }
+            });
+        } else {
+            const chosenSessionPartial = {
+                sessionName,
+                joinSession: (chosenTeamIndex) => {
+                    JassAppDispatcher.handleViewAction({
+                        actionType: JassAppConstants.CREATE_NEW_SESSION,
+                        data: {
+                            sessionName,
+                            sessionType,
+                            asSpectator,
+                            chosenTeamIndex
+                        }
+                    });
+                }
+            };
+            JassAppDispatcher.handleViewAction({
+                actionType: JassAppConstants.CHOOSE_SESSION_PARTIAL,
+                data: chosenSessionPartial
+            });
+        }
     },
 
     autojoinSession: () => {
@@ -202,6 +214,29 @@ export default {
     startTournament: () => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.START_TOURNAMENT
+        });
+    },
+
+    requestRegistryBots: () => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.REQUEST_REGISTRY_BOTS
+        });
+    },
+
+    sendRegistryBots: (registryBots) => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.SEND_REGISTRY_BOTS,
+            data: registryBots
+        });
+    },
+    
+    addBotFromRegistry: (bot, sessionName) => {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.ADD_BOT_FROM_REGISTRY,
+            data: {
+                bot,
+                sessionName
+            }
         });
     },
 

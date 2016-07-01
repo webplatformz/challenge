@@ -62,6 +62,9 @@ const ServerApi = {
             case MessageType.BROADCAST_TOURNAMENT_STARTED.name:
                 JassActions.broadcastTournamentStarted();
                 break;
+            case MessageType.SEND_REGISTRY_BOTS.name:
+                JassActions.sendRegistryBots(message.data);
+                break;
         }
     },
     handleActionsFromUi: (payload) => {
@@ -69,6 +72,12 @@ const ServerApi = {
             let action = payload.action;
 
             switch (action.actionType) {
+                case JassAppConstants.REQUEST_REGISTRY_BOTS:
+                    sendJSONMessageToClient(MessageType.REQUEST_REGISTRY_BOTS.name, action.data);
+                    break;
+                case JassAppConstants.ADD_BOT_FROM_REGISTRY:
+                    sendJSONMessageToClient(MessageType.ADD_BOT_FROM_REGISTRY.name, action.data);
+                    break;
                 case JassAppConstants.CHOOSE_PLAYER_NAME:
                     sendJSONMessageToClient(MessageType.CHOOSE_PLAYER_NAME.name, action.data);
                     break;

@@ -7,6 +7,7 @@ import SessionHandler from './sessionHandler';
 import {MessageType} from '../../shared/messages/messageType';
 import {startRandomBot} from '../bot/botStarter';
 import {Logger} from '../logger';
+import EnvironmentUtil from '../registry/environmentUtil';
 
 function createTeamsArrayForClient(session) {
     return session.teams.map((team) => {
@@ -144,7 +145,7 @@ const Session = {
         registerClientAndBroadcastSessionJoined(this, webSocket, player);
 
         this.joinBotListeners.push(this.clientApi.subscribeMessage(webSocket, MessageType.JOIN_BOT, (message) => {
-            message.data.url = `ws://localhost:${process.env.PORT || 3000}`;
+            message.data.url = `ws://localhost:${EnvironmentUtil.getPort()}`;
             startRandomBot(message.data);
         }));
     },
