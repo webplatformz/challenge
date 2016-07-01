@@ -1,8 +1,7 @@
-
-
 import http from 'http';
 import {Server as WebSocketServer} from 'ws';
 import SessionHandler from './session/sessionHandler';
+import {Logger} from './logger';
 
 let server;
 
@@ -14,7 +13,7 @@ export function start(port, app) {
     });
 
     server.listen(port, () => {
-        console.info('Server listening on port:', server.address().port);
+        Logger.info('Server listening on port:', server.address().port);
     });
 }
 

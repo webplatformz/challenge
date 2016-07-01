@@ -6,6 +6,7 @@ import {SessionType} from '../../shared/session/sessionType';
 import SessionHandler from './sessionHandler';
 import {MessageType} from '../../shared/messages/messageType';
 import {startRandomBot} from '../bot/botStarter';
+import {Logger} from '../logger';
 import EnvironmentUtil from '../registry/environmentUtil';
 
 function createTeamsArrayForClient(session) {
@@ -211,7 +212,7 @@ const Session = {
     },
 
     handlePlayerLeft(player, code, message) {
-        console.error('Player left. ' + code + ': ' + message);
+        Logger.error('Player left. ' + code + ': ' + message);
 
         let team = this.teams.filter((team) => {
             return team.name !== player.team.name;
