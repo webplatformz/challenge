@@ -13,7 +13,7 @@ export function start(port, app) {
     });
 
     server.listen(port, () => {
-        Logger.info('Server listening on port:', server.address().port);
+        Logger.info(`Server listening on port: ${server.address().port}`);
     });
 }
 
