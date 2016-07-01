@@ -4,6 +4,7 @@ import JassActions from '../jassActions';
 import * as messages from '../../../shared/messages/messages';
 import {MessageType} from '../../../shared/messages/messageType';
 import {SessionChoice} from '../../../shared/session/sessionChoice';
+import {reduxDispatcher} from '../jassActions';
 
 const protocol = (window.location.hostname === 'localhost') ? 'ws' : 'wss';
 const serverAddress = `${protocol}://${window.location.host}`;
@@ -15,12 +16,12 @@ function sendJSONMessageToClient(messageType, ...data) {
 }
 
 const ServerApi = {
-    handleMessageFromServer: (messageEvent) => {
+    handleMessageFromServer(dispatch, messageEvent) {
         let message = JSON.parse(messageEvent.data);
 
         switch (message.type) {
             case MessageType.BAD_MESSAGE:
-                JassActions.throwError('SERVER', message.data);
+                reduxDispatcher.throwError(dispatch, 'Server', message.data);
                 break;
             case MessageType.REQUEST_PLAYER_NAME.name:
                 JassActions.requestPlayerName();
@@ -30,6 +31,7 @@ const ServerApi = {
                 break;
             case MessageType.SESSION_JOINED.name:
             case MessageType.BROADCAST_SESSION_JOINED.name:
+                reduxDispatcher.sessionJoined(dispatch, message.data);
                 JassActions.sessionJoined(message.data);
                 break;
             case MessageType.BROADCAST_TEAMS.name:
@@ -57,6 +59,7 @@ const ServerApi = {
                 JassActions.broadcastStich(message.data);
                 break;
             case MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name:
+                reduxDispatcher.broadcastTournamentRankingTable(dispatch, message.data);
                 JassActions.broadcastTournamentRankingTable(message.data);
                 break;
             case MessageType.BROADCAST_TOURNAMENT_STARTED.name:
@@ -67,7 +70,7 @@ const ServerApi = {
                 break;
         }
     },
-    handleActionsFromUi: (payload) => {
+    handleActionsFromUi(payload) {
         if (payload.source === 'VIEW_ACTION') {
             let action = payload.action;
 
@@ -108,15 +111,17 @@ const ServerApi = {
             }
         }
     },
-    handleErrorFromServer: () => {
-        JassActions.throwError('WEBSOCKET', 'The connection to the server has been lost!');
+
+    handleErrorFromServer(dispatch) {
+        reduxDispatcher.throwError(dispatch, 'WEBSOCKET', 'The connection to the server has been lost!');
     },
 
-    connect: () => {
+    connect(storeDispatchFunction) {
         webSocket = new WebSocket(serverAddress);
-        webSocket.onmessage = ServerApi.handleMessageFromServer;
-        webSocket.onerror = ServerApi.handleErrorFromServer;
-        JassAppDispatcher.register(ServerApi.handleActionsFromUi);
+        webSocket.onmessage = (message) => this.handleMessageFromServer(storeDispatchFunction, message);
+        webSocket.onerror = (message) => this.handleErrorFromServer(storeDispatchFunction, message);
+        webSocket.onclose = () => reduxDispatcher.throwError(storeDispatchFunction, 'WEBSOCKET', 'Server closed connection');
+        JassAppDispatcher.register(this.handleActionsFromUi);
     }
 };
 

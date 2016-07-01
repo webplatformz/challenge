@@ -4,10 +4,7 @@ import GameSetup from './gameSetup/gameSetup.jsx';
 import JassTable from './game/jassTable.jsx';
 import TournamentTable from './tournament/tournamentTable.jsx';
 import {SessionType} from '../../shared/session/sessionType';
-import serverApi from './communication/serverApi';
 import {connect} from 'react-redux';
-
-serverApi.connect();
 
 const JassAppComponent = ({error, sessionType}) => {
     return (
@@ -32,10 +29,7 @@ JassAppComponent.propTypes = {
 };
 
 const JassApp = connect(
-    (state) => state.jassApp,
-    () => {
-        return {};
-    }
+    (state) => state.jassApp
 )(JassAppComponent);
 
 export default JassApp;

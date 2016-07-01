@@ -2,6 +2,30 @@ import JassAppConstants from './jassAppConstants';
 import JassAppDispatcher from './jassAppDispatcher';
 import {SessionType} from '../../shared/session/sessionType';
 
+export const reduxDispatcher = {
+    throwError(dispatch, source, error) {
+        dispatch({
+            type: JassAppConstants.ERROR,
+            data: error,
+            source
+        })
+    },
+
+    sessionJoined(dispatch, playerInfo) {
+        dispatch({
+            type: JassAppConstants.SESSION_JOINED,
+            data: playerInfo
+        });
+    },
+
+    broadcastTournamentRankingTable(dispatch, rankingTable) {
+        dispatch({
+            type: JassAppConstants.BROADCAST_TOURNAMENT_RANKING_TABLE,
+            data: rankingTable
+        });
+    }
+};
+
 export default {
     throwError: (source, error) => {
         JassAppDispatcher.throwErrorAction({
