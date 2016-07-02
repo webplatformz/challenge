@@ -6,7 +6,7 @@ import TournamentTable from './tournament/tournamentTable.jsx';
 import {SessionType} from '../../shared/session/sessionType';
 import {connect} from 'react-redux';
 
-const JassAppComponent = ({error, sessionType}) => {
+export const JassAppComponent = ({error, sessionType}) => {
     return (
         <div>
             <ErrorToast error={error}/>
@@ -28,8 +28,6 @@ JassAppComponent.propTypes = {
     sessionType: React.PropTypes.oneOf(Object.keys(SessionType))
 };
 
-const JassApp = connect(
+export default connect(
     (state) => state.jassApp
 )(JassAppComponent);
-
-export default JassApp;

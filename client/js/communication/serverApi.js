@@ -1,10 +1,9 @@
 import JassAppDispatcher from '../jassAppDispatcher';
 import JassAppConstants from '../jassAppConstants';
-import JassActions from '../jassActions';
+import {default as JassActions, reduxDispatcher} from '../jassActions';
 import * as messages from '../../../shared/messages/messages';
 import {MessageType} from '../../../shared/messages/messageType';
 import {SessionChoice} from '../../../shared/session/sessionChoice';
-import {reduxDispatcher} from '../jassActions';
 
 const protocol = (window.location.hostname === 'localhost') ? 'ws' : 'wss';
 const serverAddress = `${protocol}://${window.location.host}`;
