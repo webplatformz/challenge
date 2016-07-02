@@ -33,7 +33,7 @@ describe('JassApp Reducer', () => {
         expect(actual.sessionType).to.equal(SessionType.SINGLE_GAME);
     });
 
-    it('should set sessionType when single game', () => {
+    it('should set sessionType when tournament', () => {
         const action = {
             type: JassAppConstants.BROADCAST_TOURNAMENT_RANKING_TABLE
         };
