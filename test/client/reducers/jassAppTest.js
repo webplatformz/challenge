@@ -13,10 +13,14 @@ describe('JassApp Reducer', () => {
             type: JassAppConstants.ERROR,
             data: 'errorMessage'
         };
+        const state = {
+            sessionType: 'sessionType'
+        };
 
-        const actual = jassAppReducer(undefined, action);
+        const actual = jassAppReducer(state, action);
 
         expect(actual.error).to.equal(action.data);
+        expect(actual.sessionType).to.equal(state.sessionType);
     });
 
     it('should set sessionType when single game', () => {
