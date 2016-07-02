@@ -1,6 +1,6 @@
 import JassAppDispatcher from '../jassAppDispatcher';
 import JassAppConstants from '../jassAppConstants';
-import {default as JassActions, reduxDispatcher} from '../jassActions';
+import JassActions from '../jassActions';
 import * as messages from '../../../shared/messages/messages';
 import {MessageType} from '../../../shared/messages/messageType';
 import {SessionChoice} from '../../../shared/session/sessionChoice';
@@ -14,58 +14,72 @@ function sendJSONMessageToClient(messageType, ...data) {
     webSocket.send(JSON.stringify(messages.create(messageType, ...data)));
 }
 
+function createErrorAction(data, source) {
+    return {
+        type: JassAppConstants.ERROR,
+        data,
+        source
+    };
+}
+
 const ServerApi = {
     handleMessageFromServer(dispatch, messageEvent) {
-        let message = JSON.parse(messageEvent.data);
+        let {data, type} = JSON.parse(messageEvent.data);
 
-        switch (message.type) {
+        switch (type) {
             case MessageType.BAD_MESSAGE:
-                reduxDispatcher.throwError(dispatch, 'Server', message.data);
+                dispatch(createErrorAction(data, 'SERVER'));
                 break;
             case MessageType.REQUEST_PLAYER_NAME.name:
                 JassActions.requestPlayerName();
                 break;
             case MessageType.REQUEST_SESSION_CHOICE.name:
-                JassActions.requestSessionChoice(message.data);
+                JassActions.requestSessionChoice(data);
                 break;
             case MessageType.SESSION_JOINED.name:
             case MessageType.BROADCAST_SESSION_JOINED.name:
-                reduxDispatcher.sessionJoined(dispatch, message.data);
-                JassActions.sessionJoined(message.data);
+                dispatch({
+                    type: JassAppConstants.SESSION_JOINED,
+                    data
+                });
+                JassActions.sessionJoined(data);
                 break;
             case MessageType.BROADCAST_TEAMS.name:
-                JassActions.broadcastTeams(message.data);
+                JassActions.broadcastTeams(data);
                 break;
             case MessageType.DEAL_CARDS.name:
-                JassActions.dealCards(message.data);
+                JassActions.dealCards(data);
                 break;
             case MessageType.REQUEST_TRUMPF.name:
-                JassActions.requestTrumpf(message.data);
+                JassActions.requestTrumpf(data);
                 break;
             case MessageType.BROADCAST_TRUMPF.name:
-                JassActions.broadastTrumpf(message.data);
+                JassActions.broadastTrumpf(data);
                 break;
             case MessageType.REQUEST_CARD.name:
-                JassActions.requestCard(message.data);
+                JassActions.requestCard(data);
                 break;
             case MessageType.REJECT_CARD.name:
-                JassActions.rejectCard(message.data);
+                JassActions.rejectCard(data);
                 break;
             case MessageType.PLAYED_CARDS.name:
-                JassActions.playedCards(message.data);
+                JassActions.playedCards(data);
                 break;
             case MessageType.BROADCAST_STICH.name:
-                JassActions.broadcastStich(message.data);
+                JassActions.broadcastStich(data);
                 break;
             case MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name:
-                reduxDispatcher.broadcastTournamentRankingTable(dispatch, message.data);
-                JassActions.broadcastTournamentRankingTable(message.data);
+                dispatch({
+                    type: JassAppConstants.BROADCAST_TOURNAMENT_RANKING_TABLE,
+                    data
+                });
+                JassActions.broadcastTournamentRankingTable(data);
                 break;
             case MessageType.BROADCAST_TOURNAMENT_STARTED.name:
                 JassActions.broadcastTournamentStarted();
                 break;
             case MessageType.SEND_REGISTRY_BOTS.name:
-                JassActions.sendRegistryBots(message.data);
+                JassActions.sendRegistryBots(data);
                 break;
         }
     },
@@ -112,14 +126,14 @@ const ServerApi = {
     },
 
     handleErrorFromServer(dispatch) {
-        reduxDispatcher.throwError(dispatch, 'WEBSOCKET', 'The connection to the server has been lost!');
+        dispatch(createErrorAction('The connection to the server has been lost!', 'WEBSOCKET'));
     },
 
     connect(storeDispatchFunction) {
         webSocket = new WebSocket(serverAddress);
         webSocket.onmessage = (message) => this.handleMessageFromServer(storeDispatchFunction, message);
         webSocket.onerror = (message) => this.handleErrorFromServer(storeDispatchFunction, message);
-        webSocket.onclose = () => reduxDispatcher.throwError(storeDispatchFunction, 'WEBSOCKET', 'Server closed connection');
+        webSocket.onclose = () => storeDispatchFunction(createErrorAction('Server closed connection', 'WEBSOCKET'));
         JassAppDispatcher.register(this.handleActionsFromUi);
     }
 };
