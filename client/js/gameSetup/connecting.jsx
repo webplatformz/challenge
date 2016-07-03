@@ -1,10 +1,17 @@
 import React from 'react';
-import {GameSetupState} from './gameSetupStore';
+import {GameSetupStep} from '../reducers/gameSetup';
 
-export default (props) => {
+
+const Connecting = ({step}) => {
     return (
-        <div id="connecting" className={(props.setupState !== GameSetupState.CONNECTING ? 'hidden' : '')}>
+        <div id="connecting" className={(step !== GameSetupStep.CONNECTING ? 'hidden' : '')}>
             <h1 className="jumbotron">Connecting to Server...</h1>
         </div>
     );
 };
+
+Connecting.propTypes = {
+    step: React.PropTypes.oneOf(Object.keys(GameSetupStep))
+};
+
+export default Connecting;

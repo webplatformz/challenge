@@ -1,6 +1,6 @@
 import React from 'react';
 import JassActions from '../jassActions';
-import {GameSetupState} from './gameSetupStore';
+import {GameSetupStep} from '../reducers/gameSetup';
 
 function choosePlayerName(event) {
     let inputElement = event.target,
@@ -12,10 +12,17 @@ function choosePlayerName(event) {
     }
 }
 
-export default (props) => {
+const RequestPlayerName = ({step}) => {
     return (
-        <div id="requestPlayerName" className={(props.setupState === GameSetupState.SET_PLAYER_NAME ? '' : 'hidden')}>
+        <div id="requestPlayerName" className={(step === GameSetupStep.SET_PLAYER_NAME ? '' : 'hidden')}>
             <input type="text" placeholder="Enter Player Name..." onKeyPress={choosePlayerName}/>
         </div>
     );
 };
+
+RequestPlayerName.propTypes = {
+    step: React.PropTypes.oneOf(Object.keys(GameSetupStep))
+};
+
+export default RequestPlayerName;
+

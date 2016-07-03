@@ -25,7 +25,7 @@ describe('ChooseSession Component', () => {
     });
 
     it('should render a div element with id chooseSession and class hidden', () => {
-        shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupState.CONNECTING }}));
+        shallowRenderer.render(React.createElement(ChooseSession, { step: GameSetupState.CONNECTING }));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
@@ -34,7 +34,7 @@ describe('ChooseSession Component', () => {
     });
 
     it('should remove class hidden when GameState CHOOSE_SESSION', () => {
-        shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupState.CHOOSE_SESSION }}));
+        shallowRenderer.render(React.createElement(ChooseSession, { step: GameSetupState.CHOOSE_SESSION }));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
@@ -43,7 +43,7 @@ describe('ChooseSession Component', () => {
     });
 
     it('should have the right children', () => {
-        shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupState.CHOOSE_SESSION }}));
+        shallowRenderer.render(React.createElement(ChooseSession, { step: GameSetupState.CHOOSE_SESSION }));
         let actual = shallowRenderer.getRenderOutput();
 
         let children = actual.props.children;
@@ -60,7 +60,7 @@ describe('ChooseSession Component', () => {
     it('should pass the sessions of GameSetupState to ExistingSessions', () => {
         let sessions = ['sessionName'];
 
-        shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupState.CHOOSE_SESSION, sessions }}));
+        shallowRenderer.render(React.createElement(ChooseSession, { step: GameSetupState.CHOOSE_SESSION, sessions }));
         let actual = shallowRenderer.getRenderOutput();
 
         let children = actual.props.children;
@@ -68,7 +68,7 @@ describe('ChooseSession Component', () => {
     });
 
     it('should add event listeners to children', () => {
-        shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupState.CHOOSE_SESSION }}));
+        shallowRenderer.render(React.createElement(ChooseSession, { step: GameSetupState.CHOOSE_SESSION }));
         let actual = shallowRenderer.getRenderOutput();
 
         let newSessionInput = actual.props.children[2].props.children;
@@ -93,7 +93,7 @@ describe('ChooseSession Component', () => {
         let createNewSession;
 
         beforeEach(() => {
-            shallowRenderer.render(React.createElement(ChooseSession, { setupState: { status: GameSetupState.CHOOSE_SESSION }}));
+            shallowRenderer.render(React.createElement(ChooseSession, { step: GameSetupState.CHOOSE_SESSION }));
             createNewSession = shallowRenderer.getRenderOutput().props.children[2].props.children.props.onKeyPress;
         });
 

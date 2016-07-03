@@ -4,7 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 
 import Connecting from '../../../client/js/gameSetup/connecting.jsx';
-import {GameSetupState} from '../../../client/js/gameSetup/gameSetupStore';
+import {GameSetupStep} from '../../../client/js/reducers/gameSetup';
 
 describe('Connecting Component', () => {
 
@@ -21,7 +21,7 @@ describe('Connecting Component', () => {
     });
 
     it('should remove className hidden when GameSetupState CONNECTING', () => {
-        shallowRenderer.render(React.createElement(Connecting, { setupState: GameSetupState.CONNECTING }));
+        shallowRenderer.render(React.createElement(Connecting, {step: GameSetupStep.CONNECTING}));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.props.className).to.equal('');

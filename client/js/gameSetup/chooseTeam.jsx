@@ -1,13 +1,10 @@
 import React from 'react';
-import {GameSetupState} from './gameSetupStore';
+import {GameSetupStep} from '../reducers/gameSetup';
 
-export default (props) => {
-
-    const status = props.setupState.status;
-    const chosenSession = props.setupState.chosenSession || {};
+const ChooseTeam = ({step, chosenSession = {}}) => {
 
     return (
-        <div id="chooseTeam" className={(status !== GameSetupState.CHOOSE_TEAM ? 'hidden' : '')}>
+        <div id="chooseTeam" className={(step !== GameSetupStep.CHOOSE_TEAM ? 'hidden' : '')}>
             <h1 className="jumbotron">Joining Session {chosenSession.sessionName}</h1>
             <h2>Choose your preferred team</h2>
             <div className="team-choice">
@@ -17,5 +14,14 @@ export default (props) => {
             </div>
         </div>
     );
-
 };
+
+ChooseTeam.propTypes = {
+    step: React.PropTypes.oneOf(Object.keys(GameSetupStep)),
+    chosenSession: React.PropTypes.shape({
+        sessionName: React.PropTypes.string,
+        joinSession: React.PropTypes.func
+    })
+};
+
+export default ChooseTeam;

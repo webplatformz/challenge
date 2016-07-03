@@ -14,14 +14,11 @@ function createNewSession(sessionType, asSpectator, event) {
     }
 }
 
-export default (props) => {
-
-    let status = props.setupState.status;
-
+const ChooseSession = ({step, sessions}) => {
     return (
-        <div id="chooseSession" className={(status !== GameSetupState.CHOOSE_SESSION ? 'hidden' : '')}>
+        <div id="chooseSession" className={(step !== GameSetupState.CHOOSE_SESSION ? 'hidden' : '')}>
             <h1 className="jumbotron">Choose Session</h1>
-            <ExistingSessions sessions={props.setupState.sessions}/>
+            <ExistingSessions sessions={sessions}/>
             <div className="session-choice">
                 <input type="text" name="createNewSession" placeholder="Session Name..."
                        onKeyPress={(event) => createNewSession(SessionType.SINGLE_GAME, false, event)}
@@ -38,3 +35,10 @@ export default (props) => {
         </div>
     );
 };
+
+ChooseSession.propTypes = {
+    step: React.PropTypes.string,
+    sessions: React.PropTypes.array
+};
+
+export default ChooseSession;

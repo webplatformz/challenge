@@ -1,19 +1,18 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import React from 'react';
-import {GameSetupState} from '../../../client/js/gameSetup/gameSetupStore';
 import JassActions from '../../../client/js/jassActions';
+import RequestPlayerName from '../../../client/js/gameSetup/requestPlayerName.jsx';
+import {GameSetupStep} from '../../../client/js/reducers/gameSetup';
 
 import TestUtils from 'react-addons-test-utils';
-
-import RequestPlayerName from '../../../client/js/gameSetup/requestPlayerName.jsx';
 
 describe('RequestPlayerName Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
 
     it('should render a div element with id requestPlayerName and class hidden', () => {
-        shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupState.CONNECTING }));
+        shallowRenderer.render(React.createElement(RequestPlayerName, { step: GameSetupStep.CONNECTING }));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
@@ -22,14 +21,14 @@ describe('RequestPlayerName Component', () => {
     });
 
     it('should remove class hidden when setupState SET_PLAYER_NAME', () => {
-        shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupState.SET_PLAYER_NAME }));
+        shallowRenderer.render(React.createElement(RequestPlayerName, { step: GameSetupStep.SET_PLAYER_NAME }));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.props.className).to.equal('');
     });
 
     it('should add function onKeyPress to input', () => {
-        shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupState.SET_PLAYER_NAME }));
+        shallowRenderer.render(React.createElement(RequestPlayerName, { step: GameSetupStep.SET_PLAYER_NAME }));
         let actual = shallowRenderer.getRenderOutput();
 
         let input = actual.props.children;
@@ -48,7 +47,7 @@ describe('RequestPlayerName Component', () => {
         let choosePlayerName;
 
         beforeEach(() => {
-            shallowRenderer.render(React.createElement(RequestPlayerName, { setupState: GameSetupState.SET_PLAYER_NAME }));
+            shallowRenderer.render(React.createElement(RequestPlayerName, { step: GameSetupStep.SET_PLAYER_NAME }));
             choosePlayerName = shallowRenderer.getRenderOutput().props.children.props.onKeyPress;
             choosePlayerNameSpy = sinon.stub(JassActions, 'choosePlayerName');
 

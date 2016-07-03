@@ -3,39 +3,29 @@ import RequestPlayerName from './requestPlayerName.jsx';
 import Connecting from './connecting.jsx';
 import ChooseSession from './chooseSession.jsx';
 import ChooseTeam from './chooseTeam.jsx';
-import {default as GameSetupStore, GameSetupState} from './gameSetupStore';
+import {GameSetupStep} from '../reducers/gameSetup';
+import {connect} from 'react-redux';
 
-function getSetupStateClassName(setupState) {
-    if (setupState.status === GameSetupState.FINISHED
-        || setupState.status === GameSetupState.WAIT_FOR_PLAYERS) {
-        return 'finished';
-    }
-}
+export const GameSetupComponent = ({step, sessions, chosenSession}) => {
+    return (
+        <div id="gameSetup" className={(step === GameSetupStep.FINISHED) ? 'finished' : undefined}>
+            <Connecting step={step} />
+            <RequestPlayerName step={step} />
+            <ChooseSession step={step} sessions={sessions} />
+            <ChooseTeam step={step} chosenSession={chosenSession} />
+        </div>
+    );
+};
 
-export default React.createClass({
+GameSetupComponent.propTypes = {
+    step: React.PropTypes.oneOf(Object.keys(GameSetupStep)),
+    sessions: React.PropTypes.array,
+    chosenSession: React.PropTypes.shape({
+        sessionName: React.PropTypes.string,
+        joinSession: React.PropTypes.func
+    })
+};
 
-    handleGameSetupState() {
-        this.setState(GameSetupStore.state);
-    },
-
-    componentDidMount() {
-        GameSetupStore.addChangeListener(this.handleGameSetupState);
-    },
-
-    componentWillUnmount() {
-        GameSetupStore.removeChangeListener(this.handleGameSetupState);
-    },
-
-    render() {
-        this.state = GameSetupStore.state;
-
-        return (
-            <div id="gameSetup" className={getSetupStateClassName(this.state)}>
-                <Connecting setupState={this.state.status} />
-                <RequestPlayerName setupState={this.state.status} />
-                <ChooseSession setupState={this.state} />
-                <ChooseTeam setupState={this.state} />
-            </div>
-        );
-    }
-});
+export default connect(
+    (state) => state.gameSetup
+)(GameSetupComponent);

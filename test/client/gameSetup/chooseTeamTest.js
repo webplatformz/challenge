@@ -5,7 +5,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 
 import ChooseTeam from '../../../client/js/gameSetup/chooseTeam.jsx';
-import {GameSetupState} from '../../../client/js/gameSetup/gameSetupStore';
+import {GameSetupStep} from '../../../client/js/reducers/gameSetup';
 
 describe('ChooseTeam Component', () => {
 
@@ -13,7 +13,7 @@ describe('ChooseTeam Component', () => {
 
     describe('in GameState CHOSSE_SESISON', () => {
 
-        shallowRenderer.render(React.createElement(ChooseTeam, { setupState: { status: GameSetupState.CHOOSE_SESSION }}));
+        shallowRenderer.render(React.createElement(ChooseTeam, { step: GameSetupStep.CHOOSE_SESSION }));
         let actual = shallowRenderer.getRenderOutput();
 
         it('should render hidden in GameState CHOOSE_SESSION', () => {
@@ -27,7 +27,7 @@ describe('ChooseTeam Component', () => {
     describe('in GameState CHOOSE_TEAM', () => {
 
         let setupState = {
-           status: GameSetupState.CHOOSE_TEAM,
+           step: GameSetupStep.CHOOSE_TEAM,
            chosenSession: {
                sessionName: 'sessionDummy',
                joinSession: undefined
@@ -35,7 +35,7 @@ describe('ChooseTeam Component', () => {
         };
         let joinSessionSpy = undefined;
 
-        shallowRenderer.render(React.createElement(ChooseTeam, { setupState }));
+        shallowRenderer.render(React.createElement(ChooseTeam, setupState));
         let actual = shallowRenderer.getRenderOutput();
         let children = actual.props.children;
         let teamButtons = children[2].props.children;
