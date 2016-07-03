@@ -31,9 +31,16 @@ const ServerApi = {
                 dispatch(createErrorAction(data, 'SERVER'));
                 break;
             case MessageType.REQUEST_PLAYER_NAME.name:
+                dispatch({
+                    type: JassAppConstants.REQUEST_PLAYER_NAME
+                });
                 JassActions.requestPlayerName();
                 break;
             case MessageType.REQUEST_SESSION_CHOICE.name:
+                dispatch({
+                    type: JassAppConstants.REQUEST_SESSION_CHOICE,
+                    data
+                });
                 JassActions.requestSessionChoice(data);
                 break;
             case MessageType.SESSION_JOINED.name:
