@@ -5,13 +5,14 @@ import ChooseSession from './chooseSession.jsx';
 import ChooseTeam from './chooseTeam.jsx';
 import {GameSetupStep} from '../reducers/gameSetup';
 import {connect} from 'react-redux';
+import gameSetupDispatchFunctions from './gameSetupDispatchFunctions';
 
-export const GameSetupComponent = ({step, sessions, chosenSession}) => {
+export const GameSetupComponent = ({step, sessions, chosenSession, autojoinSession, createNewSession}) => {
     return (
         <div id="gameSetup" className={(step === GameSetupStep.FINISHED) ? 'finished' : undefined}>
             <Connecting step={step} />
             <RequestPlayerName step={step} />
-            <ChooseSession step={step} sessions={sessions} />
+            <ChooseSession step={step} sessions={sessions} autojoinSession={autojoinSession} createNewSession={createNewSession} />
             <ChooseTeam step={step} chosenSession={chosenSession} />
         </div>
     );
@@ -27,5 +28,6 @@ GameSetupComponent.propTypes = {
 };
 
 export default connect(
-    (state) => state.gameSetup
+    (state) => state.gameSetup,
+    (dispatch) => gameSetupDispatchFunctions(dispatch)
 )(GameSetupComponent);

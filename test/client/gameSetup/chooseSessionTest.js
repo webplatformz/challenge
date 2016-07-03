@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import React from 'react';
-import JassActions from '../../../client/js/jassActions';
 import ExistingSessions from '../../../client/js/gameSetup/existingSessions.jsx';
 import {SessionType} from '../../../shared/session/sessionType';
 
@@ -13,16 +12,6 @@ import {GameSetupState} from '../../../client/js/gameSetup/gameSetupStore';
 describe('ChooseSession Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
-    
-    let createNewSessionSpy; 
-    
-    beforeEach(() => {
-        createNewSessionSpy = sinon.spy(JassActions, 'createNewSession');
-    });
-
-    afterEach(() => {
-        JassActions.createNewSession.restore();
-    });
 
     it('should render a div element with id chooseSession and class hidden', () => {
         shallowRenderer.render(React.createElement(ChooseSession, { step: GameSetupState.CONNECTING }));
@@ -68,19 +57,25 @@ describe('ChooseSession Component', () => {
     });
 
     it('should add event listeners to children', () => {
-        shallowRenderer.render(React.createElement(ChooseSession, { step: GameSetupState.CHOOSE_SESSION }));
+        const props = {
+            step: GameSetupState.CHOOSE_SESSION,
+            autojoinSession: sinon.spy(),
+            createNewSession: sinon.spy()
+        };
+        shallowRenderer.render(React.createElement(ChooseSession, props));
         let actual = shallowRenderer.getRenderOutput();
 
         let newSessionInput = actual.props.children[2].props.children;
         newSessionInput.props.onKeyPress({target:{value:'testSingle'}, charCode:13});
-        sinon.assert.calledWith(createNewSessionSpy, SessionType.SINGLE_GAME, 'testSingle', false);
+        sinon.assert.calledWith(props.createNewSession, SessionType.SINGLE_GAME, 'testSingle', false);
 
         let newTournamentInput = actual.props.children[3].props.children;       
         newTournamentInput.props.onKeyPress({target:{value:'testTournament'}, charCode:13});
-        sinon.assert.calledWith(createNewSessionSpy, SessionType.TOURNAMENT, 'testTournament', true);
+        sinon.assert.calledWith(props.createNewSession, SessionType.TOURNAMENT, 'testTournament', true);
 
         let autojoinInput = actual.props.children[4].props.children;
-        expect(autojoinInput.props.onClick).to.equal(JassActions.autojoinSession);
+        autojoinInput.props.onClick();
+        sinon.assert.calledOnce(props.autojoinSession);
     });
 
     describe('createNewSession', () => {
@@ -90,10 +85,15 @@ describe('ChooseSession Component', () => {
                 }
             };
 
-        let createNewSession;
+        let createNewSession,
+            props;
 
         beforeEach(() => {
-            shallowRenderer.render(React.createElement(ChooseSession, { step: GameSetupState.CHOOSE_SESSION }));
+            props = {
+                step: GameSetupState.CHOOSE_SESSION,
+                createNewSession: sinon.spy()
+            };
+            shallowRenderer.render(React.createElement(ChooseSession, props));
             createNewSession = shallowRenderer.getRenderOutput().props.children[2].props.children.props.onKeyPress;
         });
 
@@ -101,7 +101,7 @@ describe('ChooseSession Component', () => {
             eventDummy.charCode = 99;
 
             createNewSession(eventDummy);
-            sinon.assert.callCount(createNewSessionSpy, 0);
+            sinon.assert.callCount(props.createNewSession, 0);
         });
 
 
@@ -111,7 +111,7 @@ describe('ChooseSession Component', () => {
 
             createNewSession(eventDummy);
 
-            sinon.assert.callCount(createNewSessionSpy, 0);
+            sinon.assert.callCount(props.createNewSession, 0);
         });
 
         it('should not start action with whitespace username', () => {
@@ -120,7 +120,7 @@ describe('ChooseSession Component', () => {
 
             createNewSession(eventDummy);
 
-            sinon.assert.callCount(createNewSessionSpy, 0);
+            sinon.assert.callCount(props.createNewSession, 0);
         });
 
         it('should start action and disable input with valid playername and enter key pressed', () => {
@@ -129,8 +129,8 @@ describe('ChooseSession Component', () => {
 
             createNewSession(eventDummy);
 
-            sinon.assert.calledWith(createNewSessionSpy, SessionType.SINGLE_GAME, eventDummy.target.value);
-            sinon.assert.callCount(createNewSessionSpy, 1);
+            sinon.assert.calledWith(props.createNewSession, SessionType.SINGLE_GAME, eventDummy.target.value);
+            sinon.assert.callCount(props.createNewSession, 1);
 
             expect(eventDummy.target.disabled).to.equal(true);
         });
