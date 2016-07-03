@@ -3,16 +3,16 @@ import sinon from 'sinon';
 import {SessionType} from '../../../shared/session/sessionType';
 import JassAppConstants from '../../../client/js/jassAppConstants';
 
-import gameSetupDispatchFunctions from '../../../client/js/gameSetup/gameSetupDispatchFunctions';
+import * as GameSetupDispatchFunctions from '../../../client/js/gameSetup/gameSetupDispatchFunctions';
 
 describe('GameSetupDispatchFunctions', () => {
 
-    let underTest,
+    let gameSetupDispatchFunctions,
         dispatchSpy;
 
     beforeEach(() => {
         dispatchSpy = sinon.spy();
-        underTest = gameSetupDispatchFunctions(dispatchSpy);
+        gameSetupDispatchFunctions = GameSetupDispatchFunctions.create(dispatchSpy);
     });
 
     describe('createNewSession', () => {
@@ -22,7 +22,7 @@ describe('GameSetupDispatchFunctions', () => {
                 asSpectator = true;
 
 
-            underTest.createNewSession(sessionType, sessionName, asSpectator);
+            gameSetupDispatchFunctions.createNewSession(sessionType, sessionName, asSpectator);
 
             sinon.assert.calledWith(dispatchSpy, {
                 type: JassAppConstants.CREATE_NEW_SESSION,
@@ -41,7 +41,7 @@ describe('GameSetupDispatchFunctions', () => {
                 chosenTeamIndex = 1;
 
 
-            underTest.createNewSession(sessionType, sessionName, asSpectator);
+            gameSetupDispatchFunctions.createNewSession(sessionType, sessionName, asSpectator);
 
             sinon.assert.calledWith(dispatchSpy, {
                 type: JassAppConstants.CHOOSE_SESSION_PARTIAL,
@@ -67,7 +67,7 @@ describe('GameSetupDispatchFunctions', () => {
 
     describe('autojoinSession', () => {
         it('should dispatch create session message when sessiontype TOURNAMENT', () => {
-            underTest.autojoinSession();
+            gameSetupDispatchFunctions.autojoinSession();
 
             sinon.assert.calledWith(dispatchSpy, {
                 type: JassAppConstants.AUTOJOIN_SESSION
@@ -80,7 +80,7 @@ describe('GameSetupDispatchFunctions', () => {
             const sessionName = 'sessionName',
                 chosenTeamIndex = 2;
 
-            underTest.joinExistingSession(sessionName);
+            gameSetupDispatchFunctions.joinExistingSession(sessionName);
 
             sinon.assert.calledWith(dispatchSpy, {
                 type: JassAppConstants.CHOOSE_SESSION_PARTIAL,
@@ -106,7 +106,7 @@ describe('GameSetupDispatchFunctions', () => {
         it('should dispatch', () => {
             const sessionName = 'sessionName';
 
-            underTest.joinExistingSessionSpectator(sessionName);
+            gameSetupDispatchFunctions.joinExistingSessionSpectator(sessionName);
 
             sinon.assert.calledWith(dispatchSpy, {
                 type: JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR,
