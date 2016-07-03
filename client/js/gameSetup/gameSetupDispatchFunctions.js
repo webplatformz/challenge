@@ -18,7 +18,7 @@ export default function(dispatch) {
                     type: JassAppConstants.CHOOSE_SESSION_PARTIAL,
                     data: {
                         sessionName,
-                        joinSession(chosenTeamIndex) {
+                        joinSession: (chosenTeamIndex) => {
                             dispatch({
                                 type: JassAppConstants.CREATE_NEW_SESSION,
                                 data: {
