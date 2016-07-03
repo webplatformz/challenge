@@ -7,13 +7,28 @@ import {GameSetupStep} from '../reducers/gameSetup';
 import {connect} from 'react-redux';
 import gameSetupDispatchFunctions from './gameSetupDispatchFunctions';
 
-export const GameSetupComponent = ({step, sessions, chosenSession, autojoinSession, createNewSession}) => {
+export const GameSetupComponent = ({
+    step,
+    sessions,
+    chosenSession,
+    autojoinSession,
+    createNewSession,
+    joinExistingSession,
+    joinExistingSessionAsSpectator
+}) => {
     return (
         <div id="gameSetup" className={(step === GameSetupStep.FINISHED) ? 'finished' : undefined}>
-            <Connecting step={step} />
-            <RequestPlayerName step={step} />
-            <ChooseSession step={step} sessions={sessions} autojoinSession={autojoinSession} createNewSession={createNewSession} />
-            <ChooseTeam step={step} chosenSession={chosenSession} />
+            <Connecting step={step}/>
+            <RequestPlayerName step={step}/>
+            <ChooseSession
+                step={step}
+                sessions={sessions}
+                autojoinSession={autojoinSession}
+                createNewSession={createNewSession}
+                joinExistingSession={joinExistingSession}
+                joinExistingSessionAsSpectator={joinExistingSessionAsSpectator}
+            />
+            <ChooseTeam step={step} chosenSession={chosenSession}/>
         </div>
     );
 };
@@ -24,7 +39,11 @@ GameSetupComponent.propTypes = {
     chosenSession: React.PropTypes.shape({
         sessionName: React.PropTypes.string,
         joinSession: React.PropTypes.func
-    })
+    }),
+    autojoinSession: React.PropTypes.func,
+    createNewSession: React.PropTypes.func,
+    joinExistingSession: React.PropTypes.func,
+    joinExistingSessionAsSpectator: React.PropTypes.func
 };
 
 export default connect(

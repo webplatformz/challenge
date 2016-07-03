@@ -46,14 +46,21 @@ describe('ChooseSession Component', () => {
         expect(children[4].props.className).to.equal('session-choice');
     });
 
-    it('should pass the sessions of GameSetupState to ExistingSessions', () => {
-        let sessions = ['sessionName'];
+    it('should pass correct params to ExistingSessions', () => {
+        const props = {
+            step: GameSetupState.CHOOSE_SESSION,
+            sessions: ['sessionName'],
+            joinExistingSession: () => {},
+            joinExistingSessionAsSpectator: () => {}
+        };
 
-        shallowRenderer.render(React.createElement(ChooseSession, { step: GameSetupState.CHOOSE_SESSION, sessions }));
+        shallowRenderer.render(React.createElement(ChooseSession, props));
         let actual = shallowRenderer.getRenderOutput();
 
-        let children = actual.props.children;
-        expect(children[1].props.sessions).to.equal(sessions);
+        let existingSessionsProps = actual.props.children[1].props;
+        expect(existingSessionsProps.sessions).to.equal(props.sessions);
+        expect(existingSessionsProps.joinExistingSession).to.equal(props.joinExistingSession);
+        expect(existingSessionsProps.joinExistingSessionAsSpectator).to.equal(props.joinExistingSessionAsSpectator);
     });
 
     it('should add event listeners to children', () => {

@@ -1,15 +1,14 @@
 import React from 'react';
-import JassActions from '../jassActions';
 
-const ExistingSessions = ({sessions = []}) => {
+const ExistingSessions = ({sessions = [], joinExistingSession, joinExistingSessionAsSpectator}) => {
     return (
         <div className="session-choice">
             <ul className={(!sessions.length) ? 'hidden' : ''}>
                 {sessions.map((sessionName) => {
                     return (
                         <li key={sessionName}>
-                            <div onClick={() => JassActions.joinExistingSession(sessionName)}>{sessionName}</div>
-                            <div onClick={() => JassActions.joinExistingSessionAsSpectator(sessionName)}>S</div>
+                            <div onClick={() => joinExistingSession(sessionName)}>{sessionName}</div>
+                            <div onClick={() => joinExistingSessionAsSpectator(sessionName)}>S</div>
                         </li>);
                 })}
             </ul>
@@ -18,7 +17,9 @@ const ExistingSessions = ({sessions = []}) => {
 };
 
 ExistingSessions.propTypes = {
-    sessions: React.PropTypes.array
+    sessions: React.PropTypes.array,
+    joinExistingSession: React.PropTypes.func,
+    joinExistingSessionAsSpectator: React.PropTypes.func
 };
 
 export default ExistingSessions;
