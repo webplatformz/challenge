@@ -3,7 +3,7 @@ import {default as gameSetupReducer, GameSetupStep} from '../../../client/js/red
 import JassAppConstants from '../../../client/js/jassAppConstants';
 
 
-describe.only('GameSetup Reducer', () => {
+describe('GameSetup Reducer', () => {
     it('should set step CONNECTING initially', () => {
         expect(gameSetupReducer(undefined, {type: 'type'})).to.eql({step: GameSetupStep.CONNECTING});
     });
