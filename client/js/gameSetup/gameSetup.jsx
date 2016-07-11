@@ -14,12 +14,13 @@ export const GameSetupComponent = ({
     autojoinSession,
     createNewSession,
     joinExistingSession,
-    joinExistingSessionAsSpectator
+    joinExistingSessionAsSpectator,
+    choosePlayerName
 }) => {
     return (
         <div id="gameSetup" className={(step === GameSetupStep.FINISHED) ? 'finished' : undefined}>
             <Connecting step={step}/>
-            <RequestPlayerName step={step}/>
+            <RequestPlayerName step={step} choosePlayerName={choosePlayerName}/>
             <ChooseSession
                 step={step}
                 sessions={sessions}
@@ -43,7 +44,8 @@ GameSetupComponent.propTypes = {
     autojoinSession: React.PropTypes.func,
     createNewSession: React.PropTypes.func,
     joinExistingSession: React.PropTypes.func,
-    joinExistingSessionAsSpectator: React.PropTypes.func
+    joinExistingSessionAsSpectator: React.PropTypes.func,
+    choosePlayerName: React.PropTypes.func
 };
 
 export default connect(

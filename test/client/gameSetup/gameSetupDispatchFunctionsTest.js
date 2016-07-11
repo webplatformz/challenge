@@ -15,6 +15,19 @@ describe('GameSetupDispatchFunctions', () => {
         underTest = gameSetupDispatchFunctions(dispatchSpy);
     });
 
+    describe('choosePlayerName', () => {
+        it('should dispatch choose playername message', () => {
+            const playerName = 'playerName';
+
+            underTest.choosePlayerName(playerName);
+
+            sinon.assert.calledWith(dispatchSpy, {
+                type: JassAppConstants.CHOOSE_PLAYER_NAME,
+                data: playerName
+            });
+        });
+    });
+
     describe('createNewSession', () => {
         it('should dispatch create session message when sessiontype TOURNAMENT', () => {
             const sessionType = SessionType.TOURNAMENT,

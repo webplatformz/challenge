@@ -3,6 +3,12 @@ import JassAppConstants from '../jassAppConstants';
 
 export default function(dispatch) {
     return {
+        choosePlayerName(playerName) {
+            dispatch({
+                type: JassAppConstants.CHOOSE_PLAYER_NAME,
+                data: playerName
+            })
+        },
         createNewSession(sessionType, sessionName, asSpectator) {
             if (sessionType === SessionType.TOURNAMENT) {
                 dispatch({
