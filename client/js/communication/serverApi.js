@@ -90,6 +90,41 @@ const ServerApi = {
                 break;
         }
     },
+    
+    handleErrorFromServer(dispatch) {
+        dispatch(createErrorAction('The connection to the server has been lost!', 'WEBSOCKET'));
+    },
+    
+    sendChoosePlayerNameMessage(playerName) {
+        sendJSONMessageToClient(MessageType.CHOOSE_PLAYER_NAME.name, playerName);
+    },
+    
+    sendCreateNewSessionMessage(sessionName, sessionType, asSpectator, chosenTeamIndex) {
+        sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, {
+            sessionName,
+            sessionType,
+            asSpectator,
+            chosenTeamIndex
+        });
+    },
+    
+    sendChooseExistingSessionMessage(sessionName, chosenTeamIndex) {
+        sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, {
+            sessionName,
+            chosenTeamIndex
+        });
+    },
+
+    sendAutojoinSessionMessage() {
+        sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN);
+    },
+
+    sendChooseExistingSessionSpectatorMessage(sessionName) {
+        sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.SPECTATOR, {
+            sessionName
+        });
+    },
+    
     handleActionsFromUi(payload) {
         if (payload.source === 'VIEW_ACTION') {
             let action = payload.action;
@@ -100,21 +135,6 @@ const ServerApi = {
                     break;
                 case JassAppConstants.ADD_BOT_FROM_REGISTRY:
                     sendJSONMessageToClient(MessageType.ADD_BOT_FROM_REGISTRY.name, action.data);
-                    break;
-                case JassAppConstants.CHOOSE_PLAYER_NAME:
-                    sendJSONMessageToClient(MessageType.CHOOSE_PLAYER_NAME.name, action.data);
-                    break;
-                case JassAppConstants.CHOOSE_EXISTING_SESSION:
-                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, action.data);
-                    break;
-                case JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR:
-                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.SPECTATOR, action.data);
-                    break;
-                case JassAppConstants.CREATE_NEW_SESSION:
-                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, action.data);
-                    break;
-                case JassAppConstants.AUTOJOIN_SESSION:
-                    sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.AUTOJOIN);
                     break;
                 case JassAppConstants.CHOOSE_TRUMPF:
                     sendJSONMessageToClient(MessageType.CHOOSE_TRUMPF.name, action.data);
@@ -130,10 +150,6 @@ const ServerApi = {
                     break;
             }
         }
-    },
-
-    handleErrorFromServer(dispatch) {
-        dispatch(createErrorAction('The connection to the server has been lost!', 'WEBSOCKET'));
     },
 
     connect(storeDispatchFunction) {

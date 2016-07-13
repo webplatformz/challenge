@@ -9,7 +9,7 @@ const ChooseSession = ({
     createNewSession,
     autojoinSession,
     joinExistingSession,
-    joinExistingSessionAsSpectator
+    joinExistingSessionSpectator
 }) => {
 
     function validateAndDispatch(sessionType, asSpectator, event) {
@@ -28,7 +28,7 @@ const ChooseSession = ({
             <ExistingSessions
                 sessions={sessions}
                 joinExistingSession={joinExistingSession}
-                joinExistingSessionAsSpectator={joinExistingSessionAsSpectator}
+                joinExistingSessionSpectator={joinExistingSessionSpectator}
             />
             <div className="session-choice">
                 <input type="text" name="createNewSession" placeholder="Session Name..."
@@ -53,7 +53,7 @@ ChooseSession.propTypes = {
     createNewSession: React.PropTypes.func,
     autojoinSession: React.PropTypes.func,
     joinExistingSession: React.PropTypes.func,
-    joinExitingSessionAsSpectator: React.PropTypes.func
+    joinExitingSessionSpectator: React.PropTypes.func
 };
 
 export default ChooseSession;

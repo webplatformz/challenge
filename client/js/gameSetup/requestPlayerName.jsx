@@ -1,7 +1,8 @@
 import React from 'react';
 import {GameSetupStep} from '../reducers/gameSetup';
+import ServerApi from '../communication/serverApi';
 
-const RequestPlayerName = ({step, choosePlayerName}) => {
+const RequestPlayerName = ({step}) => {
 
     function validatedAndChoosePlayerName(event) {
         let inputElement = event.target,
@@ -9,7 +10,7 @@ const RequestPlayerName = ({step, choosePlayerName}) => {
 
         if (event.charCode === 13 && playerName.trim()) {
             inputElement.disabled = true;
-            choosePlayerName(playerName);
+            ServerApi.sendChoosePlayerNameMessage(playerName);
         }
     }
 
@@ -21,8 +22,7 @@ const RequestPlayerName = ({step, choosePlayerName}) => {
 };
 
 RequestPlayerName.propTypes = {
-    step: React.PropTypes.oneOf(Object.keys(GameSetupStep)),
-    choosePlayerName: React.PropTypes.func
+    step: React.PropTypes.oneOf(Object.keys(GameSetupStep))
 };
 
 export default RequestPlayerName;

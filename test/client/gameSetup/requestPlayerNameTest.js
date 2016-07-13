@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import React from 'react';
 import RequestPlayerName from '../../../client/js/gameSetup/requestPlayerName.jsx';
 import {GameSetupStep} from '../../../client/js/reducers/gameSetup';
+import ServerApi from '../../../client/js/communication/serverApi';
 
 import TestUtils from 'react-addons-test-utils';
 
@@ -41,18 +42,20 @@ describe('RequestPlayerName Component', () => {
                     value: ''
                 }
             },
-            choosePlayerNameSpy;
+            choosePlayerNameStub;
 
         let choosePlayerName;
 
         beforeEach(() => {
-            choosePlayerNameSpy = sinon.spy();
+            choosePlayerNameStub = sinon.stub(ServerApi, 'sendChoosePlayerNameMessage');
             shallowRenderer.render(React.createElement(RequestPlayerName, {
-                step: GameSetupStep.SET_PLAYER_NAME,
-                choosePlayerName: choosePlayerNameSpy
+                step: GameSetupStep.SET_PLAYER_NAME
             }));
             choosePlayerName = shallowRenderer.getRenderOutput().props.children.props.onKeyPress;
-
+        });
+        
+        afterEach(() => {
+            ServerApi.sendChoosePlayerNameMessage.restore(); 
         });
 
         it('should not start action with keypress which is not Enter', () => {
@@ -60,7 +63,7 @@ describe('RequestPlayerName Component', () => {
 
             choosePlayerName(eventDummy);
 
-            sinon.assert.callCount(choosePlayerNameSpy, 0);
+            sinon.assert.callCount(choosePlayerNameStub, 0);
         });
 
 
@@ -70,7 +73,7 @@ describe('RequestPlayerName Component', () => {
 
             choosePlayerName(eventDummy);
 
-            sinon.assert.callCount(choosePlayerNameSpy, 0);
+            sinon.assert.callCount(choosePlayerNameStub, 0);
         });
 
         it('should not start action with whitespace username', () => {
@@ -79,7 +82,7 @@ describe('RequestPlayerName Component', () => {
 
             choosePlayerName(eventDummy);
 
-            sinon.assert.callCount(choosePlayerNameSpy, 0);
+            sinon.assert.callCount(choosePlayerNameStub, 0);
         });
 
         it('should start action and disable input with valid playername and enter key pressed', () => {
@@ -88,8 +91,8 @@ describe('RequestPlayerName Component', () => {
 
             choosePlayerName(eventDummy);
 
-            sinon.assert.calledWith(choosePlayerNameSpy, eventDummy.target.value);
-            sinon.assert.callCount(choosePlayerNameSpy, 1);
+            sinon.assert.calledWith(choosePlayerNameStub, eventDummy.target.value);
+            sinon.assert.callCount(choosePlayerNameStub, 1);
 
             expect(eventDummy.target.disabled).to.equal(true);
         });

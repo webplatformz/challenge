@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ExistingSessions = ({sessions = [], joinExistingSession, joinExistingSessionAsSpectator}) => {
+const ExistingSessions = ({sessions = [], joinExistingSession, joinExistingSessionSpectator}) => {
     return (
         <div className="session-choice">
             <ul className={(!sessions.length) ? 'hidden' : ''}>
@@ -8,7 +8,7 @@ const ExistingSessions = ({sessions = [], joinExistingSession, joinExistingSessi
                     return (
                         <li key={sessionName}>
                             <div onClick={() => joinExistingSession(sessionName)}>{sessionName}</div>
-                            <div onClick={() => joinExistingSessionAsSpectator(sessionName)}>S</div>
+                            <div onClick={() => joinExistingSessionSpectator(sessionName)}>S</div>
                         </li>);
                 })}
             </ul>
@@ -19,7 +19,7 @@ const ExistingSessions = ({sessions = [], joinExistingSession, joinExistingSessi
 ExistingSessions.propTypes = {
     sessions: React.PropTypes.array,
     joinExistingSession: React.PropTypes.func,
-    joinExistingSessionAsSpectator: React.PropTypes.func
+    joinExistingSessionSpectator: React.PropTypes.func
 };
 
 export default ExistingSessions;

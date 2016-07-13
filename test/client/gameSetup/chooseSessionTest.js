@@ -51,7 +51,7 @@ describe('ChooseSession Component', () => {
             step: GameSetupState.CHOOSE_SESSION,
             sessions: ['sessionName'],
             joinExistingSession: () => {},
-            joinExistingSessionAsSpectator: () => {}
+            joinExistingSessionSpectator: () => {}
         };
 
         shallowRenderer.render(React.createElement(ChooseSession, props));
@@ -60,7 +60,7 @@ describe('ChooseSession Component', () => {
         let existingSessionsProps = actual.props.children[1].props;
         expect(existingSessionsProps.sessions).to.equal(props.sessions);
         expect(existingSessionsProps.joinExistingSession).to.equal(props.joinExistingSession);
-        expect(existingSessionsProps.joinExistingSessionAsSpectator).to.equal(props.joinExistingSessionAsSpectator);
+        expect(existingSessionsProps.joinExistingSessionSpectator).to.equal(props.joinExistingSessionSpectator);
     });
 
     it('should add event listeners to children', () => {

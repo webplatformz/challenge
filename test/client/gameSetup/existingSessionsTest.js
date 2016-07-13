@@ -4,25 +4,11 @@ import TestUtils from 'react-addons-test-utils';
 import sinon from 'sinon';
 
 import ExistingSessions from '../../../client/js/gameSetup/existingSessions.jsx';
-import JassActions from '../../../client/js/jassActions';
 
 
 describe('ExistingSessions Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
-
-    let joinExistingSessionSpy,
-        joinExistingSessionAsSepctatorSpy;
-
-    beforeEach(() => {
-        joinExistingSessionSpy = sinon.spy(JassActions, 'joinExistingSession');
-        joinExistingSessionAsSepctatorSpy = sinon.spy(JassActions, 'joinExistingSessionAsSpectator');
-    });
-
-    afterEach(() => {
-        JassActions.joinExistingSession.restore();
-        JassActions.joinExistingSessionAsSpectator.restore();
-    });
 
     it('should render a div element with className and hidden list', () => {
         shallowRenderer.render(React.createElement(ExistingSessions));
@@ -46,7 +32,7 @@ describe('ExistingSessions Component', () => {
         const props = {
             sessions: ['sessionName', 'sessionName2'],
             joinExistingSession: sinon.spy(),
-            joinExistingSessionAsSpectator: sinon.spy()
+            joinExistingSessionSpectator: sinon.spy()
         };
 
         shallowRenderer.render(React.createElement(ExistingSessions, props));
@@ -65,7 +51,7 @@ describe('ExistingSessions Component', () => {
         expect(spectatorJoin.props.children).to.equal('S');
 
         spectatorJoin.props.onClick();
-        sinon.assert.calledWith(props.joinExistingSessionAsSpectator, 'sessionName2');
+        sinon.assert.calledWith(props.joinExistingSessionSpectator, 'sessionName2');
     });
 
 });

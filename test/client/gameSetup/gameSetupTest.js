@@ -37,8 +37,7 @@ describe('GameSetup Component', () => {
             autojoinSession: () => {},
             createNewSession: () => {},
             joinExistingSession: () => {},
-            joinExistingSessionAsSpectator: () => {},
-            choosePlayerName: () => {}
+            joinExistingSessionSpectator: () => {}
         };
 
         shallowRenderer.render(React.createElement(GameSetupComponent, props));
@@ -46,13 +45,12 @@ describe('GameSetup Component', () => {
 
         expect(actual.props.children[0].props.step).to.equal(props.step);
         expect(actual.props.children[1].props.step).to.equal(props.step);
-        expect(actual.props.children[1].props.choosePlayerName).to.equal(props.choosePlayerName);
         expect(actual.props.children[2].props.step).to.eql(props.step);
         expect(actual.props.children[2].props.sessions).to.eql(props.sessions);
         expect(actual.props.children[2].props.autojoinSession).to.eql(props.autojoinSession);
         expect(actual.props.children[2].props.createNewSession).to.eql(props.createNewSession);
         expect(actual.props.children[2].props.joinExistingSession).to.eql(props.joinExistingSession);
-        expect(actual.props.children[2].props.joinExistingSessionAsSpectator).to.eql(props.joinExistingSessionAsSpectator);
+        expect(actual.props.children[2].props.joinExistingSessionSpectator).to.eql(props.joinExistingSessionSpectator);
         expect(actual.props.children[3].props.step).to.equal(props.step);
         expect(actual.props.children[3].props.chosenSession).to.equal(props.chosenSession);
     });
