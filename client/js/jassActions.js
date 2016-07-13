@@ -3,44 +3,6 @@ import JassAppDispatcher from './jassAppDispatcher';
 import {SessionType} from '../../shared/session/sessionType';
 
 export default {
-    requestPlayerName: () => {
-        JassAppDispatcher.handleServerAction({
-            actionType: JassAppConstants.REQUEST_PLAYER_NAME
-        });
-    },
-
-    choosePlayerName: (playerName) => {
-        JassAppDispatcher.handleViewAction({
-            actionType: JassAppConstants.CHOOSE_PLAYER_NAME,
-            data: playerName
-        });
-    },
-
-    requestSessionChoice: (availableSessions) => {
-        JassAppDispatcher.handleServerAction({
-            actionType: JassAppConstants.REQUEST_SESSION_CHOICE,
-            data: availableSessions
-        });
-    },
-
-    joinExistingSession: (sessionName) => {
-        let chosenSessionPartial = {
-            sessionName,
-            joinSession: (chosenTeamIndex) => {
-                JassAppDispatcher.handleViewAction({
-                    actionType: JassAppConstants.CHOOSE_EXISTING_SESSION,
-                    data: {
-                        sessionName,
-                        chosenTeamIndex
-                    }
-                });
-            }
-        };
-        JassAppDispatcher.handleViewAction({
-            actionType: JassAppConstants.CHOOSE_SESSION_PARTIAL,
-            data: chosenSessionPartial
-        });
-    },
 
     joinBot: (sessionName, chosenTeamIndex) => {
         JassAppDispatcher.handleViewAction({
@@ -49,53 +11,6 @@ export default {
                 sessionName,
                 chosenTeamIndex
             }
-        });
-    },
-
-    joinExistingSessionAsSpectator: (sessionName) => {
-        JassAppDispatcher.handleViewAction({
-            actionType: JassAppConstants.CHOOSE_EXISTING_SESSION_SPECTATOR,
-            data: {
-                sessionName
-            }
-        });
-    },
-
-    createNewSession: (sessionType, sessionName, asSpectator) => {
-        if (sessionType === SessionType.TOURNAMENT) {
-            JassAppDispatcher.handleViewAction({
-                actionType: JassAppConstants.CREATE_NEW_SESSION,
-                data: {
-                    sessionName,
-                    sessionType,
-                    asSpectator
-                }
-            });
-        } else {
-            const chosenSessionPartial = {
-                sessionName,
-                joinSession: (chosenTeamIndex) => {
-                    JassAppDispatcher.handleViewAction({
-                        actionType: JassAppConstants.CREATE_NEW_SESSION,
-                        data: {
-                            sessionName,
-                            sessionType,
-                            asSpectator,
-                            chosenTeamIndex
-                        }
-                    });
-                }
-            };
-            JassAppDispatcher.handleViewAction({
-                actionType: JassAppConstants.CHOOSE_SESSION_PARTIAL,
-                data: chosenSessionPartial
-            });
-        }
-    },
-
-    autojoinSession: () => {
-        JassAppDispatcher.handleViewAction({
-            actionType: JassAppConstants.AUTOJOIN_SESSION
         });
     },
 
