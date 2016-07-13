@@ -53,7 +53,7 @@ ChooseSession.propTypes = {
     createNewSession: React.PropTypes.func,
     autojoinSession: React.PropTypes.func,
     joinExistingSession: React.PropTypes.func,
-    joinExitingSessionSpectator: React.PropTypes.func
+    joinExistingSessionSpectator: React.PropTypes.func
 };
 
 export default ChooseSession;
