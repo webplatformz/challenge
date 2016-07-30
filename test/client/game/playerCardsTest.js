@@ -110,7 +110,7 @@ describe('PlayerCards Component', () => {
 
         let cancelClickFunction = actual.props.children[0].props.onClick;
         cancelClickFunction(eventDummy);
-        sinon.assert.calledOnce(eventDummy.preventDefault, 1);
+        sinon.assert.calledOnce(eventDummy.preventDefault);
     });
 
     it('should set invalid class when card is not playable', () => {
