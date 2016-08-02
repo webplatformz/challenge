@@ -2,8 +2,11 @@ import React from 'react';
 import ExistingSessions from './existingSessions.jsx';
 import {GameSetupState} from './gameSetupStore';
 import {SessionType} from '../../../shared/session/sessionType';
+import {GameSetupStep} from '../reducers/gameSetup';
+import {connect} from 'react-redux';
+import gameSetupDispatchFunctions from './gameSetupDispatchFunctions';
 
-const ChooseSession = ({
+export const ChooseSessionComponent = ({
     step,
     sessions,
     createNewSession,
@@ -47,13 +50,16 @@ const ChooseSession = ({
     );
 };
 
-ChooseSession.propTypes = {
-    step: React.PropTypes.string,
+ChooseSessionComponent.propTypes = {
+    step: React.PropTypes.oneOf(Object.keys(GameSetupStep)),
     sessions: React.PropTypes.array,
-    createNewSession: React.PropTypes.func,
     autojoinSession: React.PropTypes.func,
+    createNewSession: React.PropTypes.func,
     joinExistingSession: React.PropTypes.func,
     joinExistingSessionSpectator: React.PropTypes.func
 };
 
-export default ChooseSession;
+export default connect(
+    (state) => state.gameSetup,
+    (dispatch) => gameSetupDispatchFunctions(dispatch)
+)(ChooseSessionComponent);
