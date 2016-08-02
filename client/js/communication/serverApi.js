@@ -34,14 +34,12 @@ const ServerApi = {
                 dispatch({
                     type: JassAppConstants.REQUEST_PLAYER_NAME
                 });
-                JassActions.requestPlayerName();
                 break;
             case MessageType.REQUEST_SESSION_CHOICE.name:
                 dispatch({
                     type: JassAppConstants.REQUEST_SESSION_CHOICE,
                     data
                 });
-                JassActions.requestSessionChoice(data);
                 break;
             case MessageType.SESSION_JOINED.name:
             case MessageType.BROADCAST_SESSION_JOINED.name:
