@@ -44,7 +44,7 @@
     "karma-mocha-reporter": "2.1.0",
     "karma-phantomjs-launcher": "1.0.1",
     "mocha": "3.0.2",
-    "nodemon": "1.10.1",
+    "nodemon": "1.10.2",
     "phantomjs-prebuilt": "2.1.12",
     "socket.io-client": "1.4.6",
     "watch": "0.19.2",
