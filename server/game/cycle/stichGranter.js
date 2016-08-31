@@ -1,12 +1,39 @@
 import {GameMode} from '../../../shared/game/gameMode';
 
+function addIndexAndAdjustTrumpfValues(card, index, isModeTrumpf, trumpfColor) {
+    let valueForSorting = card.number;
+    if (isModeTrumpf && isTrumpf(card, trumpfColor)) {
+        valueForSorting += 20;
+        valueForSorting += isBuur(card, trumpfColor) || isNell(card, trumpfColor) ? 60 : 0;
+    }
+    return {
+        index,
+        color: card.color,
+        number: card.number,
+        valueForSorting
+    };
+}
+
+function isTrumpf(card, trumpfColor) {
+    return card.color === trumpfColor;
+}
+
+function isBuur(card, trumpfColor) {
+    return card.number === 11 && isTrumpf(card, trumpfColor);
+}
+
+function isNell(card, trumpfColor) {
+    return card.number === 9 && isTrumpf(card, trumpfColor);
+}
+
 const StichGranter = {
-    determineWinner: function (mode, trumpfColor, playedCards, players) {
+    determineWinner(mode, trumpfColor, playedCards, players) {
         const firstPlayedColor = playedCards[0].color;
         const isModeTrumpf = mode === GameMode.TRUMPF;
-        const trumpfAndFirstPlayedColorCards = playedCards.map(addIndexAndAdjustTrumpfValues)
+        const trumpfAndFirstPlayedColorCards = playedCards
+                .map((card, index) => addIndexAndAdjustTrumpfValues(card, index, isModeTrumpf, trumpfColor))
                 .filter((playedCard) => playedCard.color === firstPlayedColor
-                || (isModeTrumpf && isTrumpf(playedCard)));
+                || (isModeTrumpf && isTrumpf(playedCard, trumpfColor)));
 
         switch (mode) {
             case GameMode.UNDEUFE:
@@ -23,33 +50,7 @@ const StichGranter = {
         }
 
         return players[trumpfAndFirstPlayedColorCards[0].index];
-
-        function addIndexAndAdjustTrumpfValues(card, index) {
-            let valueForSorting = card.number;
-            if (isModeTrumpf && isTrumpf(card)) {
-                valueForSorting += 20;
-                valueForSorting += isBuur(card) || isNell(card) ? 60 : 0;
-            }
-            return {
-                index,
-                color: card.color,
-                number: card.number,
-                valueForSorting
-            };
-
-        }
-
-        function isTrumpf(card) {
-            return card.color === trumpfColor;
-        }
-
-        function isBuur(card) {
-            return card.number === 11 && isTrumpf(card);
-        }
-
-        function isNell(card) {
-            return card.number === 9 && isTrumpf(card);
-        }
     }
 };
+
 export default StichGranter;
