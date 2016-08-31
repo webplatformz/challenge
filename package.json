@@ -42,7 +42,7 @@
     "karma-browserify": "5.1.0",
     "karma-mocha": "1.1.1",
     "karma-mocha-reporter": "2.1.0",
-    "karma-phantomjs-launcher": "1.0.1",
+    "karma-phantomjs-launcher": "1.0.2",
     "mocha": "3.0.2",
     "nodemon": "1.10.2",
     "phantomjs-prebuilt": "2.1.12",
