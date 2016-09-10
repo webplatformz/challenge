@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "babel-eslint": "6.1.2",
-    "eslint": "3.4.0",
+    "eslint": "3.5.0",
     "eslint-plugin-import": "1.14.0",
     "eslint-plugin-react": "6.2.0",
     "karma": "1.2.0",
