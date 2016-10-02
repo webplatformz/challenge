@@ -63,7 +63,7 @@
     "cross-env": "3.0.0",
     "docker-namesgenerator": "0.0.1",
     "express": "4.14.0",
-    "flux": "2.1.1",
+    "flux": "3.0.0",
     "font-awesome": "4.6.3",
     "glicko2": "0.8.4",
     "less": "2.7.1",
