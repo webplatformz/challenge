@@ -47,7 +47,7 @@
     "nodemon": "1.10.2",
     "phantomjs-prebuilt": "2.1.13",
     "socket.io-client": "1.4.6",
-    "watch": "0.19.2",
+    "watch": "0.19.3",
     "watchify": "3.7.0"
   },
   "dependencies": {
