@@ -64,7 +64,7 @@
     "docker-namesgenerator": "0.0.1",
     "express": "4.14.0",
     "flux": "3.1.0",
-    "font-awesome": "4.6.3",
+    "font-awesome": "4.7.0",
     "glicko2": "0.8.4",
     "less": "2.7.1",
     "lodash": "4.16.4",
