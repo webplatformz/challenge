@@ -71,7 +71,7 @@
     "mkdirp": "0.5.1",
     "parallelshell": "2.0.0",
     "react": "15.3.2",
-    "react-addons-css-transition-group": "15.3.2",
+    "react-addons-css-transition-group": "15.4.0",
     "react-addons-test-utils": "15.3.2",
     "react-dom": "15.3.2",
     "request": "2.78.0",
