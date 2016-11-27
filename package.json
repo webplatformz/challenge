@@ -46,7 +46,7 @@
     "mocha": "3.1.2",
     "nodemon": "1.11.0",
     "phantomjs-prebuilt": "2.1.13",
-    "socket.io-client": "1.6.0",
+    "socket.io-client": "1.7.0",
     "watch": "1.0.1",
     "watchify": "3.7.0"
   },
