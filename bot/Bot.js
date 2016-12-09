@@ -1,6 +1,4 @@
-'use strict';
-
-import * as JassBot from './JassBot.js';
+import * as JassBot from './JassBot';
 
 let numberOfBotsToStartFromCommandLine = process.argv[2];
 let defaultNumberOfBotsToStartFromCommandLine = 4;

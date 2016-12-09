@@ -17,16 +17,13 @@ https://github.com/RisingStack/node-style-guide
 https://travis-ci.org/webplatformz/challenge
 
 ## Installation
-You only need to have node.js installed. 
 
+You only need NodeJS to run this server. If you don't want to install NodeJS on your machine see: Docker Section
+
+### NodeJS
 Installing node.js: 
 
 See http://nodejs.org/download/
-
-**Windows** users need to install windows-build-tools
-```sh
-$ npm install -g windows-build-tools
-```
 
 Install node modules:
 ```sh
@@ -36,6 +33,14 @@ $ npm install
 Start the server:
 ```sh
 $ npm start
+```
+### Docker Container
+If you want to run the server in a docker container you can find a Dockerfile in this repo.
+
+Build it and run it with:
+```sh
+docker build . -t jasschallenge # '.' is the directory of the repo
+docker run -it --rm -p 3000:3000 jasschallenge
 ```
 
 ## Development
