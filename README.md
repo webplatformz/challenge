@@ -25,11 +25,6 @@ Installing node.js:
 
 See http://nodejs.org/download/
 
-**Windows** users need to install windows-build-tools
-```sh
-$ npm install -g windows-build-tools
-```
-
 Install node modules:
 ```sh
 $ npm install
