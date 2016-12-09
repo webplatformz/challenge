@@ -8,6 +8,9 @@ import {MessageType} from '../../shared/messages/messageType';
 import {startRandomBot} from '../bot/botStarter';
 import {Logger} from '../logger';
 import EnvironmentUtil from '../registry/environmentUtil';
+import * as JsonResultProxy from '../communication/jsonResultProxy';
+
+const tournamentLogging = Boolean(process.env.TOURNAMENT_LOGGING);
 
 function createTeamsArrayForClient(session) {
     return session.teams.map((team) => {
@@ -60,6 +63,7 @@ function createPlayer(session, webSocket, playerName, chosenTeamIndex) {
     const playersInTeam = getPlayersInTeam(session, session.teams[teamIndex]).length;
     const seatId = (playersInTeam * 2) + teamIndex;
     const playerId = generateUuid();
+    webSocket.jassChallengeId = `${playerName}#${seatId}`;
 
     // Adjust player's team name
     let team = session.teams[teamIndex];
@@ -170,6 +174,11 @@ const Session = {
 
         this.joinBotListeners.forEach(joinBotListener => joinBotListener());
 
+        let resultProxy;
+        if (tournamentLogging) {
+            resultProxy = JsonResultProxy.create(`${this.players[0].name} vs ${this.players[1].name}`);
+            this.clientApi.registerCommunicationProxy(resultProxy);
+        }
         this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
 
         this.gamePromise = new Promise((resolve, reject) => {
@@ -178,6 +187,9 @@ const Session = {
             this.started = true;
 
             this.gameCycle().then((winningTeam) => {
+                if (tournamentLogging) {
+                    resultProxy.destroy();
+                }
                 resolve(winningTeam);
             });
         });

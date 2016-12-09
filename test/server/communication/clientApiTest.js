@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import WebSocket from 'ws';
 import * as ClientApi from '../../../server/communication/clientApi';
+import ClientCommunication from '../../../server/communication/clientCommunication';
 import * as GameType from '../../../server/game/gameType';
 import {GameMode} from '../../../shared/game/gameMode';
 import {CardColor} from '../../../shared/deck/cardColor';
@@ -699,6 +700,32 @@ describe('Client API', () => {
             clientApi.close(webSocket, 'message');
 
             expect(errorSpy.callCount).to.equal(1);
+        });
+    });
+
+    describe('registerCommunicationProxy', () => {
+
+        let requestSpy;
+
+        beforeEach(() => {
+           requestSpy = sinon.spy(ClientCommunication, 'request');
+        });
+
+        afterEach(() => {
+            requestSpy.restore();
+        });
+
+        it('should proxy calls to ClientCommunication', (done) => {
+            const proxy = {
+                get() {
+                    done();
+                }
+            };
+
+            clientApi.registerCommunicationProxy(proxy);
+
+            clientApi.requestPlayerName('testClient');
+            sinon.assert.neverCalled(requestSpy);
         });
     });
 });
