@@ -3,6 +3,9 @@ import {MessageType} from '../../shared/messages/messageType';
 import {Logger} from '../logger';
 
 const methodsToIntercept = ['send', 'request', 'broadcast'];
+const isPromise = (result) => {
+    return result && typeof result.then === 'function';
+};
 const getReceivedMessageType = serverMessageType => {
     if (serverMessageType === MessageType.REQUEST_TRUMPF.name) {
         return MessageType.CHOOSE_TRUMPF.name;
@@ -36,7 +39,7 @@ const JsonResultProxy = {
                 const clientId = args.shift().jassChallengeId;
 
                 const serverSendResult = {
-                    broadcast: !clientId,
+                    broadcast: !clientId,// in the broadcast method we have an array of websockets so we won't find a specific Id
                     sentTo: clientId,
                     messageType: args.shift(),
                     data: args.pop()
@@ -44,7 +47,7 @@ const JsonResultProxy = {
 
                 this.writeResult(serverSendResult);
 
-                if (result && typeof result.then === 'function') {
+                if (isPromise(result)) {
                     result.then((clientResponse) => {
                         this.writeResult({
                             broadcast: false,
