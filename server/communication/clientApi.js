@@ -150,7 +150,7 @@ const ClientApi = {
         return this.clientCommunication.on(client, messageType, messageHandler);
     },
 
-    registerCommunicationProxy(resultWriter) {
+    setCommunicationProxy(resultWriter) {
         this.clientCommunication = new Proxy(ClientCommunication, resultWriter);
     }
 };

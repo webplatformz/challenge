@@ -703,7 +703,7 @@ describe('Client API', () => {
         });
     });
 
-    describe('registerCommunicationProxy', () => {
+    describe('setCommunicationProxy', () => {
 
         let requestSpy;
 
@@ -722,7 +722,7 @@ describe('Client API', () => {
                 }
             };
 
-            clientApi.registerCommunicationProxy(proxy);
+            clientApi.setCommunicationProxy(proxy);
 
             clientApi.requestPlayerName('testClient');
             sinon.assert.neverCalled(requestSpy);

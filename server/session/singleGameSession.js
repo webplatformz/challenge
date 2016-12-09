@@ -177,7 +177,7 @@ const Session = {
         let resultProxy;
         if (tournamentLogging) {
             resultProxy = JsonResultProxy.create(`${this.players[0].name} vs ${this.players[1].name}`);
-            this.clientApi.registerCommunicationProxy(resultProxy);
+            this.clientApi.setCommunicationProxy(resultProxy);
         }
         this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
 
