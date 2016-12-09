@@ -13,7 +13,7 @@ const getReceivedMessageType = serverMessageType => {
 const JsonResultProxy = {
 
     destroy() {
-        this.fileWriter.write(']', (err) => this.fileWriter.close());
+        this.fileWriter.write(']', () => this.fileWriter.close());
     },
 
     writeResult(resultToWrite) {
