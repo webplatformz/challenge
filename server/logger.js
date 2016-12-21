@@ -1,7 +1,6 @@
 /*eslint no-console: 0*/
 
-
-let debug = Boolean(process.env.DEBUG) || false;
+const debug = Boolean(process.env.DEBUG);
 
 export const Logger = {
     debug (messageToLog) {

@@ -7,21 +7,21 @@ import {Logger} from '../logger';
 import CloseEventCode from './closeEventCode';
 
 
-function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {
-    let messageObject = ClientCommunication.fromJSON(message);
+function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject, clientCommunication) {
+    let messageObject = clientCommunication.fromJSON(message);
 
     if (messageObject && messageObject.type === expectedMessageType.name) {
         let validationResult = validate(messageObject, expectedMessageType.constraints);
 
         if (validationResult) {
-            ClientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationResult);
+            clientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationResult);
             reject(validationResult);
         }
 
         let cleanedMessageObject = validate.cleanAttributes(messageObject, expectedMessageType.constraints);
         resolve(cleanedMessageObject.data);
     } else {
-        ClientCommunication.send(client, MessageType.BAD_MESSAGE.name, message);
+        clientCommunication.send(client, MessageType.BAD_MESSAGE.name, message);
         reject('Invalid Message: ' + message + ', expected message with type: ' + expectedMessageType.name);
     }
 }
@@ -50,88 +50,88 @@ const ClientApi = {
     },
 
     requestPlayerName(client) {
-        return ClientCommunication.request(client, MessageType.REQUEST_PLAYER_NAME.name,
-            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_PLAYER_NAME, message, resolve, reject));
+        return this.clientCommunication.request(client, MessageType.REQUEST_PLAYER_NAME.name,
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_PLAYER_NAME, message, resolve, reject, this.clientCommunication));
     },
 
     broadcastTeams(teams) {
-        ClientCommunication.broadcast(this.clients, MessageType.BROADCAST_TEAMS.name, teams);
+        this.clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TEAMS.name, teams);
     },
 
     dealCards(client, cards) {
-        ClientCommunication.send(client, MessageType.DEAL_CARDS.name, cards);
+        this.clientCommunication.send(client, MessageType.DEAL_CARDS.name, cards);
     },
 
     requestTrumpf(client, pushed) {
-        return ClientCommunication.request(client, MessageType.REQUEST_TRUMPF.name,
-            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_TRUMPF, message, resolve, reject),
+        return this.clientCommunication.request(client, MessageType.REQUEST_TRUMPF.name,
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_TRUMPF, message, resolve, reject, this.clientCommunication),
             pushed);
     },
 
     rejectTrumpf(client, gameType) {
-        ClientCommunication.send(client, MessageType.REJECT_TRUMPF.name, gameType);
+        this.clientCommunication.send(client, MessageType.REJECT_TRUMPF.name, gameType);
     },
 
     broadcastTrumpf(gameType) {
-        ClientCommunication.broadcast(this.clients, MessageType.BROADCAST_TRUMPF.name, gameType);
+        this.clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TRUMPF.name, gameType);
     },
 
     broadcastCardPlayed(playedCards) {
-        ClientCommunication.broadcast(this.clients, MessageType.PLAYED_CARDS.name, playedCards);
+        this.clientCommunication.broadcast(this.clients, MessageType.PLAYED_CARDS.name, playedCards);
     },
 
     broadcastStich(winner) {
-        ClientCommunication.broadcast(this.clients, MessageType.BROADCAST_STICH.name, winner);
+        this.clientCommunication.broadcast(this.clients, MessageType.BROADCAST_STICH.name, winner);
     },
 
     broadcastGameFinished(teams) {
-        ClientCommunication.broadcast(this.clients, MessageType.BROADCAST_GAME_FINISHED.name, teams);
+        this.clientCommunication.broadcast(this.clients, MessageType.BROADCAST_GAME_FINISHED.name, teams);
     },
 
     broadcastWinnerTeam(team) {
-        ClientCommunication.broadcast(this.clients, MessageType.BROADCAST_WINNER_TEAM.name, team);
+        this.clientCommunication.broadcast(this.clients, MessageType.BROADCAST_WINNER_TEAM.name, team);
     },
 
     requestCard(client, cardsOnTable) {
-        return ClientCommunication.request(client, MessageType.REQUEST_CARD.name,
-            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_CARD, message, resolve, reject),
+        return this.clientCommunication.request(client, MessageType.REQUEST_CARD.name,
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_CARD, message, resolve, reject, this.clientCommunication),
             cardsOnTable);
     },
 
     rejectCard(client, card, cardsOnTable) {
-        ClientCommunication.send(client, MessageType.REJECT_CARD.name, card, cardsOnTable);
+        this.clientCommunication.send(client, MessageType.REJECT_CARD.name, card, cardsOnTable);
     },
 
     requestSessionChoice(client, availableSessions) {
-        return ClientCommunication.request(client, MessageType.REQUEST_SESSION_CHOICE.name,
-            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_SESSION, message, resolve, reject),
+        return this.clientCommunication.request(client, MessageType.REQUEST_SESSION_CHOICE.name,
+            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_SESSION, message, resolve, reject, this.clientCommunication),
             availableSessions);
     },
 
     sessionJoined(client, sessionName, player, playersInSession) {
-        ClientCommunication.send(client, MessageType.SESSION_JOINED.name, sessionName, player, playersInSession);
+        this.clientCommunication.send(client, MessageType.SESSION_JOINED.name, sessionName, player, playersInSession);
     },
 
     broadcastSessionJoined(sessionName, player, playersInSession) {
-        ClientCommunication.broadcast(this.clients, MessageType.BROADCAST_SESSION_JOINED.name, sessionName, player, playersInSession);
+        this.clientCommunication.broadcast(this.clients, MessageType.BROADCAST_SESSION_JOINED.name, sessionName, player, playersInSession);
     },
 
     broadcastTournamentRankingTable(rankingTable) {
-        ClientCommunication.broadcast(this.clients, MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name, rankingTable);
+        this.clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name, rankingTable);
     },
 
     sendTournamentRankingTable(client, rankingTable) {
-        ClientCommunication.send(client, MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name, rankingTable);
+        this.clientCommunication.send(client, MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name, rankingTable);
     },
     sendRegistryBots(client, registryBots){
-        ClientCommunication.send(client, MessageType.SEND_REGISTRY_BOTS.name, registryBots);
+        this.clientCommunication.send(client, MessageType.SEND_REGISTRY_BOTS.name, registryBots);
     },
     waitForTournamentStart(client) {
-        return ClientCommunication.await(client, MessageType.START_TOURNAMENT);
+        return this.clientCommunication.await(client, MessageType.START_TOURNAMENT);
     },
 
     broadcastTournamentStarted() {
-        ClientCommunication.broadcast(this.clients, MessageType.BROADCAST_TOURNAMENT_STARTED.name);
+        this.clientCommunication.broadcast(this.clients, MessageType.BROADCAST_TOURNAMENT_STARTED.name);
     },
 
     closeAll(message) {
@@ -147,12 +147,17 @@ const ClientApi = {
     },
 
     subscribeMessage(client, messageType, messageHandler) {
-        return ClientCommunication.on(client, messageType, messageHandler);
+        return this.clientCommunication.on(client, messageType, messageHandler);
+    },
+
+    setCommunicationProxy(resultWriter) {
+        this.clientCommunication = new Proxy(ClientCommunication, resultWriter);
     }
 };
 
 export function create() {
     let clientApi = Object.create(ClientApi);
     clientApi.clients = [];
+    clientApi.clientCommunication = ClientCommunication;
     return clientApi;
 }
