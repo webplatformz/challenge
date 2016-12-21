@@ -1,31 +1,10 @@
 import {MessageType} from '../../shared/messages/messageType';
 import ClientCommunication from './clientCommunication';
-import validate from 'validate.js';
 import _ from 'lodash';
 import WebSocket from 'ws';
 import {Logger} from '../logger';
 import CloseEventCode from './closeEventCode';
 
-
-// TODO danielsuter move down to client communication, there are no game specific constraints here
-function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject, clientCommunication) {
-    let messageObject = clientCommunication.fromJSON(message);
-
-    if (messageObject && messageObject.type === expectedMessageType.name) {
-        let validationErrorResult = validate(messageObject, expectedMessageType.constraints);
-
-        if (validationErrorResult) {
-            clientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationErrorResult);
-            reject(validationErrorResult);
-        }
-
-        let cleanedMessageObject = validate.cleanAttributes(messageObject, expectedMessageType.constraints);
-        resolve(cleanedMessageObject.data);
-    } else {
-        clientCommunication.send(client, MessageType.BAD_MESSAGE.name, message);
-        reject('Invalid Message: ' + message + ', expected message with type: ' + expectedMessageType.name);
-    }
-}
 
 const ClientApi = {
     addClient(client) {
@@ -51,8 +30,7 @@ const ClientApi = {
     },
 
     requestPlayerName(client) {
-        return this.clientCommunication.request(client, MessageType.REQUEST_PLAYER_NAME.name, this.timeoutInSeconds,
-            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_PLAYER_NAME, message, resolve, reject, this.clientCommunication));
+        return this.clientCommunication.request(client, MessageType.REQUEST_PLAYER_NAME.name, MessageType.CHOOSE_PLAYER_NAME, this.timeoutInSeconds);
     },
 
     broadcastTeams(teams) {
@@ -64,7 +42,7 @@ const ClientApi = {
     },
 
     requestTrumpf(client, pushed) {
-        return this.clientCommunication.request(client, MessageType.REQUEST_TRUMPF.name, this.timeoutInSeconds, (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_TRUMPF, message, resolve, reject, this.clientCommunication), pushed);
+        return this.clientCommunication.request(client, MessageType.REQUEST_TRUMPF.name, MessageType.CHOOSE_TRUMPF, this.timeoutInSeconds, pushed);
     },
 
     rejectTrumpf(client, gameType) {
@@ -92,7 +70,7 @@ const ClientApi = {
     },
 
     requestCard(client, cardsOnTable) {
-        return this.clientCommunication.request(client, MessageType.REQUEST_CARD.name, this.timeoutInSeconds, (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_CARD, message, resolve, reject, this.clientCommunication), cardsOnTable);
+        return this.clientCommunication.request(client, MessageType.REQUEST_CARD.name, MessageType.CHOOSE_CARD, this.timeoutInSeconds, cardsOnTable);
     },
 
     rejectCard(client, card, cardsOnTable) {
@@ -100,7 +78,7 @@ const ClientApi = {
     },
 
     requestSessionChoice(client, availableSessions) {
-        return this.clientCommunication.request(client, MessageType.REQUEST_SESSION_CHOICE.name, this.timeoutInSeconds, (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_SESSION, message, resolve, reject, this.clientCommunication), availableSessions);
+        return this.clientCommunication.request(client, MessageType.REQUEST_SESSION_CHOICE.name, MessageType.CHOOSE_SESSION, this.timeoutInSeconds, availableSessions);
     },
 
     sessionJoined(client, sessionName, player, playersInSession) {

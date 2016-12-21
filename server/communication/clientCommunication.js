@@ -74,7 +74,7 @@ const ClientCommunication = {
         Logger.debug('End Broadcast -->');
     },
 
-    request(client, messageType, timeoutInMilliseconds, onMessage, ...data) {
+    request(client, messageType, expectedMessageType, timeoutInMilliseconds, ...data) {
         let messageToSend = this.toJSON(messages.create(messageType, ...data));
         client.send(messageToSend);
         Logger.debug('<-- Send Message: ' + messageToSend);
@@ -84,14 +84,14 @@ const ClientCommunication = {
                 clearTimeout(requestTimeout);
                 Logger.debug('<-- Received Message: ' + message);
                 client.removeListener('message', handleMessage);
-                onMessage(message, resolve, reject);
+                resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject);
             }
 
             const requestTimeout = setTimeout(() => {
                 if(timeoutInMilliseconds !== 0) {
                     Logger.debug('Message not yet received, rejecting promise.');
                     client.removeListener('message', handleMessage);
-                    reject(`Request timeout of ${timeoutInMilliseconds} exceeded`);
+                    reject(`Request timeout of ${timeoutInMilliseconds} ms exceeded`);
                 }
             }, timeoutInMilliseconds);
 
@@ -99,5 +99,24 @@ const ClientCommunication = {
         });
     }
 };
+
+function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject) {
+    let messageObject = ClientCommunication.fromJSON(message);
+
+    if (messageObject && messageObject.type === expectedMessageType.name) {
+        let validationErrorResult = validate(messageObject, expectedMessageType.constraints);
+
+        if (validationErrorResult) {
+            ClientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationErrorResult);
+            reject(validationErrorResult);
+        }
+
+        let cleanedMessageObject = validate.cleanAttributes(messageObject, expectedMessageType.constraints);
+        resolve(cleanedMessageObject.data);
+    } else {
+        ClientCommunication.send(client, MessageType.BAD_MESSAGE.name, message);
+        reject('Invalid Message: ' + message + ', expected message with type: ' + expectedMessageType.name);
+    }
+}
 
 export default ClientCommunication;
