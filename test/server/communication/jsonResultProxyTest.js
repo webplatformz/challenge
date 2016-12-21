@@ -74,7 +74,7 @@ describe('JsonResultProxy', () => {
         };
 
         const actual = new Proxy(objectToProxy, JsonResultProxy.create('mySession'));
-        actual.request({jassChallengeId: jassChallengeId}, MessageType.REQUEST_TRUMPF.name, 'data');
+        actual.request({jassChallengeId: jassChallengeId}, MessageType.REQUEST_TRUMPF.name, 0, 'data');
 
         clientPromise.then(() => {
             sinon.assert.calledWith(writeSpy, ',' + JSON.stringify({

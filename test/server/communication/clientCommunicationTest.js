@@ -41,11 +41,13 @@ describe('ClientCommunication', () => {
 
         it('should return function to unbind listener', () => {
             let webSocketStub = {
-                on: () => {},
+                on: () => {
+                },
                 removeListener: sinon.spy()
             };
 
-            const actual = ClientCommunication.on(webSocketStub, MessageType.JOIN_BOT, () => {});
+            const actual = ClientCommunication.on(webSocketStub, MessageType.JOIN_BOT, () => {
+            });
             actual();
 
             sinon.assert.calledWith(webSocketStub.removeListener, 'message', sinon.match.func);
@@ -108,7 +110,8 @@ describe('ClientCommunication', () => {
 
     describe('await', () => {
         it('should resolve on correct message only', (done) => {
-            let messageHandler = () => {},
+            let messageHandler = () => {
+                },
                 wrongMessage = {
                     type: MessageType.CHOOSE_SESSION.name
                 },
@@ -173,7 +176,7 @@ describe('ClientCommunication', () => {
         });
     });
 
-    describe('send', ()=> {
+    describe('send', () => {
         it('should send message to given client', () => {
             let WebSocketStub = {
                 readyState: 1,
@@ -249,11 +252,30 @@ describe('ClientCommunication', () => {
             clientMock.expects('send').withExactArgs('{"type":"REQUEST_TRUMPF","data":false}').once();
             clientMock.expects('removeListener').withArgs('message', sinon.match.func).once();
 
-            ClientCommunication.request(client, MessageType.REQUEST_TRUMPF.name, function onMessage(message, resolve) {
+            ClientCommunication.request(client, MessageType.REQUEST_TRUMPF.name, 0, function onMessage(message, resolve) {
                 resolve();
                 clientMock.verify();
                 done();
             }, false);
+
+        });
+
+        it('should reject when timeout exceeded', (done) => {
+            let client = {
+                    readyState: 1,
+                    on() {},
+                    send: sinon.spy(),
+                    removeListener: sinon.spy()
+                };
+
+            ClientCommunication.request(client, MessageType.REQUEST_TRUMPF.name, 10, () => done(new Error('Should not be called')), false)
+                .catch((errorMessage) => {
+                    expect(errorMessage).to.equal('Request timeout of 10 exceeded');
+                    sinon.assert.calledWithExactly(client.removeListener, 'message', sinon.match.func);
+                    sinon.assert.calledWithExactly(client.send, '{"type":"REQUEST_TRUMPF","data":false}');
+                    done();
+                })
+                .catch(done);
 
         });
     });

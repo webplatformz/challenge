@@ -7,15 +7,16 @@ import {Logger} from '../logger';
 import CloseEventCode from './closeEventCode';
 
 
+// TODO danielsuter move down to client communication, there are no game specific constraints here
 function resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject, clientCommunication) {
     let messageObject = clientCommunication.fromJSON(message);
 
     if (messageObject && messageObject.type === expectedMessageType.name) {
-        let validationResult = validate(messageObject, expectedMessageType.constraints);
+        let validationErrorResult = validate(messageObject, expectedMessageType.constraints);
 
-        if (validationResult) {
-            clientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationResult);
-            reject(validationResult);
+        if (validationErrorResult) {
+            clientCommunication.send(client, MessageType.BAD_MESSAGE.name, validationErrorResult);
+            reject(validationErrorResult);
         }
 
         let cleanedMessageObject = validate.cleanAttributes(messageObject, expectedMessageType.constraints);
@@ -50,7 +51,7 @@ const ClientApi = {
     },
 
     requestPlayerName(client) {
-        return this.clientCommunication.request(client, MessageType.REQUEST_PLAYER_NAME.name,
+        return this.clientCommunication.request(client, MessageType.REQUEST_PLAYER_NAME.name, this.timeoutInSeconds,
             (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_PLAYER_NAME, message, resolve, reject, this.clientCommunication));
     },
 
@@ -63,9 +64,7 @@ const ClientApi = {
     },
 
     requestTrumpf(client, pushed) {
-        return this.clientCommunication.request(client, MessageType.REQUEST_TRUMPF.name,
-            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_TRUMPF, message, resolve, reject, this.clientCommunication),
-            pushed);
+        return this.clientCommunication.request(client, MessageType.REQUEST_TRUMPF.name, this.timeoutInSeconds, (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_TRUMPF, message, resolve, reject, this.clientCommunication), pushed);
     },
 
     rejectTrumpf(client, gameType) {
@@ -93,9 +92,7 @@ const ClientApi = {
     },
 
     requestCard(client, cardsOnTable) {
-        return this.clientCommunication.request(client, MessageType.REQUEST_CARD.name,
-            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_CARD, message, resolve, reject, this.clientCommunication),
-            cardsOnTable);
+        return this.clientCommunication.request(client, MessageType.REQUEST_CARD.name, this.timeoutInSeconds, (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_CARD, message, resolve, reject, this.clientCommunication), cardsOnTable);
     },
 
     rejectCard(client, card, cardsOnTable) {
@@ -103,9 +100,7 @@ const ClientApi = {
     },
 
     requestSessionChoice(client, availableSessions) {
-        return this.clientCommunication.request(client, MessageType.REQUEST_SESSION_CHOICE.name,
-            (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_SESSION, message, resolve, reject, this.clientCommunication),
-            availableSessions);
+        return this.clientCommunication.request(client, MessageType.REQUEST_SESSION_CHOICE.name, this.timeoutInSeconds, (message, resolve, reject) => resolveCorrectMessageOrReject(client, MessageType.CHOOSE_SESSION, message, resolve, reject, this.clientCommunication), availableSessions);
     },
 
     sessionJoined(client, sessionName, player, playersInSession) {
@@ -150,14 +145,15 @@ const ClientApi = {
         return this.clientCommunication.on(client, messageType, messageHandler);
     },
 
-    setCommunicationProxy(resultWriter) {
-        this.clientCommunication = new Proxy(ClientCommunication, resultWriter);
+    setCommunicationProxy(proxyHandler) {
+        this.clientCommunication = new Proxy(ClientCommunication, proxyHandler);
     }
 };
 
-export function create() {
+export function create(timeoutInMilliseconds = 0) {
     let clientApi = Object.create(ClientApi);
     clientApi.clients = [];
+    clientApi.timeoutInSeconds = timeoutInMilliseconds;
     clientApi.clientCommunication = ClientCommunication;
     return clientApi;
 }

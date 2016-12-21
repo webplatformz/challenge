@@ -74,17 +74,28 @@ const ClientCommunication = {
         Logger.debug('End Broadcast -->');
     },
 
-    request(client, messageType, onMessage, ...data) {
+    request(client, messageType, timeoutInMilliseconds, onMessage, ...data) {
         let messageToSend = this.toJSON(messages.create(messageType, ...data));
         client.send(messageToSend);
         Logger.debug('<-- Send Message: ' + messageToSend);
 
         return new Promise((resolve, reject) => {
-            client.on('message', function handleMessage(message) {
+            function handleMessage(message) {
+                clearTimeout(requestTimeout);
                 Logger.debug('<-- Received Message: ' + message);
                 client.removeListener('message', handleMessage);
                 onMessage(message, resolve, reject);
-            });
+            }
+
+            const requestTimeout = setTimeout(() => {
+                if(timeoutInMilliseconds !== 0) {
+                    Logger.debug('Message not yet received, rejecting promise.');
+                    client.removeListener('message', handleMessage);
+                    reject(`Request timeout of ${timeoutInMilliseconds} exceeded`);
+                }
+            }, timeoutInMilliseconds);
+
+            client.on('message', handleMessage);
         });
     }
 };

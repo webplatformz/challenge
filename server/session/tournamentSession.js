@@ -202,7 +202,7 @@ export function create(sessionName) {
     session.name = sessionName;
     session.players = [];
     session.spectators = [];
-    session.clientApi = ClientApi.create();
+    session.clientApi = ClientApi.create(500);
     session.pairings = [];
     session.ranking = Ranking.create();
     session.rankingTable = RankingTable.create();
