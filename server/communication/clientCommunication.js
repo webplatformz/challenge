@@ -60,7 +60,7 @@ const ClientCommunication = {
 
     send(client, messageType, ...data) {
         if (client.readyState === 1) {
-            var messageToSend = this.toJSON(messages.create(messageType, ...data));
+            let messageToSend = this.toJSON(messages.create(messageType, ...data));
             Logger.debug('<-- Send Message: ' + messageToSend);
             client.send(messageToSend);
         }
@@ -75,7 +75,7 @@ const ClientCommunication = {
     },
 
     request(client, messageType, onMessage, ...data) {
-        var messageToSend = this.toJSON(messages.create(messageType, ...data));
+        let messageToSend = this.toJSON(messages.create(messageType, ...data));
         client.send(messageToSend);
         Logger.debug('<-- Send Message: ' + messageToSend);
 
