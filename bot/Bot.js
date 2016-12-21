@@ -7,7 +7,7 @@ let nameOfBotToStartFromCommandLine = process.argv[3];
 let nameOfBot = 'JassBot';
 
 let numberOfBotsToStart = defaultNumberOfBotsToStartFromCommandLine;
-if(!isNaN(numberOfBotsToStartFromCommandLine) && numberOfBotsToStartFromCommandLine>0 && numberOfBotsToStartFromCommandLine< defaultNumberOfBotsToStartFromCommandLine){
+if(!isNaN(numberOfBotsToStartFromCommandLine) && numberOfBotsToStartFromCommandLine>0){
     numberOfBotsToStart = numberOfBotsToStartFromCommandLine;
 }
 
@@ -16,6 +16,7 @@ if(nameOfBotToStartFromCommandLine) {
 }
 
 for (let i = 1; i <= numberOfBotsToStart; i++){
-    JassBot.create(nameOfBot);
+    JassBot.create(nameOfBot+i);
+    JassBot.create(nameOfBot+i);
 }
 

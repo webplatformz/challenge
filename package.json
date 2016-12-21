@@ -29,6 +29,7 @@
     "test:watch": "parallelshell \"npm run test:backend:watch\" \"npm run test:frontend:watch\"",
     "prestart": "npm run build",
     "start": "node build/server/app.js",
+    "start:tournament": "cross-env TOURNAMENT_LOGGING=true npm start",
     "start:watch": "nodemon -e js,jsx,less --watch server --watch shared --watch client --exec \"npm run start\"",
     "bot:start": "npm run build:js:bot && node build/bot/Bot.js",
     "debug": "cross-env DEBUG=true npm run start:watch -- --debug --debug-brk=5858"
