@@ -238,13 +238,8 @@ describe('ClientCommunication', () => {
 
     describe('request', () => {
         it('should send request message to given client and resolve on answer', (done) => {
-            const clientMessage = {
-                    type: MessageType.CHOOSE_TRUMPF.name,
-                    data: {
-                        mode: GameMode.OBEABE
-                    }
-                },
-                clientStub = {
+            const clientMessage = messages.create(MessageType.CHOOSE_TRUMPF.name, {mode: GameMode.OBEABE});
+            const clientStub = {
                     readyState: 1,
                     send() {
                     },
