@@ -35,12 +35,12 @@ const Cycle = {
             winnerTeam.currentRoundPoints += actPoints;
 
             if (winner.cards.length === 0) {
-                let lastStichPoints = Counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
+                const lastStichPoints = Counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
                 winnerTeam.points += lastStichPoints;
                 winnerTeam.currentRoundPoints += lastStichPoints;
 
                 if (loserTeam.currentRoundPoints === 0) {
-                    var matchPoints = Counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
+                    let matchPoints = Counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
                     winnerTeam.points += matchPoints;
                     winnerTeam.currentRoundPoints += matchPoints;
                 }
@@ -70,7 +70,7 @@ const Cycle = {
         }
 
         function getOtherTeam(team) {
-            for (var i = 0; i < that.players.length; i++) {
+            for (let i = 0; i < that.players.length; i++) {
                 if (that.players[i].team.name !== team.name) {
                     return that.players[i].team;
                 }

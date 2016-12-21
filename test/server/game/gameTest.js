@@ -40,14 +40,14 @@ describe('Game', function () {
 
     it('should request the trumpf from the correct player', () => {
         clientApiMock.expects('requestTrumpf').once()
-            .withArgs(false).returns(Promise.resolve());
+            .withArgs(false).returns(Promise.reject());
 
         let playerWhoSchiebs = players[0];
         expect(playerWhoSchiebs.name).to.equal('hans');
         let hansSpy = sinon.spy(playerWhoSchiebs, 'requestTrumpf');
 
         game = Game.create(players, maxPoints, players[0], clientApi);
-        game.start();
+        game.start().catch(() => { /* ignore rejected promise */ });
 
         clientApiMock.verify();
         sinon.assert.calledOnce(hansSpy);
