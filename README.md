@@ -40,7 +40,7 @@ If you want to run the server in a docker container you can find a Dockerfile in
 Build it and run it with:
 ```sh
 docker build . -t jasschallenge # '.' is the directory of the repo
-docker run -it --rm -p 3000:3000 jasschallenge
+docker run -it --rm --name cs -p 3000:3000 jasschallenge
 ```
 
 ## Development
