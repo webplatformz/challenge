@@ -11,6 +11,7 @@ import EnvironmentUtil from '../registry/environmentUtil';
 import * as JsonResultProxy from '../communication/jsonResultProxy';
 
 const tournamentLogging = Boolean(process.env.TOURNAMENT_LOGGING);
+const tournamentLoggingFolder = process.env.TOURNAMENT_LOGGING_FOLDER;
 
 function createTeamsArrayForClient(session) {
     return session.teams.map((team) => {
@@ -176,7 +177,8 @@ const Session = {
 
         let resultProxy;
         if (tournamentLogging) {
-            resultProxy = JsonResultProxy.create(`${this.players[0].name} vs ${this.players[1].name}`);
+            let logFolder = tournamentLoggingFolder || '';
+            resultProxy = JsonResultProxy.create(logFolder + `${this.players[0].name} vs ${this.players[1].name}`);
             this.clientApi.setCommunicationProxy(resultProxy);
         }
         this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
