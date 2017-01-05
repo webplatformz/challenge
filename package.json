@@ -66,7 +66,7 @@
     "flux": "3.1.0",
     "font-awesome": "4.7.0",
     "glicko2": "0.8.4",
-    "less": "2.7.1",
+    "less": "2.7.2",
     "lodash": "4.17.4",
     "mkdirp": "0.5.1",
     "parallelshell": "2.0.0",
