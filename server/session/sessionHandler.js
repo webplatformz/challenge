@@ -5,6 +5,7 @@ import {SessionType} from '../../shared/session/sessionType';
 import nameGenerator from 'docker-namesgenerator';
 import {MessageType} from '../../shared/messages/messageType';
 import Registry from '../registry/registry';
+import {Logger} from '../logger';
 
 let clientApi = ClientApi.create();
 
@@ -88,7 +89,8 @@ const SessionHandler = {
 
         messageListeners.push(clientApi.subscribeMessage(ws, MessageType.REQUEST_REGISTRY_BOTS, () => {
             Registry.getRegisteredBots()
-                .then(bots => clientApi.sendRegistryBots(ws, bots));
+                .then(bots => clientApi.sendRegistryBots(ws, bots))
+                .catch(error => Logger.debug(`Can't reach Jassbot registry, got ${error}`));
         }));
 
         messageListeners.push(clientApi.subscribeMessage(ws, MessageType.ADD_BOT_FROM_REGISTRY, (message) => {
