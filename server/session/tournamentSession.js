@@ -1,5 +1,3 @@
-
-
 import * as ClientApi from '../communication/clientApi';
 import {SessionType} from '../../shared/session/sessionType';
 import * as Ranking from '../game/ranking/ranking';
@@ -7,6 +5,8 @@ import * as RankingTable from './rankingTable';
 import * as SingleGameSession from './singleGameSession';
 import * as _ from 'lodash';
 import nameGenerator from 'docker-namesgenerator';
+
+const clientRequestTimeoutInMillis = 500;
 
 function getPairingsPerRound(players) {
     return _.flatMap(players, (player, index) => {
@@ -22,7 +22,7 @@ function getPairingsPerRound(players) {
 }
 
 function createSessionWithPlayers({player1, player2}) {
-    let session = SingleGameSession.create(nameGenerator());
+    let session = SingleGameSession.create(nameGenerator(), clientRequestTimeoutInMillis);
 
     session.addPlayer(player1.clients[0], player1.playerName);
     session.addPlayer(player2.clients[0], player2.playerName);
@@ -202,7 +202,7 @@ export function create(sessionName) {
     session.name = sessionName;
     session.players = [];
     session.spectators = [];
-    session.clientApi = ClientApi.create(500);
+    session.clientApi = ClientApi.create(clientRequestTimeoutInMillis);
     session.pairings = [];
     session.ranking = Ranking.create();
     session.rankingTable = RankingTable.create();

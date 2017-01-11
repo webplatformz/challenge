@@ -186,12 +186,22 @@ const Session = {
             this.cancelGame = reject;
             this.started = true;
 
-            this.gameCycle().then((winningTeam) => {
-                if (tournamentLogging) {
-                    resultProxy.destroy();
-                }
-                resolve(winningTeam);
-            });
+            this.gameCycle()
+                .then((winningTeam) => {
+                    if (tournamentLogging) {
+                        resultProxy.destroy();
+                    }
+                    resolve(winningTeam);
+                })
+                .catch(error => {
+                    Logger.error(error);
+
+                    if (tournamentLogging) {
+                        resultProxy.destroy();
+                    }
+
+                    resolve(this.teams[0].points >= this.teams[1].points ? this.teams[0] : this.teams[1]);
+                });
         });
 
         return this.gamePromise;
@@ -241,7 +251,7 @@ const Session = {
     }
 };
 
-export function create(name) {
+export function create(name, timeoutInMillis) {
     let session = Object.create(Session);
     session.players = [];
     session.name = name;
@@ -249,7 +259,7 @@ export function create(name) {
         Team.create('Team 1'),
         Team.create('Team 2')
     ];
-    session.clientApi = ClientApi.create();
+    session.clientApi = ClientApi.create(timeoutInMillis);
     session.isTournament = false;
     session.finalizeRegistrationForPlayerFunctions = {};
     session.joinBotListeners = [];
