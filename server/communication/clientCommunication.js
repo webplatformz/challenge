@@ -80,6 +80,8 @@ const ClientCommunication = {
         Logger.debug('<-- Send Message: ' + messageToSend);
 
         return new Promise((resolve, reject) => {
+            let requestTimeout;
+
             function handleMessage(message) {
                 clearTimeout(requestTimeout);
                 Logger.debug('<-- Received Message: ' + message);
@@ -87,13 +89,13 @@ const ClientCommunication = {
                 resolveCorrectMessageOrReject(client, expectedMessageType, message, resolve, reject);
             }
 
-            const requestTimeout = setTimeout(() => {
-                if(timeoutInMilliseconds !== 0) {
+            if(timeoutInMilliseconds !== 0) {
+                requestTimeout = setTimeout(() => {
                     Logger.debug('Message not yet received, rejecting promise.');
                     client.removeListener('message', handleMessage);
                     reject(`Request timeout of ${timeoutInMilliseconds} ms exceeded`);
-                }
-            }, timeoutInMilliseconds);
+                }, timeoutInMilliseconds);
+            }
 
             client.on('message', handleMessage);
         });
