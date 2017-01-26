@@ -200,10 +200,14 @@ const Session = {
                     if (error && error.data) {
                         Logger.error(error.message);
                         const failingPlayer = error.data;
-                        resolve(this.teams.find(team => team.name !== failingPlayer.team.name));
+                        const winningTeam = this.teams.find(team => team.name !== failingPlayer.team.name);
+                        this.clientApi.broadcastWinnerTeam(winningTeam);
+                        resolve(winningTeam);
                     } else {
                         Logger.error(error);
-                        resolve(this.teams[0].points >= this.teams[1].points ? this.teams[0] : this.teams[1]);
+                        const winningTeam = this.teams[0].points >= this.teams[1].points ? this.teams[0] : this.teams[1];
+                        this.clientApi.broadcastWinnerTeam(winningTeam);
+                        resolve(winningTeam);
                     }
 
                 });
