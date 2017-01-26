@@ -1,5 +1,3 @@
-
-
 import * as Deck from './deck/deck';
 import * as Cycle from './cycle/cycle';
 import {GameMode} from './../../shared/game/gameMode';
@@ -24,7 +22,7 @@ function handleChooseTrumpfGeschoben(game, actPlayer, gameType) {
 let Game = {
     currentRound: 0,
 
-    nextCycle: function (startPlayer) {
+    nextCycle(startPlayer) {
         if (this.currentRound < 9) {
             this.startPlayer = startPlayer || this.startPlayer;
             let cycle = Cycle.create(this.startPlayer, this.players, this.clientApi, this.gameType);
@@ -35,7 +33,7 @@ let Game = {
         }
     },
 
-    schieben: function () {
+    schieben() {
         for (let i = 0; i < this.players.length; i++) {
             let actPlayer = this.players[i];
             if (actPlayer !== this.startPlayer && actPlayer.team.name === this.startPlayer.team.name) {
@@ -47,7 +45,7 @@ let Game = {
         }
     },
 
-    start: function () {
+    start() {
         return this.startPlayer.requestTrumpf(false)
             .then((gameType) => {
                 if (gameType.mode === GameMode.SCHIEBE) {
