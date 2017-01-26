@@ -198,8 +198,8 @@ const Session = {
                     }
 
                     if (error && error.data) {
-                        Logger.error(error.message);
                         const failingPlayer = error.data;
+                        Logger.error(`Player ${failingPlayer.name}: ${error.message}`);
                         const winningTeam = this.teams.find(team => team.name !== failingPlayer.team.name);
                         this.clientApi.broadcastWinnerTeam(winningTeam);
                         resolve(winningTeam);
