@@ -2,11 +2,11 @@ import * as ClientApi from '../communication/clientApi';
 import * as Game from '../game/game';
 import * as Player from '../game/player/player';
 import * as Team from '../game/player/team';
-import {SessionType} from '../../shared/session/sessionType';
+import { SessionType } from '../../shared/session/sessionType';
 import SessionHandler from './sessionHandler';
-import {MessageType} from '../../shared/messages/messageType';
-import {startRandomBot} from '../bot/botStarter';
-import {Logger} from '../logger';
+import { MessageType } from '../../shared/messages/messageType';
+import { startRandomBot } from '../bot/botStarter';
+import { Logger } from '../logger';
 import EnvironmentUtil from '../registry/environmentUtil';
 import * as JsonResultProxy from '../communication/jsonResultProxy';
 
@@ -100,7 +100,7 @@ function insertPlayer(session, player) {
 }
 
 function registerPlayerAsClient(session, webSocket, player) {
-    session.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
+    session.clientApi.addClient(webSocket).catch(({ code: code, message: message }) => {
         session.handlePlayerLeft(player, code, message);
     });
 }
@@ -194,13 +194,19 @@ const Session = {
                     resolve(winningTeam);
                 })
                 .catch(error => {
-                    Logger.error(error);
-
                     if (tournamentLogging) {
                         resultProxy.destroy();
                     }
 
-                    resolve(this.teams[0].points >= this.teams[1].points ? this.teams[0] : this.teams[1]);
+                    if (error && error.data) {
+                        Logger.error(error.message);
+                        const failingPlayer = error.data;
+                        resolve(this.teams.find(team => team.name !== failingPlayer.team.name));
+                    } else {
+                        Logger.error(error);
+                        resolve(this.teams[0].points >= this.teams[1].points ? this.teams[0] : this.teams[1]);
+                    }
+
                 });
         });
 

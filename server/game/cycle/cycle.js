@@ -70,13 +70,17 @@ const Cycle = {
             let previousPromise;
 
             if (index === 1) {
-                previousPromise = previousPlayer.requestCard(this.playedCards).then(handleChosenCard.bind(null, previousPlayer));
+                previousPromise = previousPlayer.requestCard(this.playedCards)
+                    .then(card => handleChosenCard(previousPlayer, card))
+                    .catch(message => new Promise((resolve, reject) => reject({ message, data: previousPlayer})));
             } else {
                 previousPromise = previousPlayer;
             }
 
             return previousPromise.then((cardsOnTable) => {
-                return currentPlayer.requestCard(cardsOnTable).then(handleChosenCard.bind(null, currentPlayer));
+                return currentPlayer.requestCard(cardsOnTable)
+                    .then(card => handleChosenCard(currentPlayer, card))
+                    .catch(message => new Promise((resolve, reject) => reject({ message, data: currentPlayer})));
             });
         }).then(broadcastAndReturnWinner);
     }
