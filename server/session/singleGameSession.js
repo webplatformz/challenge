@@ -135,7 +135,6 @@ const Session = {
     maxPoints: 2500,
     startingPlayer: 0,
     type: SessionType.SINGLE_GAME,
-    gamePromise: undefined,
     finishGame: undefined,
     cancelGame: undefined,
     started: false,
@@ -181,7 +180,7 @@ const Session = {
         }
         this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
 
-        this.gamePromise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             this.finishGame = resolve;
             this.cancelGame = reject;
             this.started = true;
@@ -209,8 +208,6 @@ const Session = {
 
                 });
         });
-
-        return this.gamePromise;
     },
 
     gameCycle(nextStartingPlayer = this.getNextStartingPlayer()) {
