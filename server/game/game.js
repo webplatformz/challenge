@@ -38,9 +38,7 @@ let Game = {
             let actPlayer = this.players[i];
             if (actPlayer !== this.startPlayer && actPlayer.team.name === this.startPlayer.team.name) {
                 return actPlayer.requestTrumpf(true)
-                    .then((gameType) => {
-                        return handleChooseTrumpfGeschoben(this, actPlayer, gameType);
-                    });
+                    .then(gameType => handleChooseTrumpfGeschoben(this, actPlayer, gameType));
             }
         }
     },

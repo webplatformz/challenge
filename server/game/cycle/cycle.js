@@ -21,12 +21,12 @@ const Cycle = {
             return this.playedCards;
         };
 
+        const getOtherTeam = team => this.players.find(player => player.team !== team).team;
+
         const broadcastAndReturnWinner = (playedCards) => {
             let winner = stichGranter.determineWinner(this.gameType.mode, this.gameType.trumpfColor, playedCards, this.players);
             let winnerTeam = winner.team;
-            let loserTeam = this.players.filter((player) => {
-                return player.team !== winner.team;
-            })[0].team;
+            let loserTeam = getOtherTeam(winnerTeam);
             let actPoints = Counter.count(this.gameType.mode, this.gameType.trumpfColor, playedCards);
 
             winnerTeam.points += actPoints;
@@ -53,8 +53,6 @@ const Cycle = {
 
             return winner;
         };
-
-        const getOtherTeam = team => this.players.find(player => player.team.name !== team.name).team;
 
         const createStichMessage = winner => ({
             name: winner.name,
