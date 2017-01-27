@@ -1,8 +1,8 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as Game from '../../../server/game/game';
-import {GameMode} from '../../../shared/game/gameMode';
+import { GameMode } from '../../../shared/game/gameMode';
 import * as GameType from '../../../server/game/gameType';
-import {CardColor} from '../../../shared/deck/cardColor';
+import { CardColor } from '../../../shared/deck/cardColor';
 import * as ClientApi from '../../../server/communication/clientApi';
 import * as Cycle from '../../../server/game/cycle/cycle';
 import sinon from 'sinon';
@@ -47,10 +47,43 @@ describe('Game', function () {
         let hansSpy = sinon.spy(playerWhoSchiebs, 'requestTrumpf');
 
         game = Game.create(players, maxPoints, players[0], clientApi);
-        game.start().catch(() => { /* ignore rejected promise */ });
+        game.start().catch(() => { /* ignore rejected promise */
+        });
 
         clientApiMock.verify();
         sinon.assert.calledOnce(hansSpy);
+    });
+
+    it('should return error object when requesting trumpf exceeded timeout', (done) => {
+        const errorMessage = 'some error message';
+        clientApiMock.expects('requestTrumpf').once()
+            .withArgs(false).returns(Promise.reject(errorMessage));
+        game = Game.create(players, maxPoints, players[0], clientApi);
+
+        game.start()
+            .catch((errorObject) => {
+                expect(errorObject.message).to.equal(errorMessage);
+                expect(errorObject.data).to.eql(players[0]);
+                clientApiMock.verify();
+                done();
+            })
+            .catch(done);
+    });
+
+    it('should return error object when requesting geschoben trumpf exceeded timeout', (done) => {
+        const errorMessage = 'some error message';
+        clientApiMock.expects('requestTrumpf').once().returns(Promise.resolve({ mode: GameMode.SCHIEBE }));
+        clientApiMock.expects('requestTrumpf').once().returns(Promise.reject(errorMessage));
+        game = Game.create(players, maxPoints, players[0], clientApi);
+
+        game.start()
+            .catch((errorObject) => {
+                expect(errorObject.message).to.equal(errorMessage);
+                expect(errorObject.data).to.eql(players[0]);
+                clientApiMock.verify();
+                done();
+            })
+            .catch(done);
     });
 
     it('should request the trumpf from the correct player when the player schiebs', (done) => {
@@ -95,13 +128,13 @@ describe('Game', function () {
             mode: GameMode.SCHIEBE
         }));
 
-        clientApiMock.expects('rejectTrumpf').once().withArgs({mode: GameMode.SCHIEBE});
+        clientApiMock.expects('rejectTrumpf').once().withArgs({ mode: GameMode.SCHIEBE });
 
         clientApiMock.expects('requestTrumpf').once().withArgs(true).returns(Promise.resolve({
             mode: GameMode.SCHIEBE
         }));
 
-        clientApiMock.expects('rejectTrumpf').once().withArgs({mode: GameMode.SCHIEBE});
+        clientApiMock.expects('rejectTrumpf').once().withArgs({ mode: GameMode.SCHIEBE });
 
         clientApiMock.expects('requestTrumpf').once().withArgs(true).returns(Promise.resolve({
             mode: GameMode.OBEABE

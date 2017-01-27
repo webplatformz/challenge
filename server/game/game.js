@@ -52,7 +52,8 @@ let Game = {
                 } else {
                     return handleChooseTrumpf(this, gameType);
                 }
-            });
+            })
+            .catch(message => new Promise((resolve, reject) => reject({ message, data: this.startPlayer})));
     }
 };
 
