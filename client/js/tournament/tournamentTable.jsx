@@ -33,7 +33,7 @@ export default React.createClass({
                 />
                 
                 <h1 className="jumbotron">Current rankings</h1>
-                <RankingTable ranking={state.rankingTable.ranking} />
+                <RankingTable ranking={state.rankingTable.ranking} gameStarted={state.tournamentStarted} />
                 
                 <h1 className="jumbotron">Pairing Results</h1>
                 <PairingsTable pairings={state.rankingTable.pairingResults} />
