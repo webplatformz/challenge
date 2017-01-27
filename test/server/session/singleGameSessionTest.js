@@ -1,11 +1,11 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import sinon from 'sinon';
 import * as SingleGameSession from '../../../server/session/singleGameSession';
 import * as Game from '../../../server/game/game';
 import * as TestDataCreator from '../../testDataCreator';
 import CloseEventCode from '../../../server/communication/closeEventCode';
-import {SessionType} from '../../../shared/session/sessionType';
-import {MessageType} from '../../../shared/messages/messageType';
+import { SessionType } from '../../../shared/session/sessionType';
+import { MessageType } from '../../../shared/messages/messageType';
 
 describe('Session', function () {
     let session,
@@ -13,7 +13,8 @@ describe('Session', function () {
         clientApiMock;
 
     const webSocketDummy = {
-        on() {}
+        on() {
+        }
     };
 
     beforeEach(() => {
@@ -290,34 +291,83 @@ describe('Session', function () {
 
             session.start().then((winningTeam) => {
                 expect(winningTeam).to.eql(session.teams[0]);
+                gameFactoryMock.verify();
                 done();
             }).catch(done);
         });
 
-        it('should unbind all joinBotListeners', () => {
+        it('should unbind all joinBotListeners', (done) => {
             const game = {
-                start: function () {
+                start() {
+                    session.teams[0].points += 1000;
                     return Promise.resolve();
                 }
             };
             const unbindSpy = sinon.spy();
 
-            gameFactoryMock.expects('create').returns(game);
+            gameFactoryMock.expects('create').exactly(3).returns(game);
             session.joinBotListeners.push(unbindSpy);
             session.players = fourPlayers;
 
-            session.start();
-
-            sinon.assert.calledOnce(unbindSpy);
+            session.start().then(() => {
+                sinon.assert.calledOnce(unbindSpy);
+                gameFactoryMock.verify();
+                done();
+            }).catch(done);
         });
 
 
         it('should finish a game and check better team wins', (done) => {
             let game = {
-                start: function () {
+                start() {
                     session.teams[0].points += 1000;
                     session.teams[1].points += 1001;
                     return Promise.resolve();
+                }
+            };
+
+            gameFactoryMock.expects('create').exactly(3).returns(game);
+            clientApiMock.expects('broadcastWinnerTeam').once();
+
+            session.players = fourPlayers;
+
+            session.start().then((winningTeam) => {
+                expect(winningTeam).to.eql(session.teams[1]);
+                gameFactoryMock.verify();
+                clientApiMock.verify();
+                done();
+            }).catch(done);
+        });
+
+        it('should finish a game and let better team win when generic error', (done) => {
+            let game = {
+                start() {
+                    session.teams[0].points += 1000;
+                    session.teams[1].points += 1001;
+                    return Promise.reject('some error message');
+                }
+            };
+
+            gameFactoryMock.expects('create').returns(game);
+            clientApiMock.expects('broadcastWinnerTeam').once();
+
+            session.players = fourPlayers;
+
+            session.start().then((winningTeam) => {
+                expect(winningTeam).to.eql(session.teams[1]);
+                gameFactoryMock.verify();
+                clientApiMock.verify();
+                done();
+            }).catch(done);
+        });
+
+        it('should finish a game and let other team win when player failed', (done) => {
+            let game = {
+                start() {
+                    return Promise.reject({
+                        message: 'message',
+                        data: session.players[0]
+                    });
                 }
             };
 
@@ -332,8 +382,6 @@ describe('Session', function () {
                 done();
             }).catch(done);
         });
-
-
     });
 
     describe('close', () => {

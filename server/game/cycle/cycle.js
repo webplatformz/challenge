@@ -3,91 +3,84 @@ import stichGranter from './stichGranter';
 import * as Counter from '../counter/counter';
 
 const Cycle = {
-    iterate: function () {
-        let that = this;
+    iterate() {
+        const handleChosenCard = (player, card) => {
+            this.currentPlayer = player;
 
-        function handleChosenCard(player, card) {
-            that.currentPlayer = player;
-
-            if (that.validator.validate(that.playedCards, that.currentPlayer.cards, card)) {
-                that.playedCards.push(card);
-                that.currentPlayer.removeCard(card);
-                that.clientApi.broadcastCardPlayed(that.playedCards);
+            if (this.validator.validate(this.playedCards, this.currentPlayer.cards, card)) {
+                this.playedCards.push(card);
+                this.currentPlayer.removeCard(card);
+                this.clientApi.broadcastCardPlayed(this.playedCards);
             } else {
-                that.currentPlayer.rejectCard(card, that.playedCards);
+                this.currentPlayer.rejectCard(card, this.playedCards);
 
-                return that.currentPlayer.requestCard(that.playedCards)
+                return this.currentPlayer.requestCard(this.playedCards)
                     .then(handleChosenCard.bind(null, player));
             }
 
-            return that.playedCards;
-        }
+            return this.playedCards;
+        };
 
-        function broadcastAndReturnWinner(playedCards) {
-            let winner = stichGranter.determineWinner(that.gameType.mode, that.gameType.trumpfColor, playedCards, that.players);
+        const getOtherTeam = team => this.players.find(player => player.team !== team).team;
+
+        const broadcastAndReturnWinner = (playedCards) => {
+            let winner = stichGranter.determineWinner(this.gameType.mode, this.gameType.trumpfColor, playedCards, this.players);
             let winnerTeam = winner.team;
-            let loserTeam = that.players.filter((player) => {
-                return player.team !== winner.team;
-            })[0].team;
-            let actPoints = Counter.count(that.gameType.mode, that.gameType.trumpfColor, playedCards);
+            let loserTeam = getOtherTeam(winnerTeam);
+            let actPoints = Counter.count(this.gameType.mode, this.gameType.trumpfColor, playedCards);
 
             winnerTeam.points += actPoints;
             winnerTeam.currentRoundPoints += actPoints;
 
             if (winner.cards.length === 0) {
-                const lastStichPoints = Counter.calculateLastStichValue(that.gameType.mode, that.gameType.trumpfColor);
+                const lastStichPoints = Counter.calculateLastStichValue(this.gameType.mode, this.gameType.trumpfColor);
                 winnerTeam.points += lastStichPoints;
                 winnerTeam.currentRoundPoints += lastStichPoints;
 
                 if (loserTeam.currentRoundPoints === 0) {
-                    let matchPoints = Counter.calculateMatchValues(that.gameType.mode, that.gameType.trumpfColor);
+                    let matchPoints = Counter.calculateMatchValues(this.gameType.mode, this.gameType.trumpfColor);
                     winnerTeam.points += matchPoints;
                     winnerTeam.currentRoundPoints += matchPoints;
                 }
 
-                that.clientApi.broadcastStich(createStichMessage(winner));
-                that.clientApi.broadcastGameFinished([winnerTeam, loserTeam]);
+                this.clientApi.broadcastStich(createStichMessage(winner));
+                this.clientApi.broadcastGameFinished([winnerTeam, loserTeam]);
                 winnerTeam.currentRoundPoints = 0;
                 loserTeam.currentRoundPoints = 0;
             } else {
-                that.clientApi.broadcastStich(createStichMessage(winner));
+                this.clientApi.broadcastStich(createStichMessage(winner));
             }
 
             return winner;
-        }
+        };
 
-        function createStichMessage(winner) {
-            return {
-                name: winner.name,
-                id: winner.id,
-                seatId: winner.seatId,
-                playedCards: that.playedCards,
-                teams: [
-                    winner.team,
-                    getOtherTeam(winner.team)
-                ]
-            };
-        }
+        const createStichMessage = winner => ({
+            name: winner.name,
+            id: winner.id,
+            seatId: winner.seatId,
+            playedCards: this.playedCards,
+            teams: [
+                winner.team,
+                getOtherTeam(winner.team)
+            ]
+        });
 
-        function getOtherTeam(team) {
-            for (let i = 0; i < that.players.length; i++) {
-                if (that.players[i].team.name !== team.name) {
-                    return that.players[i].team;
-                }
-            }
-        }
 
-        return that.players.reduce((previousPlayer, currentPlayer, index) => {
+        return this.players.reduce((previousPlayer, currentPlayer, index) => {
             let previousPromise;
 
             if (index === 1) {
-                previousPromise = previousPlayer.requestCard(that.playedCards).then(handleChosenCard.bind(null, previousPlayer));
+                previousPromise = previousPlayer.requestCard(this.playedCards)
+                    .then(card => handleChosenCard(previousPlayer, card))
+                    .catch(message => new Promise((resolve, reject) => reject({ message, data: previousPlayer})));
             } else {
                 previousPromise = previousPlayer;
             }
 
             return previousPromise.then((cardsOnTable) => {
-                return currentPlayer.requestCard(cardsOnTable).then(handleChosenCard.bind(null, currentPlayer));
+                return currentPlayer.requestCard(cardsOnTable)
+                    .then(card => handleChosenCard(currentPlayer, card))
+                    .catch(message => new Promise((resolve, reject) => reject({ message, data: currentPlayer})));
             });
         }).then(broadcastAndReturnWinner);
     }
