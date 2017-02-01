@@ -46,7 +46,7 @@ function createResultObject(winnerName, { player1, player2 }) {
 const TournamentSession = {
     type: SessionType.TOURNAMENT,
     started: false,
-    rounds: 1,
+    rounds: process.env.TOURNAMENT_ROUNDS || 1,
     gamesToPlay: 0,
     gamesPlayed: 0,
 
