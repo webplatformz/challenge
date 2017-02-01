@@ -1,11 +1,16 @@
 import React from 'react';
 
-export default ({ranking = []}) => (
+
+export default ({ranking = []}) => {
+    const hasRating = ranking.length !== 0 && ranking[0].rating;
+
+    return (
     <table>
         <thead>
         <tr>
             <th>Rank</th>
             <th>Player</th>
+            {hasRating && <th>Rating (Glicko)</th>}
             <th>Connected Clients</th>
         </tr>
         </thead>
@@ -14,9 +19,10 @@ export default ({ranking = []}) => (
             <tr key={player.playerName}>
                 <td>{player.rank}</td>
                 <td>{player.playerName}</td>
+                {hasRating && <td>{Math.floor(player.rating)}</td>}
                 <td>{player.connectedClients}</td>
             </tr>
         ))}
         </tbody>
     </table>
-);
+)};
