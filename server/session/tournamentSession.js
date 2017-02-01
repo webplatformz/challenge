@@ -136,7 +136,7 @@ const TournamentSession = {
     rankPairing(pairing, result) {
         let { player1, player2 } = pairing;
 
-        _.remove(this.pairings, pairing);
+        this.pairings.splice(this.pairings.findIndex(actPairing => actPairing === pairing), 1);
         this.ranking.updateMatchResult(result);
         this.rankingTable.addPairingResult(player1.playerName, player2.playerName, result.winner === player1.playerName);
         this.clientApi.broadcastTournamentRankingTable(this.rankingTable);

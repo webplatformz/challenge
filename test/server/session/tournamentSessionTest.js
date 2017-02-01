@@ -278,5 +278,44 @@ describe('tournamentSession', () => {
                 done();
             }).catch(done);
         });
+
+        it('should remove pairings after session finished', done => {
+            let player1 = 'playerName1',
+                player2 = 'playerName2',
+                player3 = 'playerName3',
+                addPlayerSpy = sinon.spy(),
+                resolvedPromise = Promise.resolve({
+                    name: player3
+                });
+
+            session.rounds = 3;
+
+            session.addPlayer(webSocketDummy, player1);
+            session.addPlayer(webSocketDummy, player1);
+            session.addPlayer(webSocketDummy, player2);
+            session.addPlayer(webSocketDummy, player2);
+            session.addPlayer(webSocketDummy, player3);
+            session.addPlayer(webSocketDummy, player3);
+
+            session.players[1].isPlaying = true;
+
+            singleGameSessionMock.expects('create').withArgs(sinon.match.string).once().returns({
+                addPlayer: addPlayerSpy,
+                start() {
+                    return resolvedPromise;
+                }
+            });
+
+            session.start();
+            expect(session.pairings).to.have.length(9);
+
+            expect(addPlayerSpy.calledWith(webSocketDummy, player1)).to.equal(true);
+            expect(addPlayerSpy.calledWith(webSocketDummy, player3)).to.equal(true);
+            singleGameSessionMock.verify();
+            resolvedPromise.then(() => {
+                expect(session.pairings).to.have.length(8);
+                done();
+            }).catch(done);
+        });
     });
 });
