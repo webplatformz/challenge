@@ -33,11 +33,26 @@ export default React.createClass({
                 />
                 
                 <h1 className="jumbotron">Current rankings</h1>
-                <RankingTable ranking={state.rankingTable.ranking} gameStarted={state.tournamentStarted} />
-                
+
+                {(() => {
+                    if (state.tournamentStarted && state.rankingDisplayed) {
+                        return <RankingTable ranking={state.ranking}/>;
+                    } else if (!state.tournamentStarted) {
+                        return <RankingTable ranking={state.joinedClients}/>;
+                    } else if (state.tournamentStarted && state.ranking.length === 0) {
+                        return <p>Game in progress...</p>;
+                    } else if (state.tournamentStarted && state.ranking.length > 0) {
+                        return (
+                            <button type="button" name="enableRankings" onClick={JassActions.showRankingTable}>
+                                Show ranking table
+                            </button>
+                        );
+                    }
+                })()}
+
                 <h1 className="jumbotron">Pairing Results</h1>
-                <PairingsTable pairings={state.rankingTable.pairingResults} />
-                
+                <PairingsTable pairings={state.pairingResults} />
+
                 {(() => {
                     if (!state.tournamentStarted) {
                         return (
