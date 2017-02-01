@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default (ranking) => (
+export default ({ranking = []}) => (
     <table>
         <thead>
         <tr>
