@@ -138,6 +138,8 @@ describe('tournamentSession', () => {
         });
 
         it('should add spectator to spectator array', () => {
+            clientApiMock.expects('addClient');
+
             session.addSpectator(webSocketDummy);
 
             expect(session.spectators).to.have.length(1);
@@ -189,7 +191,9 @@ describe('tournamentSession', () => {
             singleGameSessionMock.expects('create').returns({
                 addPlayer() {},
                 start() {
-                    return Promise.resolve();
+                    return Promise.resolve({
+                        name: player1
+                    });
                 }
             });
 
@@ -205,6 +209,7 @@ describe('tournamentSession', () => {
             expect(session.ranking.ranking.getPlayers()).to.have.length(2);
             expect(session.started).to.equal(true);
             clientApiMock.verify();
+            singleGameSessionMock.verify();
         });
 
         it('should create pairings with round-robin', () => {
@@ -215,7 +220,9 @@ describe('tournamentSession', () => {
             singleGameSessionMock.expects('create').returns({
                 addPlayer() {},
                 start() {
-                    return Promise.resolve();
+                    return Promise.resolve({
+                        name: player1
+                    });
                 }
             });
 
