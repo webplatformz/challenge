@@ -20,18 +20,20 @@ describe('Tournament table Component', () => {
     });
 
     it('should pass correct properties to children', () => {
-        TournamentStore.state.registryBots = 'bots';
-        TournamentStore.state.rankingTable = {
-            ranking: 'ranking',
-            pairingResults: 'pairingResults'
+        TournamentStore.state = {
+            registryBots: 'bots',
+            pairingResults: 'pairingResults',
+            tournamentStarted: true,
+            rankingDisplayed: true,
+            ranking: 'ranking'
         };
 
         shallowRenderer.render(React.createElement(TournamentTable));
-        let actual = shallowRenderer.getRenderOutput();
+        const actual = shallowRenderer.getRenderOutput();
 
         expect(actual.props.children[1].props.bots).to.equal(TournamentStore.state.registryBots);
-        expect(actual.props.children[3].props.ranking).to.equal(TournamentStore.state.rankingTable.ranking);
-        expect(actual.props.children[5].props.pairings).to.equal(TournamentStore.state.rankingTable.pairingResults);
+        expect(actual.props.children[3].props.ranking).to.equal(TournamentStore.state.ranking);
+        expect(actual.props.children[5].props.pairings).to.equal(TournamentStore.state.pairingResults);
     });
 
     it('should render start button with click handler when not started', () => {
@@ -53,7 +55,4 @@ describe('Tournament table Component', () => {
 
         expect(actual.props.children[6]).to.equal(undefined);
     });
-
-   
-
 });

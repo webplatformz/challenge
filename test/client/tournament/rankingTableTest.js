@@ -32,18 +32,19 @@ describe('RankingTable', () => {
         };
     });
 
-    it('should render table with given rankings', () => {
+    it('should render table with given rankings, without displaying rating data', () => {
         shallowRenderer.render(React.createElement(RankingTable, props));
 
         let actual = shallowRenderer.getRenderOutput();
 
         let rankingRows = actual.props.children[1].props.children;
+
         rankingRows.forEach((rankingRow, index) => {
             let ranking = props.ranking[index];
-
             expect(rankingRow.props.children[0].props.children).to.equal(ranking.rank);
             expect(rankingRow.props.children[1].props.children).to.equal(ranking.playerName);
-            expect(rankingRow.props.children[2].props.children).to.equal(ranking.connectedClients);
+            expect(rankingRow.props.children[2]).to.be.undefined;
+            expect(rankingRow.props.children[3].props.children).to.equal(ranking.connectedClients);
         });
     });
 });
