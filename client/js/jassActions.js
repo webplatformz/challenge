@@ -262,5 +262,11 @@ export default {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.TOGGLE_SHOW_POINTS
         })
+    },
+
+    showRankingTable() {
+        JassAppDispatcher.handleViewAction({
+            actionType: JassAppConstants.SHOW_RANKING_TABLE
+        })
     }
 };
