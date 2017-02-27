@@ -1,8 +1,10 @@
-
-
 const RankingTable = {
+    findPlayerByName(playerName) {
+        return this.ranking.find(actPlayer => actPlayer.playerName === playerName);
+    },
+
     addPlayer(playerName) {
-        let player = this.ranking.find(actPlayer => actPlayer.playerName === playerName);
+        const player = this.findPlayerByName(playerName);
 
         if (player) {
             player.connectedClients++;
@@ -16,6 +18,16 @@ const RankingTable = {
         }
     },
 
+    removePlayer(playerName) {
+        const player = this.findPlayerByName(playerName);
+
+        if (player.connectedClients > 1) {
+            player.connectedClients--;
+        } else {
+            this.ranking = this.ranking.filter(actPlayer => actPlayer !== player);
+        }
+    },
+
     addPairingResult(player1, player2, firstPlayerWon) {
         this.pairingResults.unshift({
             player1,
@@ -25,7 +37,7 @@ const RankingTable = {
     },
 
     updatePlayerRating(playerName, rating) {
-        this.ranking.find(actPlayer => actPlayer.playerName === playerName).rating = rating;
+        this.findPlayerByName(playerName).rating = rating;
     },
 
     updateAndSortRanking() {
