@@ -1,12 +1,12 @@
-
-
 import * as ClientApi from '../communication/clientApi';
-import {SessionType} from '../../shared/session/sessionType';
+import { SessionType } from '../../shared/session/sessionType';
 import * as Ranking from '../game/ranking/ranking';
 import * as RankingTable from './rankingTable';
 import * as SingleGameSession from './singleGameSession';
 import * as _ from 'lodash';
 import nameGenerator from 'docker-namesgenerator';
+
+const clientRequestTimeoutInMillis = 500;
 
 function getPairingsPerRound(players) {
     return _.flatMap(players, (player, index) => {
@@ -21,8 +21,8 @@ function getPairingsPerRound(players) {
     });
 }
 
-function createSessionWithPlayers({player1, player2}) {
-    let session = SingleGameSession.create(nameGenerator());
+function createSessionWithPlayers({ player1, player2 }) {
+    let session = SingleGameSession.create(nameGenerator(), clientRequestTimeoutInMillis);
 
     session.addPlayer(player1.clients[0], player1.playerName);
     session.addPlayer(player2.clients[0], player2.playerName);
@@ -35,18 +35,18 @@ function createSessionWithPlayers({player1, player2}) {
     return session;
 }
 
-function createResultObject(winnerName, {player1, player2}) {
+function createResultObject(winnerName, { player1, player2 }) {
     if (winnerName.indexOf(player1.playerName) > -1) {
-        return {winner: player1.playerName, loser: player2.playerName};
+        return { winner: player1.playerName, loser: player2.playerName };
     }
 
-    return {winner: player2.playerName, loser: player1.playerName};
+    return { winner: player2.playerName, loser: player1.playerName };
 }
 
 const TournamentSession = {
     type: SessionType.TOURNAMENT,
     started: false,
-    rounds: 1,
+    rounds: process.env.TOURNAMENT_ROUNDS || 1,
     gamesToPlay: 0,
     gamesPlayed: 0,
 
@@ -122,27 +122,28 @@ const TournamentSession = {
             this.pairings = this.pairings.concat(pairings);
         }
 
-        return this.startPairingSessions().then(() => {
-            this.ranking.updateRatings();
-            this.ranking.players.forEach(ranking => {
-                this.rankingTable.updatePlayerRating(ranking.name, ranking.player.getRating());
+        return this.startPairingSessions()
+            .then(() => {
+                this.ranking.updateRatings();
+                this.ranking.players.forEach(ranking => {
+                    this.rankingTable.updatePlayerRating(ranking.name, ranking.player.getRating());
+                });
+                this.rankingTable.updateAndSortRanking();
+                this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
             });
-            this.rankingTable.updateAndSortRanking();
-            this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
-        });
     },
 
     rankPairing(pairing, result) {
-        let {player1, player2} = pairing;
+        let { player1, player2 } = pairing;
 
-        _.remove(this.pairings, pairing);
+        this.pairings.splice(this.pairings.findIndex(actPairing => actPairing === pairing), 1);
         this.ranking.updateMatchResult(result);
         this.rankingTable.addPairingResult(player1.playerName, player2.playerName, result.winner === player1.playerName);
         this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
     },
 
     handleSessionFinish(pairing, winningTeam) {
-        let {player1, player2} = pairing;
+        let { player1, player2 } = pairing;
         let result = createResultObject(winningTeam.name, pairing);
 
         player1.isPlaying = false;
@@ -154,7 +155,7 @@ const TournamentSession = {
     },
 
     handlePairingWithDisconnectedClients(pairing) {
-        let {player1} = pairing;
+        let { player1 } = pairing;
 
         if (player1.connected) {
             this.rankPairing(pairing, createResultObject(player1.playerName, pairing));
@@ -168,7 +169,7 @@ const TournamentSession = {
     startPairingSessions() {
         return new Promise(resolve => {
             this.pairings.forEach(pairing => {
-                let {player1, player2} = pairing;
+                let { player1, player2 } = pairing;
 
                 if (!player1.isPlaying && !player2.isPlaying) {
                     let sessionPromise;
@@ -202,7 +203,7 @@ export function create(sessionName) {
     session.name = sessionName;
     session.players = [];
     session.spectators = [];
-    session.clientApi = ClientApi.create();
+    session.clientApi = ClientApi.create(clientRequestTimeoutInMillis);
     session.pairings = [];
     session.ranking = Ranking.create();
     session.rankingTable = RankingTable.create();

@@ -4,6 +4,7 @@ import {MessageType} from '../../../shared/messages/messageType';
 import {CardColor} from '../../../shared/deck/cardColor';
 import {expect} from 'chai';
 import sinon from 'sinon';
+import {GameMode} from '../../../shared/game/gameMode';
 
 describe('ClientCommunication', () => {
     describe('toJSON', () => {
@@ -41,11 +42,13 @@ describe('ClientCommunication', () => {
 
         it('should return function to unbind listener', () => {
             let webSocketStub = {
-                on: () => {},
+                on: () => {
+                },
                 removeListener: sinon.spy()
             };
 
-            const actual = ClientCommunication.on(webSocketStub, MessageType.JOIN_BOT, () => {});
+            const actual = ClientCommunication.on(webSocketStub, MessageType.JOIN_BOT, () => {
+            });
             actual();
 
             sinon.assert.calledWith(webSocketStub.removeListener, 'message', sinon.match.func);
@@ -108,7 +111,8 @@ describe('ClientCommunication', () => {
 
     describe('await', () => {
         it('should resolve on correct message only', (done) => {
-            let messageHandler = () => {},
+            let messageHandler = () => {
+                },
                 wrongMessage = {
                     type: MessageType.CHOOSE_SESSION.name
                 },
@@ -173,7 +177,7 @@ describe('ClientCommunication', () => {
         });
     });
 
-    describe('send', ()=> {
+    describe('send', () => {
         it('should send message to given client', () => {
             let WebSocketStub = {
                 readyState: 1,
@@ -233,28 +237,109 @@ describe('ClientCommunication', () => {
     });
 
     describe('request', () => {
-        it('should send request message to given client and call given function on answer', (done) => {
-            let client = {
+        it('should send request message to given client and resolve on answer', (done) => {
+            const clientMessage = messages.create(MessageType.CHOOSE_TRUMPF.name, {mode: GameMode.OBEABE});
+            const clientStub = {
                     readyState: 1,
-                    send: function () {
+                    send() {
                     },
-                    on: function (message, onMessage) {
-                        onMessage(message);
+                    on(message, onMessage) {
+                        onMessage(JSON.stringify(clientMessage));
                     },
-                    removeListener: function () {
+                    removeListener() {
                     }
                 },
-                clientMock = sinon.mock(client);
+                clientMock = sinon.mock(clientStub);
 
             clientMock.expects('send').withExactArgs('{"type":"REQUEST_TRUMPF","data":false}').once();
             clientMock.expects('removeListener').withArgs('message', sinon.match.func).once();
 
-            ClientCommunication.request(client, MessageType.REQUEST_TRUMPF.name, function onMessage(message, resolve) {
-                resolve();
-                clientMock.verify();
-                done();
-            }, false);
+            ClientCommunication.request(clientStub, MessageType.REQUEST_TRUMPF.name, MessageType.CHOOSE_TRUMPF, 0, false)
+                .then((message) => {
+                    expect(message).to.eql(clientMessage.data);
+                    done();
+                })
+                .catch(done);
 
+        });
+
+        it('should reject when timeout exceeded', (done) => {
+            const clientStub = {
+                readyState: 1,
+                on() {
+                },
+                send: sinon.spy(),
+                removeListener: sinon.spy()
+            };
+
+            ClientCommunication.request(clientStub, MessageType.REQUEST_CARD.name, MessageType.CHOOSE_CARD, 1, false)
+                .then(
+                    () => done(new Error('should not resolve on timeout exceeed')),
+                    (errorMessage) => {
+                        expect(errorMessage).to.equal('Request timeout of 1 ms exceeded');
+                        sinon.assert.calledWithExactly(clientStub.removeListener, 'message', sinon.match.func);
+                        sinon.assert.calledWithExactly(clientStub.send, '{"type":"REQUEST_CARD","data":false}');
+                        done();
+                    }
+                )
+                .catch(done);
+
+        });
+
+        it('should reject invalid answer messages', (done) => {
+            const clientAnswer = JSON.stringify(messages.create(MessageType.PLAYED_CARDS.name, ['a', 'b', 'c']));
+            const clientStub = {
+                readyState: 1,
+                on(message, onMessage) {
+                    onMessage(clientAnswer);
+                },
+                send: sinon.spy(),
+                removeListener: sinon.spy()
+            };
+
+            ClientCommunication.request(clientStub, MessageType.REQUEST_PLAYER_NAME.name, MessageType.CHOOSE_PLAYER_NAME, 0)
+                .catch((data) => {
+                    expect(data).to.equal('Invalid Message: ' + clientAnswer + ', expected message with type: CHOOSE_PLAYER_NAME');
+                    done();
+                })
+                .catch(done);
+        });
+
+        it('should reject empty answer messages', (done) => {
+            const clientStub = {
+                readyState: 1,
+                on(message, onMessage) {
+                    onMessage('');
+                },
+                send: sinon.spy(),
+                removeListener: sinon.spy()
+            };
+
+            ClientCommunication.request(clientStub, MessageType.REQUEST_PLAYER_NAME.name, MessageType.CHOOSE_PLAYER_NAME, 0)
+                .catch((data) => {
+                    expect(data).to.equal('Invalid Message: , expected message with type: CHOOSE_PLAYER_NAME');
+                    done();
+                })
+                .catch(done);
+        });
+
+        it('should reject wrong data type', (done) => {
+            const clientAnswer = JSON.stringify(messages.create(MessageType.CHOOSE_PLAYER_NAME.name, 13));
+            const clientStub = {
+                readyState: 1,
+                on(message, onMessage) {
+                    onMessage(clientAnswer);
+                },
+                send: sinon.spy(),
+                removeListener: sinon.spy()
+            };
+
+            ClientCommunication.request(clientStub, MessageType.REQUEST_PLAYER_NAME.name, MessageType.CHOOSE_PLAYER_NAME, 0)
+                .catch((data) => {
+                    expect(data.data).to.eql(['Data has an incorrect length']);
+                    done();
+                })
+                .catch(done);
         });
     });
 });

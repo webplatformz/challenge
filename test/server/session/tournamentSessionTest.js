@@ -138,6 +138,8 @@ describe('tournamentSession', () => {
         });
 
         it('should add spectator to spectator array', () => {
+            clientApiMock.expects('addClient');
+
             session.addSpectator(webSocketDummy);
 
             expect(session.spectators).to.have.length(1);
@@ -189,7 +191,9 @@ describe('tournamentSession', () => {
             singleGameSessionMock.expects('create').returns({
                 addPlayer() {},
                 start() {
-                    return Promise.resolve();
+                    return Promise.resolve({
+                        name: player1
+                    });
                 }
             });
 
@@ -205,6 +209,7 @@ describe('tournamentSession', () => {
             expect(session.ranking.ranking.getPlayers()).to.have.length(2);
             expect(session.started).to.equal(true);
             clientApiMock.verify();
+            singleGameSessionMock.verify();
         });
 
         it('should create pairings with round-robin', () => {
@@ -215,7 +220,9 @@ describe('tournamentSession', () => {
             singleGameSessionMock.expects('create').returns({
                 addPlayer() {},
                 start() {
-                    return Promise.resolve();
+                    return Promise.resolve({
+                        name: player1
+                    });
                 }
             });
 
@@ -268,6 +275,45 @@ describe('tournamentSession', () => {
                 expect(session.players[2].isPlaying).to.equal(false);
                 expect(session.pairings).to.have.length(2);
 
+                done();
+            }).catch(done);
+        });
+
+        it('should remove pairings after session finished', done => {
+            let player1 = 'playerName1',
+                player2 = 'playerName2',
+                player3 = 'playerName3',
+                addPlayerSpy = sinon.spy(),
+                resolvedPromise = Promise.resolve({
+                    name: player3
+                });
+
+            session.rounds = 3;
+
+            session.addPlayer(webSocketDummy, player1);
+            session.addPlayer(webSocketDummy, player1);
+            session.addPlayer(webSocketDummy, player2);
+            session.addPlayer(webSocketDummy, player2);
+            session.addPlayer(webSocketDummy, player3);
+            session.addPlayer(webSocketDummy, player3);
+
+            session.players[1].isPlaying = true;
+
+            singleGameSessionMock.expects('create').withArgs(sinon.match.string).once().returns({
+                addPlayer: addPlayerSpy,
+                start() {
+                    return resolvedPromise;
+                }
+            });
+
+            session.start();
+            expect(session.pairings).to.have.length(9);
+
+            expect(addPlayerSpy.calledWith(webSocketDummy, player1)).to.equal(true);
+            expect(addPlayerSpy.calledWith(webSocketDummy, player3)).to.equal(true);
+            singleGameSessionMock.verify();
+            resolvedPromise.then(() => {
+                expect(session.pairings).to.have.length(8);
                 done();
             }).catch(done);
         });
