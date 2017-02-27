@@ -179,7 +179,7 @@ describe('sessionHandler', () => {
             sessionMock.expects('addSpectator').once();
             sessionMock.expects('addPlayer').never();
             sessionMock.expects('isComplete').once().returns(true);
-            sessionMock.expects('start').once();
+            sessionMock.expects('start').once().returns(Promise.resolve());
 
             sessionHandler.handleClientConnection(webSocket).then(() => {
                 clientApiMock.verify();
