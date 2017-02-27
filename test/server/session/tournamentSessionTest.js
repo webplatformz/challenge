@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import sinon from 'sinon';
 import * as TournamentSession from '../../../server/session/tournamentSession';
 import * as SingleGameSession from '../../../server/session/singleGameSession';
@@ -8,9 +8,12 @@ describe('tournamentSession', () => {
     let session,
         clientApiMock,
         singleGameSessionMock,
-        webSocketDummy = {
-            send() {}
-        };
+        createWebSocketDummy = () => ({
+            send() {
+            }
+        }),
+        webSocketDummy = createWebSocketDummy(),
+        webSocketDummy2 = createWebSocketDummy();
 
     beforeEach(() => {
         session = TournamentSession.create('sessionName');
@@ -25,7 +28,7 @@ describe('tournamentSession', () => {
 
     describe('calculateGameCount', () => {
         it('should calculate number of games with one round', () => {
-            session.players = [1,2,3];
+            session.players = [1, 2, 3];
             session.rounds = 1;
 
             let actual = session.calculateGameCount();
@@ -34,7 +37,7 @@ describe('tournamentSession', () => {
         });
 
         it('should calculate number of games with 10 rounds', () => {
-            session.players = [1,2,3,4,5];
+            session.players = [1, 2, 3, 4, 5];
             session.rounds = 10;
 
             let actual = session.calculateGameCount();
@@ -84,7 +87,7 @@ describe('tournamentSession', () => {
 
         it('should add client to already existing playerName', () => {
             session.addPlayer(webSocketDummy, playerName);
-            session.addPlayer(webSocketDummy, playerName);
+            session.addPlayer(webSocketDummy2, playerName);
 
             expect(session.players).to.have.length(1);
             expect(session.players[0]).to.eql({
@@ -93,16 +96,51 @@ describe('tournamentSession', () => {
                 connected: true,
                 clients: [
                     webSocketDummy,
-                    webSocketDummy
+                    webSocketDummy2
                 ]
             });
         });
 
-        it('should close connections and mark player offline when one of its clients disconnects', (done) => {
+        it('should remove player and ranking when clients disconnect before play', (done) => {
+            let rejectedPromise = Promise.reject();
+            clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(rejectedPromise);
+            clientApiMock.expects('broadcastTournamentRankingTable').twice();
+
+            session.addPlayer(webSocketDummy, playerName);
+
+            rejectedPromise.catch(() => {
+                expect(session.players).to.have.lengthOf(0);
+                expect(session.rankingTable.ranking).to.have.lengthOf(0);
+                clientApiMock.verify();
+                done();
+            }).catch(done);
+        });
+
+        it('should remove client from clients array when one client disconnects before play', (done) => {
+            let rejectedPromise = Promise.reject();
+            clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(Promise.resolve());
+            clientApiMock.expects('addClient').withArgs(webSocketDummy2).once().returns(rejectedPromise);
+            clientApiMock.expects('broadcastTournamentRankingTable').thrice();
+
+            session.addPlayer(webSocketDummy, playerName);
+            session.addPlayer(webSocketDummy2, playerName);
+
+            rejectedPromise.catch(() => {
+                expect(session.players).to.have.lengthOf(1);
+                expect(session.players[0].clients).to.have.lengthOf(1);
+                expect(session.rankingTable.ranking).to.have.lengthOf(1);
+                clientApiMock.verify();
+                done();
+            }).catch(done);
+        });
+
+        it('should close connections and mark player offline when one of its clients disconnects during play', (done) => {
             let rejectedPromise = Promise.reject();
             clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(Promise.resolve());
             clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(rejectedPromise);
             clientApiMock.expects('removeClient').withArgs(webSocketDummy, sinon.match.string).twice();
+            clientApiMock.expects('broadcastTournamentRankingTable').thrice();
+            session.started = true;
 
             session.addPlayer(webSocketDummy, playerName);
             session.addPlayer(webSocketDummy, playerName);
@@ -115,11 +153,12 @@ describe('tournamentSession', () => {
         });
 
         it('should not add client to already existing playerName with two clients', () => {
-            clientApiMock.expects('removeClient').withArgs(webSocketDummy, sinon.match.string).once();
+            const webSocketDummy3 = createWebSocketDummy();
+            clientApiMock.expects('removeClient').withArgs(webSocketDummy3, sinon.match.string).once();
 
             session.addPlayer(webSocketDummy, playerName);
-            session.addPlayer(webSocketDummy, playerName);
-            session.addPlayer(webSocketDummy, playerName);
+            session.addPlayer(webSocketDummy2, playerName);
+            session.addPlayer(webSocketDummy3, playerName);
 
             expect(session.players).to.have.length(1);
             expect(session.players[0].clients).to.have.length(2);
@@ -189,7 +228,8 @@ describe('tournamentSession', () => {
                 player2 = 'playerName2';
 
             singleGameSessionMock.expects('create').returns({
-                addPlayer() {},
+                addPlayer() {
+                },
                 start() {
                     return Promise.resolve({
                         name: player1
@@ -218,7 +258,8 @@ describe('tournamentSession', () => {
                 player3 = 'playerName3';
 
             singleGameSessionMock.expects('create').returns({
-                addPlayer() {},
+                addPlayer() {
+                },
                 start() {
                     return Promise.resolve({
                         name: player1

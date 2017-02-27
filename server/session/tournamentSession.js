@@ -57,18 +57,31 @@ const TournamentSession = {
         return this.rounds * gamesPerRound;
     },
 
-    handleLeavingClient(playerName) {
-        let player = this.getPlayer(playerName);
+    handleLeavingClient(playerName, webSocket) {
+        const player = this.getPlayer(playerName);
 
-        player.isPlaying = false;
-        player.connected = false;
-        player.clients.forEach((actClient) => {
-            this.clientApi.removeClient(actClient, 'One of the clients of player ' + playerName + ' disconnected');
-        });
+        if (player) {
+            if (this.started) {
+                player.isPlaying = false;
+                player.connected = false;
+                player.clients.forEach((actClient) => {
+                    this.clientApi.removeClient(actClient, 'One of the clients of player ' + playerName + ' disconnected');
+                });
+            } else {
+                player.clients = player.clients.filter(actWebSocket => actWebSocket !== webSocket);
+                this.rankingTable.removePlayer(playerName);
+
+                if (player.clients.length === 0) {
+                    this.players = this.players.filter(actPlayer => actPlayer !== player);
+                }
+
+            }
+            this.clientApi.broadcastTournamentRankingTable(this.rankingTable);
+        }
     },
 
     addPlayer(webSocket, playerName) {
-        this.clientApi.addClient(webSocket).catch(this.handleLeavingClient.bind(this, playerName));
+        this.clientApi.addClient(webSocket).catch(() => this.handleLeavingClient(playerName, webSocket));
 
         let player = this.getPlayer(playerName);
 
