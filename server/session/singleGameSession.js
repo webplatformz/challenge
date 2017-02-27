@@ -241,7 +241,13 @@ const Session = {
     },
 
     handlePlayerLeft(player, code, message) {
-        Logger.error('Player left. ' + code + ': ' + message);
+        const messageToPrint = message || 'No Message given';
+
+        if (code !== 1000) {
+            Logger.error(`Player ${player.name} left with reason: ${code}|${messageToPrint}`);
+        } else {
+            Logger.info(`Player ${player.name} left with reason: ${code}|${messageToPrint}`);
+        }
 
         let team = this.teams.filter((team) => {
             return team.name !== player.team.name;
