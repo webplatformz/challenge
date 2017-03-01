@@ -65,12 +65,7 @@ function createPlayer(session, webSocket, playerName, chosenTeamIndex) {
     const playerId = generateUuid();
     webSocket.jassChallengeId = `${playerName}#${seatId}`;
 
-    // Adjust player's team name
-    let team = session.teams[teamIndex];
-    team.name = `${team.name} ${playerName}`;
-
-    // Create player
-    return Player.create(team, playerName, playerId, seatId, {
+    return Player.create(session.teams[teamIndex], playerName, playerId, seatId, {
         dealCards: session.clientApi.dealCards.bind(session.clientApi, webSocket),
         requestTrumpf: session.clientApi.requestTrumpf.bind(session.clientApi, webSocket),
         requestCard: session.clientApi.requestCard.bind(session.clientApi, webSocket),
