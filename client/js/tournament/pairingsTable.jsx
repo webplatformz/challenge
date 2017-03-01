@@ -5,7 +5,7 @@ export default ({pairings = []}) => {
         <table className="pairings">
             <tbody>
             {pairings.map((pairing, index) => (
-                    <tr key={index}>
+                    <tr key={pairing.id}>
                         <td>
                             {(() => {
                                 if (pairing.firstPlayerWon) {

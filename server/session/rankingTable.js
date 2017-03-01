@@ -36,7 +36,8 @@ const RankingTable = {
         this.pairingResults.unshift({
             player1,
             player2,
-            firstPlayerWon
+            firstPlayerWon,
+            id: this.pairingResults.length
         });
     },
 
