@@ -13,13 +13,8 @@ export default (props) => {
                     <div key={team.name} className="points-team">
                         {team.winner && <img className="points-trophy" src="/images/trophy.svg" />}
                         <h3>
-                            {team.name} {(() => {
-                            if (props.showPoints) {
-                                return (
-                                    <small>({team.players[0].name} & {team.players[1].name})</small>
-                                );
-                            }
-                        })()}
+                            {team.name}
+                            {props.showPoints && <small> ({team.players[0].name} & {team.players[1].name})</small>}
                         </h3>
                         <div className="current-round-points">
                             {(props.showPoints) ? 'Current Round: ' : ''}{team.currentRoundPoints}
