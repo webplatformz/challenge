@@ -10,7 +10,8 @@ export default (props) => {
         >
             {props.teams.map((team) => {
                 return (
-                    <div key={team.name}>
+                    <div key={team.name} className="points-team">
+                        {team.winner && <img className="points-trophy" src="/images/trophy.svg" />}
                         <h3>
                             {team.name} {(() => {
                             if (props.showPoints) {

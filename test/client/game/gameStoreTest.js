@@ -301,4 +301,25 @@ describe('GameStore', () => {
         expect(GameStore.state.nextStartingPlayerIndex).to.equal(0);
     });
 
+    it('should set winner on broadcast winner team', () => {
+        const name = 'myTeam';
+        const dummyPayload = {
+            action: {
+                actionType: JassAppConstants.BROADCAST_WINNER_TEAM,
+                data: {
+                    name
+                }
+            }
+        };
+        GameStore.state.teams = [
+            { name: 'otherTeam' },
+            { name }
+        ];
+
+        GameStore.handleAction(dummyPayload);
+
+        expect(GameStore.state.teams[0].winner).to.be.undefined;
+        expect(GameStore.state.teams[1].winner).to.equal(true);
+    });
+
 });

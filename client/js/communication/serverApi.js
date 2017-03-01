@@ -66,6 +66,9 @@ const ServerApi = {
             case MessageType.SEND_REGISTRY_BOTS.name:
                 JassActions.sendRegistryBots(message.data);
                 break;
+            case MessageType.BROADCAST_WINNER_TEAM.name:
+                JassActions.broadcastWinnerTeam(message.data);
+                break;
         }
     },
     handleActionsFromUi: (payload) => {

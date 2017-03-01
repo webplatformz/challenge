@@ -459,13 +459,16 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+      position: relative;
     }
 
     .current-round-points {
+      position: relative;
       color: @yellow;
     }
 
     .total-points {
+      position: relative;
       color: @red;
     }
 
@@ -475,5 +478,17 @@
         max-width: 300px;
       }
     }
+  }
+
+  .points-team {
+    position: relative
+  }
+
+  .points-trophy {
+    position: absolute;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.8;
   }
 }
