@@ -177,8 +177,10 @@ const TournamentSession = {
                     if (!player1.connected || !player2.connected) {
                         sessionPromise = this.handlePairingWithDisconnectedClients(pairing);
                     } else {
-                        sessionPromise = createSessionWithPlayers(pairing).start()
-                            .then(this.handleSessionFinish.bind(this, pairing), this.handleSessionFinish.bind(this, pairing));
+                        const singleGameSession = createSessionWithPlayers(pairing);
+                        sessionPromise = singleGameSession.start()
+                            .then(this.handleSessionFinish.bind(this, pairing), this.handleSessionFinish.bind(this, pairing))
+                            .then(() => singleGameSession.dispose());
                     }
 
                     sessionPromise.then(() => {
