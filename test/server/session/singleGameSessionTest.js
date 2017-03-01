@@ -162,7 +162,6 @@ describe('Session', function () {
 
             clientApiMock.expects('broadcastSessionJoined').once();
             clientApiMock.expects('addClient').once().returns(rejectedPromise);
-            clientApiMock.expects('broadcastWinnerTeam').once();
 
             session.addPlayer(webSocketDummy, 'playerName');
 
@@ -332,6 +331,7 @@ describe('Session', function () {
             session.players = fourPlayers;
 
             session.start().then((winningTeam) => {
+                expect(session.finished).to.equal(true);
                 expect(winningTeam).to.eql(session.teams[1]);
                 gameFactoryMock.verify();
                 clientApiMock.verify();
@@ -396,18 +396,28 @@ describe('Session', function () {
     });
 
     describe('handlePlayerLeft', () => {
-        it('should broadcast opposite team as winners', () => {
+        it('should ignore leaving players after finish', () => {
             let code = CloseEventCode.NORMAL,
                 message = 'message';
-            session.started = true;
-            session.cancelGame = sinon.spy();
+            session.finished = true;
 
-            clientApiMock.expects('broadcastWinnerTeam').once().withArgs(fourPlayers[1].team);
+            clientApiMock.expects('broadcastWinnerTeam').never();
 
             session.handlePlayerLeft(fourPlayers[0], code, message);
 
             clientApiMock.verify();
-            sinon.assert.calledOnce(session.cancelGame);
+        });
+
+        it('should finish with opposite team as winners', () => {
+            let code = CloseEventCode.NORMAL,
+                message = 'message';
+            session.started = true;
+            session.finishGame = sinon.spy();
+
+            session.handlePlayerLeft(fourPlayers[0], code, message);
+
+            sinon.assert.calledOnce(session.finishGame);
+            sinon.assert.calledWith(session.finishGame, fourPlayers[1].team);
         });
     });
 

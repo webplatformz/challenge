@@ -125,7 +125,11 @@ const ClientApi = {
 
     setCommunicationProxy(proxyHandler) {
         this.clientCommunication = new Proxy(ClientCommunication, proxyHandler);
-    }
+    },
+
+    broadcastPlayerLeft(playerName) {
+        this.clientCommunication.broadcast(this.clients, MessageType.ERROR.name, `Player ${playerName} left the game!`);
+    },
 };
 
 export function create(timeoutInMilliseconds = 0) {

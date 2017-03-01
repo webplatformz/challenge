@@ -19,7 +19,8 @@ const ServerApi = {
         let message = JSON.parse(messageEvent.data);
 
         switch (message.type) {
-            case MessageType.BAD_MESSAGE:
+            case MessageType.BAD_MESSAGE.name:
+            case MessageType.ERROR.name:
                 JassActions.throwError('SERVER', message.data);
                 break;
             case MessageType.REQUEST_PLAYER_NAME.name:

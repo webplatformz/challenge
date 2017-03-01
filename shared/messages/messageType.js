@@ -175,5 +175,8 @@ export const MessageType = {
     },
     SEND_REGISTRY_BOTS: {
         name: 'SEND_REGISTRY_BOTS'
-    }
+    },
+    ERROR: {
+        name: 'ERROR'
+    },
 };
