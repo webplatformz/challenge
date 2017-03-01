@@ -147,6 +147,7 @@ describe('tournamentSession', () => {
 
             rejectedPromise.catch(() => {
                 expect(session.players[0].connected).to.equal(false);
+                expect(session.rankingTable.ranking[0].crashed).to.equal(true);
                 clientApiMock.verify();
                 done();
             }).catch(done);

@@ -28,6 +28,10 @@ const RankingTable = {
         }
     },
 
+    markPlayerAsCrashed(playerName) {
+        this.findPlayerByName(playerName).crashed = true;
+    },
+
     addPairingResult(player1, player2, firstPlayerWon) {
         this.pairingResults.unshift({
             player1,

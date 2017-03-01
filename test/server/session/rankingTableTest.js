@@ -73,6 +73,17 @@ describe('rankingTable', () => {
         });
     });
 
+    describe('markPlayerAsCrashed', () => {
+        it('should add crashed property to Player', () => {
+            const player = 'player';
+            rankingTable.addPlayer(player);
+
+            rankingTable.markPlayerAsCrashed(player);
+
+            expect(rankingTable.ranking[0].crashed).to.equal(true);
+        });
+    });
+
     describe('updatePlayerRating', () => {
         it('should update given player rating', () => {
             const player1 = 'player1',

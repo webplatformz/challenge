@@ -64,6 +64,7 @@ const TournamentSession = {
             if (this.started) {
                 player.isPlaying = false;
                 player.connected = false;
+                this.rankingTable.markPlayerAsCrashed(playerName);
                 player.clients.forEach((actClient) => {
                     this.clientApi.removeClient(actClient, 'One of the clients of player ' + playerName + ' disconnected');
                 });
