@@ -251,6 +251,10 @@ const Session = {
                 SessionHandler.removeSession(this);
             }
         }
+    },
+
+    dispose() {
+        this.clientApi.dispose();
     }
 };
 

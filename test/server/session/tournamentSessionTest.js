@@ -7,7 +7,7 @@ describe('tournamentSession', () => {
 
     let session,
         clientApiMock,
-        singleGameSessionMock,
+        singleGameSessionFactoryMock,
         createWebSocketDummy = () => ({
             send() {
             }
@@ -18,12 +18,12 @@ describe('tournamentSession', () => {
     beforeEach(() => {
         session = TournamentSession.create('sessionName');
         clientApiMock = sinon.mock(session.clientApi);
-        singleGameSessionMock = sinon.mock(SingleGameSession);
+        singleGameSessionFactoryMock = sinon.mock(SingleGameSession);
     });
 
     afterEach(() => {
         clientApiMock.restore();
-        singleGameSessionMock.restore();
+        singleGameSessionFactoryMock.restore();
     });
 
     describe('calculateGameCount', () => {
@@ -228,14 +228,16 @@ describe('tournamentSession', () => {
             let player1 = 'playerName1',
                 player2 = 'playerName2';
 
-            singleGameSessionMock.expects('create').returns({
+            singleGameSessionFactoryMock.expects('create').returns({
                 addPlayer() {
                 },
                 start() {
                     return Promise.resolve({
                         name: player1
                     });
-                }
+                },
+                dispose() {
+                },
             });
 
             clientApiMock.expects('broadcastTournamentStarted').once();
@@ -250,7 +252,7 @@ describe('tournamentSession', () => {
             expect(session.ranking.ranking.getPlayers()).to.have.length(2);
             expect(session.started).to.equal(true);
             clientApiMock.verify();
-            singleGameSessionMock.verify();
+            singleGameSessionFactoryMock.verify();
         });
 
         it('should create pairings with round-robin', () => {
@@ -258,14 +260,16 @@ describe('tournamentSession', () => {
                 player2 = 'playerName2',
                 player3 = 'playerName3';
 
-            singleGameSessionMock.expects('create').returns({
+            singleGameSessionFactoryMock.expects('create').returns({
                 addPlayer() {
                 },
                 start() {
                     return Promise.resolve({
                         name: player1
                     });
-                }
+                },
+                dispose() {
+                },
             });
 
             session.addPlayer(webSocketDummy, player1);
@@ -298,11 +302,13 @@ describe('tournamentSession', () => {
 
             session.players[1].isPlaying = true;
 
-            singleGameSessionMock.expects('create').withArgs(sinon.match.string).once().returns({
+            singleGameSessionFactoryMock.expects('create').withArgs(sinon.match.string).once().returns({
                 addPlayer: addPlayerSpy,
                 start() {
                     return resolvedPromise;
-                }
+                },
+                dispose() {
+                },
             });
 
             session.start();
@@ -311,7 +317,7 @@ describe('tournamentSession', () => {
             expect(addPlayerSpy.calledWith(webSocketDummy, player3)).to.equal(true);
             expect(session.players[0].isPlaying).to.equal(true);
             expect(session.players[2].isPlaying).to.equal(true);
-            singleGameSessionMock.verify();
+            singleGameSessionFactoryMock.verify();
             resolvedPromise.then(() => {
                 expect(session.players[0].isPlaying).to.equal(false);
                 expect(session.players[2].isPlaying).to.equal(false);
@@ -341,11 +347,13 @@ describe('tournamentSession', () => {
 
             session.players[1].isPlaying = true;
 
-            singleGameSessionMock.expects('create').withArgs(sinon.match.string).once().returns({
+            singleGameSessionFactoryMock.expects('create').withArgs(sinon.match.string).once().returns({
                 addPlayer: addPlayerSpy,
                 start() {
                     return resolvedPromise;
-                }
+                },
+                dispose() {
+                },
             });
 
             session.start();
@@ -353,9 +361,40 @@ describe('tournamentSession', () => {
 
             expect(addPlayerSpy.calledWith(webSocketDummy, player1)).to.equal(true);
             expect(addPlayerSpy.calledWith(webSocketDummy, player3)).to.equal(true);
-            singleGameSessionMock.verify();
+            singleGameSessionFactoryMock.verify();
             resolvedPromise.then(() => {
                 expect(session.pairings).to.have.length(8);
+                done();
+            }).catch(done);
+        });
+
+        it('should cleanup after pairing', done => {
+            const player1 = 'playerName1';
+            const player2 = 'playerName2';
+            const addPlayerSpy = sinon.spy();
+            const resolvedPromise = Promise.resolve({
+                name: player2
+            });
+            const disposeSpy = sinon.spy();
+
+            session.addPlayer(webSocketDummy, player1);
+            session.addPlayer(webSocketDummy, player1);
+            session.addPlayer(webSocketDummy, player2);
+            session.addPlayer(webSocketDummy, player2);
+
+            singleGameSessionFactoryMock.expects('create').withArgs(sinon.match.string).once().returns({
+                addPlayer: addPlayerSpy,
+                start() {
+                    return resolvedPromise;
+                },
+                dispose: disposeSpy,
+            });
+
+            const sessionPromise = session.start();
+
+            singleGameSessionFactoryMock.verify();
+            sessionPromise.then(() => {
+                sinon.assert.calledOnce(disposeSpy);
                 done();
             }).catch(done);
         });
