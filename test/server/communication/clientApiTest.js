@@ -46,6 +46,13 @@ describe('Client API', () => {
             expect(clientApi.clients[0]).to.equal(webSocket);
         });
 
+        it('should add dispose function for each client', () => {
+            clientApi.addClient(webSocket);
+            clientApi.addClient(webSocket);
+
+            expect(clientApi.disposeFunctions).to.have.lengthOf(2);
+        });
+
         it('should reject promise and remove client on close event', (done) => {
             let disconnectMessage = 'message';
             let webSocket1 = new WebSocket('ws://localhost:10001');
@@ -655,6 +662,35 @@ describe('Client API', () => {
 
             clientApi.requestPlayerName('testClient');
             sinon.assert.neverCalled(requestSpy);
+        });
+    });
+
+    describe('dispose', () => {
+        it('should call all dispose functions', () => {
+            const webSocket = {
+                on() {},
+                removeEventListener: sinon.spy(),
+            };
+            clientApi.addClient(webSocket);
+            clientApi.addClient(webSocket);
+
+            clientApi.dispose();
+
+            sinon.assert.calledTwice(webSocket.removeEventListener);
+            sinon.assert.calledWith(webSocket.removeEventListener, 'close', sinon.match.func);
+        });
+
+        it('should clean dispose functions array', () => {
+            const webSocket = {
+                on() {},
+                removeEventListener() {},
+            };
+            clientApi.addClient(webSocket);
+            clientApi.addClient(webSocket);
+
+            clientApi.dispose();
+
+            expect(clientApi.disposeFunctions).to.have.lengthOf(0);
         });
     });
 });

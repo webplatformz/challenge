@@ -255,6 +255,10 @@ const Session = {
             this.close(message);
             SessionHandler.removeSession(this);
         }
+    },
+
+    dispose() {
+        this.clientApi.dispose();
     }
 };
 
