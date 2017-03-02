@@ -178,13 +178,13 @@ describe('sessionHandler', () => {
             tournamentSessionMock.expects('create').withArgs(sessionName).once().returns(session);
             sessionMock.expects('addSpectator').once();
             sessionMock.expects('addPlayer').never();
-            sessionMock.expects('isComplete').never();
-            sessionMock.expects('start').once();
+            sessionMock.expects('isComplete').once().returns(true);
+            sessionMock.expects('start').once().returns(Promise.resolve());
 
             sessionHandler.handleClientConnection(webSocket).then(() => {
                 clientApiMock.verify();
                 singleGameSessionMock.verify();
-                startPromise.then(() => sessionMock.verify());
+                startPromise.then(() => sessionMock.verify()).catch(done);
                 done();
             }).catch(done);
         });

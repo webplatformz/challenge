@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import WebSocket from 'ws';
 import * as ClientApi from '../../../server/communication/clientApi';
+import ClientCommunication from '../../../server/communication/clientCommunication';
 import * as GameType from '../../../server/game/gameType';
 import {GameMode} from '../../../shared/game/gameMode';
 import {CardColor} from '../../../shared/deck/cardColor';
@@ -15,8 +16,10 @@ let WebSocketServer = WebSocket.Server;
 
 describe('Client API', () => {
 
-    let wss,
-        clientApi;
+    let wss;
+    let clientApi;
+
+    const ignoreClosedConnectionByServer = () => { /* WebsocketServer closes connection */};
 
     beforeEach(() => {
         wss = new WebSocketServer({port: 10001});
@@ -49,9 +52,9 @@ describe('Client API', () => {
             let webSocket2 = new WebSocket('ws://localhost:10001');
             let webSocket3 = new WebSocket('ws://localhost:10001');
 
-            clientApi.addClient(webSocket1);
+            clientApi.addClient(webSocket1).catch(ignoreClosedConnectionByServer);
             let promise = clientApi.addClient(webSocket2);
-            clientApi.addClient(webSocket3);
+            clientApi.addClient(webSocket3).catch(ignoreClosedConnectionByServer);
 
             webSocket3.on('open', () => {
                 setTimeout(() => {
@@ -82,8 +85,8 @@ describe('Client API', () => {
                     close: () => {}
                 };
 
-            clientApi.addClient(webSocket);
-            clientApi.addClient(webSocket2);
+            clientApi.addClient(webSocket).catch(ignoreClosedConnectionByServer);
+            clientApi.addClient(webSocket2).catch(ignoreClosedConnectionByServer);
 
             clientApi.removeClient(webSocket);
 
@@ -98,7 +101,7 @@ describe('Client API', () => {
                 },
                 message = 'message';
 
-            clientApi.addClient(webSocket);
+            clientApi.addClient(webSocket).catch(ignoreClosedConnectionByServer);
 
             clientApi.removeClient(webSocket, message);
 
@@ -113,7 +116,7 @@ describe('Client API', () => {
                 },
                 message = 'message';
 
-            clientApi.addClient(webSocket);
+            clientApi.addClient(webSocket).catch(ignoreClosedConnectionByServer);
 
             clientApi.removeClient(webSocket, message);
 
@@ -126,7 +129,7 @@ describe('Client API', () => {
             let choosePlayerName = messages.create(MessageType.CHOOSE_PLAYER_NAME.name, 'Hans');
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 clientApi.requestPlayerName(client).then((data) => {
                     expect(data.playerName).to.equal(choosePlayerName.data.playerName);
@@ -144,79 +147,6 @@ describe('Client API', () => {
                 }
             });
         });
-
-        it('should reject invalid answer messages', (done) => {
-            let clientAnswer = messages.create(MessageType.PLAYED_CARDS.name, ['a', 'b', 'c']);
-
-            wss.on('connection', (client) => {
-                clientApi.addClient(client);
-
-                clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
-                    expect(data).to.equal('Invalid Message: ' + JSON.stringify(clientAnswer) + ', expected message with type: CHOOSE_PLAYER_NAME');
-                }).catch(done);
-            });
-
-            let client = new WebSocket('ws://localhost:10001');
-
-            new Promise((resolve) => {
-                client.on('message', (message) => {
-                    message = JSON.parse(message);
-
-                    if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
-                        client.send(JSON.stringify(clientAnswer));
-                    } else if (message.type === MessageType.BAD_MESSAGE.name) {
-                        resolve();
-                    }
-                });
-            }).then(done, done);
-        });
-
-        it('should reject empty answer messages', (done) => {
-            wss.on('connection', (client) => {
-                clientApi.addClient(client);
-
-                clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
-                    expect(data).to.equal('Invalid Message: , expected message with type: CHOOSE_PLAYER_NAME');
-                    done();
-                }).catch(done);
-            });
-
-            let client = new WebSocket('ws://localhost:10001');
-
-            client.on('message', (message) => {
-                message = JSON.parse(message);
-
-                if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
-                    client.send(undefined);
-                }
-            });
-        });
-
-        it('should reject wrong data type', (done) => {
-            let clientAnswer = messages.create(MessageType.CHOOSE_PLAYER_NAME.name, 13);
-
-            wss.on('connection', (client) => {
-                clientApi.addClient(client);
-
-                clientApi.requestPlayerName(client).then(() => done(new Error('Should not resolve'))).catch((data) => {
-                    expect(data.data).to.eql(['Data has an incorrect length']);
-                }).catch(done);
-            });
-
-            let client = new WebSocket('ws://localhost:10001');
-
-            new Promise((resolve) => {
-                client.on('message', (message) => {
-                    message = JSON.parse(message);
-
-                    if (message.type === MessageType.REQUEST_PLAYER_NAME.name) {
-                        client.send(JSON.stringify(clientAnswer));
-                    } else if (message.type === MessageType.BAD_MESSAGE.name) {
-                        resolve();
-                    }
-                });
-            }).then(done, done);
-        });
     });
 
     describe('broadcastTeams', () => {
@@ -226,7 +156,7 @@ describe('Client API', () => {
                 teamsMessage = [];
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 if (clientApi.clients.length === clients.length) {
                     clientApi.broadcastTeams(teamsMessage);
@@ -259,7 +189,7 @@ describe('Client API', () => {
             let cards = ['a', 'b', 'c'];
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
                 clientApi.dealCards(client, cards);
             });
 
@@ -283,7 +213,7 @@ describe('Client API', () => {
             let chooseTrumpf = messages.create(MessageType.CHOOSE_TRUMPF.name, {mode: GameMode.TRUMPF, trumpfColor: CardColor.SPADES});
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 clientApi.requestTrumpf(client, false).then((data) => {
                     expect(data).to.eql(chooseTrumpf.data);
@@ -308,7 +238,7 @@ describe('Client API', () => {
             let gameType = GameType.create(GameMode.SCHIEBE);
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
                 clientApi.rejectTrumpf(client, gameType);
             });
 
@@ -334,7 +264,7 @@ describe('Client API', () => {
                 stichMessage = {name: 'hans'};
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 if (clientApi.clients.length === clients.length) {
                     clientApi.broadcastStich(stichMessage);
@@ -369,7 +299,7 @@ describe('Client API', () => {
                 clientPromises = [];
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 if (clientApi.clients.length === clients.length) {
                     clientApi.broadcastCardPlayed(playedCards);
@@ -404,7 +334,7 @@ describe('Client API', () => {
                 clientPromises = [];
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 if (clientApi.clients.length === clients.length) {
                     clientApi.broadcastTrumpf(gameType);
@@ -438,7 +368,7 @@ describe('Client API', () => {
                 cardsOnTable = ['a', 'b'];
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 clientApi.requestCard(client, cardsOnTable).then((data) => {
                     expect(data.card).to.equal(chooseCard.data.card);
@@ -464,7 +394,7 @@ describe('Client API', () => {
                 card = 'e';
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 clientApi.rejectCard(client, card, cardsOnTable);
             });
@@ -495,7 +425,7 @@ describe('Client API', () => {
                 };
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 clientApi.requestSessionChoice(client, availableSessions).then((data) => {
                     expect(data.sessionChoice).to.equal(SessionChoice.CREATE_NEW);
@@ -530,7 +460,7 @@ describe('Client API', () => {
                 };
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 if (++connectedClients === 2) {
                     setTimeout(() => {
@@ -564,7 +494,7 @@ describe('Client API', () => {
                 playersInSession = 'playersInSession';
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 clientApi.sessionJoined(client, sessionName, player, playersInSession);
             });
@@ -613,7 +543,7 @@ describe('Client API', () => {
                 };
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 if (clientApi.clients.length === clients.length) {
                     clientApi.broadcastSessionJoined(sessionName, playersInSession[1], playersInSession);
@@ -649,7 +579,7 @@ describe('Client API', () => {
                 rankingTable = 'rankingTable';
 
             wss.on('connection', (client) => {
-                clientApi.addClient(client);
+                clientApi.addClient(client).catch(ignoreClosedConnectionByServer);
 
                 if (clientApi.clients.length === clients.length) {
                     clientApi.broadcastTournamentRankingTable(rankingTable);
@@ -699,6 +629,32 @@ describe('Client API', () => {
             clientApi.close(webSocket, 'message');
 
             expect(errorSpy.callCount).to.equal(1);
+        });
+    });
+
+    describe('setCommunicationProxy', () => {
+
+        let requestSpy;
+
+        beforeEach(() => {
+           requestSpy = sinon.spy(ClientCommunication, 'request');
+        });
+
+        afterEach(() => {
+            requestSpy.restore();
+        });
+
+        it('should proxy calls to ClientCommunication', (done) => {
+            const proxy = {
+                get() {
+                    done();
+                }
+            };
+
+            clientApi.setCommunicationProxy(proxy);
+
+            clientApi.requestPlayerName('testClient');
+            sinon.assert.neverCalled(requestSpy);
         });
     });
 });

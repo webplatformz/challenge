@@ -2,12 +2,15 @@ import * as ClientApi from '../communication/clientApi';
 import * as Game from '../game/game';
 import * as Player from '../game/player/player';
 import * as Team from '../game/player/team';
-import {SessionType} from '../../shared/session/sessionType';
+import { SessionType } from '../../shared/session/sessionType';
 import SessionHandler from './sessionHandler';
-import {MessageType} from '../../shared/messages/messageType';
-import {startRandomBot} from '../bot/botStarter';
-import {Logger} from '../logger';
+import { MessageType } from '../../shared/messages/messageType';
+import { startRandomBot } from '../bot/botStarter';
+import { Logger } from '../logger';
 import EnvironmentUtil from '../registry/environmentUtil';
+import * as JsonResultProxy from '../communication/jsonResultProxy';
+
+const tournamentLogging = Boolean(process.env.TOURNAMENT_LOGGING);
 
 function createTeamsArrayForClient(session) {
     return session.teams.map((team) => {
@@ -60,6 +63,7 @@ function createPlayer(session, webSocket, playerName, chosenTeamIndex) {
     const playersInTeam = getPlayersInTeam(session, session.teams[teamIndex]).length;
     const seatId = (playersInTeam * 2) + teamIndex;
     const playerId = generateUuid();
+    webSocket.jassChallengeId = `${playerName}#${seatId}`;
 
     // Adjust player's team name
     let team = session.teams[teamIndex];
@@ -96,7 +100,7 @@ function insertPlayer(session, player) {
 }
 
 function registerPlayerAsClient(session, webSocket, player) {
-    session.clientApi.addClient(webSocket).catch(({code: code, message: message}) => {
+    session.clientApi.addClient(webSocket).catch(({ code: code, message: message }) => {
         session.handlePlayerLeft(player, code, message);
     });
 }
@@ -131,7 +135,6 @@ const Session = {
     maxPoints: 2500,
     startingPlayer: 0,
     type: SessionType.SINGLE_GAME,
-    gamePromise: undefined,
     finishGame: undefined,
     cancelGame: undefined,
     started: false,
@@ -170,19 +173,45 @@ const Session = {
 
         this.joinBotListeners.forEach(joinBotListener => joinBotListener());
 
+        let resultProxy;
+        if (tournamentLogging) {
+            resultProxy = JsonResultProxy.create(`${this.players[0].name} vs ${this.players[1].name}`);
+            this.clientApi.setCommunicationProxy(resultProxy);
+        }
         this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
 
-        this.gamePromise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             this.finishGame = resolve;
             this.cancelGame = reject;
             this.started = true;
 
-            this.gameCycle().then((winningTeam) => {
-                resolve(winningTeam);
-            });
-        });
+            this.gameCycle()
+                .then((winningTeam) => {
+                    if (tournamentLogging) {
+                        resultProxy.destroy();
+                    }
+                    resolve(winningTeam);
+                })
+                .catch(error => {
+                    if (tournamentLogging) {
+                        resultProxy.destroy();
+                    }
 
-        return this.gamePromise;
+                    if (error && error.data) {
+                        const failingPlayer = error.data;
+                        Logger.error(`Player ${failingPlayer.name}: ${error.message}`);
+                        const winningTeam = this.teams.find(team => team.name !== failingPlayer.team.name);
+                        this.clientApi.broadcastWinnerTeam(winningTeam);
+                        resolve(winningTeam);
+                    } else {
+                        Logger.error(error);
+                        const winningTeam = this.teams[0].points >= this.teams[1].points ? this.teams[0] : this.teams[1];
+                        this.clientApi.broadcastWinnerTeam(winningTeam);
+                        resolve(winningTeam);
+                    }
+
+                });
+        });
     },
 
     gameCycle(nextStartingPlayer = this.getNextStartingPlayer()) {
@@ -229,7 +258,7 @@ const Session = {
     }
 };
 
-export function create(name) {
+export function create(name, timeoutInMillis) {
     let session = Object.create(Session);
     session.players = [];
     session.name = name;
@@ -237,7 +266,7 @@ export function create(name) {
         Team.create('Team 1'),
         Team.create('Team 2')
     ];
-    session.clientApi = ClientApi.create();
+    session.clientApi = ClientApi.create(timeoutInMillis);
     session.isTournament = false;
     session.finalizeRegistrationForPlayerFunctions = {};
     session.joinBotListeners = [];

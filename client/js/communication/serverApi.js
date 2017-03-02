@@ -5,7 +5,7 @@ import * as messages from '../../../shared/messages/messages';
 import {MessageType} from '../../../shared/messages/messageType';
 import {SessionChoice} from '../../../shared/session/sessionChoice';
 
-const protocol = (window.location.hostname === 'localhost') ? 'ws' : 'wss';
+const protocol = (window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.99')) ? 'ws' : 'wss';
 const serverAddress = `${protocol}://${window.location.host}`;
 
 let webSocket;
