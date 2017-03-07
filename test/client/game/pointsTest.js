@@ -49,7 +49,8 @@ describe('Points Component', () => {
                         }
                     ],
                     currentRoundPoints: 50,
-                    points: 25
+                    points: 25,
+                    winner: true
                 },
                 {
                     name: 'Team 2',
@@ -71,16 +72,18 @@ describe('Points Component', () => {
         let actual = shallowRenderer.getRenderOutput();
 
         let teams = actual.props.children;
-        let team1Title = teams[0].props.children[0].props.children;
-        let team1CurrentPoints = teams[0].props.children[1].props.children;
-        let team1TotalPoints = teams[0].props.children[2].props.children;
+        let team1Title = teams[0].props.children[1].props.children;
+        let team1CurrentPoints = teams[0].props.children[2].props.children;
+        let team1TotalPoints = teams[0].props.children[3].props.children;
+        expect(teams[0].props.children[0].type).to.equal('img');
         expect(teams[0].key).to.equal(props.teams[0].name);
         expect(team1Title[0]).to.equal(props.teams[0].name);
         expect(team1CurrentPoints[1]).to.equal(props.teams[0].currentRoundPoints);
         expect(team1TotalPoints[1]).to.equal(props.teams[0].points);
-        let team2Title = teams[1].props.children[0].props.children;
-        let team2CurrentPoints = teams[1].props.children[1].props.children;
-        let team2TotalPoints = teams[1].props.children[2].props.children;
+        let team2Title = teams[1].props.children[1].props.children;
+        let team2CurrentPoints = teams[1].props.children[2].props.children;
+        let team2TotalPoints = teams[1].props.children[3].props.children;
+        expect(teams[1].props.children[0]).to.be.undefined;
         expect(teams[1].key).to.equal(props.teams[1].name);
         expect(team2Title[0]).to.equal(props.teams[1].name);
         expect(team2CurrentPoints[1]).to.equal(props.teams[1].currentRoundPoints);

@@ -212,6 +212,10 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 this.state.showPoints = !this.state.showPoints;
                 this.emit('change');
                 break;
+            case JassAppConstants.BROADCAST_WINNER_TEAM:
+                this.state.teams.find(team => team.name === action.data.name).winner = true;
+                this.emit('change');
+                break;
         }
     }
 

@@ -200,6 +200,13 @@ function createAddBotFromRegistry(data) {
     }
 }
 
+function createError(data) {
+    return {
+        type: MessageType.ERROR.name,
+        data
+    }
+}
+
 export function create(messageType, ...data) {
     switch (messageType) {
         case MessageType.REQUEST_PLAYER_NAME.name:
@@ -256,6 +263,8 @@ export function create(messageType, ...data) {
             return createSendRegistryBots(...data);
         case MessageType.ADD_BOT_FROM_REGISTRY.name:
             return createAddBotFromRegistry(...data);
+        case MessageType.ERROR.name:
+            return createError(...data);
         default:
             throw 'Unknown message type ' + messageType;
     }

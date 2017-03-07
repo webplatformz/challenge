@@ -19,7 +19,8 @@ const ServerApi = {
         let message = JSON.parse(messageEvent.data);
 
         switch (message.type) {
-            case MessageType.BAD_MESSAGE:
+            case MessageType.BAD_MESSAGE.name:
+            case MessageType.ERROR.name:
                 JassActions.throwError('SERVER', message.data);
                 break;
             case MessageType.REQUEST_PLAYER_NAME.name:
@@ -64,6 +65,9 @@ const ServerApi = {
                 break;
             case MessageType.SEND_REGISTRY_BOTS.name:
                 JassActions.sendRegistryBots(message.data);
+                break;
+            case MessageType.BROADCAST_WINNER_TEAM.name:
+                JassActions.broadcastWinnerTeam(message.data);
                 break;
         }
     },
