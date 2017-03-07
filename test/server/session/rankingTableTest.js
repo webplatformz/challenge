@@ -51,6 +51,39 @@ describe('rankingTable', () => {
         });
     });
 
+    describe('removePlayer', () => {
+        it('should remove Player from ranking when 1 connected client', () => {
+            const player = 'player';
+            rankingTable.addPlayer(player);
+
+            rankingTable.removePlayer(player);
+
+            expect(rankingTable.ranking).to.have.lengthOf(0);
+        });
+
+        it('should decrease connectedClients on Player with 2 connected clients', () => {
+            const player = 'player';
+            rankingTable.addPlayer(player);
+            rankingTable.addPlayer(player);
+
+            rankingTable.removePlayer(player);
+
+            expect(rankingTable.ranking).to.have.lengthOf(1);
+            expect(rankingTable.ranking[0].playerName).to.equal(player);
+        });
+    });
+
+    describe('markPlayerAsCrashed', () => {
+        it('should add crashed property to Player', () => {
+            const player = 'player';
+            rankingTable.addPlayer(player);
+
+            rankingTable.markPlayerAsCrashed(player);
+
+            expect(rankingTable.ranking[0].crashed).to.equal(true);
+        });
+    });
+
     describe('updatePlayerRating', () => {
         it('should update given player rating', () => {
             const player1 = 'player1',

@@ -27,7 +27,8 @@ const ServerApi = {
         let {data, type} = JSON.parse(messageEvent.data);
 
         switch (type) {
-            case MessageType.BAD_MESSAGE:
+            case MessageType.BAD_MESSAGE.name:
+            case MessageType.ERROR.name:
                 dispatch(createErrorAction(data, 'SERVER'));
                 break;
             case MessageType.REQUEST_PLAYER_NAME.name:
@@ -86,17 +87,20 @@ const ServerApi = {
             case MessageType.SEND_REGISTRY_BOTS.name:
                 JassActions.sendRegistryBots(data);
                 break;
+            case MessageType.BROADCAST_WINNER_TEAM.name:
+                JassActions.broadcastWinnerTeam(message.data);
+                break;
         }
     },
-    
+
     handleErrorFromServer(dispatch) {
         dispatch(createErrorAction('The connection to the server has been lost!', 'WEBSOCKET'));
     },
-    
+
     sendChoosePlayerNameMessage(playerName) {
         sendJSONMessageToClient(MessageType.CHOOSE_PLAYER_NAME.name, playerName);
     },
-    
+
     sendCreateNewSessionMessage(sessionName, sessionType, asSpectator, chosenTeamIndex) {
         sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.CREATE_NEW, {
             sessionName,
@@ -105,7 +109,7 @@ const ServerApi = {
             chosenTeamIndex
         });
     },
-    
+
     sendChooseExistingSessionMessage(sessionName, chosenTeamIndex) {
         sendJSONMessageToClient(MessageType.CHOOSE_SESSION.name, SessionChoice.JOIN_EXISTING, {
             sessionName,
@@ -122,7 +126,7 @@ const ServerApi = {
             sessionName
         });
     },
-    
+
     handleActionsFromUi(payload) {
         if (payload.source === 'VIEW_ACTION') {
             let action = payload.action;

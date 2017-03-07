@@ -65,12 +65,7 @@ function createPlayer(session, webSocket, playerName, chosenTeamIndex) {
     const playerId = generateUuid();
     webSocket.jassChallengeId = `${playerName}#${seatId}`;
 
-    // Adjust player's team name
-    let team = session.teams[teamIndex];
-    team.name = `${team.name} ${playerName}`;
-
-    // Create player
-    return Player.create(team, playerName, playerId, seatId, {
+    return Player.create(session.teams[teamIndex], playerName, playerId, seatId, {
         dealCards: session.clientApi.dealCards.bind(session.clientApi, webSocket),
         requestTrumpf: session.clientApi.requestTrumpf.bind(session.clientApi, webSocket),
         requestCard: session.clientApi.requestCard.bind(session.clientApi, webSocket),
@@ -136,8 +131,8 @@ const Session = {
     startingPlayer: 0,
     type: SessionType.SINGLE_GAME,
     finishGame: undefined,
-    cancelGame: undefined,
     started: false,
+    finished: false,
 
     /**
      * @param chosenTeamIndex index of the team the player would like to join (optional, otherwise the next free place is assigned)
@@ -180,17 +175,21 @@ const Session = {
         }
         this.clientApi.broadcastTeams(createTeamsArrayForClient(this));
 
-        return new Promise((resolve, reject) => {
-            this.finishGame = resolve;
-            this.cancelGame = reject;
+        return new Promise((resolve) => {
             this.started = true;
+            this.finishGame = winningTeam => {
+                this.started = false;
+                this.finished = true;
+                this.clientApi.broadcastWinnerTeam(winningTeam);
+                resolve(winningTeam);
+            };
 
             this.gameCycle()
                 .then((winningTeam) => {
                     if (tournamentLogging) {
                         resultProxy.destroy();
                     }
-                    resolve(winningTeam);
+                    this.finishGame(winningTeam);
                 })
                 .catch(error => {
                     if (tournamentLogging) {
@@ -201,13 +200,11 @@ const Session = {
                         const failingPlayer = error.data;
                         Logger.error(`Player ${failingPlayer.name}: ${error.message}`);
                         const winningTeam = this.teams.find(team => team.name !== failingPlayer.team.name);
-                        this.clientApi.broadcastWinnerTeam(winningTeam);
-                        resolve(winningTeam);
+                        this.finishGame(winningTeam);
                     } else {
                         Logger.error(error);
                         const winningTeam = this.teams[0].points >= this.teams[1].points ? this.teams[0] : this.teams[1];
-                        this.clientApi.broadcastWinnerTeam(winningTeam);
-                        resolve(winningTeam);
+                        this.finishGame(winningTeam);
                     }
 
                 });
@@ -223,12 +220,10 @@ const Session = {
             let pointsTeamB = this.teams[1].points;
 
             if (pointsTeamA > pointsTeamB && pointsTeamA >= this.maxPoints) {
-                this.clientApi.broadcastWinnerTeam(this.teams[0]);
                 return this.teams[0];
             }
 
             if (pointsTeamB > pointsTeamA && pointsTeamB >= this.maxPoints) {
-                this.clientApi.broadcastWinnerTeam(this.teams[1]);
                 return this.teams[1];
             }
 
@@ -241,20 +236,25 @@ const Session = {
     },
 
     handlePlayerLeft(player, code, message) {
-        Logger.error('Player left. ' + code + ': ' + message);
+        if (!this.finished) {
+            const messageToPrint = message || 'No Message given';
 
-        let team = this.teams.filter((team) => {
-            return team.name !== player.team.name;
-        })[0];
+            Logger.error(`Player ${player.name} left with reason: ${code}|${messageToPrint}`);
+            this.clientApi.broadcastPlayerLeft(player.name);
 
-        this.clientApi.broadcastWinnerTeam(team);
+            const team = this.teams.filter(team => team.name !== player.team.name)[0];
 
-        if (this.started) {
-            this.cancelGame(team);
-        } else {
-            this.close(message);
-            SessionHandler.removeSession(this);
+            if (this.started) {
+                this.finishGame(team);
+            } else {
+                this.close(message);
+                SessionHandler.removeSession(this);
+            }
         }
+    },
+
+    dispose() {
+        this.clientApi.dispose();
     }
 };
 

@@ -1,21 +1,22 @@
-import {MessageType} from '../../shared/messages/messageType';
+import { MessageType } from '../../shared/messages/messageType';
 import ClientCommunication from './clientCommunication';
 import _ from 'lodash';
 import WebSocket from 'ws';
-import {Logger} from '../logger';
+import { Logger } from '../logger';
 import CloseEventCode from './closeEventCode';
-
 
 const ClientApi = {
     addClient(client) {
         this.clients.push(client);
         return new Promise((resolve, reject) => {
-            client.on('close', (code, message) => {
+            const closeHandler = (code, message) => {
                 this.clients = this.clients.filter((actClient) => {
                     return actClient !== client;
                 });
-                reject({code, message});
-            });
+                reject({ code, message });
+            };
+            client.on('close', closeHandler);
+            this.disposeFunctions.push(() => client.removeEventListener('close', closeHandler));
         });
     },
 
@@ -125,12 +126,23 @@ const ClientApi = {
 
     setCommunicationProxy(proxyHandler) {
         this.clientCommunication = new Proxy(ClientCommunication, proxyHandler);
+    },
+
+    broadcastPlayerLeft(playerName) {
+        this.clientCommunication.broadcast(this.clients, MessageType.ERROR.name, `Player ${playerName} left the game!`);
+    },
+
+    dispose() {
+        this.disposeFunctions = this.disposeFunctions
+            .map(disposeFunction => disposeFunction())
+            .filter(disposeResult => disposeResult);
     }
 };
 
 export function create(timeoutInMilliseconds = 0) {
     let clientApi = Object.create(ClientApi);
     clientApi.clients = [];
+    clientApi.disposeFunctions = [];
     clientApi.timeoutInSeconds = timeoutInMilliseconds;
     clientApi.clientCommunication = ClientCommunication;
     return clientApi;
