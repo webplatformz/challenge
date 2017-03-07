@@ -41,10 +41,22 @@ describe('RankingTable', () => {
 
         rankingRows.forEach((rankingRow, index) => {
             let ranking = props.ranking[index];
+            const playerNameContainer = rankingRow.props.children[1];
             expect(rankingRow.props.children[0].props.children).to.equal(ranking.rank);
-            expect(rankingRow.props.children[1].props.children).to.equal(ranking.playerName);
+            expect(playerNameContainer.props.children[0]).to.equal(ranking.playerName);
+            expect(playerNameContainer.props.children[2]).to.be.undefined;
             expect(rankingRow.props.children[2]).to.be.undefined;
             expect(rankingRow.props.children[3].props.children).to.equal(ranking.connectedClients);
         });
+    });
+
+    it('should mark crashed bots', () => {
+        props.ranking[1].crashed = true;
+        shallowRenderer.render(React.createElement(RankingTable, props));
+
+        let actual = shallowRenderer.getRenderOutput();
+
+        let rankingRows = actual.props.children[1].props.children;
+        expect(rankingRows[1].props.children[1].props.children[2].type).equal('img');
     });
 });

@@ -268,5 +268,12 @@ export default {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.SHOW_RANKING_TABLE
         })
+    },
+
+    broadcastWinnerTeam(team) {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.BROADCAST_WINNER_TEAM,
+            data: team
+        })
     }
 };

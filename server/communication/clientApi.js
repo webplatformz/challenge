@@ -128,6 +128,10 @@ const ClientApi = {
         this.clientCommunication = new Proxy(ClientCommunication, proxyHandler);
     },
 
+    broadcastPlayerLeft(playerName) {
+        this.clientCommunication.broadcast(this.clients, MessageType.ERROR.name, `Player ${playerName} left the game!`);
+    },
+
     dispose() {
         this.disposeFunctions = this.disposeFunctions
             .map(disposeFunction => disposeFunction())

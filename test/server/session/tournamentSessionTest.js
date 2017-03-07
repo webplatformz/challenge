@@ -8,10 +8,12 @@ describe('tournamentSession', () => {
     let session,
         clientApiMock,
         singleGameSessionFactoryMock,
-        webSocketDummy = {
+        createWebSocketDummy = () => ({
             send() {
             }
-        };
+        }),
+        webSocketDummy = createWebSocketDummy(),
+        webSocketDummy2 = createWebSocketDummy();
 
     beforeEach(() => {
         session = TournamentSession.create('sessionName');
@@ -85,7 +87,7 @@ describe('tournamentSession', () => {
 
         it('should add client to already existing playerName', () => {
             session.addPlayer(webSocketDummy, playerName);
-            session.addPlayer(webSocketDummy, playerName);
+            session.addPlayer(webSocketDummy2, playerName);
 
             expect(session.players).to.have.length(1);
             expect(session.players[0]).to.eql({
@@ -94,33 +96,70 @@ describe('tournamentSession', () => {
                 connected: true,
                 clients: [
                     webSocketDummy,
-                    webSocketDummy
+                    webSocketDummy2
                 ]
             });
         });
 
-        it('should close connections and mark player offline when one of its clients disconnects', (done) => {
+        it('should remove player and ranking when clients disconnect before play', (done) => {
+            let rejectedPromise = Promise.reject();
+            clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(rejectedPromise);
+            clientApiMock.expects('broadcastTournamentRankingTable').twice();
+
+            session.addPlayer(webSocketDummy, playerName);
+
+            rejectedPromise.catch(() => {
+                expect(session.players).to.have.lengthOf(0);
+                expect(session.rankingTable.ranking).to.have.lengthOf(0);
+                clientApiMock.verify();
+                done();
+            }).catch(done);
+        });
+
+        it('should remove client from clients array when one client disconnects before play', (done) => {
+            let rejectedPromise = Promise.reject();
+            clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(Promise.resolve());
+            clientApiMock.expects('addClient').withArgs(webSocketDummy2).once().returns(rejectedPromise);
+            clientApiMock.expects('broadcastTournamentRankingTable').thrice();
+
+            session.addPlayer(webSocketDummy, playerName);
+            session.addPlayer(webSocketDummy2, playerName);
+
+            rejectedPromise.catch(() => {
+                expect(session.players).to.have.lengthOf(1);
+                expect(session.players[0].clients).to.have.lengthOf(1);
+                expect(session.rankingTable.ranking).to.have.lengthOf(1);
+                clientApiMock.verify();
+                done();
+            }).catch(done);
+        });
+
+        it('should close connections and mark player offline when one of its clients disconnects during play', (done) => {
             let rejectedPromise = Promise.reject();
             clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(Promise.resolve());
             clientApiMock.expects('addClient').withArgs(webSocketDummy).once().returns(rejectedPromise);
             clientApiMock.expects('removeClient').withArgs(webSocketDummy, sinon.match.string).twice();
+            clientApiMock.expects('broadcastTournamentRankingTable').thrice();
+            session.started = true;
 
             session.addPlayer(webSocketDummy, playerName);
             session.addPlayer(webSocketDummy, playerName);
 
             rejectedPromise.catch(() => {
                 expect(session.players[0].connected).to.equal(false);
+                expect(session.rankingTable.ranking[0].crashed).to.equal(true);
                 clientApiMock.verify();
                 done();
             }).catch(done);
         });
 
         it('should not add client to already existing playerName with two clients', () => {
-            clientApiMock.expects('removeClient').withArgs(webSocketDummy, sinon.match.string).once();
+            const webSocketDummy3 = createWebSocketDummy();
+            clientApiMock.expects('removeClient').withArgs(webSocketDummy3, sinon.match.string).once();
 
             session.addPlayer(webSocketDummy, playerName);
-            session.addPlayer(webSocketDummy, playerName);
-            session.addPlayer(webSocketDummy, playerName);
+            session.addPlayer(webSocketDummy2, playerName);
+            session.addPlayer(webSocketDummy3, playerName);
 
             expect(session.players).to.have.length(1);
             expect(session.players[0].clients).to.have.length(2);

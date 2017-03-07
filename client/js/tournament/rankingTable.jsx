@@ -18,7 +18,7 @@ export default ({ranking = []}) => {
             {ranking.map((player) => (
                 <tr key={player.playerName}>
                     <td>{player.rank}</td>
-                    <td>{player.playerName}</td>
+                    <td>{player.playerName} {player.crashed && <img alt="Bot crashed!" src="/images/skull.svg" />}</td>
                     {hasRating && <td>{Math.floor(player.rating)}</td>}
                     <td>{player.connectedClients}</td>
                 </tr>
