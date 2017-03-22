@@ -11,5 +11,7 @@ RUN npm install
 # Bundle app source
 COPY . /usr/src/app
 
+ENV TOURNAMENT_ROUNDS 5
+
 EXPOSE 3000
 CMD [ "npm", "start" ]
