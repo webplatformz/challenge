@@ -53,6 +53,7 @@ There are some env variables you can set to alter the behaviour of the server.
   Boolen, if set to true, the server will store a json file for each game (Bot vs. Bot) with all the messages for parsing. These messages will be stored to the base directory of this repo.
   
 To add these variables to the docker Image, just add a line for each of them in the Dockerfile like so:
+
 ENV TOURNAMENT_ROUNDS 10
 
 ## Development
