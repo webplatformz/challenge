@@ -7,10 +7,10 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-###Wiki:
+### Wiki
 https://github.com/webplatformz/challenge/wiki
 
-###Styleguide: 
+### Styleguide
 https://github.com/RisingStack/node-style-guide
 
 ### Build Server
@@ -42,6 +42,18 @@ Build it and run it with:
 docker build . -t jasschallenge # '.' is the directory of the repo
 docker run -it --rm --name cs -p 3000:3000 jasschallenge
 ```
+### Environment Variables
+There are some env variables you can set to alter the behaviour of the server.
+
+* TOURNAMENT_ROUNDS
+
+  A number that represents the amount of rounds a tournament will run. Each round all bots will play once against all other bots. Defaults to 1
+* TOURNAMENT_LOGGING
+
+  Boolen, if set to true, the server will store a json file for each game (Bot vs. Bot) with all the messages for parsing. These messages will be stored to the base directory of this repo.
+  
+To add these variables to the docker Image, just add a line for each of them in the Dockerfile like so:
+ENV TOURNAMENT_ROUNDS 10
 
 ## Development
 While developing you might want to run the server with a watch task. You can either use:
