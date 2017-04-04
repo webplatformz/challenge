@@ -4,37 +4,44 @@ import TableCards from './tableCards.jsx';
 import LastStich from './lastStich.jsx';
 import Trumpf from './trumpf.jsx';
 
-export default (props) => {
-
-    let playerSeating = props.playerSeating,
-        cardType = props.cardType,
-        collectStich = props.collectStich,
-        state = props.state;
-
-
-    return (
-        <div id="jassCarpet">
-            <PlayerNames players={props.players}
-                         playerSeating={playerSeating}
-                         nextStartingPlayerIndex={props.nextStartingPlayerIndex}
-                         roundPlayerIndex={props.roundPlayerIndex}
-                         chosenSession={state.chosenSession}
-            />
-            <TableCards cardType={cardType}
-                        cards={props.cards}
-                        startingPlayerIndex={props.startingPlayerIndex}
-                        playerSeating={playerSeating}
-                        collectStich={collectStich}
-                        state={state.status}
-            />
-            <Trumpf mode={props.mode} color={props.color} cardType={cardType}/>
-            <LastStich cards={props.cards}
-                       state={props.state.status}
-                       cardType={cardType}
-                       playerSeating={playerSeating}
-                       startingPlayerIndex={props.startingPlayerIndex}
-                       showLastStich={state.showLastStich}
-            />
-        </div>
-    );
-};
+export default ({
+                    color,
+                    mode,
+                    cards,
+                    players,
+                    nextStartingPlayerIndex,
+                    roundPlayerIndex,
+                    startingPlayerIndex,
+                    playerSeating,
+                    cardType,
+                    collectStich,
+                    chosenSession,
+                    lastStichCards,
+                    lastStichStartingPlayerIndex,
+                    showLastStich,
+                    status
+                }) => (
+    <div id="jassCarpet">
+        <PlayerNames players={players}
+                     playerSeating={playerSeating}
+                     nextStartingPlayerIndex={nextStartingPlayerIndex}
+                     roundPlayerIndex={roundPlayerIndex}
+                     chosenSession={chosenSession}
+        />
+        <TableCards cardType={cardType}
+                    cards={cards}
+                    startingPlayerIndex={startingPlayerIndex}
+                    playerSeating={playerSeating}
+                    collectStich={collectStich}
+                    state={status}
+        />
+        <Trumpf mode={mode} color={color} cardType={cardType} />
+        <LastStich cards={lastStichCards}
+                   state={status}
+                   cardType={cardType}
+                   playerSeating={playerSeating}
+                   startingPlayerIndex={lastStichStartingPlayerIndex}
+                   showLastStich={showLastStich}
+        />
+    </div>
+);

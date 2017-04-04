@@ -25,13 +25,16 @@ describe('LastStich Component', () => {
     });
 
     it('should render a div element with id', () => {
-        shallowRenderer.render(React.createElement(LastStich));
+      const props = {
+          cards: []
+      };
+      shallowRenderer.render(React.createElement(LastStich, props));
         let actual = shallowRenderer.getRenderOutput();
 
         expect(actual.type).to.equal('div');
         expect(actual.props.id).to.equal('lastStich');
     });
-    
+
     it('should have class hidden when not 4 cards are on table ', () => {
         let props = {
             cards : []

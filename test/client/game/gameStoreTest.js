@@ -42,6 +42,8 @@ describe('GameStore', () => {
         expect(state.roundPlayerIndex).to.equal(0);
         expect(state.cyclesMade).to.equal(0);
         expect(state.status).to.equal(GameState.WAITING);
+        expect(state.lastStichCards).to.eql([]);
+        expect(state.lastStichStartingPlayerIndex).to.be.undefined;
     });
 
     it('should emit events in the right order with given timeout for spectator', (done) => {
@@ -177,7 +179,12 @@ describe('GameStore', () => {
                 data: {
                     'name': 'Player 1',
                     'id': 1,
-                    'playedCards': [],
+                    'playedCards': [
+                      {
+                          number: 11,
+                          color: CardColor.HEARTS
+                      }
+                    ],
                     'teams': [
                         {
                             'name': 'Team 2',
@@ -229,6 +236,8 @@ describe('GameStore', () => {
         expect(GameStore.state.teams[0].currentRoundPoints).to.equal(dummyPayload.action.data.teams[1].currentRoundPoints);
         expect(GameStore.state.teams[1].points).to.equal(dummyPayload.action.data.teams[0].points);
         expect(GameStore.state.teams[1].currentRoundPoints).to.equal(dummyPayload.action.data.teams[0].currentRoundPoints);
+        expect(GameStore.state.lastStichCards).to.equal(dummyPayload.action.data.playedCards);
+        expect(GameStore.state.lastStichStartingPlayerIndex).to.equal(0);
 
         let dummyPayload2 = {
             action: {
