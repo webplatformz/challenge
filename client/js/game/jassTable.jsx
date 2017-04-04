@@ -43,7 +43,11 @@ export default React.createClass({
                     color={state.color}
                     roundPlayerIndex={state.roundPlayerIndex}
                     collectStich={state.collectStich}
-                    state={state}
+                    chosenSession={state.chosenSession}
+                    lastStichCards={state.lastStichCards}
+                    lastStichStartingPlayerIndex={state.lastStichStartingPlayerIndex}
+                    showLastStich={state.showLastStich}
+                    status={state.status}
                 />
                 <Points teams={teams} showPoints={state.showPoints} />
                 {(() => {

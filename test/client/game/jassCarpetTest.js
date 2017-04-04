@@ -1,5 +1,3 @@
-
-
 import {expect} from 'chai';
 import React from 'react';
 import {CardType} from '../../../client/js/game/gameStore';
@@ -15,10 +13,10 @@ describe('JassCarpet Component', () => {
 
     const shallowRenderer = TestUtils.createRenderer();
     const minProps = {
-            state: {
-                chosenSession: 'someSession'
-            }
+        state: {
+            chosenSession: 'someSession'
         }
+    };
 
     it('should render a div element with id', () => {
         shallowRenderer.render(React.createElement(JassCarpet, minProps));

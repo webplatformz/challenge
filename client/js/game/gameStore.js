@@ -55,7 +55,9 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         status: GameState.WAITING,
         collectStich: true,
         showLastStich: false,
-        showPoints: false
+        showPoints: false,
+        lastStichCards: [],
+        lastStichStartingPlayerIndex: undefined
     },
 
     addChangeListener(callback) {
@@ -169,6 +171,8 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
             case JassAppConstants.BROADCAST_STICH:
                 let playerId = action.data.id,
                     teams = action.data.teams;
+                this.state.lastStichCards = action.data.playedCards;
+                this.state.lastStichStartingPlayerIndex = this.state.roundPlayerIndex;
                 this.state.status = GameState.STICH;
                 this.state.cyclesMade++;
 
