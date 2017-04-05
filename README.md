@@ -18,7 +18,7 @@ https://travis-ci.org/webplatformz/challenge
 
 ## Installation
 
-You only need NodeJS to run this server. If you don't want to install NodeJS on your machine see: Docker Section
+You only need NodeJS to run this server. If you don't want to install NodeJS on your machine see: [Docker Section](#docker-container)
 
 ### NodeJS
 Installing node.js: 
