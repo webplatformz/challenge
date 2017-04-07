@@ -1,7 +1,4 @@
 # Jass Challenge [![Build Status](https://travis-ci.org/webplatformz/challenge.svg?branch=master)](https://travis-ci.org/webplatformz/challenge)
-- JavaScript Challenge Server 
-- Frontend displaying scores
-
 
 ### Deployment
 
@@ -15,6 +12,13 @@ https://github.com/RisingStack/node-style-guide
 
 ### Build Server
 https://travis-ci.org/webplatformz/challenge
+
+## What is it?
+The idea of this project is to run as a server whilst bots or humans play Jass (Schieber) against each other. It has two basic modes that clients can select to play.
+
+Single Game Mode: Just one game that will start as soon as 4 players are connected to it. When one team reaches 2500 points it will be finished and every client of this session will be disconnected.
+
+Tournament Mode: This mode has to be started over the Web Frontend of the server. Any number of bots can join this tournament. Since Schieber Jass is always played as a team, you have to connect two instances of every bot. This is validated with the name of the bot. When every bot has two instances connected, you can start the tournament over the UI and then every bot will be matched against all other bots at least once. Depending on your setting of rounds in the tournament (see [Environment Section](#environment-variables)) it can be more than once.
 
 ## Installation
 
