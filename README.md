@@ -1,4 +1,4 @@
-# Jass Challenge ![Build STatus](https://travis-ci.org/webplatformz/challenge.svg?branch=master)
+# Jass Challenge [![Build Status](https://travis-ci.org/webplatformz/challenge.svg?branch=master)](https://travis-ci.org/webplatformz/challenge)
 - JavaScript Challenge Server 
 - Frontend displaying scores
 
