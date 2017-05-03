@@ -1,5 +1,5 @@
 import * as ClientApi from '../communication/clientApi';
-import { SessionType } from '../../shared/session/sessionType';
+import {SessionType} from '../../shared/session/sessionType';
 import * as Ranking from '../game/ranking/ranking';
 import * as RankingTable from './rankingTable';
 import * as SingleGameSession from './singleGameSession';
@@ -21,7 +21,7 @@ function getPairingsPerRound(players) {
     });
 }
 
-function createSessionWithPlayers({ player1, player2 }) {
+function createSessionWithPlayers({player1, player2}) {
     let session = SingleGameSession.create(nameGenerator(), clientRequestTimeoutInMillis);
 
     session.addPlayer(player1.clients[0], player1.playerName);
@@ -35,12 +35,12 @@ function createSessionWithPlayers({ player1, player2 }) {
     return session;
 }
 
-function createResultObject(winnerName, { player1, player2 }) {
-    if (winnerName.indexOf(player1.playerName) > -1) {
-        return { winner: player1.playerName, loser: player2.playerName };
+function createResultObject(winnerName, {player1, player2}) {
+    if (winnerName === player1.playerName) {
+        return {winner: player1.playerName, loser: player2.playerName};
     }
 
-    return { winner: player2.playerName, loser: player1.playerName };
+    return {winner: player2.playerName, loser: player1.playerName};
 }
 
 const TournamentSession = {
@@ -148,7 +148,7 @@ const TournamentSession = {
     },
 
     rankPairing(pairing, result) {
-        let { player1, player2 } = pairing;
+        let {player1, player2} = pairing;
 
         this.pairings.splice(this.pairings.findIndex(actPairing => actPairing === pairing), 1);
         this.ranking.updateMatchResult(result);
@@ -157,8 +157,9 @@ const TournamentSession = {
     },
 
     handleSessionFinish(pairing, winningTeam) {
-        let { player1, player2 } = pairing;
-        let result = createResultObject(winningTeam.name, pairing);
+        let {player1, player2} = pairing;
+        let player1Won = winningTeam.name === 'Team 1';
+        let result = createResultObject(player1Won ? player1.playerName : player2.playerName, pairing);
 
         player1.isPlaying = false;
         player2.isPlaying = false;
@@ -169,7 +170,7 @@ const TournamentSession = {
     },
 
     handlePairingWithDisconnectedClients(pairing) {
-        let { player1 } = pairing;
+        let {player1} = pairing;
 
         if (player1.connected) {
             this.rankPairing(pairing, createResultObject(player1.playerName, pairing));
@@ -183,7 +184,7 @@ const TournamentSession = {
     startPairingSessions() {
         return new Promise(resolve => {
             this.pairings.forEach(pairing => {
-                let { player1, player2 } = pairing;
+                let {player1, player2} = pairing;
 
                 if (!player1.isPlaying && !player2.isPlaying) {
                     let sessionPromise;
