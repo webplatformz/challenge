@@ -69,7 +69,7 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
     },
 
     spectatorRendering() {
-        var payload = spectatorEventQueue.shift();
+        const payload = spectatorEventQueue.shift();
         if (payload) {
             this.handlePayload(payload);
             if (payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED) {
@@ -172,7 +172,7 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 let playerId = action.data.id,
                     teams = action.data.teams;
                 this.state.lastStichCards = action.data.playedCards;
-                this.state.lastStichStartingPlayerIndex = this.state.roundPlayerIndex;
+                this.state.lastStichStartingPlayerIndex = this.state.nextStartingPlayerIndex;
                 this.state.status = GameState.STICH;
                 this.state.cyclesMade++;
 
