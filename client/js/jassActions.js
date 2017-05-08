@@ -197,6 +197,12 @@ export default {
         });
     },
 
+    broadcastGameFinished: () => {
+        JassAppDispatcher.handleServerAction({
+            actionType: JassAppConstants.BROADCAST_GAME_FINISHED
+        });
+    },
+
     adjustSpectatorSpeed: (speedInMs) => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.ADJUST_SPECTATOR_SPEED,
@@ -229,7 +235,7 @@ export default {
             data: registryBots
         });
     },
-    
+
     addBotFromRegistry: (bot, sessionName) => {
         JassAppDispatcher.handleViewAction({
             actionType: JassAppConstants.ADD_BOT_FROM_REGISTRY,

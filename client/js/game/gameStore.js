@@ -204,6 +204,11 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 this.state.collectStich = false;
                 this.state.tableCards = [];
                 break;
+            case JassAppConstants.BROADCAST_GAME_FINISHED:
+                this.state.mode = undefined;
+                this.state.color = undefined;
+                this.emit('change');
+                break;
             case JassAppConstants.COLLECT_STICH:
                 this.state.collectStich = true;
                 this.emit('change');

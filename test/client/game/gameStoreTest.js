@@ -310,6 +310,22 @@ describe('GameStore', () => {
         expect(GameStore.state.nextStartingPlayerIndex).to.equal(0);
     });
 
+    it('should set game mode and color to undefined when a game is finished', () => {
+        const dummyPayload = {
+            action: {
+                actionType: JassAppConstants.BROADCAST_GAME_FINISHED
+            }
+        };
+
+        GameStore.state.mode = 'TRUMPF';
+        GameStore.state.color = CardColor.CLUBS;
+
+        GameStore.handleAction(dummyPayload);
+
+        expect(GameStore.state.mode).to.be.undefined;
+        expect(GameStore.state.color).to.be.undefined;
+    });
+
     it('should set winner on broadcast winner team', () => {
         const name = 'myTeam';
         const dummyPayload = {
