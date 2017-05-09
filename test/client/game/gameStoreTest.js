@@ -1,5 +1,3 @@
-
-
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {default as GameStore, CardType, PlayerType, GameState} from '../../../client/js/game/gameStore';
@@ -172,7 +170,7 @@ describe('GameStore', () => {
         ]);
     });
 
-    it('should calculate team points and set Player to start next turn', () => {
+    it('should calculate team points and set Player to start next turn on broadcast stich', () => {
         let dummyPayload = {
             action: {
                 actionType: JassAppConstants.BROADCAST_STICH,
@@ -250,6 +248,68 @@ describe('GameStore', () => {
         expect(GameStore.state.startingPlayerIndex).to.equal(1);
         expect(GameStore.state.nextStartingPlayerIndex).to.equal(1);
     });
+
+  it('should set last stich player index on broadcast stich', () => {
+    let dummyPayload = {
+      action: {
+        actionType: JassAppConstants.BROADCAST_STICH,
+        data: {
+          'name': 'Player 2',
+          'id': 2,
+          'playedCards': [
+            {
+              number: 11,
+              color: CardColor.HEARTS
+            }
+          ],
+          'teams': [
+            {
+              'name': 'Team 2',
+              'points': 157,
+              'currentRoundPoints': 0
+            },
+            {
+              'name': 'Team 1',
+              'points': 0,
+              'currentRoundPoints': 42
+            }
+          ]
+        }
+      }
+    };
+    GameStore.state.players = [
+      {
+        name: 'Player 0',
+        id: 0
+      },
+      {
+        name: 'Player 1',
+        id: 1
+      },
+      {
+        name: 'Player 2',
+        id: 2
+      },
+      {
+        name: 'Player 3',
+        id: 3
+      }
+    ];
+    GameStore.state.teams = [
+      {
+        name: 'Team 1'
+      },
+      {
+        name: 'Team 2'
+      }
+    ];
+    GameStore.state.nextStartingPlayerIndex = 0;
+
+    GameStore.handleAction(dummyPayload);
+
+    expect(GameStore.state.lastStichStartingPlayerIndex).to.equal(0);
+    expect(GameStore.state.nextStartingPlayerIndex).to.equal(2);
+  });
 
     it('should set next roundPlayer after 9 cycles', () => {
         let dummyPayload = {
