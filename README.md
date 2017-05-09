@@ -57,6 +57,9 @@ There are some env variables you can set to alter the behaviour of the server.
 * TOURNAMENT_LOGGING
 
   Boolean, if set to true, the server will store a json file for each game (Bot vs. Bot) with all the messages for parsing. These messages will be stored to the base directory of this repo.
+* TOURNAMENT_COUNTING
+
+  Boolean, if set to true, the server will count all modes without any multiplications (e.g. factor 3 for obenabe or undenufe will not be used).
   
 ## Development
 While developing you might want to run the server with a watch task. You can either use:
