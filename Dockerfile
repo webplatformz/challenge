@@ -12,6 +12,7 @@ RUN npm install
 COPY . /usr/src/app
 
 ENV TOURNAMENT_ROUNDS 5
+ENV TOURNAMENT_COUNTING true
 
 EXPOSE 3000
 CMD [ "npm", "start" ]
