@@ -1,5 +1,3 @@
-
-
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {default as GameStore, CardType, PlayerType, GameState} from '../../../client/js/game/gameStore';
@@ -172,7 +170,7 @@ describe('GameStore', () => {
         ]);
     });
 
-    it('should calculate team points and set Player to start next turn', () => {
+    it('should calculate team points and set Player to start next turn on broadcast stich', () => {
         let dummyPayload = {
             action: {
                 actionType: JassAppConstants.BROADCAST_STICH,
@@ -251,6 +249,68 @@ describe('GameStore', () => {
         expect(GameStore.state.nextStartingPlayerIndex).to.equal(1);
     });
 
+  it('should set last stich player index on broadcast stich', () => {
+    let dummyPayload = {
+      action: {
+        actionType: JassAppConstants.BROADCAST_STICH,
+        data: {
+          'name': 'Player 2',
+          'id': 2,
+          'playedCards': [
+            {
+              number: 11,
+              color: CardColor.HEARTS
+            }
+          ],
+          'teams': [
+            {
+              'name': 'Team 2',
+              'points': 157,
+              'currentRoundPoints': 0
+            },
+            {
+              'name': 'Team 1',
+              'points': 0,
+              'currentRoundPoints': 42
+            }
+          ]
+        }
+      }
+    };
+    GameStore.state.players = [
+      {
+        name: 'Player 0',
+        id: 0
+      },
+      {
+        name: 'Player 1',
+        id: 1
+      },
+      {
+        name: 'Player 2',
+        id: 2
+      },
+      {
+        name: 'Player 3',
+        id: 3
+      }
+    ];
+    GameStore.state.teams = [
+      {
+        name: 'Team 1'
+      },
+      {
+        name: 'Team 2'
+      }
+    ];
+    GameStore.state.nextStartingPlayerIndex = 0;
+
+    GameStore.handleAction(dummyPayload);
+
+    expect(GameStore.state.lastStichStartingPlayerIndex).to.equal(0);
+    expect(GameStore.state.nextStartingPlayerIndex).to.equal(2);
+  });
+
     it('should set next roundPlayer after 9 cycles', () => {
         let dummyPayload = {
             action: {
@@ -308,6 +368,22 @@ describe('GameStore', () => {
         expect(GameStore.state.status).to.equal(GameState.STICH);
         expect(GameStore.state.roundPlayerIndex).to.equal(0);
         expect(GameStore.state.nextStartingPlayerIndex).to.equal(0);
+    });
+
+    it('should set game mode and color to undefined when a game is finished', () => {
+        const dummyPayload = {
+            action: {
+                actionType: JassAppConstants.BROADCAST_GAME_FINISHED
+            }
+        };
+
+        GameStore.state.mode = 'TRUMPF';
+        GameStore.state.color = CardColor.CLUBS;
+
+        GameStore.handleAction(dummyPayload);
+
+        expect(GameStore.state.mode).to.be.undefined;
+        expect(GameStore.state.color).to.be.undefined;
     });
 
     it('should set winner on broadcast winner team', () => {

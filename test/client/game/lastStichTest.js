@@ -35,7 +35,7 @@ describe('LastStich Component', () => {
         expect(actual.props.id).to.equal('lastStich');
     });
 
-    it('should have class hidden when not 4 cards are on table ', () => {
+    it('should have class hidden when not 4 cards on table ', () => {
         let props = {
             cards : []
         };
@@ -47,7 +47,7 @@ describe('LastStich Component', () => {
         expect(actual.props.className).to.equal('hidden');
     });
 
-    it('should not have class hidden when 4 cards are on table ', () => {
+    it('should not have class hidden when 4 cards on table ', () => {
         let props = {
             state: GameState.STICH,
             startingPlayerIndex: 0,

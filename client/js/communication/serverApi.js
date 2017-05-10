@@ -5,7 +5,7 @@ import * as messages from '../../../shared/messages/messages';
 import {MessageType} from '../../../shared/messages/messageType';
 import {SessionChoice} from '../../../shared/session/sessionChoice';
 
-const protocol = (window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.99')) ? 'ws' : 'wss';
+const protocol = (process.env.NODE && ~process.env.NODE.indexOf('heroku')) ? 'wss' : 'ws';
 const serverAddress = `${protocol}://${window.location.host}`;
 
 let webSocket;
@@ -56,6 +56,9 @@ const ServerApi = {
                 break;
             case MessageType.BROADCAST_STICH.name:
                 JassActions.broadcastStich(message.data);
+                break;
+            case MessageType.BROADCAST_GAME_FINISHED.name:
+                JassActions.broadcastGameFinished();
                 break;
             case MessageType.BROADCAST_TOURNAMENT_RANKING_TABLE.name:
                 JassActions.broadcastTournamentRankingTable(message.data);

@@ -5,7 +5,12 @@ import {CardColor} from '../../../../shared/deck/cardColor';
 import * as Card from '../../../../shared/deck/card';
 
 
-describe('Counter', function() {
+describe('Counter', () => {
+
+    afterEach(() => {
+      delete process.env.TOURNAMENT_COUNTING;
+    });
+
     it('should count simple array without Trumpf', function() {
         let mode = GameMode.TRUMPF;
         let cardColor = CardColor.SPADES;
@@ -65,7 +70,7 @@ describe('Counter', function() {
         assert.equal(72, value, 'Cardset value matches');
     });
 
-    it('should count simple array with untenrauf', function() {
+    it('should count simple array with undenufe', function() {
         let mode = GameMode.UNDEUFE;
 
         let cardSet = [
@@ -78,4 +83,20 @@ describe('Counter', function() {
         let value = Counter.count(mode, null, cardSet);
         assert.equal(63, value, 'Cardset value matches');
     });
+
+  it('should multiply by 1 when TOURNAMENT_COUNTING', function() {
+    process.env.TOURNAMENT_COUNTING = 'true';
+    const mode = GameMode.UNDEUFE;
+
+    let cardSet = [
+      Card.create(8, CardColor.DIAMONDS),
+      Card.create(6, CardColor.DIAMONDS),
+      Card.create(14, CardColor.DIAMONDS),
+      Card.create(9, CardColor.SPADES),
+      Card.create(11, CardColor.SPADES)
+    ];
+
+    let value = Counter.count(mode, null, cardSet);
+    assert.equal(21, value, 'Cardset value matches');
+  });
 });

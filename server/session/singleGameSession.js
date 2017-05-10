@@ -186,10 +186,11 @@ const Session = {
 
             this.gameCycle()
                 .then((winningTeam) => {
+                    this.finishGame(winningTeam);
+
                     if (tournamentLogging) {
                         resultProxy.destroy();
                     }
-                    this.finishGame(winningTeam);
                 })
                 .catch(error => {
                     if (tournamentLogging) {
