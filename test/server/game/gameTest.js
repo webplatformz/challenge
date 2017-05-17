@@ -79,7 +79,7 @@ describe('Game', function () {
         game.start()
             .catch((errorObject) => {
                 expect(errorObject.message).to.equal(errorMessage);
-                expect(errorObject.data).to.eql(players[0]);
+                expect(errorObject.data).to.eql(players[2]);
                 clientApiMock.verify();
                 done();
             })

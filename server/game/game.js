@@ -1,6 +1,6 @@
 import * as Deck from './deck/deck';
 import * as Cycle from './cycle/cycle';
-import {GameMode} from './../../shared/game/gameMode';
+import { GameMode } from './../../shared/game/gameMode';
 
 function handleChooseTrumpf(game, gameType) {
     game.gameType = gameType;
@@ -17,6 +17,13 @@ function handleChooseTrumpfGeschoben(game, actPlayer, gameType) {
     return actPlayer.requestTrumpf(true).then((gameType) => {
         return handleChooseTrumpfGeschoben(game, actPlayer, gameType);
     });
+}
+
+function transformErrorMessageToErrorObject(player, message) {
+    return new Promise((resolve, reject) => reject({
+        message,
+        data: player
+    }));
 }
 
 let Game = {
@@ -38,6 +45,7 @@ let Game = {
             let actPlayer = this.players[i];
             if (actPlayer !== this.startPlayer && actPlayer.team.name === this.startPlayer.team.name) {
                 return actPlayer.requestTrumpf(true)
+                    .catch(error => transformErrorMessageToErrorObject(actPlayer, error))
                     .then(gameType => handleChooseTrumpfGeschoben(this, actPlayer, gameType));
             }
         }
@@ -45,6 +53,7 @@ let Game = {
 
     start() {
         return this.startPlayer.requestTrumpf(false)
+            .catch(error => transformErrorMessageToErrorObject(this.startPlayer, error))
             .then((gameType) => {
                 if (gameType.mode === GameMode.SCHIEBE) {
                     this.clientApi.broadcastTrumpf(gameType);
@@ -52,8 +61,7 @@ let Game = {
                 } else {
                     return handleChooseTrumpf(this, gameType);
                 }
-            })
-            .catch(message => new Promise((resolve, reject) => reject({ message, data: this.startPlayer})));
+            });
     }
 };
 
