@@ -9,7 +9,7 @@ const AngebenValidator = {
         if (validationParameter.tableCards.length === 0) {
             return validationSuccess;
         }
-        
+
         let hasOnlyBuur = function(handCards, leadColor, trumpfColor) {
             if(leadColor === trumpfColor && validationParameter.mode === GameMode.TRUMPF) {
                 let trumpfCards = handCards.filter(function (card) {
@@ -20,7 +20,8 @@ const AngebenValidator = {
             return false;
         };
 
-        if (validationParameter.cardToPlay.color === validationParameter.color) {
+        if (validationParameter.mode === GameMode.TRUMPF
+            && validationParameter.cardToPlay.color === validationParameter.color) {
             return validationSuccess;
         }
 

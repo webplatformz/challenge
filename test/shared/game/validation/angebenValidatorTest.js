@@ -1,8 +1,8 @@
 import assert from 'assert';
 import * as Card from '../../../../shared/deck/card';
-import {CardColor} from '../../../../shared/deck/cardColor';
+import { CardColor } from '../../../../shared/deck/cardColor';
 import AngebenValidator from '../../../../shared/game/validation/angebenValidator';
-import {GameMode} from '../../../../shared/game/gameMode';
+import { GameMode } from '../../../../shared/game/gameMode';
 
 
 describe('Angeben Validator', function () {
@@ -34,6 +34,20 @@ describe('Angeben Validator', function () {
         let validationResult = AngebenValidator.validate(parameters);
 
         assert(validationResult.permitted);
+    });
+
+    it('should not respect trumpfColor when OBEABE', () => {
+        let parameters = {
+            color: CardColor.HEARTS,
+            mode: GameMode.OBEABE,
+            tableCards: [Card.create(6, CardColor.DIAMONDS)],
+            handCards: [Card.create(10, CardColor.HEARTS), Card.create(10, CardColor.DIAMONDS)],
+            cardToPlay: Card.create(10, CardColor.HEARTS)
+        };
+
+        let validationResult = AngebenValidator.validate(parameters);
+
+        assert(!validationResult.permitted);
     });
 
     it('should NOT allow any color, if a player still has a card of the correct color', () => {
