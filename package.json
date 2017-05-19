@@ -73,7 +73,7 @@
     "parallelshell": "2.0.0",
     "react": "15.4.2",
     "react-addons-css-transition-group": "15.4.2",
-    "react-addons-test-utils": "15.4.2",
+    "react-addons-test-utils": "15.5.0",
     "react-dom": "15.4.2",
     "request": "2.81.0",
     "rimraf": "2.6.1",
