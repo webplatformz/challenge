@@ -11,7 +11,8 @@ export const GameState = {
     REQUESTING_CARD: 'REQUESTING_CARD',
     REJECTED_CARD: 'REJECTED_CARD',
     REQUESTING_CARDS_FROM_OTHER_PLAYERS: 'REQUESTING_CARDS_FROM_OTHER_PLAYERS',
-    STICH: 'STICH'
+    STICH: 'STICH',
+    FINISHED: 'FINISHED',
 };
 
 export const CardType = {
@@ -223,6 +224,7 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 break;
             case JassAppConstants.BROADCAST_WINNER_TEAM:
                 this.state.teams.find(team => team.name === action.data.name).winner = true;
+                this.state.status = GameState.FINISHED;
                 this.emit('change');
                 break;
         }

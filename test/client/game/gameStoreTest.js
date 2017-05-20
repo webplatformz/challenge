@@ -407,4 +407,26 @@ describe('GameStore', () => {
         expect(GameStore.state.teams[1].winner).to.equal(true);
     });
 
+    it('should set game state to FINISHED on broadcast winner team', () => {
+        const name = 'myTeam';
+        const dummyPayload = {
+            action: {
+                actionType: JassAppConstants.BROADCAST_WINNER_TEAM,
+                data: {
+                    name
+                }
+            }
+        };
+        GameStore.state.teams = [
+            { name: 'otherTeam' },
+            { name }
+        ];
+
+        GameStore.handleAction(dummyPayload);
+
+        expect(GameStore.state.teams[0].winner).to.be.undefined;
+        expect(GameStore.state.teams[1].winner).to.equal(true);
+        expect(GameStore.state.status).to.equal(GameState.FINISHED);
+    });
+
 });
