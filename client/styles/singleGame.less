@@ -473,3 +473,58 @@
     animation-iteration-count: infinite;
   }
 }
+
+#winnerNotification {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 2;
+
+  .winner-modal {
+    position: fixed;
+    z-index: 3;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: @white;
+    border-radius: 5px;
+    min-width: 500px;
+    max-height: 80vh;
+    text-align: center;
+
+    .winner-title {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      background-color: @dark-red;
+      padding: 20px;
+
+      h3 {
+        margin: 0;
+      }
+    }
+
+    .winner-body {
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      background-color: @red;
+      padding: 20px;
+    }
+
+    .winner-button {
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      background-color: @dark-red;
+      color: @white;
+      border-color: @white;
+
+      &:hover {
+        background-color: @red;
+      }
+    }
+  }
+}

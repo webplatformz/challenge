@@ -6,12 +6,13 @@ import RequestTrumpf from './requestTrumpf.jsx';
 import JassCarpet from './jassCarpet.jsx';
 import Points from './points.jsx';
 import SpectatorControls from './spectatorControls.jsx';
+import WinnerNotification from './winnerNotification.jsx';
 
 export default React.createClass({
 
     handleGameSetupState() {
         this.setState(GameStore.state);
-      },
+    },
 
     componentDidMount() {
         GameStore.addChangeListener(this.handleGameSetupState);
@@ -52,12 +53,13 @@ export default React.createClass({
                 <Points teams={teams} showPoints={state.showPoints} />
                 {(() => {
                     if (state.playerType === PlayerType.PLAYER) {
-                        return (<PlayerCards cards={playerCards}
-                          cardType={state.cardType}
-                          state={state.status}
-                          tableCards={state.tableCards}
-                          mode={state.mode}
-                          color={state.color}
+                        return (<PlayerCards
+                            cards={playerCards}
+                            cardType={state.cardType}
+                            state={state.status}
+                            tableCards={state.tableCards}
+                            mode={state.mode}
+                            color={state.color}
                         />);
                     }
                 })()}
@@ -71,7 +73,12 @@ export default React.createClass({
                         return <SpectatorControls />;
                     }
                 })()}
+                {(() => {
+                    if (state.status === GameState.FINISHED) {
+                        return <WinnerNotification teams={teams} />;
+                    }
+                })()}
             </div>
         );
-    }
+    },
 });
