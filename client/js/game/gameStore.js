@@ -9,6 +9,7 @@ export const GameState = {
     REQUESTING_TRUMPF: 'REQUESTING_TRUMPF',
     TRUMPF_CHOSEN: 'TRUMPF_CHOSEN',
     REQUESTING_CARD: 'REQUESTING_CARD',
+    PLAYED_CARD: 'PLAYED_CARD',
     REJECTED_CARD: 'REJECTED_CARD',
     REQUESTING_CARDS_FROM_OTHER_PLAYERS: 'REQUESTING_CARDS_FROM_OTHER_PLAYERS',
     STICH: 'STICH'
@@ -152,6 +153,7 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
                 this.state.playerCards = this.state.playerCards.filter((card) => {
                     return !card.equals(chosenCard);
                 });
+                this.state.status = GameState.PLAYED_CARD;
                 this.emit('change');
                 break;
             case JassAppConstants.REJECT_CARD:
