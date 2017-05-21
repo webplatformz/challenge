@@ -17,7 +17,12 @@ export default ({ teams }) => (
                     <small>{teams[1].players.map(player => player.name).join(' & ')}</small>
                 </h3>
                 <p>{teams[1].points} Points</p>
-                <button className="winner-button">New Game</button>
+                <button
+                    onClick={window.location.reload}
+                    className="winner-button"
+                >
+                    New Game
+                </button>
             </div>
         </div>
     </div>
