@@ -67,13 +67,4 @@ describe('WinnerNotification Component', () => {
         expect(titleTeam2Element.props.children).to.eql([200, ' Points']);
     });
 
-    it('should reload page on button click', () => {
-        shallowRenderer.render(React.createElement(WinnerNotification, props));
-        let actual = shallowRenderer.getRenderOutput();
-
-        const buttonElement = actual.props.children.props.children[1].props.children[4];
-        expect(buttonElement.type).to.equal('button');
-        expect(buttonElement.props.onClick).to.equal(window.location.reload);
-    });
-
 });

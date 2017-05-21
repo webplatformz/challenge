@@ -18,7 +18,7 @@ export default ({ teams }) => (
                 </h3>
                 <p>{teams[1].points} Points</p>
                 <button
-                    onClick={window.location.reload}
+                    onClick={() => window.location.reload()}
                     className="winner-button"
                 >
                     New Game
