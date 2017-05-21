@@ -170,6 +170,23 @@ describe('GameStore', () => {
         ]);
     });
 
+    it('should set game state to PLAYED_CARD on chooseCard', () => {
+        let dummyPayload = {
+            action: {
+                actionType: JassAppConstants.CHOOSE_CARD,
+                data: {
+                    color: CardColor.HEARTS,
+                    number: 9
+                }
+            }
+        };
+        GameStore.state.playerCards = [];
+
+        GameStore.handleAction(dummyPayload);
+
+        expect(GameStore.state.status).to.equal(GameState.PLAYED_CARD);
+    });
+
     it('should calculate team points and set Player to start next turn on broadcast stich', () => {
         let dummyPayload = {
             action: {
