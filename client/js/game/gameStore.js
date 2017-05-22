@@ -74,9 +74,6 @@ const GameStore = Object.assign(Object.create(EventEmitter.prototype), {
         const payload = spectatorEventQueue.shift();
         if (payload) {
             this.handlePayload(payload);
-            if (payload.action.actionType === JassAppConstants.BROADCAST_GAME_FINISHED) {
-                return;
-            }
         }
         setTimeout(this.spectatorRendering.bind(this), spectatorRenderingIntervall);
     },
