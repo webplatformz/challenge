@@ -30,11 +30,6 @@
   @rotate: -8deg + 2 * @zeroBasedIndex;
 
   transform: translateX(@translateX) translateY(@translateY) rotate(@rotate);
-
-  &:hover {
-    @translateYHover: @translateY - 30%;
-    transform: translateX(@translateX) translateY(@translateYHover) rotate(@rotate);
-  }
 }
 
 .card-horizontal {
@@ -75,6 +70,8 @@
 
       a {
         display: inline-block;
+        background-color: #FAFAFA;
+        border-radius: 0 0 5px 5px;
       }
 
       img {
