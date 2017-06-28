@@ -77,7 +77,7 @@
     "react-dom": "15.5.4",
     "request": "2.81.0",
     "rimraf": "2.6.1",
-    "sinon": "2.2.0",
+    "sinon": "2.3.6",
     "validate.js": "0.11.1",
     "ws": "2.3.1"
   }
