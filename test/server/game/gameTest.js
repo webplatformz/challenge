@@ -26,10 +26,10 @@ describe('Game', function () {
     it('should properly deal cards to each player', () => {
         game = Game.create(players, maxPoints, players[0], clientApi);
 
-        expect(game.deck).to.be.defined;
-        expect(game.players).to.be.defined;
+        expect(game.deck).to.be.a('object');
+        expect(game.players).to.be.a('array');
         expect(game.maxPoints).to.equal(maxPoints);
-        expect(game.startPlayer).to.be.defined;
+        expect(game.startPlayer).to.be.a('object');
         players.forEach(player => {
             expect(player.cards.length).to.equal(9);
             player.cards.forEach(card => {
