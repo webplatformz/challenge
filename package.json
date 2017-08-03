@@ -61,7 +61,7 @@
     "chai": "4.1.0",
     "chalk": "2.0.0",
     "copyfiles": "1.2.0",
-    "cross-env": "4.0.0",
+    "cross-env": "5.0.3",
     "docker-namesgenerator": "0.0.1",
     "express": "4.15.2",
     "flux": "3.1.2",
