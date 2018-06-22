@@ -35,7 +35,7 @@
     "debug": "cross-env DEBUG=true npm run start:watch -- --debug --debug-brk=5858"
   },
   "devDependencies": {
-    "babel-eslint": "7.2.3",
+    "babel-eslint": "8.2.4",
     "eslint": "4.1.0",
     "eslint-plugin-import": "2.5.0",
     "eslint-plugin-react": "7.1.0",
